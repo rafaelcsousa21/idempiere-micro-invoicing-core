@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_ValidCombination;
@@ -213,7 +213,7 @@ public class Doc_Order extends Doc {
             int C_Tax_ID = docLine.getTaxId();
             //	Correct included Tax
             if (isTaxIncluded() && C_Tax_ID != 0) {
-                MTax tax = MTax.get(getCtx(), C_Tax_ID);
+                MTax tax = MTax.get(C_Tax_ID);
                 if (!tax.isZeroTax()) {
                     BigDecimal LineNetAmtTax = tax.calculateTax(LineNetAmt, true, getStdPrecision());
                     if (log.isLoggable(Level.FINE))
@@ -246,7 +246,7 @@ public class Doc_Order extends Doc {
      * @return requisition lines of Order
      */
     private DocLine[] loadRequisitions() {
-        return BaseDoc_OrderKt.loadRequisitions(getCtx(), (MOrder) getPO(), this);
+        return BaseDoc_OrderKt.loadRequisitions((MOrder) getPO(), this);
     } // loadRequisitions
 
     /**
@@ -255,7 +255,7 @@ public class Doc_Order extends Doc {
      * @return precision
      */
     private int getStdPrecision() {
-        if (m_precision == -1) m_precision = MCurrency.getStdPrecision(getCtx(), getCurrencyId());
+        if (m_precision == -1) m_precision = MCurrencyKt.getCurrencyStdPrecision(getCurrencyId());
         return m_precision;
     } //	getPrecision
 
@@ -265,14 +265,14 @@ public class Doc_Order extends Doc {
      * @return DocTax Array
      */
     private DocTax[] loadTaxes() {
-        ArrayList<DocTax> list = new ArrayList<DocTax>();
+        ArrayList<DocTax> list = new ArrayList<>();
         StringBuilder sql =
                 new StringBuilder(
                         "SELECT it.C_Tax_ID, t.Name, t.Rate, it.TaxBaseAmt, it.TaxAmt, t.IsSalesTax ")
                         .append("FROM C_Tax t, C_OrderTax it ")
                         .append("WHERE t.C_Tax_ID=it.C_Tax_ID AND it.C_Order_ID=?");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql.toString());
             pstmt.setInt(1, getId());
@@ -291,10 +291,6 @@ public class Doc_Order extends Doc {
             }
         } catch (SQLException e) {
             log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         //	Return Array
@@ -320,16 +316,16 @@ public class Doc_Order extends Doc {
         sb.append("-").append(getAmount(Doc.AMTTYPE_Charge));
         //  - Tax
         if (m_taxes != null) {
-            for (int i = 0; i < m_taxes.length; i++) {
-                retValue = retValue.subtract(m_taxes[i].getAmount());
-                sb.append("-").append(m_taxes[i].getAmount());
+            for (DocTax m_tax : m_taxes) {
+                retValue = retValue.subtract(m_tax.getAmount());
+                sb.append("-").append(m_tax.getAmount());
             }
         }
         //  - Lines
         if (p_lines != null) {
-            for (int i = 0; i < p_lines.length; i++) {
-                retValue = retValue.subtract(p_lines[i].getAmtSource());
-                sb.append("-").append(p_lines[i].getAmtSource());
+            for (DocLine p_line : p_lines) {
+                retValue = retValue.subtract(p_line.getAmtSource());
+                sb.append("-").append(p_line.getAmtSource());
             }
             sb.append("]");
         }
@@ -363,7 +359,7 @@ public class Doc_Order extends Doc {
      * @return Fact
      */
     public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
-        ArrayList<IFact> facts = new ArrayList<IFact>();
+        ArrayList<IFact> facts = new ArrayList<>();
         //  Purchase Order
         if (getDocumentType().equals(DOCTYPE_POrder)) {
             updateProductPO(as);
@@ -376,8 +372,7 @@ public class Doc_Order extends Doc {
             if (as.isCreatePOCommitment()) {
                 Fact fact = new Fact(this, as, Fact.POST_Commitment);
                 BigDecimal total = Env.ZERO;
-                for (int i = 0; i < p_lines.length; i++) {
-                    DocLine line = p_lines[i];
+                for (DocLine line : p_lines) {
                     BigDecimal cost = line.getAmtSource();
                     total = total.add(cost);
 
@@ -463,7 +458,7 @@ public class Doc_Order extends Doc {
      * @param as accounting schema
      */
     private void updateProductPO(I_C_AcctSchema as) {
-        MClientInfo ci = MClientInfo.get(getCtx(), as.getClientId());
+        MClientInfo ci = MClientInfo.get(as.getClientId());
         if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 
         StringBuilder sql =

@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
@@ -45,8 +45,8 @@ public class Doc_InOut extends Doc {
     /**
      * Constructor
      *
-     * @param as      accounting schema
-     * @param rs      record
+     * @param as accounting schema
+     * @param rs record
      */
     public Doc_InOut(MAcctSchema as, Row rs) {
         super(as, MInOut.class, rs, null);
@@ -76,10 +76,9 @@ public class Doc_InOut extends Doc {
      * @return DocLine Array
      */
     private DocLine[] loadLines(MInOut inout) {
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
+        ArrayList<DocLine> list = new ArrayList<>();
         MInOutLine[] lines = inout.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MInOutLine line = lines[i];
+        for (MInOutLine line : lines) {
             if (line.isDescription()
                     || line.getProductId() == 0
                     || line.getMovementQty().signum() == 0) {
@@ -116,8 +115,7 @@ public class Doc_InOut extends Doc {
      * @return Zero (always balanced)
      */
     public BigDecimal getBalance() {
-        BigDecimal retValue = Env.ZERO;
-        return retValue;
+        return Env.ZERO;
     } //  getBalance
 
     /**
@@ -140,30 +138,28 @@ public class Doc_InOut extends Doc {
      */
     public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         //
-        ArrayList<IFact> facts = new ArrayList<IFact>();
+        ArrayList<IFact> facts = new ArrayList<>();
         //  create Fact Header
         Fact fact = new Fact(this, as, Fact.POST_Actual);
         setCurrencyId(as.getCurrencyId());
 
         //  Line pointers
-        FactLine dr = null;
-        FactLine cr = null;
+        FactLine dr;
+        FactLine cr;
 
         //  *** Sales - Shipment
         if (getDocumentType().equals(DOCTYPE_MatShipment) && isSOTrx()) {
-            for (int i = 0; i < p_lines.length; i++) {
-                DocLine line = p_lines[i];
+            for (DocLine line : p_lines) {
                 MProduct product = line.getProduct();
                 BigDecimal costs = null;
                 if (!isReversal(line)) {
                     if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                         if (line.getAttributeSetInstanceId() == 0) {
                             MInOutLine ioLine = (MInOutLine) line.getPO();
-                            MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), ioLine.getId());
+                            MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                             if (mas != null && mas.length > 0) {
                                 costs = BigDecimal.ZERO;
-                                for (int j = 0; j < mas.length; j++) {
-                                    MInOutLineMA ma = mas[j];
+                                for (MInOutLineMA ma : mas) {
                                     BigDecimal QtyMA = ma.getMovementQty();
                                     ProductCost pc = line.getProductCost();
                                     pc.setQty(QtyMA);
@@ -268,10 +264,9 @@ public class Doc_InOut extends Doc {
                 if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                     if (line.getAttributeSetInstanceId() == 0) {
                         MInOutLine ioLine = (MInOutLine) line.getPO();
-                        MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), ioLine.getId());
+                        MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                         if (mas != null && mas.length > 0) {
-                            for (int j = 0; j < mas.length; j++) {
-                                MInOutLineMA ma = mas[j];
+                            for (MInOutLineMA ma : mas) {
                                 if (!MCostDetail.createShipment(
                                         as,
                                         line.getOrgId(),
@@ -330,10 +325,9 @@ public class Doc_InOut extends Doc {
                 }
             } //	for all lines
 
-            /** Commitment release *** */
+            /* Commitment release *** */
             if (as.isAccrual() && as.isCreateSOCommitment()) {
-                for (int i = 0; i < p_lines.length; i++) {
-                    DocLine line = p_lines[i];
+                for (DocLine line : p_lines) {
                     Fact factcomm =
                             Doc_Order.getCommitmentSalesRelease(as, this, line.getQty(), line.getId(), Env.ONE);
                     if (factcomm != null) facts.add(factcomm);
@@ -343,19 +337,17 @@ public class Doc_InOut extends Doc {
         } //	Shipment
         //	  *** Sales - Return
         else if (getDocumentType().equals(DOCTYPE_MatReceipt) && isSOTrx()) {
-            for (int i = 0; i < p_lines.length; i++) {
-                DocLine line = p_lines[i];
+            for (DocLine line : p_lines) {
                 MProduct product = line.getProduct();
-                BigDecimal costs = null;
+                BigDecimal costs;
                 if (!isReversal(line)) {
                     if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                         if (line.getAttributeSetInstanceId() == 0) {
                             MInOutLine ioLine = (MInOutLine) line.getPO();
-                            MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), ioLine.getId());
+                            MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                             costs = BigDecimal.ZERO;
                             if (mas != null && mas.length > 0) {
-                                for (int j = 0; j < mas.length; j++) {
-                                    MInOutLineMA ma = mas[j];
+                                for (MInOutLineMA ma : mas) {
                                     BigDecimal QtyMA = ma.getMovementQty();
                                     ProductCost pc = line.getProductCost();
                                     pc.setQty(QtyMA);
@@ -420,10 +412,9 @@ public class Doc_InOut extends Doc {
                 if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                     if (line.getAttributeSetInstanceId() == 0) {
                         MInOutLine ioLine = (MInOutLine) line.getPO();
-                        MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), ioLine.getId());
+                        MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                         if (mas != null && mas.length > 0) {
-                            for (int j = 0; j < mas.length; j++) {
-                                MInOutLineMA ma = mas[j];
+                            for (MInOutLineMA ma : mas) {
                                 if (!MCostDetail.createShipment(
                                         as,
                                         line.getOrgId(),
@@ -509,27 +500,26 @@ public class Doc_InOut extends Doc {
 
         //  *** Purchasing - Receipt
         else if (getDocumentType().equals(DOCTYPE_MatReceipt) && !isSOTrx()) {
-            for (int i = 0; i < p_lines.length; i++) {
+            for (DocLine p_line : p_lines) {
                 // Elaine 2008/06/26
                 int C_Currency_ID = as.getCurrencyId();
                 //
-                DocLine line = p_lines[i];
-                BigDecimal costs = null;
-                MProduct product = line.getProduct();
+                BigDecimal costs;
+                MProduct product = p_line.getProduct();
                 MOrderLine orderLine = null;
                 BigDecimal landedCost = BigDecimal.ZERO;
                 String costingMethod = product.getCostingMethod(as);
-                if (!isReversal(line)) {
-                    int C_OrderLine_ID = line.getOrderLineId();
+                if (!isReversal(p_line)) {
+                    int C_OrderLine_ID = p_line.getOrderLineId();
                     if (C_OrderLine_ID > 0) {
-                        orderLine = new MOrderLine(getCtx(), C_OrderLine_ID);
+                        orderLine = new MOrderLine(C_OrderLine_ID);
                         MOrderLandedCostAllocation[] allocations =
                                 MOrderLandedCostAllocation.getOfOrderLine(C_OrderLine_ID);
                         for (MOrderLandedCostAllocation allocation : allocations) {
                             BigDecimal totalAmt = allocation.getAmt();
                             BigDecimal totalQty = allocation.getQty();
                             BigDecimal amt =
-                                    totalAmt.multiply(line.getQty()).divide(totalQty, RoundingMode.HALF_UP);
+                                    totalAmt.multiply(p_line.getQty()).divide(totalQty, RoundingMode.HALF_UP);
                             landedCost = landedCost.add(amt);
                         }
                     }
@@ -551,9 +541,9 @@ public class Doc_InOut extends Doc {
                                 //	Goodwill: Correct included Tax
                                 int C_Tax_ID = orderLine.getTaxId();
                                 if (orderLine.isTaxIncluded() && C_Tax_ID != 0) {
-                                    MTax tax = MTax.get(getCtx(), C_Tax_ID);
+                                    MTax tax = MTax.get(C_Tax_ID);
                                     if (!tax.isZeroTax()) {
-                                        int stdPrecision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
+                                        int stdPrecision = MCurrencyKt.getCurrencyStdPrecision(C_Currency_ID);
                                         BigDecimal costTax = tax.calculateTax(costs, true, stdPrecision);
                                         if (log.isLoggable(Level.FINE))
                                             log.fine("Costs=" + costs + " - Tax=" + costTax);
@@ -561,7 +551,7 @@ public class Doc_InOut extends Doc {
                                     }
                                 } //	correct included Tax
                             }
-                            costs = costs.multiply(line.getQty());
+                            costs = costs.multiply(p_line.getQty());
                         } else {
                             p_Error = "Resubmit - No Costs for " + product.getName() + " (required order line)";
                             log.log(Level.WARNING, p_Error);
@@ -569,7 +559,7 @@ public class Doc_InOut extends Doc {
                         }
                         //
                     } else {
-                        costs = line.getProductCosts(as, line.getOrgId(), false); // 	current costs
+                        costs = p_line.getProductCosts(as, p_line.getOrgId(), false); // 	current costs
                     }
 
                     if (costs == null || costs.signum() == 0) {
@@ -587,12 +577,12 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			DR
-                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                I_C_ValidCombination assets = p_line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) {
                     // if the line is a Outside Processing then DR WIP
-                    if (line.getCostCollectorId() > 0)
-                        assets = line.getAccount(ProductCost.ACCTTYPE_P_WorkInProcess, as);
-                    else assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
+                    if (p_line.getCostCollectorId() > 0)
+                        assets = p_line.getAccount(ProductCost.ACCTTYPE_P_WorkInProcess, as);
+                    else assets = p_line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 }
 
                 BigDecimal drAsset = costs;
@@ -601,20 +591,20 @@ public class Doc_InOut extends Doc {
                         || MAcctSchema.COSTINGMETHOD_AveragePO.equals(costingMethod))) {
                     drAsset = drAsset.add(landedCost);
                 }
-                dr = fact.createLine(line, assets, C_Currency_ID, drAsset, null);
+                dr = fact.createLine(p_line, assets, C_Currency_ID, drAsset, null);
                 //
                 if (dr == null) {
-                    p_Error = "DR not created: " + line;
+                    p_Error = "DR not created: " + p_line;
                     log.log(Level.WARNING, p_Error);
                     return null;
                 }
-                dr.setLocatorId(line.getLocatorId());
+                dr.setLocatorId(p_line.getLocatorId());
                 dr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); // from Loc
-                dr.setLocationFromLocator(line.getLocatorId(), false); // to Loc
-                if (isReversal(line)) {
+                dr.setLocationFromLocator(p_line.getLocatorId(), false); // to Loc
+                if (isReversal(p_line)) {
                     //	Set AmtAcctDr from Original Shipment/Receipt
                     if (!dr.updateReverseLine(
-                            MInOut.Table_ID, m_Reversal_ID, line.getReversalLineId(), Env.ONE)) {
+                            MInOut.Table_ID, m_Reversal_ID, p_line.getReversalLineId(), Env.ONE)) {
                         if (!product.isStocked()) { // 	ignore service
                             fact.remove(dr);
                             continue;
@@ -627,72 +617,71 @@ public class Doc_InOut extends Doc {
                 //  NotInvoicedReceipt				CR
                 cr =
                         fact.createLine(
-                                line, getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as), C_Currency_ID, null, costs);
+                                p_line, getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as), C_Currency_ID, null, costs);
                 //
                 if (cr == null) {
-                    p_Error = "CR not created: " + line;
+                    p_Error = "CR not created: " + p_line;
                     log.log(Level.WARNING, p_Error);
                     return null;
                 }
-                cr.setLocatorId(line.getLocatorId());
+                cr.setLocatorId(p_line.getLocatorId());
                 cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
-                cr.setLocationFromLocator(line.getLocatorId(), false); //  to Loc
-                cr.setQty(line.getQty().negate());
-                if (isReversal(line)) {
+                cr.setLocationFromLocator(p_line.getLocatorId(), false); //  to Loc
+                cr.setQty(p_line.getQty().negate());
+                if (isReversal(p_line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
                     if (!cr.updateReverseLine(
-                            MInOut.Table_ID, m_Reversal_ID, line.getReversalLineId(), Env.ONE)) {
+                            MInOut.Table_ID, m_Reversal_ID, p_line.getReversalLineId(), Env.ONE)) {
                         p_Error = "Original Receipt not posted yet";
                         return null;
                     }
                 }
                 if (!fact.isAcctBalanced()) {
-                    if (isReversal(line)) {
+                    if (isReversal(p_line)) {
                         dr =
                                 fact.createLine(
-                                        line,
-                                        line.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
+                                        p_line,
+                                        p_line.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
                                         C_Currency_ID,
                                         Env.ONE,
                                         null);
                         if (!dr.updateReverseLine(
-                                MInOut.Table_ID, m_Reversal_ID, line.getReversalLineId(), Env.ONE)) {
+                                MInOut.Table_ID, m_Reversal_ID, p_line.getReversalLineId(), Env.ONE)) {
                             p_Error = "Original Receipt not posted yet";
                             return null;
                         }
                     } else if (landedCost.signum() != 0) {
                         cr =
                                 fact.createLine(
-                                        line,
-                                        line.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
+                                        p_line,
+                                        p_line.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as),
                                         C_Currency_ID,
                                         null,
                                         landedCost);
                         //
                         if (cr == null) {
-                            p_Error = "CR not created: " + line;
+                            p_Error = "CR not created: " + p_line;
                             log.log(Level.WARNING, p_Error);
                             return null;
                         }
-                        cr.setLocatorId(line.getLocatorId());
+                        cr.setLocatorId(p_line.getLocatorId());
                         cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
-                        cr.setLocationFromLocator(line.getLocatorId(), false); //  to Loc
-                        cr.setQty(line.getQty().negate());
+                        cr.setLocationFromLocator(p_line.getLocatorId(), false); //  to Loc
+                        cr.setQty(p_line.getQty().negate());
                     }
                 }
             }
         } //	Receipt
         //	  *** Purchasing - return
         else if (getDocumentType().equals(DOCTYPE_MatShipment) && !isSOTrx()) {
-            for (int i = 0; i < p_lines.length; i++) {
+            for (DocLine p_line : p_lines) {
                 // Elaine 2008/06/26
                 int C_Currency_ID = as.getCurrencyId();
                 //
-                DocLine line = p_lines[i];
-                BigDecimal costs = null;
-                MProduct product = line.getProduct();
-                if (!isReversal(line)) {
-                    MInOutLine ioLine = (MInOutLine) line.getPO();
+                BigDecimal costs;
+                MProduct product = p_line.getProduct();
+                if (!isReversal(p_line)) {
+                    MInOutLine ioLine = (MInOutLine) p_line.getPO();
                     I_M_RMALine rmaLine = ioLine.getRMALine();
                     costs = rmaLine != null ? rmaLine.getAmt() : BigDecimal.ZERO;
                     I_M_InOutLine originalInOutLine = rmaLine != null ? rmaLine.getInOutLine() : null;
@@ -701,10 +690,10 @@ public class Doc_InOut extends Doc {
                         //	Goodwill: Correct included Tax
                         int C_Tax_ID = originalOrderLine.getTaxId();
                         if (originalOrderLine.isTaxIncluded() && C_Tax_ID != 0) {
-                            MTax tax = MTax.get(getCtx(), C_Tax_ID);
+                            MTax tax = MTax.get(C_Tax_ID);
                             if (!tax.isZeroTax()) {
                                 int stdPrecision =
-                                        MCurrency.getStdPrecision(getCtx(), originalOrderLine.getCurrencyId());
+                                        MCurrencyKt.getCurrencyStdPrecision(originalOrderLine.getCurrencyId());
                                 BigDecimal costTax = tax.calculateTax(costs, true, stdPrecision);
                                 if (log.isLoggable(Level.FINE)) log.fine("Costs=" + costs + " - Tax=" + costTax);
                                 costs = costs.subtract(costTax);
@@ -715,7 +704,6 @@ public class Doc_InOut extends Doc {
                         if (C_Currency_ID != originalOrderLine.getCurrencyId()) {
                             costs =
                                     MConversionRate.convert(
-                                            getCtx(),
                                             costs,
                                             originalOrderLine.getCurrencyId(),
                                             C_Currency_ID,
@@ -726,31 +714,30 @@ public class Doc_InOut extends Doc {
                                             true);
                         }
 
-                        costs = costs.multiply(line.getQty());
+                        costs = costs.multiply(p_line.getQty());
                         costs = costs.negate();
                     } else {
                         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
-                            if (line.getAttributeSetInstanceId() == 0) {
-                                MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), ioLine.getId());
+                            if (p_line.getAttributeSetInstanceId() == 0) {
+                                MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                                 costs = BigDecimal.ZERO;
                                 if (mas != null && mas.length > 0) {
-                                    for (int j = 0; j < mas.length; j++) {
-                                        MInOutLineMA ma = mas[j];
+                                    for (MInOutLineMA ma : mas) {
                                         BigDecimal QtyMA = ma.getMovementQty();
-                                        ProductCost pc = line.getProductCost();
+                                        ProductCost pc = p_line.getProductCost();
                                         pc.setQty(QtyMA);
                                         pc.setM_AttributeSetInstanceId(ma.getAttributeSetInstanceId());
                                         BigDecimal maCosts =
-                                                line.getProductCosts(as, line.getOrgId(), true, "M_InOutLine_ID=?");
+                                                p_line.getProductCosts(as, p_line.getOrgId(), true, "M_InOutLine_ID=?");
 
                                         costs = costs.add(maCosts);
                                     }
                                 }
                             } else {
-                                costs = line.getProductCosts(as, line.getOrgId(), false); // 	current costs
+                                costs = p_line.getProductCosts(as, p_line.getOrgId(), false); // 	current costs
                             }
                         } else {
-                            costs = line.getProductCosts(as, line.getOrgId(), false); // 	current costs
+                            costs = p_line.getProductCosts(as, p_line.getOrgId(), false); // 	current costs
                         }
 
                         if (costs == null || costs.signum() == 0) {
@@ -770,21 +757,21 @@ public class Doc_InOut extends Doc {
         as.getCurrencyId(), costs , null);*/
                 dr =
                         fact.createLine(
-                                line, getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as), C_Currency_ID, costs, null);
+                                p_line, getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as), C_Currency_ID, costs, null);
                 //
                 if (dr == null) {
-                    p_Error = "CR not created: " + line;
+                    p_Error = "CR not created: " + p_line;
                     log.log(Level.WARNING, p_Error);
                     return null;
                 }
-                dr.setLocatorId(line.getLocatorId());
+                dr.setLocatorId(p_line.getLocatorId());
                 dr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
-                dr.setLocationFromLocator(line.getLocatorId(), false); //  to Loc
-                dr.setQty(line.getQty().negate());
-                if (isReversal(line)) {
+                dr.setLocationFromLocator(p_line.getLocatorId(), false); //  to Loc
+                dr.setQty(p_line.getQty().negate());
+                if (isReversal(p_line)) {
                     //	Set AmtAcctDr from Original Shipment/Receipt
                     if (!dr.updateReverseLine(
-                            MInOut.Table_ID, m_Reversal_ID, line.getReversalLineId(), Env.ONE)) {
+                            MInOut.Table_ID, m_Reversal_ID, p_line.getReversalLineId(), Env.ONE)) {
                         if (!product.isStocked()) { // 	ignore service
                             fact.remove(dr);
                             continue;
@@ -795,31 +782,31 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			CR
-                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
-                if (product.isService()) assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
+                I_C_ValidCombination assets = p_line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                if (product.isService()) assets = p_line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 // Elaine 2008/06/26
         /*cr = fact.createLine(line, assets,
         as.getCurrencyId(), null, costs);*/
-                cr = fact.createLine(line, assets, C_Currency_ID, null, costs);
+                cr = fact.createLine(p_line, assets, C_Currency_ID, null, costs);
                 //
                 if (cr == null) {
-                    p_Error = "DR not created: " + line;
+                    p_Error = "DR not created: " + p_line;
                     log.log(Level.WARNING, p_Error);
                     return null;
                 }
-                cr.setLocatorId(line.getLocatorId());
+                cr.setLocatorId(p_line.getLocatorId());
                 cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); // from Loc
-                cr.setLocationFromLocator(line.getLocatorId(), false); // to Loc
-                if (isReversal(line)) {
+                cr.setLocationFromLocator(p_line.getLocatorId(), false); // to Loc
+                if (isReversal(p_line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
                     if (!cr.updateReverseLine(
-                            MInOut.Table_ID, m_Reversal_ID, line.getReversalLineId(), Env.ONE)) {
+                            MInOut.Table_ID, m_Reversal_ID, p_line.getReversalLineId(), Env.ONE)) {
                         p_Error = "Original Receipt not posted yet";
                         return null;
                     }
                 }
 
-                String costingError = createVendorRMACostDetail(as, line, costs);
+                String costingError = createVendorRMACostDetail(as, p_line, costs);
                 if (!Util.isEmpty(costingError)) {
                     p_Error = costingError;
                     return null;
@@ -850,10 +837,9 @@ public class Doc_InOut extends Doc {
         MProduct product = line.getProduct();
         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
             if (line.getAttributeSetInstanceId() == 0) {
-                MInOutLineMA[] mas = MInOutLineMA.get(getCtx(), line.getId());
+                MInOutLineMA[] mas = MInOutLineMA.get(line.getId());
                 if (mas != null && mas.length > 0) {
-                    for (int j = 0; j < mas.length; j++) {
-                        MInOutLineMA ma = mas[j];
+                    for (MInOutLineMA ma : mas) {
                         if (!MCostDetail.createShipment(
                                 as,
                                 line.getOrgId(),

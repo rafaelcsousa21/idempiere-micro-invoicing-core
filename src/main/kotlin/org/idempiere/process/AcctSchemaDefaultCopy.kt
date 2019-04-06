@@ -50,10 +50,10 @@ class AcctSchemaDefaultCopy(
                 "C_AcctSchema_ID=$p_C_AcctSchema_ID, CopyOverwriteAcct=$p_CopyOverwriteAcct"
             )
         if (p_C_AcctSchema_ID == 0) throw AdempiereSystemError("C_AcctSchema_ID=0")
-        val `as` = MAcctSchema.get(ctx, p_C_AcctSchema_ID)
+        val `as` = MAcctSchema.get(p_C_AcctSchema_ID)
         if (`as`.id == 0)
             throw AdempiereSystemError("Not Found - C_AcctSchema_ID=$p_C_AcctSchema_ID")
-        val acct = MAcctSchemaDefault.get(ctx, p_C_AcctSchema_ID)
+        val acct = MAcctSchemaDefault.get(p_C_AcctSchema_ID)
         if (acct == null || acct.id == 0)
             throw AdempiereSystemError("Default Not Found - C_AcctSchema_ID=$p_C_AcctSchema_ID")
 

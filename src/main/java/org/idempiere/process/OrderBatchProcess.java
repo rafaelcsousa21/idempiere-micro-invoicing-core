@@ -111,7 +111,7 @@ public class OrderBatchProcess extends SvrProcess {
             sql.append(" AND EXISTS (SELECT l.C_OrderLine_ID FROM C_OrderLine l ")
                     .append(" WHERE l.C_Order_ID=o.C_Order_ID AND l.QtyOrdered>l.QtyInvoiced) ");
 
-        MOrder[] items = BaseOrderBatchProcessKt.getOrdersToBatchProcess(getCtx(), sql.toString(), p_C_DocTypeTarget_ID, p_DocStatus);
+        MOrder[] items = BaseOrderBatchProcessKt.getOrdersToBatchProcess(sql.toString(), p_C_DocTypeTarget_ID, p_DocStatus);
 
         int counter = 0;
         int errCounter = 0;

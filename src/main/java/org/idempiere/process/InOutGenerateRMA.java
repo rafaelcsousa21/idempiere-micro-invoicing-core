@@ -79,7 +79,7 @@ public class InOutGenerateRMA extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
-        m_movementDate = Env.getContextAsDate(getCtx(), "#Date");
+        m_movementDate = Env.getContextAsDate();
         if (m_movementDate == null) {
             m_movementDate = new Timestamp(System.currentTimeMillis());
         }
@@ -100,7 +100,7 @@ public class InOutGenerateRMA extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, Env.getClientId(getCtx()));
+            pstmt.setInt(1, Env.getClientId());
             pstmt.setInt(2, getProcessInstanceId());
             rs = pstmt.executeQuery();
 
@@ -139,7 +139,7 @@ public class InOutGenerateRMA extends SvrProcess {
 
         MInOut originalReceipt = rma.getShipment();
 
-        MInOut shipment = new MInOut(getCtx(), 0);
+        MInOut shipment = new MInOut(0);
         shipment.setRMAId(rma.getId());
         shipment.setOrgId(rma.getOrgId());
         shipment.setTransactionOrganizationId(originalReceipt.getTransactionOrganizationId());
@@ -203,7 +203,6 @@ public class InOutGenerateRMA extends SvrProcess {
                 // The MMatchInv records will be automatically generated on MInOut.completeIt()
                 MInvoiceLine invoiceLine =
                         new Query(
-                                shipment.getCtx(),
                                 I_C_InvoiceLine.Table_Name,
                                 I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID + "=?"
                         )
@@ -223,8 +222,8 @@ public class InOutGenerateRMA extends SvrProcess {
     }
 
     private void generateShipment(int M_RMA_ID) {
-        MRMA rma = new MRMA(getCtx(), M_RMA_ID);
-        statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
+        MRMA rma = new MRMA(M_RMA_ID);
+        statusUpdate(Msg.getMsg("Processing") + " " + rma.getDocumentInfo());
 
         MInOut shipment = createShipment(rma);
         MInOutLine[] shipmentLines = createShipmentLines(rma, shipment);

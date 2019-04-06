@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_AD_SchedulerLog;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for AD_SchedulerLog
  *
@@ -22,15 +20,15 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
     /**
      * Standard Constructor
      */
-    public X_AD_SchedulerLog(Properties ctx, int AD_SchedulerLog_ID) {
-        super(ctx, AD_SchedulerLog_ID);
+    public X_AD_SchedulerLog(int AD_SchedulerLog_ID) {
+        super(AD_SchedulerLog_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_SchedulerLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_SchedulerLog(Row row) {
+        super(row);
     }
 
     /**

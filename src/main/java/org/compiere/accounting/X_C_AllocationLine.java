@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_AllocationLine
@@ -25,8 +24,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
     /**
      * Standard Constructor
      */
-    public X_C_AllocationLine(Properties ctx, int C_AllocationLine_ID) {
-        super(ctx, C_AllocationLine_ID);
+    public X_C_AllocationLine(int C_AllocationLine_ID) {
+        super(C_AllocationLine_ID);
         /**
          * if (C_AllocationLine_ID == 0) { setAmount (Env.ZERO); setPaymentAllocationHeaderId (0);
          * setAllocationLineId (0); setDiscountAmt (Env.ZERO); setWriteOffAmt (Env.ZERO); }
@@ -36,8 +35,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
     /**
      * Load Constructor
      */
-    public X_C_AllocationLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AllocationLine(Row row) {
+        super(row);
     }
 
     /**
@@ -150,7 +149,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
 
     public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
-                MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
+                MTable.get(org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
     }
 
@@ -198,7 +197,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
 
     public org.compiere.model.I_C_Payment getPayment() throws RuntimeException {
         return (org.compiere.model.I_C_Payment)
-                MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
+                MTable.get(org.compiere.model.I_C_Payment.Table_Name)
                         .getPO(getPaymentId());
     }
 

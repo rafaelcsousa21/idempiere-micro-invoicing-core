@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Status;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_Status
  *
@@ -22,15 +20,15 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
     /**
      * Standard Constructor
      */
-    public X_R_Status(Properties ctx, int R_Status_ID) {
-        super(ctx, R_Status_ID);
+    public X_R_Status(int R_Status_ID) {
+        super(R_Status_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Status(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_Status(Row row) {
+        super(row);
     }
 
     /**

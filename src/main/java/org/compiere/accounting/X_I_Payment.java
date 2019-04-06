@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_Payment extends PO implements I_I_Payment {
 
@@ -19,15 +18,15 @@ public class X_I_Payment extends PO implements I_I_Payment {
     /**
      * Standard Constructor
      */
-    public X_I_Payment(Properties ctx, int I_Payment_ID) {
-        super(ctx, I_Payment_ID);
+    public X_I_Payment(int I_Payment_ID) {
+        super(I_Payment_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Payment(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_Payment(Row row) {
+        super(row);
     }
 
     /**

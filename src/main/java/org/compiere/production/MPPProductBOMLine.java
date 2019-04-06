@@ -10,7 +10,6 @@ import org.idempiere.common.util.Env;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
@@ -37,10 +36,9 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      *
      * @param ctx                context
      * @param PP_Product_BOMLine BOM line to load
-     * @param Transaction        Line
      */
-    public MPPProductBOMLine(Properties ctx, int PP_Product_BOMLine) {
-        super(ctx, PP_Product_BOMLine);
+    public MPPProductBOMLine(int PP_Product_BOMLine) {
+        super(PP_Product_BOMLine);
     } //	MPPProductBOMLine
 
     /**
@@ -49,7 +47,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * @param bom parent BOM
      */
     public MPPProductBOMLine(MPPProductBOM bom) {
-        super(bom.getCtx(), 0);
+        super(0);
         if (bom.getId() <= 0) throw new IllegalArgumentException("Header not saved");
         setProductBOMId(bom.getProductBOMId()); // 	parent
     }
@@ -58,20 +56,18 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set record
      */
-    public MPPProductBOMLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPPProductBOMLine(Row row) {
+        super(row);
     } //	 MPPProductBOMLine
 
     /**
      * Calculate Low Level of a Product
      *
-     * @param ID Product
      * @return int low level
      */
     public int getLowLevel() {
-        return new ProductLowLevelCalculator(getCtx()).getLowLevel(getProductId());
+        return new ProductLowLevelCalculator().getLowLevel(getProductId());
     }
 
     @Override
@@ -104,7 +100,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
         if (!success) return false;
 
         int lowlevel = getLowLevel();
-        MProduct product = new MProduct(getCtx(), getProductId());
+        MProduct product = new MProduct(getProductId());
         product.setLowLevel(lowlevel); // update lowlevel
         product.saveEx();
 
@@ -157,7 +153,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * @return UOM precision
      */
     public int getPrecision() {
-        return MUOM.getPrecision(getCtx(), getUOMId());
+        return MUOM.getPrecision(getUOMId());
     }
 
 }

@@ -11,7 +11,6 @@ import org.compiere.product.MPriceList;
 import org.idempiere.common.util.Env;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -39,8 +38,8 @@ public class MProject extends X_C_Project {
      * @param C_Project_ID id
      * @param trxName      transaction
      */
-    public MProject(Properties ctx, int C_Project_ID) {
-        super(ctx, C_Project_ID);
+    public MProject(int C_Project_ID) {
+        super(C_Project_ID);
         if (C_Project_ID == 0) {
             //	setProjectId(0);
             //	setValue (null);
@@ -70,8 +69,8 @@ public class MProject extends X_C_Project {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProject(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProject(Row row) {
+        super(row);
     } //	MProject
 
     /**
@@ -150,7 +149,7 @@ public class MProject extends X_C_Project {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "C_Project_ID=?";
         List<MProjectLine> list =
-                new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
+                new Query(I_C_ProjectLine.Table_Name, whereClause)
                         .setParameters(getProjectId())
                         .setOrderBy("Line")
                         .list();
@@ -169,7 +168,7 @@ public class MProject extends X_C_Project {
     public MProjectLine[] getPhaseLines(int phase) {
         final String whereClause = "C_Project_ID=? and C_ProjectPhase_ID=?";
         List<MProjectLine> list =
-                new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
+                new Query(I_C_ProjectLine.Table_Name, whereClause)
                         .setParameters(getProjectId(), phase)
                         .setOrderBy("Line")
                         .list();
@@ -188,7 +187,7 @@ public class MProject extends X_C_Project {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         String whereClause = "C_Project_ID=?";
         List<MProjectIssue> list =
-                new Query(getCtx(), I_C_ProjectIssue.Table_Name, whereClause)
+                new Query(I_C_ProjectIssue.Table_Name, whereClause)
                         .setParameters(getProjectId())
                         .setOrderBy("Line")
                         .list();
@@ -207,7 +206,7 @@ public class MProject extends X_C_Project {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         String whereClause = "C_Project_ID=?";
         List<MProjectPhase> list =
-                new Query(getCtx(), I_C_ProjectPhase.Table_Name, whereClause)
+                new Query(I_C_ProjectPhase.Table_Name, whereClause)
                         .setParameters(getProjectId())
                         .setOrderBy("SeqNo")
                         .list();
@@ -245,7 +244,7 @@ public class MProject extends X_C_Project {
             if ((fromLines[i].getProjectPhaseId() != 0) || (fromLines[i].getProjectTaskId() != 0))
                 continue;
 
-            MProjectLine line = new MProjectLine(getCtx(), 0);
+            MProjectLine line = new MProjectLine(0);
             copyValues(fromLines[i], line, getClientId(), getOrgId());
             line.setProjectId(getProjectId());
             line.setInvoicedAmt(Env.ZERO);
@@ -294,7 +293,7 @@ public class MProject extends X_C_Project {
                 if (log.isLoggable(Level.INFO))
                     log.info("Phase already exists here, ignored - " + fromPhases[i]);
             } else {
-                MProjectPhase toPhase = new MProjectPhase(getCtx(), 0);
+                MProjectPhase toPhase = new MProjectPhase(0);
                 copyValues(fromPhases[i], toPhase, getClientId(), getOrgId());
                 toPhase.setProjectId(getProjectId());
                 toPhase.setOrderId(0);
@@ -360,7 +359,7 @@ public class MProject extends X_C_Project {
 
         //	Set Currency
         if (isValueChanged("M_PriceList_Version_ID") && getPriceListVersionId() != 0) {
-            MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+            MPriceList pl = MPriceList.get(getPriceListId());
             if (pl != null && pl.getId() != 0) setCurrencyId(pl.getCurrencyId());
         }
 
@@ -384,7 +383,7 @@ public class MProject extends X_C_Project {
 
         //	Value/Name change
         if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
-            MAccount.updateValueDescription(getCtx(), "C_Project_ID=" + getProjectId());
+            MAccount.updateValueDescription("C_Project_ID=" + getProjectId());
 
         return success;
     } //	afterSave

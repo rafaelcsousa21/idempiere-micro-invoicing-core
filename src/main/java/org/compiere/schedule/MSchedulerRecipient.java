@@ -2,8 +2,6 @@ package org.compiere.schedule;
 
 import kotliquery.Row;
 
-import java.util.Properties;
-
 /**
  * Scheduler Recipient Model
  *
@@ -22,8 +20,8 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
      * @param ctx                      context
      * @param AD_SchedulerRecipient_ID id
      */
-    public MSchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
-        super(ctx, AD_SchedulerRecipient_ID);
+    public MSchedulerRecipient(int AD_SchedulerRecipient_ID) {
+        super(AD_SchedulerRecipient_ID);
     } //	MSchedulerRecipient
 
     /**
@@ -31,7 +29,7 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
      *
      * @param ctx context
      */
-    public MSchedulerRecipient(Properties ctx, Row row) {
-        super(ctx, row);
+    public MSchedulerRecipient(Row row) {
+        super(row);
     } //	MSchedulerRecipient
 } //	MSchedulerRecipient

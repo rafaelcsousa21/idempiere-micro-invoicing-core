@@ -124,7 +124,7 @@ public class MQuery implements Serializable {
      * @param AD_Table_ID Table_ID
      */
     public MQuery(int AD_Table_ID) { // 	Use Client Context as r/o
-        m_TableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
+        m_TableName = MTable.getDbTableName(AD_Table_ID);
     } //	MQuery
 
     /**
@@ -410,12 +410,12 @@ class Restriction implements Serializable {
         // verify if is a virtual column, do not prefix tableName if this is a virtualColumn
         boolean virtualColumn = false;
         if (tableName != null && tableName.length() > 0) {
-            MTable table = MTable.get(Env.getCtx(), tableName);
+            MTable table = MTable.get(tableName);
             if (table != null) {
                 for (MColumn col : table.getColumns(false)) {
                     String colSQL = col.getColumnSQL();
                     if (colSQL != null && colSQL.contains("@"))
-                        colSQL = Env.parseContext(Env.getCtx(), -1, colSQL, false, true);
+                        colSQL = Env.parseContext(-1, colSQL, false, true);
                     if (ColumnName.equals(colSQL)) {
                         virtualColumn = true;
                         break;

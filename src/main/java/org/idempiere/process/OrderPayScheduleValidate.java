@@ -15,7 +15,6 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -45,11 +44,11 @@ public class OrderPayScheduleValidate extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("C_OrderPaySchedule_ID=" + getRecordId());
         MOrderPaySchedule[] schedule =
-                MOrderPaySchedule.getOrderPaySchedule(getCtx(), 0, getRecordId());
+                MOrderPaySchedule.getOrderPaySchedule(0, getRecordId());
         if (schedule.length == 0)
             throw new IllegalArgumentException("OrderPayScheduleValidate - No Schedule");
         //	Get Order
-        MOrder order = new MOrder(getCtx(), schedule[0].getOrderId());
+        MOrder order = new MOrder(schedule[0].getOrderId());
         if (order.getId() == 0)
             throw new IllegalArgumentException("OrderPayScheduleValidate - No Order");
         //
@@ -77,6 +76,6 @@ public class OrderPayScheduleValidate extends SvrProcess {
                             .append(total)
                             .append("  - @Difference@ = ")
                             .append(order.getGrandTotal().subtract(total));
-        return Msg.parseTranslation(getCtx(), msg.toString());
+        return Msg.parseTranslation(msg.toString());
     } //	doIt
 } //	OrderPayScheduleValidate

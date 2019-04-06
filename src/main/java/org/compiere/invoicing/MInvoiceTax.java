@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -52,10 +51,9 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      *
      * @param ctx     context
      * @param ignored ignored
-     * @param trxName transaction
      */
-    public MInvoiceTax(Properties ctx, int ignored) {
-        super(ctx, 0);
+    public MInvoiceTax(int ignored) {
+        super(0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         setTaxAmt(Env.ZERO);
         setTaxBaseAmt(Env.ZERO);
@@ -65,12 +63,10 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     /**
      * Load Constructor. Set Precision and TaxIncluded for tax calculations!
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInvoiceTax(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInvoiceTax(Row row) {
+        super(row);
     } //	MInvoiceTax
 
     /**
@@ -79,7 +75,6 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @param line      invoice line
      * @param precision currency precision
      * @param oldTax    if true old tax is returned
-     * @param trxName   transaction name
      * @return existing or new tax
      */
     public static MInvoiceTax get(
@@ -94,7 +89,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         if (isOldTax) {
             Object old = ((org.idempiere.orm.PO) line).getValueOld(MInvoiceLine.COLUMNNAME_C_Tax_ID);
             if (old == null) return null;
-            C_Tax_ID = ((Integer) old).intValue();
+            C_Tax_ID = (Integer) old;
         }
         if (C_Tax_ID == 0) {
             if (!line.isDescription()) s_log.warning("C_Tax_ID=0");
@@ -102,7 +97,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         }
 
         retValue =
-                new Query(line.getCtx(), Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
+                new Query(Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
                         .setParameters(line.getInvoiceId(), C_Tax_ID)
                         .firstOnly();
         if (retValue != null) {
@@ -117,7 +112,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         }
 
         //	Create New
-        retValue = new MInvoiceTax(line.getCtx(), 0);
+        retValue = new MInvoiceTax(0);
         retValue.setClientOrg(line);
         retValue.setInvoiceId(line.getInvoiceId());
         retValue.setTaxId(line.getTaxId());
@@ -134,7 +129,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      */
     private int getPrecision() {
         if (m_precision == null) return 2;
-        return m_precision.intValue();
+        return m_precision;
     } //	getPrecision
 
     /**
@@ -143,7 +138,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @param precision The precision to set.
      */
     protected void setPrecision(int precision) {
-        m_precision = new Integer(precision);
+        m_precision = precision;
     } //	setPrecision
 
     /**
@@ -152,7 +147,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @return tax
      */
     public I_C_Tax getTax() {
-        if (m_tax == null) m_tax = MTax.get(getCtx(), getTaxId());
+        if (m_tax == null) m_tax = MTax.get(getTaxId());
         return m_tax;
     } //	getTax
 
@@ -174,8 +169,8 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
                         + "FROM C_InvoiceLine il"
                         + " INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) "
                         + "WHERE il.C_Invoice_ID=? AND il.C_Tax_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getInvoiceId());
@@ -203,10 +198,6 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
             }
         } catch (SQLException e) {
             throw new DBException(e, sql);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         //	Calculate Tax
@@ -226,17 +217,15 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MInvoiceTax[");
-        sb.append("C_Invoice_ID=")
-                .append(getInvoiceId())
-                .append(",C_Tax_ID=")
-                .append(getTaxId())
-                .append(", Base=")
-                .append(getTaxBaseAmt())
-                .append(",Tax=")
-                .append(getTaxAmt())
-                .append("]");
-        return sb.toString();
+        return "MInvoiceTax[" + "C_Invoice_ID=" +
+                getInvoiceId() +
+                ",C_Tax_ID=" +
+                getTaxId() +
+                ", Base=" +
+                getTaxBaseAmt() +
+                ",Tax=" +
+                getTaxAmt() +
+                "]";
     } //	toString
 
     protected void setClientOrg(I_C_Invoice po) {

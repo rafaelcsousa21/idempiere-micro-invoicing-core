@@ -5,11 +5,9 @@ import org.compiere.bank.X_C_BankAccount;
 import org.compiere.bo.X_C_Currency;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
-import org.idempiere.common.util.Env;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 public class MBankStatementLoader extends X_C_BankStatementLoader {
@@ -50,8 +48,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
      * @param C_BankStatementLoader_ID loader to use
      * @param trxName                  transaction
      */
-    public MBankStatementLoader(Properties ctx, int C_BankStatementLoader_ID) {
-        super(ctx, C_BankStatementLoader_ID);
+    public MBankStatementLoader(int C_BankStatementLoader_ID) {
+        super(C_BankStatementLoader_ID);
         init(null);
     } //	MBankStatementLoader
 
@@ -64,8 +62,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
      * @param trxName                  transaction
      */
     public MBankStatementLoader(
-            Properties ctx, int C_BankStatementLoader_ID, String fileName) {
-        super(ctx, C_BankStatementLoader_ID);
+            int C_BankStatementLoader_ID, String fileName) {
+        super(C_BankStatementLoader_ID);
         init(fileName);
     } //	MBankStatementLoader
 
@@ -74,8 +72,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
      *
      * @param ctx Current context
      */
-    public MBankStatementLoader(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankStatementLoader(Row row) {
+        super(row);
         init(null);
     } //	MBankStatementLoader
 
@@ -146,10 +144,10 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
             return result;
         }
         // Initialize lookup lists
-        MTable table = MTable.get(Env.getCtx(), X_C_BankAccount.Table_ID);
+        MTable table = MTable.get(X_C_BankAccount.Table_ID);
         Query query;
 
-        table = MTable.get(Env.getCtx(), X_C_Currency.Table_ID);
+        table = MTable.get(X_C_Currency.Table_ID);
         query = table.createQuery("IsActive='Y'");
         List<X_C_Currency> currencyList = query.list();
         currencyMap = new HashMap<String, Integer>();

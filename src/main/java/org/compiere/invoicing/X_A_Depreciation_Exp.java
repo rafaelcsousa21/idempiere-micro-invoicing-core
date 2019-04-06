@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for A_Depreciation_Exp
@@ -29,15 +28,15 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
     /**
      * Standard Constructor
      */
-    public X_A_Depreciation_Exp(Properties ctx, int A_Depreciation_Exp_ID) {
-        super(ctx, A_Depreciation_Exp_ID);
+    public X_A_Depreciation_Exp(int A_Depreciation_Exp_ID) {
+        super(A_Depreciation_Exp_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_A_Depreciation_Exp(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_A_Depreciation_Exp(Row row) {
+        super(row);
     }
 
     /**

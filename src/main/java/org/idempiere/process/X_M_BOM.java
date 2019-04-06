@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_BOM;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 public class X_M_BOM extends BasePOName implements I_M_BOM {
 
     /**
@@ -28,16 +26,16 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
     /**
      * Standard Constructor
      */
-    public X_M_BOM(Properties ctx, int M_BOM_ID) {
-        super(ctx, M_BOM_ID);
+    public X_M_BOM(int M_BOM_ID) {
+        super(M_BOM_ID);
     }
 
 
     /**
      * Load Constructor
      */
-    public X_M_BOM(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_BOM(Row row) {
+        super(row);
     }
 
     /**

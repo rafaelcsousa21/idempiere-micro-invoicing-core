@@ -3,7 +3,6 @@ package org.compiere.accounting
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
-import java.util.Properties
 
 /**
  * Get Bank Account Processor
@@ -18,7 +17,6 @@ import java.util.Properties
  * @return Array of BankAccount[0] & PaymentProcessor[1] or null
  */
 fun findBankAccountProcessors(
-    ctx: Properties,
     tender: String,
     CCType: String,
     AD_Client_ID: Int,
@@ -60,7 +58,7 @@ fun findBankAccountProcessors(
     sql.append(" ORDER BY ba.IsDefault DESC ")
 
     val query =
-        queryOf(sql.toString(), listOf(AD_Client_ID, C_Currency_ID, Amt)).map { row -> MBankAccountProcessor(ctx, row) }
+        queryOf(sql.toString(), listOf(AD_Client_ID, C_Currency_ID, Amt)).map { row -> MBankAccountProcessor(row) }
             .asList
     return DB.current.run(query).toTypedArray()
 } //  find

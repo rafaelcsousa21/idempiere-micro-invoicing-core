@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_BankStatement
@@ -77,8 +76,8 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
     /**
      * Standard Constructor
      */
-    public X_C_BankStatement(Properties ctx, int C_BankStatement_ID) {
-        super(ctx, C_BankStatement_ID);
+    public X_C_BankStatement(int C_BankStatement_ID) {
+        super(C_BankStatement_ID);
         /**
          * if (C_BankStatement_ID == 0) { setBankAccountId (0); setBankStatementId (0);
          * setDateAcct (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO
@@ -91,8 +90,8 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
     /**
      * Load Constructor
      */
-    public X_C_BankStatement(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BankStatement(Row row) {
+        super(row);
     }
 
     /**

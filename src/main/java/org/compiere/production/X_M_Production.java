@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Production
@@ -77,15 +76,15 @@ public class X_M_Production extends BasePOName {
     /**
      * Standard Constructor
      */
-    public X_M_Production(Properties ctx, int M_Production_ID) {
-        super(ctx, M_Production_ID);
+    public X_M_Production(int M_Production_ID) {
+        super(M_Production_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Production(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Production(Row row) {
+        super(row);
     }
 
     /**

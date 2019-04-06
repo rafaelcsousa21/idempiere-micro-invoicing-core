@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for R_RequestUpdate
@@ -32,8 +31,8 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
     /**
      * Standard Constructor
      */
-    public X_R_RequestUpdate(Properties ctx, int R_RequestUpdate_ID) {
-        super(ctx, R_RequestUpdate_ID);
+    public X_R_RequestUpdate(int R_RequestUpdate_ID) {
+        super(R_RequestUpdate_ID);
         /**
          * if (R_RequestUpdate_ID == 0) { setConfidentialTypeEntry (null); setRequestId (0);
          * setR_RequestUpdate_ID (0); }
@@ -43,8 +42,8 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
     /**
      * Load Constructor
      */
-    public X_R_RequestUpdate(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestUpdate(Row row) {
+        super(row);
     }
 
     /**

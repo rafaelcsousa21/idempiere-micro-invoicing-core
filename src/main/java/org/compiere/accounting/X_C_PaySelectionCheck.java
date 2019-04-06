@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaySelectionCheck
@@ -45,8 +44,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
     /**
      * Standard Constructor
      */
-    public X_C_PaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
-        super(ctx, C_PaySelectionCheck_ID);
+    public X_C_PaySelectionCheck(int C_PaySelectionCheck_ID) {
+        super(C_PaySelectionCheck_ID);
         /**
          * if (C_PaySelectionCheck_ID == 0) { setBusinessPartnerId (0); setPaySelectionCheck_ID (0);
          * setPaySelectionId (0); setDiscountAmt (Env.ZERO); setIsGeneratedDraft (false); // N
@@ -58,8 +57,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
     /**
      * Load Constructor
      */
-    public X_C_PaySelectionCheck(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaySelectionCheck(Row row) {
+        super(row);
     }
 
     /**
@@ -152,7 +151,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
 
     public org.compiere.model.I_C_PaySelection getPaySelection() throws RuntimeException {
         return (org.compiere.model.I_C_PaySelection)
-                MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
+                MTable.get(org.compiere.model.I_C_PaySelection.Table_Name)
                         .getPO(getPaySelectionId());
     }
 

@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL {
 
@@ -18,15 +17,15 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL {
     /**
      * Standard Constructor
      */
-    public X_T_InvoiceGL(Properties ctx, int T_InvoiceGL_ID) {
-        super(ctx, T_InvoiceGL_ID);
+    public X_T_InvoiceGL(int T_InvoiceGL_ID) {
+        super(T_InvoiceGL_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_T_InvoiceGL(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_T_InvoiceGL(Row row) {
+        super(row);
     }
 
     /**

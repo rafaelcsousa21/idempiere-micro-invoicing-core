@@ -40,7 +40,7 @@ public class RollUpCosts extends SvrProcess {
     }
 
     protected String doIt() throws Exception {
-        client_id = Env.getClientId(getCtx());
+        client_id = Env.getClientId();
         createArray();
         String result = rollUp();
         return result;

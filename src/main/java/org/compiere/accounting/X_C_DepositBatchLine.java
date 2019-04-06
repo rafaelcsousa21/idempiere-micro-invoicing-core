@@ -5,7 +5,6 @@ import org.compiere.model.I_C_DepositBatchLine;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_DepositBatchLine
@@ -23,15 +22,15 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
     /**
      * Standard Constructor
      */
-    public X_C_DepositBatchLine(Properties ctx, int C_DepositBatchLine_ID) {
-        super(ctx, C_DepositBatchLine_ID);
+    public X_C_DepositBatchLine(int C_DepositBatchLine_ID) {
+        super(C_DepositBatchLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_DepositBatchLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_DepositBatchLine(Row row) {
+        super(row);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.idempiere.common.util.CCache;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Properties;
 import java.util.logging.Level;
 
 public class MInvoiceSchedule extends X_C_InvoiceSchedule {
@@ -27,8 +26,8 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      * @param ctx                  context
      * @param C_InvoiceSchedule_ID id
      */
-    public MInvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
-        super(ctx, C_InvoiceSchedule_ID);
+    public MInvoiceSchedule(int C_InvoiceSchedule_ID) {
+        super(C_InvoiceSchedule_ID);
     } //	MInvoiceSchedule
 
     /**
@@ -36,8 +35,8 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      *
      * @param ctx context
      */
-    public MInvoiceSchedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInvoiceSchedule(Row row) {
+        super(row);
     } //	MInvoiceSchedule
 
     /**
@@ -47,11 +46,11 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      * @param C_InvoiceSchedule_ID id
      * @return MInvoiceSchedule
      */
-    public static MInvoiceSchedule get(Properties ctx, int C_InvoiceSchedule_ID) {
+    public static MInvoiceSchedule get(int C_InvoiceSchedule_ID) {
         Integer key = C_InvoiceSchedule_ID;
         MInvoiceSchedule retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MInvoiceSchedule(ctx, C_InvoiceSchedule_ID);
+        retValue = new MInvoiceSchedule(C_InvoiceSchedule_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

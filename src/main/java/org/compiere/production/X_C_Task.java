@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Task
@@ -24,15 +23,15 @@ public class X_C_Task extends BasePOName implements I_C_Task {
     /**
      * Standard Constructor
      */
-    public X_C_Task(Properties ctx, int C_Task_ID) {
-        super(ctx, C_Task_ID);
+    public X_C_Task(int C_Task_ID) {
+        super(C_Task_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Task(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Task(Row row) {
+        super(row);
     }
 
     /**

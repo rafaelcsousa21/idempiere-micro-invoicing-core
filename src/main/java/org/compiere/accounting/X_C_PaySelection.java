@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaySelection
@@ -24,8 +23,8 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
     /**
      * Standard Constructor
      */
-    public X_C_PaySelection(Properties ctx, int C_PaySelection_ID) {
-        super(ctx, C_PaySelection_ID);
+    public X_C_PaySelection(int C_PaySelection_ID) {
+        super(C_PaySelection_ID);
         /**
          * if (C_PaySelection_ID == 0) { setBankAccountId (0); setPaySelectionId (0);
          * setIsApproved (false); setName (null); // @#Date@ setPayDate (new Timestamp(
@@ -37,8 +36,8 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
     /**
      * Load Constructor
      */
-    public X_C_PaySelection(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaySelection(Row row) {
+        super(row);
     }
 
     /**

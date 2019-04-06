@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.crm.MUser;
+import org.compiere.crm.MUserKt;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -20,7 +21,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -58,8 +58,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      * @param ctx              context
      * @param S_TimeExpense_ID id
      */
-    public MTimeExpense(Properties ctx, int S_TimeExpense_ID) {
-        super(ctx, S_TimeExpense_ID);
+    public MTimeExpense(int S_TimeExpense_ID) {
+        super(S_TimeExpense_ID);
         if (S_TimeExpense_ID == 0) {
             //	setBusinessPartnerId (0);
             setDateReport(new Timestamp(System.currentTimeMillis()));
@@ -77,8 +77,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @param ctx context
      */
-    public MTimeExpense(Properties ctx, Row row) {
-        super(ctx, row);
+    public MTimeExpense(Row row) {
+        super(row);
     } //	MTimeExpense
 
     /**
@@ -92,7 +92,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             return m_lines;
         }
         //
-        m_lines = MBaseTimeExpenseKt.getBaseExpenseLines(getCtx(), getTimeExpenseId(), getCurrencyId());
+        m_lines = MBaseTimeExpenseKt.getBaseExpenseLines(getTimeExpenseId(), getCurrencyId());
         return m_lines;
     } //	getLines
 
@@ -150,7 +150,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement(getCtx(), "S_TimeExpense_ID") + " " + getDocumentNo();
+        return Msg.getElement("S_TimeExpense_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -201,7 +201,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
 
         //	Std Period open? - AP (Reimbursement) Invoice
         if (!MPeriod.isOpen(
-                getCtx(), getDateReport(), MDocType.DOCBASETYPE_APInvoice, getOrgId())) {
+                getDateReport(), MDocType.DOCBASETYPE_APInvoice, getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
@@ -412,7 +412,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "ApprovalAmt"))
+                .append(Msg.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")
@@ -442,7 +442,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     public int getDocumentUserId() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
         if (getBusinessPartnerId() != 0) {
-            MUser[] users = MUser.getOfBPartner(getCtx(), getBusinessPartnerId());
+            MUser[] users = MUserKt.getBusinessPartnerUsers(getBusinessPartnerId());
             if (users.length > 0) {
                 m_AD_User_ID = users[0].getUserId();
                 return m_AD_User_ID;
@@ -457,7 +457,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      * @return C_Currency_ID
      */
     public int getCurrencyId() {
-        MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+        MPriceList pl = MPriceList.get(getPriceListId());
         return pl.getCurrencyId();
     } //	getCurrencyId
 

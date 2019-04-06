@@ -25,7 +25,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
         for (I_C_InvoiceLine line : lines) {
             totalLines = totalLines.add(line.getLineNetAmt());
             if (!taxList.contains(line.getTaxId())) {
-                MTax tax = new MTax(invoice.getCtx(), line.getTaxId());
+                MTax tax = new MTax(line.getTaxId());
                 if (tax.getTaxProviderId() != 0) continue;
                 MInvoiceTax iTax =
                         MInvoiceTax.get(
@@ -54,7 +54,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
                     BigDecimal taxAmt =
                             cTax.calculateTax(iTax.getTaxBaseAmt(), false, invoice.getPrecision());
                     //
-                    MInvoiceTax newITax = new MInvoiceTax(invoice.getCtx(), 0);
+                    MInvoiceTax newITax = new MInvoiceTax(0);
                     newITax.setClientOrg(invoice);
                     newITax.setOrgId(invoice.getOrgId());
                     newITax.setInvoiceId(invoice.getInvoiceId());
@@ -80,7 +80,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
 
     @Override
     public boolean updateInvoiceTax(I_C_TaxProvider provider, I_C_InvoiceLine line) {
-        MTax mtax = new MTax(line.getCtx(), line.getTaxId());
+        MTax mtax = new MTax(line.getTaxId());
         if (mtax.getTaxProviderId() == 0) return line.updateInvoiceTax(false);
         return true;
     }
@@ -90,7 +90,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
         if (!newRecord
                 && (line instanceof org.idempiere.orm.PO)
                 && ((org.idempiere.orm.PO) line).isValueChanged(MInvoiceLine.COLUMNNAME_C_Tax_ID)) {
-            MTax mtax = new MTax(line.getCtx(), line.getTaxId());
+            MTax mtax = new MTax(line.getTaxId());
             if (mtax.getTaxProviderId() == 0) {
                 //	Recalculate Tax for old Tax
                 if (!line.updateInvoiceTax(true)) return false;

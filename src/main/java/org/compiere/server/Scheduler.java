@@ -1,7 +1,9 @@
 package org.compiere.server;
 
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.crm.MUser;
+import org.compiere.crm.MUserKt;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.MRole;
 import org.compiere.orm.TimeUtil;
@@ -53,32 +55,31 @@ public class Scheduler extends AdempiereServer {
         m_summary = new StringBuffer(m_model.toString()).append(" - ");
 
         // Prepare a ctx for the report/process - BF [1966880]
-        MClient schedclient = MClient.get(getCtx(), m_model.getClientId());
-        Env.setContext(getCtx(), "#clientId", schedclient.getClientId());
-        Env.setContext(getCtx(), "#AD_Language", schedclient.getADLanguage());
-        Env.setContext(getCtx(), "#orgId", m_model.getOrgId());
+        ClientWithAccounting schedclient = MClientKt.getClientWithAccounting(m_model.getClientId());
+        Env.setContext("#clientId", schedclient.getClientId());
+        Env.setContext("#AD_Language", schedclient.getADLanguage());
+        Env.setContext("#orgId", m_model.getOrgId());
         if (m_model.getOrgId() != 0) {
-            MOrgInfo schedorg = MOrgInfo.get(getCtx(), m_model.getOrgId());
+            MOrgInfo schedorg = MOrgInfo.get(m_model.getOrgId());
             if (schedorg.getWarehouseId() > 0)
-                Env.setContext(getCtx(), "#M_Warehouse_ID", schedorg.getWarehouseId());
+                Env.setContext("#M_Warehouse_ID", schedorg.getWarehouseId());
         }
-        Env.setContext(getCtx(), "#AD_User_ID", getUserId());
-        Env.setContext(getCtx(), "#SalesRep_ID", getUserId());
+        Env.setContext("#AD_User_ID", getUserId());
+        Env.setContext("#SalesRep_ID", getUserId());
         // TODO: It can be convenient to add  AD_Scheduler.AD_Role_ID
-        MUser scheduser = MUser.get(getCtx(), getUserId());
+        MUser scheduser = MUserKt.getUser(getUserId());
         MRole[] schedroles = scheduser.getRoles(m_model.getOrgId());
         if (schedroles.length > 0) {
             Env.setContext(
-                    getCtx(),
                     "#AD_Role_ID",
                     schedroles[0].getRoleId()); // first role, ordered by AD_Role_ID
         }
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat4Timestamp = new SimpleDateFormat("yyyy-MM-dd");
         Env.setContext(
-                getCtx(), "#Date", dateFormat4Timestamp.format(ts) + " 00:00:00"); //  JDBC format
+                "#Date", dateFormat4Timestamp.format(ts) + " 00:00:00"); //  JDBC format
 
-        MProcess process = new MProcess(getCtx(), m_model.getProcessId());
+        MProcess process = new MProcess(m_model.getProcessId());
         try {
             m_summary.append(runProcess(process));
         } catch (Throwable e) {
@@ -265,7 +266,7 @@ public class Scheduler extends AdempiereServer {
         else if (variable.startsWith("@SQL=")) {
             String defStr = "";
             String sql = variable.substring(5); // 	w/o tag
-            sql = Env.parseContext(getCtx(), 0, sql, false, false); // 	replace variables
+            sql = Env.parseContext(0, sql, false, false); // 	replace variables
             if (sql.equals(""))
                 log.log(
                         Level.WARNING,
@@ -301,8 +302,8 @@ public class Scheduler extends AdempiereServer {
             String tail = index < (columnName.length() - 1) ? columnName.substring(index + 1) : null;
             columnName = columnName.substring(0, index);
             //	try Env
-            String env = Env.getContext(getCtx(), columnName);
-            if (env == null || env.length() == 0) env = Env.getContext(getCtx(), columnName);
+            String env = Env.getContext(columnName);
+            if (env == null || env.length() == 0) env = Env.getContext(columnName);
             if (env.length() == 0) {
                 log.warning(
                         sPara.getColumnName() + " - not in environment =" + columnName + "(" + variable + ")");

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_PA_Hierarchy;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Reporting Hierarchy Model
  *
@@ -29,17 +27,17 @@ public class MHierarchy extends X_PA_Hierarchy {
      * @param ctx             context
      * @param PA_Hierarchy_ID id
      */
-    public MHierarchy(Properties ctx, int PA_Hierarchy_ID) {
-        super(ctx, PA_Hierarchy_ID);
+    public MHierarchy(int PA_Hierarchy_ID) {
+        super(PA_Hierarchy_ID);
     } //	MHierarchy
 
     /**
      * Load Constructor
      *
-     * @param ctx     context
+     * @param ctx context
      */
-    public MHierarchy(Properties ctx, Row row) {
-        super(ctx, row);
+    public MHierarchy(Row row) {
+        super(row);
     } //	MHierarchy
 
     /**
@@ -49,11 +47,11 @@ public class MHierarchy extends X_PA_Hierarchy {
      * @param PA_Hierarchy_ID id
      * @return MHierarchy
      */
-    public static MHierarchy get(Properties ctx, int PA_Hierarchy_ID) {
+    public static MHierarchy get(int PA_Hierarchy_ID) {
         Integer key = PA_Hierarchy_ID;
         MHierarchy retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MHierarchy(ctx, PA_Hierarchy_ID);
+        retValue = new MHierarchy(PA_Hierarchy_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

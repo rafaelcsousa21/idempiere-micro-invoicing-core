@@ -74,7 +74,7 @@ public class BPartnerValidate extends SvrProcess {
             throw new AdempiereUserError("No Business Partner/Group selected");
 
         if (p_C_BP_Group_ID == 0) {
-            MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID);
+            MBPartner bp = new MBPartner(p_C_BPartner_ID);
             if (bp.getId() == 0)
                 throw new AdempiereUserError(
                         "Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
@@ -82,7 +82,7 @@ public class BPartnerValidate extends SvrProcess {
         } else {
             final String whereClause = "C_BP_Group_ID=?";
             List<MBPartner> it =
-                    new Query(getCtx(), I_C_BPartner.Table_Name, whereClause)
+                    new Query(I_C_BPartner.Table_Name, whereClause)
                             .setParameters(p_C_BP_Group_ID)
                             .setOnlyActiveRecords(true)
                             .list();
@@ -111,9 +111,9 @@ public class BPartnerValidate extends SvrProcess {
         bp.saveEx();
         //
         //	if (bp.getSalesOrderCreditUsed().signum() != 0)
-        addLog(0, null, bp.getSalesOrderCreditUsed(), Msg.getElement(getCtx(), "SO_CreditUsed"));
-        addLog(0, null, bp.getTotalOpenBalance(), Msg.getElement(getCtx(), "TotalOpenBalance"));
-        addLog(0, null, bp.getActualLifeTimeValue(), Msg.getElement(getCtx(), "ActualLifeTimeValue"));
+        addLog(0, null, bp.getSalesOrderCreditUsed(), Msg.getElement("SO_CreditUsed"));
+        addLog(0, null, bp.getTotalOpenBalance(), Msg.getElement("TotalOpenBalance"));
+        addLog(0, null, bp.getActualLifeTimeValue(), Msg.getElement("ActualLifeTimeValue"));
         //
     } //	checkBP
 
@@ -125,7 +125,7 @@ public class BPartnerValidate extends SvrProcess {
     private void checkPayments(MBPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getBusinessPartnerId());
+        MPayment[] payments = MPayment.getOfBPartner(bp.getBusinessPartnerId());
         for (int i = 0; i < payments.length; i++) {
             MPayment payment = payments[i];
             if (payment.testAllocation()) {
@@ -138,7 +138,7 @@ public class BPartnerValidate extends SvrProcess {
                     0,
                     null,
                     new BigDecimal(payments.length),
-                    Msg.getElement(getCtx(), "C_Payment_ID") + " - #" + changed);
+                    Msg.getElement("C_Payment_ID") + " - #" + changed);
     } //	checkPayments
 
     /**
@@ -149,7 +149,7 @@ public class BPartnerValidate extends SvrProcess {
     private void checkInvoices(MBPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getBusinessPartnerId());
+        MInvoice[] invoices = MInvoice.getOfBPartner(bp.getBusinessPartnerId());
         for (int i = 0; i < invoices.length; i++) {
             MInvoice invoice = invoices[i];
             if (invoice.testAllocation()) {
@@ -162,6 +162,6 @@ public class BPartnerValidate extends SvrProcess {
                     0,
                     null,
                     new BigDecimal(invoices.length),
-                    Msg.getElement(getCtx(), "C_Invoice_ID") + " - #" + changed);
+                    Msg.getElement("C_Invoice_ID") + " - #" + changed);
     } //	checkInvoices
 } //	BPartnerValidate

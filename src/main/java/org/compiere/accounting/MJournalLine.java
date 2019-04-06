@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_GL_JournalLine;
@@ -10,7 +10,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -49,12 +48,10 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     /**
      * Standard Constructor
      *
-     * @param ctx               context
      * @param GL_JournalLine_ID id
-     * @param trxName           transaction
      */
-    public MJournalLine(Properties ctx, int GL_JournalLine_ID) {
-        super(ctx, GL_JournalLine_ID);
+    public MJournalLine(int GL_JournalLine_ID) {
+        super(GL_JournalLine_ID);
         if (GL_JournalLine_ID == 0) {
             setLine(0);
             setAmtAcctCr(Env.ZERO);
@@ -69,11 +66,9 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MJournalLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MJournalLine(Row row) {
+        super(row);
     } //	MJournalLine
 
     /**
@@ -82,7 +77,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * @param parent journal
      */
     public MJournalLine(MJournal parent) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setGLJournalId(parent.getGLJournalId());
         setCurrencyId(parent.getCurrencyId());
@@ -96,7 +91,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * @return parent
      */
     public MJournal getParent() {
-        if (m_parent == null) m_parent = new MJournal(getCtx(), getGLJournalId());
+        if (m_parent == null) m_parent = new MJournal(getGLJournalId());
         return m_parent;
     } //	getParent
 
@@ -121,7 +116,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public void setCurrencyId(int C_Currency_ID) {
         if (C_Currency_ID == 0) return;
         super.setCurrencyId(C_Currency_ID);
-        m_precision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
+        m_precision = MCurrencyKt.getCurrencyStdPrecision(C_Currency_ID);
     } //	setCurrencyId
 
     /**
@@ -213,7 +208,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     public MAccount getAccount_Combi() {
         if (m_account == null && getValidAccountCombinationId() != 0)
-            m_account = new MAccount(getCtx(), getValidAccountCombinationId());
+            m_account = new MAccount(getValidAccountCombinationId());
         return m_account;
     } //	getValidCombination
 
@@ -226,7 +221,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         if (m_accountElement == null) {
             MAccount vc = getAccount_Combi();
             if (vc != null && vc.getAccountId() != 0)
-                m_accountElement = new MElementValue(getCtx(), vc.getAccountId());
+                m_accountElement = new MElementValue(vc.getAccountId());
         }
         return m_accountElement;
     } //	getAccountElement
@@ -253,7 +248,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "GL_JournalLine"));
+            log.saveError("ParentComplete", Msg.translate("GL_JournalLine"));
             return false;
         }
         // idempiere 344 - nmicoud
@@ -261,7 +256,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         if (getValidAccountCombinationId() <= 0) {
             log.saveError(
                     "SaveError",
-                    Msg.parseTranslation(getCtx(), "@FillMandatory@" + "@C_ValidCombination_ID@"));
+                    Msg.parseTranslation("@FillMandatory@" + "@C_ValidCombination_ID@"));
             return false;
         }
         fillDimensionsFromCombination();
@@ -364,7 +359,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 || isValueChanged("C_Activity_ID")
                 || isValueChanged("User1_ID")
                 || isValueChanged("User2_ID")))) {
-            MJournal gl = new MJournal(getCtx(), getGLJournalId());
+            MJournal gl = new MJournal(getGLJournalId());
 
             // Validate all mandatory combinations are set
             MAcctSchema as = (MAcctSchema) getParent().getAccountingSchema();
@@ -399,13 +394,12 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 log.saveError(
                         "Error",
                         Msg.parseTranslation(
-                                getCtx(), "@IsMandatory@: " + errorFields.substring(0, errorFields.length() - 2)));
+                                "@IsMandatory@: " + errorFields.substring(0, errorFields.length() - 2)));
                 return false;
             }
 
             MAccount acct =
                     MAccount.get(
-                            getCtx(),
                             getClientId(),
                             getOrgId(),
                             gl.getAccountingSchemaId(),
@@ -442,7 +436,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     private void fillDimensionsFromCombination() {
         if (getValidAccountCombinationId() > 0) {
-            MAccount combi = new MAccount(getCtx(), getValidAccountCombinationId());
+            MAccount combi = new MAccount(getValidAccountCombinationId());
             setAccountId(combi.getAccountId() > 0 ? combi.getAccountId() : 0);
             setSubAccountId(combi.getSubAccountId() > 0 ? combi.getSubAccountId() : 0);
             setProductId(combi.getProductId() > 0 ? combi.getProductId() : 0);

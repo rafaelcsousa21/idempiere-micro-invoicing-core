@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Type;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for A_Asset_Type
  *
@@ -22,15 +20,15 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type {
     /**
      * Standard Constructor
      */
-    public X_A_Asset_Type(Properties ctx, int A_Asset_Type_ID) {
-        super(ctx, A_Asset_Type_ID);
+    public X_A_Asset_Type(int A_Asset_Type_ID) {
+        super(A_Asset_Type_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_A_Asset_Type(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_A_Asset_Type(Row row) {
+        super(row);
     }
 
     /**

@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class MMovementLineConfirm extends X_M_MovementLineConfirm {
 
@@ -20,14 +19,11 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     /**
      * Standard Constructor
      *
-     * @param ctx                      ctx
      * @param M_MovementLineConfirm_ID id
      */
-    public MMovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
-        super(ctx, M_MovementLineConfirm_ID);
+    public MMovementLineConfirm(int M_MovementLineConfirm_ID) {
+        super(M_MovementLineConfirm_ID);
         if (M_MovementLineConfirm_ID == 0) {
-            //	setMovementConfirmId (0);	Parent
-            //	setMovementLine_ID (0);
             setConfirmedQty(Env.ZERO);
             setDifferenceQty(Env.ZERO);
             setScrappedQty(Env.ZERO);
@@ -38,11 +34,9 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
 
     /**
      * M_MovementLineConfirm
-     *
-     * @param ctx context
      */
-    public MMovementLineConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public MMovementLineConfirm(Row row) {
+        super(row);
     } //	M_MovementLineConfirm
 
     /**
@@ -51,7 +45,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      * @param parent parent
      */
     public MMovementLineConfirm(MMovementConfirm parent) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setMovementConfirmId(parent.getMovementConfirmId());
     } //	MMovementLineConfirm
@@ -74,7 +68,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      * @return line
      */
     public MMovementLine getLine() {
-        if (m_line == null) m_line = new MMovementLine(getCtx(), getMovementLineId());
+        if (m_line == null) m_line = new MMovementLine(getMovementLineId());
         return m_line;
     } //	getLine
 

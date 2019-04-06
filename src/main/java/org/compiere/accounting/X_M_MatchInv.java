@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_MatchInv
@@ -25,8 +24,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     /**
      * Standard Constructor
      */
-    public X_M_MatchInv(Properties ctx, int M_MatchInv_ID) {
-        super(ctx, M_MatchInv_ID);
+    public X_M_MatchInv(int M_MatchInv_ID) {
+        super(M_MatchInv_ID);
         /*
          * if (M_MatchInv_ID == 0) { setInvoiceLineId (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -38,8 +37,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     /**
      * Load Constructor
      */
-    public X_M_MatchInv(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_MatchInv(Row row) {
+        super(row);
     }
 
     /**

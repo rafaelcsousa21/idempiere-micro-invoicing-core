@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for Fact_Acct
@@ -41,15 +40,15 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
     /**
      * Standard Constructor
      */
-    public X_Fact_Acct(Properties ctx, int Fact_Acct_ID) {
-        super(ctx, Fact_Acct_ID);
+    public X_Fact_Acct(int Fact_Acct_ID) {
+        super(Fact_Acct_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_Fact_Acct(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_Fact_Acct(Row row) {
+        super(row);
     }
 
     /**

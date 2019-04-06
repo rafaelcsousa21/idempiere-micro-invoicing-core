@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_CostQueue
@@ -24,15 +23,15 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue {
     /**
      * Standard Constructor
      */
-    public X_M_CostQueue(Properties ctx, int M_CostQueue_ID) {
-        super(ctx, M_CostQueue_ID);
+    public X_M_CostQueue(int M_CostQueue_ID) {
+        super(M_CostQueue_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostQueue(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_CostQueue(Row row) {
+        super(row);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for PA_Goal
@@ -77,15 +76,15 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
     /**
      * Standard Constructor
      */
-    public X_PA_Goal(Properties ctx, int PA_Goal_ID) {
-        super(ctx, PA_Goal_ID);
+    public X_PA_Goal(int PA_Goal_ID) {
+        super(PA_Goal_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_Goal(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_Goal(Row row) {
+        super(row);
     }
 
     /**

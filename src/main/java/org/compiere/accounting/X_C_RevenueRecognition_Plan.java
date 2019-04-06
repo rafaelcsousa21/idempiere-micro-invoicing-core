@@ -5,7 +5,6 @@ import org.compiere.model.I_C_RevenueRecognition_Plan;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_RevenueRecognition_Plan
@@ -25,15 +24,15 @@ public class X_C_RevenueRecognition_Plan extends PO
      * Standard Constructor
      */
     public X_C_RevenueRecognition_Plan(
-            Properties ctx, int C_RevenueRecognition_Plan_ID) {
-        super(ctx, C_RevenueRecognition_Plan_ID);
+            int C_RevenueRecognition_Plan_ID) {
+        super(C_RevenueRecognition_Plan_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_RevenueRecognition_Plan(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_RevenueRecognition_Plan(Row row) {
+        super(row);
     }
 
     /**

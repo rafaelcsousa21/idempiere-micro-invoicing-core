@@ -1,15 +1,17 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MCost;
 import org.compiere.accounting.MCostElement;
 import org.compiere.accounting.MProduct;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.HasName;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.orm.MDocType;
@@ -77,7 +79,7 @@ public class CostUpdate extends SvrProcess {
     /**
      * Map of Cost Elements
      */
-    private HashMap<String, MCostElement> m_ces = new HashMap<String, MCostElement>();
+    private HashMap<String, MCostElement> m_ces = new HashMap<>();
 
     private MDocType m_docType = null;
 
@@ -138,7 +140,7 @@ public class CostUpdate extends SvrProcess {
         }
         if (!Util.isEmpty(p_SetStandardCostTo)) {
             if (p_C_DocType_ID <= 0) throw new AdempiereUserError("@FillMandatory@  @C_DocType_ID@");
-            else m_docType = MDocType.get(getCtx(), p_C_DocType_ID);
+            else m_docType = MDocType.get(p_C_DocType_ID);
         }
         //	PLV required
         if (p_M_PriceList_Version_ID == 0
@@ -154,12 +156,12 @@ public class CostUpdate extends SvrProcess {
                     "@NotFound@ @M_CostElement_ID@ (Standard) " + p_SetStandardCostTo);
 
         //	Prepare
-        MClient client = MClient.get(getCtx());
+        ClientWithAccounting client = MClientKt.getClientWithAccounting();
         m_ce = MCostElement.getMaterialCostElement(client, MAcctSchema.COSTINGMETHOD_StandardCosting);
         if (m_ce.getId() == 0) throw new AdempiereUserError("@NotFound@ @M_CostElement_ID@ (StdCost)");
         if (log.isLoggable(Level.CONFIG)) log.config(m_ce.toString());
-        m_ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getClientId());
-        for (int i = 0; i < m_ass.length; i++) createNew(m_ass[i]);
+        m_ass = MAcctSchema.getClientAcctSchema(client.getClientId());
+        for (MAcctSchema m_ass1 : m_ass) createNew(m_ass1);
 
         //	Update Cost
         int counter = update();
@@ -208,7 +210,7 @@ public class CostUpdate extends SvrProcess {
         int counter = 0;
 
         MProduct[] items =
-                BaseCostUpdateKt.getProductsToCreateNewStandardCosts(getCtx(), as, p_M_Product_Category_ID, m_ce.getCostElementId());
+                BaseCostUpdateKt.getProductsToCreateNewStandardCosts(as, p_M_Product_Category_ID, m_ce.getCostElementId());
 
         for (MProduct product : items) {
             if (createNew(product, as)) counter++;
@@ -243,19 +245,19 @@ public class CostUpdate extends SvrProcess {
             sql +=
                     " AND EXISTS (SELECT * FROM M_Product p "
                             + "WHERE c.M_Product_ID=p.M_Product_ID AND p.M_Product_Category_ID=?)";
-        List<MInventoryLine> lines = new ArrayList<MInventoryLine>();
-        MClient client = MClient.get(getCtx());
-        MAcctSchema primarySchema = client.getAcctSchema();
-        MInventory inventoryDoc = null;
+        List<MInventoryLine> lines = new ArrayList<>();
+        ClientWithAccounting client = MClientKt.getClientWithAccounting();
+        I_C_AcctSchema primarySchema = client.getAcctSchema();
+        MInventory inventoryDoc;
 
-        MCost[] items = BaseCostUpdateKt.getCostsToUpdate(getCtx(), sql, m_ce.getCostElementId(), p_M_Product_Category_ID);
+        MCost[] items = BaseCostUpdateKt.getCostsToUpdate(sql, m_ce.getCostElementId(), p_M_Product_Category_ID);
 
         for (MCost cost : items) {
-            for (int i = 0; i < m_ass.length; i++) {
+            for (MAcctSchema m_ass1 : m_ass) {
                 //	Update Costs only for default Cost Type
-                if (m_ass[i].getAccountingSchemaId() == cost.getAccountingSchemaId()
-                        && m_ass[i].getCostTypeId() == cost.getCostTypeId()) {
-                    if (m_ass[i].getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
+                if (m_ass1.getAccountingSchemaId() == cost.getAccountingSchemaId()
+                        && m_ass1.getCostTypeId() == cost.getCostTypeId()) {
+                    if (m_ass1.getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
                         if (update(cost, lines)) counter++;
                     } else {
                         if (update(cost, null)) counter++;
@@ -264,7 +266,7 @@ public class CostUpdate extends SvrProcess {
             }
         }
         if (lines.size() > 0) {
-            inventoryDoc = new MInventory(getCtx(), 0);
+            inventoryDoc = new MInventory(0);
             inventoryDoc.setDocumentTypeId(p_C_DocType_ID);
             inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
             inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
@@ -277,17 +279,17 @@ public class CostUpdate extends SvrProcess {
 
             if (!DocumentEngine.processIt(inventoryDoc, DocAction.Companion.getACTION_Complete())) {
                 StringBuilder msg = new StringBuilder();
-                msg.append(Msg.getMsg(getCtx(), "ProcessFailed")).append(": ");
-                if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name)) msg.append(m_docType.getName());
-                else msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()));
+                msg.append(Msg.getMsg("ProcessFailed")).append(": ");
+                if (Env.isBaseLanguage(I_C_DocType.Table_Name)) msg.append(m_docType.getName());
+                else msg.append(m_docType.get_Translation(HasName.COLUMNNAME_Name));
                 throw new AdempiereUserError(msg.toString());
             } else {
                 inventoryDoc.saveEx();
                 StringBuilder msg = new StringBuilder();
-                if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name))
+                if (Env.isBaseLanguage(I_C_DocType.Table_Name))
                     msg.append(m_docType.getName()).append(" ").append(inventoryDoc.getDocumentNo());
                 else
-                    msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()))
+                    msg.append(m_docType.get_Translation(HasName.COLUMNNAME_Name))
                             .append(" ")
                             .append(inventoryDoc.getDocumentNo());
                 addBufferLog(
@@ -323,7 +325,7 @@ public class CostUpdate extends SvrProcess {
                 if (lines != null) {
                     BigDecimal currentCost = cost.getCurrentCostPrice();
                     if (currentCost == null || currentCost.compareTo(costs) != 0) {
-                        MInventoryLine line = new MInventoryLine(getCtx(), 0);
+                        MInventoryLine line = new MInventoryLine(0);
                         line.setProductId(cost.getProductId());
                         line.setCurrentCostPrice(cost.getCurrentCostPrice());
                         line.setNewCostPrice(costs);
@@ -339,7 +341,7 @@ public class CostUpdate extends SvrProcess {
                     if (costs != null && costs.signum() != 0) {
                         BigDecimal currentCost = cost.getCurrentCostPrice();
                         if (currentCost == null || currentCost.compareTo(costs) != 0) {
-                            MInventoryLine line = new MInventoryLine(getCtx(), 0);
+                            MInventoryLine line = new MInventoryLine(0);
                             line.setProductId(cost.getProductId());
                             line.setCurrentCostPrice(cost.getCurrentCostPrice());
                             line.setNewCostPrice(costs);
@@ -374,103 +376,163 @@ public class CostUpdate extends SvrProcess {
         BigDecimal retValue = null;
 
         //	Average Invoice
-        if (to.equals(TO_AverageInvoice)) {
-            MCostElement ce = getCostElement(TO_AverageInvoice);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getCurrentCostPrice();
-        }
-        //	Average Invoice History
-        else if (to.equals(TO_AverageInvoiceHistory)) {
-            MCostElement ce = getCostElement(TO_AverageInvoice);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getHistoryAverage();
-        }
+        switch (to) {
+            case TO_AverageInvoice: {
+                MCostElement ce = getCostElement(TO_AverageInvoice);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
+                MCost xCost =
+                        MCost.get(
+                                cost.getClientId(),
+                                cost.getOrgId(),
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
+                        );
+                if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                break;
+            }
+            //	Average Invoice History
+            case TO_AverageInvoiceHistory: {
+                MCostElement ce = getCostElement(TO_AverageInvoice);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
+                MCost xCost =
+                        MCost.get(
+                                cost.getClientId(),
+                                cost.getOrgId(),
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
+                        );
+                if (xCost != null) retValue = xCost.getHistoryAverage();
+                break;
+            }
 
-        //	Average PO
-        else if (to.equals(TO_AveragePO)) {
-            MCostElement ce = getCostElement(TO_AveragePO);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getCurrentCostPrice();
-        }
-        //	Average PO History
-        else if (to.equals(TO_AveragePOHistory)) {
-            MCostElement ce = getCostElement(TO_AveragePO);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getHistoryAverage();
-        }
+            //	Average PO
+            case TO_AveragePO: {
+                MCostElement ce = getCostElement(TO_AveragePO);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
+                MCost xCost =
+                        MCost.get(
+                                cost.getClientId(),
+                                cost.getOrgId(),
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
+                        );
+                if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                break;
+            }
+            //	Average PO History
+            case TO_AveragePOHistory: {
+                MCostElement ce = getCostElement(TO_AveragePO);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
+                MCost xCost =
+                        MCost.get(
+                                cost.getClientId(),
+                                cost.getOrgId(),
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
+                        );
+                if (xCost != null) retValue = xCost.getHistoryAverage();
+                break;
+            }
 
-        //	FiFo
-        else if (to.equals(TO_FiFo)) {
-            MCostElement ce = getCostElement(TO_FiFo);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_FiFo);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getCurrentCostPrice();
-        }
+            //	FiFo
+            case TO_FiFo: {
+                MCostElement ce = getCostElement(TO_FiFo);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_FiFo);
+                MCost xCost =
+                        MCost.get(
+                                cost.getClientId(),
+                                cost.getOrgId(),
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
+                        );
+                if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                break;
+            }
 
-        //	Future Std Costs
-        else if (to.equals(TO_FutureStandardCost)) retValue = cost.getFutureCostPrice();
+            //	Future Std Costs
+            case TO_FutureStandardCost:
+                retValue = cost.getFutureCostPrice();
+                break;
 
             //	Last Inv Price
-        else if (to.equals(TO_LastInvoicePrice)) {
-            MCostElement ce = getCostElement(TO_LastInvoicePrice);
-            if (ce != null) {
+            case TO_LastInvoicePrice: {
+                MCostElement ce = getCostElement(TO_LastInvoicePrice);
+                if (ce != null) {
+                    MCost xCost =
+                            MCost.get(
+                                    cost.getClientId(),
+                                    cost.getOrgId(),
+                                    cost.getProductId(),
+                                    cost.getCostTypeId(),
+                                    cost.getAccountingSchemaId(),
+                                    ce.getCostElementId(),
+                                    cost.getAttributeSetInstanceId()
+                            );
+                    if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                }
+                if (retValue == null) {
+                    MProduct product = new MProduct(cost.getProductId());
+                    MAcctSchema as = MAcctSchema.get(cost.getAccountingSchemaId());
+                    retValue =
+                            MCost.getLastInvoicePrice(
+                                    product,
+                                    cost.getAttributeSetInstanceId(),
+                                    cost.getOrgId(),
+                                    as.getCurrencyId());
+                }
+                break;
+            }
+
+            //	Last PO Price
+            case TO_LastPOPrice: {
+                MCostElement ce = getCostElement(TO_LastPOPrice);
+                if (ce != null) {
+                    MCost xCost =
+                            MCost.get(
+                                    cost.getClientId(),
+                                    cost.getOrgId(),
+                                    cost.getProductId(),
+                                    cost.getCostTypeId(),
+                                    cost.getAccountingSchemaId(),
+                                    ce.getCostElementId(),
+                                    cost.getAttributeSetInstanceId()
+                            );
+                    if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                }
+                if (retValue == null) {
+                    MProduct product = new MProduct(cost.getProductId());
+                    MAcctSchema as = MAcctSchema.get(cost.getAccountingSchemaId());
+                    retValue =
+                            MCost.getLastPOPrice(
+                                    product,
+                                    cost.getAttributeSetInstanceId(),
+                                    cost.getOrgId(),
+                                    as.getCurrencyId());
+                }
+                break;
+            }
+
+            //	FiFo
+            case TO_LiFo: {
+                MCostElement ce = getCostElement(TO_LiFo);
+                if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_LiFo);
                 MCost xCost =
                         MCost.get(
-                                getCtx(),
                                 cost.getClientId(),
                                 cost.getOrgId(),
                                 cost.getProductId(),
@@ -480,71 +542,19 @@ public class CostUpdate extends SvrProcess {
                                 cost.getAttributeSetInstanceId()
                         );
                 if (xCost != null) retValue = xCost.getCurrentCostPrice();
+                break;
             }
-            if (retValue == null) {
-                MProduct product = new MProduct(getCtx(), cost.getProductId());
-                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getAccountingSchemaId());
-                retValue =
-                        MCost.getLastInvoicePrice(
-                                product,
-                                cost.getAttributeSetInstanceId(),
-                                cost.getOrgId(),
-                                as.getCurrencyId());
-            }
-        }
 
-        //	Last PO Price
-        else if (to.equals(TO_LastPOPrice)) {
-            MCostElement ce = getCostElement(TO_LastPOPrice);
-            if (ce != null) {
-                MCost xCost =
-                        MCost.get(
-                                getCtx(),
-                                cost.getClientId(),
-                                cost.getOrgId(),
-                                cost.getProductId(),
-                                cost.getCostTypeId(),
-                                cost.getAccountingSchemaId(),
-                                ce.getCostElementId(),
-                                cost.getAttributeSetInstanceId()
-                        );
-                if (xCost != null) retValue = xCost.getCurrentCostPrice();
-            }
-            if (retValue == null) {
-                MProduct product = new MProduct(getCtx(), cost.getProductId());
-                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getAccountingSchemaId());
-                retValue =
-                        MCost.getLastPOPrice(
-                                product,
-                                cost.getAttributeSetInstanceId(),
-                                cost.getOrgId(),
-                                as.getCurrencyId());
-            }
-        }
-
-        //	FiFo
-        else if (to.equals(TO_LiFo)) {
-            MCostElement ce = getCostElement(TO_LiFo);
-            if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_LiFo);
-            MCost xCost =
-                    MCost.get(
-                            getCtx(),
-                            cost.getClientId(),
-                            cost.getOrgId(),
-                            cost.getProductId(),
-                            cost.getCostTypeId(),
-                            cost.getAccountingSchemaId(),
-                            ce.getCostElementId(),
-                            cost.getAttributeSetInstanceId()
-                    );
-            if (xCost != null) retValue = xCost.getCurrentCostPrice();
-        }
-
-        //	Price List
-        else if (to.equals(TO_PriceListLimit)) retValue = getPrice(cost);
+            //	Price List
+            case TO_PriceListLimit:
+                retValue = getPrice(cost);
+                break;
 
             //	Standard Costs
-        else if (to.equals(TO_StandardCost)) retValue = cost.getCurrentCostPrice();
+            case TO_StandardCost:
+                retValue = cost.getCurrentCostPrice();
+                break;
+        }
 
         return retValue;
     } //	getCosts
@@ -558,7 +568,7 @@ public class CostUpdate extends SvrProcess {
     private MCostElement getCostElement(String CostingMethod) {
         MCostElement ce = m_ces.get(CostingMethod);
         if (ce == null) {
-            ce = MCostElement.getMaterialCostElement(getCtx(), CostingMethod);
+            ce = MCostElement.getMaterialCostElement(CostingMethod);
             m_ces.put(CostingMethod, ce);
         }
         return ce;
@@ -576,8 +586,8 @@ public class CostUpdate extends SvrProcess {
                 "SELECT PriceLimit "
                         + "FROM M_ProductPrice "
                         + "WHERE M_Product_ID=? AND M_PriceList_Version_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, cost.getProductId());
@@ -588,10 +598,6 @@ public class CostUpdate extends SvrProcess {
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         return retValue;
     } //	getPrice

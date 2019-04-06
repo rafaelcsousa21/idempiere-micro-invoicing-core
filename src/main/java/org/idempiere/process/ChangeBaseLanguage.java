@@ -55,7 +55,7 @@ public class ChangeBaseLanguage extends SvrProcess {
 
         if (Util.isEmpty(p_Language)) throw new AdempiereUserError("Language required");
 
-        I_AD_Language lang = MLanguage.get(getCtx(), p_Language);
+        I_AD_Language lang = MLanguage.get(p_Language);
         if (lang.isBaseLanguage()) throw new AdempiereUserError("Same base language");
         if (lang.isSystemLanguage())
             throw new AdempiereUserError("Base language cannot be a system language");
@@ -64,7 +64,7 @@ public class ChangeBaseLanguage extends SvrProcess {
             throw new AdempiereUserError("Same base language");
 
         // Disable the base flag on the actual
-        I_AD_Language baselang = MLanguage.get(getCtx(), Language.getBaseAD_Language());
+        I_AD_Language baselang = MLanguage.get(Language.getBaseAD_Language());
         baselang.setIsBaseLanguage(false);
         baselang.saveEx();
 

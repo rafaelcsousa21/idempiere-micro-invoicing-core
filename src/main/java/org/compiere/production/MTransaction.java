@@ -5,7 +5,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Material Transaction Model
@@ -25,20 +24,22 @@ public class MTransaction extends X_M_Transaction {
      * @param ctx              context
      * @param M_Transaction_ID id
      */
-    public MTransaction(Properties ctx, int M_Transaction_ID) {
-        super(ctx, M_Transaction_ID);
+    public MTransaction(int M_Transaction_ID) {
+        super(M_Transaction_ID);
         if (M_Transaction_ID == 0) {
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             setMovementQty(Env.ZERO);
         }
     } //	MTransaction
-    public MTransaction(Properties ctx, Row row) {
-        super(ctx, row);
+
+    public MTransaction(Row row) {
+        super(row);
     }
 
     /**
      * Detail Constructor
-     *  @param ctx                       context
+     *
+     * @param ctx                       context
      * @param AD_Org_ID                 org
      * @param MovementType              movement type
      * @param M_Locator_ID              locator
@@ -48,7 +49,7 @@ public class MTransaction extends X_M_Transaction {
      * @param MovementDate              optional date
      */
     public MTransaction(
-            Properties ctx,
+
             int AD_Org_ID,
             String MovementType,
             int M_Locator_ID,
@@ -56,7 +57,7 @@ public class MTransaction extends X_M_Transaction {
             int M_AttributeSetInstance_ID,
             BigDecimal MovementQty,
             Timestamp MovementDate) {
-        super(ctx, 0);
+        super(0);
         setOrgId(AD_Org_ID);
         setMovementType(MovementType);
         if (M_Locator_ID == 0) throw new IllegalArgumentException("No Locator");

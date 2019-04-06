@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_OrderLandedCost
@@ -25,15 +24,15 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost {
     /**
      * Standard Constructor
      */
-    public X_C_OrderLandedCost(Properties ctx, int C_OrderLandedCost_ID) {
-        super(ctx, C_OrderLandedCost_ID);
+    public X_C_OrderLandedCost(int C_OrderLandedCost_ID) {
+        super(C_OrderLandedCost_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_OrderLandedCost(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_OrderLandedCost(Row row) {
+        super(row);
     }
 
     /**
@@ -68,7 +67,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost {
 
     public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
-                MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
+                MTable.get(org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getOrderId());
     }
 

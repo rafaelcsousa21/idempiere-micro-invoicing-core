@@ -1,11 +1,10 @@
 package org.compiere.accounting;
 
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.conversionrate.MConversionType;
 import org.compiere.model.HasName;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -51,11 +50,11 @@ public class NoCurrencyConversionException extends AdempiereException {
             int conversionTypeId) {
         DateFormat df = DisplayType.getDateFormat(DisplayType.Date);
 
-        StringBuffer sb =
-                new StringBuffer("@NoCurrencyConversion@ ")
-                        .append(MCurrency.getISOCode(Env.getCtx(), currencyId))
+        StringBuilder sb =
+                new StringBuilder("@NoCurrencyConversion@ ")
+                        .append(MCurrencyKt.getCurrencyISOCode(currencyId))
                         .append("->")
-                        .append(MCurrency.getISOCode(Env.getCtx(), currencyToId));
+                        .append(MCurrencyKt.getCurrencyISOCode(currencyToId));
         //
         sb.append(", @Date@: ");
         if (conversionDate != null) sb.append(df.format(conversionDate));
@@ -65,7 +64,7 @@ public class NoCurrencyConversionException extends AdempiereException {
         if (conversionTypeId > 0) {
             final String sql =
                     "SELECT "
-                            + HasName.Companion.getCOLUMNNAME_Name()
+                            + HasName.COLUMNNAME_Name
                             + " FROM "
                             + MConversionType.Table_Name
                             + " WHERE "

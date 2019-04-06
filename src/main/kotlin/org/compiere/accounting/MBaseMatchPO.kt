@@ -9,76 +9,70 @@ import software.hsharp.core.util.getSQLValueBD
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
 import java.sql.Timestamp
-import java.util.Properties
 
 private const val FAILED_PO_UPDATE = "Failed to update match po."
 
 /**
  * Get PO Match of Receipt Line
  *
- * @param ctx context
  * @param M_InOutLine_ID receipt
  * @return array of matches
  */
-internal fun getPOMatchOfReceiptLine(ctx: Properties, M_InOutLine_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchOfReceiptLine(M_InOutLine_ID: Int): Array<MMatchPO> {
     if (M_InOutLine_ID == 0) return emptyArray()
     //
     val sql = "SELECT * FROM M_MatchPO WHERE M_InOutLine_ID=?"
-    val query = queryOf(sql, listOf(M_InOutLine_ID)).map { row -> MMatchPO(ctx, row) }.asList
+    val query = queryOf(sql, listOf(M_InOutLine_ID)).map { row -> MMatchPO(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	get
 
 /**
  * Get PO Matches of receipt
  *
- * @param ctx context
  * @param M_InOut_ID receipt
  * @return array of matches
  */
-internal fun getPOMatchesOfReceipt(ctx: Properties, M_InOut_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesOfReceipt(M_InOut_ID: Int): Array<MMatchPO> {
     if (M_InOut_ID == 0) return emptyArray()
     //
     val sql = ("SELECT * FROM M_MatchPO m" +
             " INNER JOIN M_InOutLine l ON (m.M_InOutLine_ID=l.M_InOutLine_ID) " +
             "WHERE l.M_InOut_ID=?")
-    val query = queryOf(sql, listOf(M_InOut_ID)).map { row -> MMatchPO(ctx, row) }.asList
+    val query = queryOf(sql, listOf(M_InOut_ID)).map { row -> MMatchPO(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getInOut
 
 /**
  * Get PO Matches of Invoice
  *
- * @param ctx context
  * @param C_Invoice_ID invoice
  * @return array of matches
  */
-internal fun getPOMatchesOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesOfInvoice(C_Invoice_ID: Int): Array<MMatchPO> {
     if (C_Invoice_ID == 0) return emptyArray()
     //
     val sql = ("SELECT * FROM M_MatchPO mi" +
             " INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID) " +
             "WHERE il.C_Invoice_ID=?")
-    val query = queryOf(sql, listOf(C_Invoice_ID)).map { row -> MMatchPO(ctx, row) }.asList
+    val query = queryOf(sql, listOf(C_Invoice_ID)).map { row -> MMatchPO(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getInvoice
 
 /**
  * Get PO Matches for OrderLine
  *
- * @param ctx context
  * @param C_OrderLine_ID order
  * @return array of matches
  */
-internal fun getPOMatchesForOrderLine(ctx: Properties, C_OrderLine_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesForOrderLine(C_OrderLine_ID: Int): Array<MMatchPO> {
     if (C_OrderLine_ID == 0) return emptyArray()
     //
     val sql = "SELECT * FROM M_MatchPO WHERE C_OrderLine_ID=?"
-    val query = queryOf(sql, listOf(C_OrderLine_ID)).map { row -> MMatchPO(ctx, row) }.asList
+    val query = queryOf(sql, listOf(C_OrderLine_ID)).map { row -> MMatchPO(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getOrderLine
 
 internal fun create(
-    ctx: Properties,
     iLine: I_C_InvoiceLine?,
     sLine: MInOutLine?,
     C_OrderLine_ID: Int,
@@ -89,7 +83,7 @@ internal fun create(
     var retValue: MMatchPO? = null
     val sql = "SELECT * FROM M_MatchPO WHERE C_OrderLine_ID=? and Reversal_ID IS NULL ORDER BY M_MatchPO_ID"
     try {
-        val query = queryOf(sql, listOf(C_OrderLine_ID)).map { row -> MMatchPO(ctx, row) }.asList
+        val query = queryOf(sql, listOf(C_OrderLine_ID)).map { row -> MMatchPO(row) }.asList
         val items = DB.current.run(query)
 
         for (mpo in items) {
@@ -141,7 +135,7 @@ internal fun create(
                                 C_InvoiceLine_ID
                     )
                     if (cnt <= 0) {
-                        val matchInv = MMatchInv(mpo.ctx, 0)
+                        val matchInv = MMatchInv(0)
                         matchInv.invoiceLineId = C_InvoiceLine_ID
                         matchInv.setProductId(mpo.productId)
                         matchInv.inOutLineId = M_InOutLine_ID

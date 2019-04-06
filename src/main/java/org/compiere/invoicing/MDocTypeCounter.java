@@ -6,7 +6,6 @@ import org.compiere.orm.MDocType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 
@@ -38,8 +37,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @param ctx                 context
      * @param C_DocTypeCounter_ID id
      */
-    public MDocTypeCounter(Properties ctx, int C_DocTypeCounter_ID) {
-        super(ctx, C_DocTypeCounter_ID);
+    public MDocTypeCounter(int C_DocTypeCounter_ID) {
+        super(C_DocTypeCounter_ID);
         if (C_DocTypeCounter_ID == 0) {
             setIsCreateCounter(true); // Y
             setIsValid(false);
@@ -51,8 +50,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      *
      * @param ctx context
      */
-    public MDocTypeCounter(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDocTypeCounter(Row row) {
+        super(row);
     } //	MDocTypeCounter
 
     /**
@@ -62,9 +61,9 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @param C_DocType_ID base document
      * @return counter document C_DocType_ID or 0 or -1 if no counter doc
      */
-    public static int getCounterDocTypeId(Properties ctx, int C_DocType_ID) {
+    public static int getCounterDocTypeId(int C_DocType_ID) {
         //	Direct Relationship
-        MDocTypeCounter dtCounter = getCounterDocType(ctx, C_DocType_ID);
+        MDocTypeCounter dtCounter = getCounterDocType(C_DocType_ID);
         if (dtCounter != null) {
             if (!dtCounter.isCreateCounter() || !dtCounter.isValid()) return -1;
             return dtCounter.getCounterDocTypeId();
@@ -72,11 +71,11 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
 
         //	Indirect Relationship
         int Counter_C_DocType_ID = 0;
-        MDocType dt = MDocType.get(ctx, C_DocType_ID);
+        MDocType dt = MDocType.get(C_DocType_ID);
         if (!dt.isCreateCounter()) return -1;
         String cDocBaseType = getCounterDocBaseType(dt.getDocBaseType());
         if (cDocBaseType == null) return 0;
-        MDocType[] counters = MDocType.getOfDocBaseType(ctx, cDocBaseType);
+        MDocType[] counters = MDocType.getOfDocBaseType(cDocBaseType);
         for (int i = 0; i < counters.length; i++) {
             MDocType counter = counters[i];
             if (counter.isDefaultCounterDoc()) {
@@ -96,13 +95,13 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @param C_DocType_ID base document
      * @return counter document (may be invalid) or null
      */
-    public static MDocTypeCounter getCounterDocType(Properties ctx, int C_DocType_ID) {
+    public static MDocTypeCounter getCounterDocType(int C_DocType_ID) {
         Integer key = C_DocType_ID;
         MDocTypeCounter retValue = s_counter.get(key);
         if (retValue != null) return retValue;
 
         //	Direct Relationship
-        return MBaseDocTypeCounterKt.getCounterDocType(ctx, C_DocType_ID);
+        return MBaseDocTypeCounterKt.getCounterDocType(C_DocType_ID);
     } //	getCounterDocType
 
     /**
@@ -172,7 +171,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     public MDocType getDocType() {
         MDocType dt = null;
         if (getDocumentTypeId() > 0) {
-            dt = MDocType.get(getCtx(), getDocumentTypeId());
+            dt = MDocType.get(getDocumentTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;
@@ -186,7 +185,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     public MDocType getCounterDocType() {
         MDocType dt = null;
         if (getCounterDocTypeId() > 0) {
-            dt = MDocType.get(getCtx(), getCounterDocTypeId());
+            dt = MDocType.get(getCounterDocTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;

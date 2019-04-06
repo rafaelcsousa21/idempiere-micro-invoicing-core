@@ -12,7 +12,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -34,8 +33,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MOrderLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MOrderLine(Row row) {
+        super(row);
     }
 
     /**
@@ -45,8 +44,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
      * @param C_OrderLine_ID order line to load
      * @param trxName        trx name
      */
-    public MOrderLine(Properties ctx, int C_OrderLine_ID) {
-        super(ctx, C_OrderLine_ID);
+    public MOrderLine(int C_OrderLine_ID) {
+        super(C_OrderLine_ID);
     }
 
     /**
@@ -90,7 +89,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     @Override
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "C_OrderLine"));
+            log.saveError("ParentComplete", Msg.translate("C_OrderLine"));
             return false;
         }
         //	Get Defaults from Parent
@@ -142,7 +141,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                 && (getProductId() != 0
                 || getPriceEntered().compareTo(Env.ZERO) != 0
                 || getChargeId() != 0)) {
-            int C_UOM_ID = MUOM.getDefault_UOMId(getCtx());
+            int C_UOM_ID = MUOM.getDefault_UOMId();
             if (C_UOM_ID > 0) setUOMId(C_UOM_ID);
         }
         //	Qty Precision
@@ -161,14 +160,14 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                 int M_AttributeSet_ID = product.getAttributeSetId();
                 boolean isInstance = M_AttributeSet_ID != 0;
                 if (isInstance) {
-                    MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
+                    MAttributeSet mas = MAttributeSet.get(M_AttributeSet_ID);
                     isInstance = mas.isInstanceAttribute();
                 }
                 //	Max
                 if (isInstance) {
                     MStorageOnHand[] storages =
                             MStorageOnHand.getWarehouse(
-                                    getCtx(),
+
                                     getWarehouseId(),
                                     getProductId(),
                                     getAttributeSetInstanceId(),
@@ -216,7 +215,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             if (getChargeId() == 0
                     && getProductId() == 0
                     && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
-                log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
+                log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
                 return false;
             }
         }
@@ -234,21 +233,21 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         //	R/O Check - Something delivered. etc.
         if (Env.ZERO.compareTo(getQtyDelivered()) != 0) {
             log.saveError(
-                    "DeleteError", Msg.translate(getCtx(), "QtyDelivered") + "=" + getQtyDelivered());
+                    "DeleteError", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyInvoiced()) != 0) {
-            log.saveError("DeleteError", Msg.translate(getCtx(), "QtyInvoiced") + "=" + getQtyInvoiced());
+            log.saveError("DeleteError", Msg.translate("QtyInvoiced") + "=" + getQtyInvoiced());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyReserved()) != 0) {
             //	For PO should be On Order
-            log.saveError("DeleteError", Msg.translate(getCtx(), "QtyReserved") + "=" + getQtyReserved());
+            log.saveError("DeleteError", Msg.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
 
         // UnLink All Requisitions
-        MRequisitionLine.unlinkC_OrderLineId(getCtx(), getId());
+        MRequisitionLine.unlinkC_OrderLineId(getId());
 
         return true;
     } //	beforeDelete
@@ -264,7 +263,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         if (!success) return success;
         if (getResourceAssignmentId() != 0) {
             MResourceAssignment ra =
-                    new MResourceAssignment(getCtx(), getResourceAssignmentId());
+                    new MResourceAssignment(getResourceAssignmentId());
             ra.delete(true);
         }
 
@@ -278,7 +277,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
      */
     public MProduct getProduct() {
         if (m_product == null && getProductId() != 0)
-            m_product = MProduct.get(getCtx(), getProductId());
+            m_product = MProduct.get(getProductId());
         return m_product;
     } //	getProduct
 

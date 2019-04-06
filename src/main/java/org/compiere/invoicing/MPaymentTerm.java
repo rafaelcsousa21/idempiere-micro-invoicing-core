@@ -9,15 +9,15 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
-    public MPaymentTerm(Properties ctx, int C_PaymentTerm_ID) {
-        super(ctx, C_PaymentTerm_ID);
+    public MPaymentTerm(int C_PaymentTerm_ID) {
+        super(C_PaymentTerm_ID);
     }
-    public MPaymentTerm(Properties ctx, Row row) {
-        super(ctx, row);
+
+    public MPaymentTerm(Row row) {
+        super(row);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
      */
     private void deleteInvoicePaySchedule(int C_Invoice_ID) {
         Query query =
-                new Query(Env.getCtx(), I_C_InvoicePaySchedule.Table_Name, "C_Invoice_ID=?");
+                new Query(I_C_InvoicePaySchedule.Table_Name, "C_Invoice_ID=?");
         List<I_C_InvoicePaySchedule> ipsList = query.setParameters(C_Invoice_ID).list();
         for (I_C_InvoicePaySchedule ips : ipsList) {
             ips.deleteEx(true);

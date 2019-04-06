@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for AD_SchedulerRecipient
  *
@@ -22,8 +20,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
     /**
      * Standard Constructor
      */
-    public X_AD_SchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
-        super(ctx, AD_SchedulerRecipient_ID);
+    public X_AD_SchedulerRecipient(int AD_SchedulerRecipient_ID) {
+        super(AD_SchedulerRecipient_ID);
         /*
          * if (AD_SchedulerRecipient_ID == 0) { setAD_Scheduler_ID (0); setAD_SchedulerRecipient_ID (0);
          * }
@@ -33,8 +31,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
     /**
      * Load Constructor
      */
-    public X_AD_SchedulerRecipient(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_SchedulerRecipient(Row row) {
+        super(row);
     }
 
     /**

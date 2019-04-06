@@ -7,7 +7,6 @@ import org.compiere.product.MProductCategory;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -34,13 +33,10 @@ public class MProjectLine extends X_C_ProjectLine {
      *
      * @param ctx              context
      * @param C_ProjectLine_ID id
-     * @param trxName          transaction
      */
-    public MProjectLine(Properties ctx, int C_ProjectLine_ID) {
-        super(ctx, C_ProjectLine_ID);
+    public MProjectLine(int C_ProjectLine_ID) {
+        super(C_ProjectLine_ID);
         if (C_ProjectLine_ID == 0) {
-            //  setProjectId (0);
-            //	setProjectLineId (0);
             setLine(0);
             setIsPrinted(true);
             setProcessed(false);
@@ -57,12 +53,10 @@ public class MProjectLine extends X_C_ProjectLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MProjectLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectLine(Row row) {
+        super(row);
     } //	MProjectLine
 
     /**
@@ -71,7 +65,7 @@ public class MProjectLine extends X_C_ProjectLine {
      * @param project parent
      */
     public MProjectLine(MProject project) {
-        this(project.getCtx(), 0);
+        this(0);
         setClientOrg(project);
         setProjectId(project.getProjectId()); // Parent
         setLine();
@@ -115,8 +109,7 @@ public class MProjectLine extends X_C_ProjectLine {
      */
     public MProject getProject() {
         if (m_parent == null && getProjectId() != 0) {
-            m_parent = new MProject(getCtx(), getProjectId());
-            if (null != null) m_parent.load();
+            m_parent = new MProject(getProjectId());
         }
         return m_parent;
     } //	getProject
@@ -143,24 +136,22 @@ public class MProjectLine extends X_C_ProjectLine {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MProjectLine[");
-        sb.append(getId())
-                .append("-")
-                .append(getLine())
-                .append(",C_Project_ID=")
-                .append(getProjectId())
-                .append(",C_ProjectPhase_ID=")
-                .append(getProjectPhaseId())
-                .append(",C_ProjectTask_ID=")
-                .append(getProjectTaskId())
-                .append(",C_ProjectIssue_ID=")
-                .append(getProjectIssueId())
-                .append(", M_Product_ID=")
-                .append(getProductId())
-                .append(", PlannedQty=")
-                .append(getPlannedQty())
-                .append("]");
-        return sb.toString();
+        return "MProjectLine[" + getId() +
+                "-" +
+                getLine() +
+                ",C_Project_ID=" +
+                getProjectId() +
+                ",C_ProjectPhase_ID=" +
+                getProjectPhaseId() +
+                ",C_ProjectTask_ID=" +
+                getProjectTaskId() +
+                ",C_ProjectIssue_ID=" +
+                getProjectIssueId() +
+                ", M_Product_ID=" +
+                getProductId() +
+                ", PlannedQty=" +
+                getPlannedQty() +
+                "]";
     } //	toString
 
     /**
@@ -184,7 +175,7 @@ public class MProjectLine extends X_C_ProjectLine {
                 BigDecimal marginEach = getPlannedPrice().subtract(getLimitPrice());
                 setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
             } else if (getProductCategoryId() != 0) {
-                MProductCategory category = MProductCategory.get(getCtx(), getProductCategoryId());
+                MProductCategory category = MProductCategory.get(getProductCategoryId());
                 BigDecimal marginEach = category.getPlannedMargin();
                 setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
             }
@@ -192,14 +183,14 @@ public class MProjectLine extends X_C_ProjectLine {
 
         //	Phase/Task
         if (isValueChanged("C_ProjectTask_ID") && getProjectTaskId() != 0) {
-            MProjectTask pt = new MProjectTask(getCtx(), getProjectTaskId());
+            MProjectTask pt = new MProjectTask(getProjectTaskId());
             if (pt == null || pt.getId() == 0) {
                 log.warning("Project Task Not Found - ID=" + getProjectTaskId());
                 return false;
             } else setProjectPhaseId(pt.getProjectPhaseId());
         }
         if (isValueChanged("C_ProjectPhase_ID") && getProjectPhaseId() != 0) {
-            MProjectPhase pp = new MProjectPhase(getCtx(), getProjectPhaseId());
+            MProjectPhase pp = new MProjectPhase(getProjectPhaseId());
             if (pp == null || pp.getId() == 0) {
                 log.warning("Project Phase Not Found - " + getProjectPhaseId());
                 return false;

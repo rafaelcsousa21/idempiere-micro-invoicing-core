@@ -1,11 +1,10 @@
 package org.idempiere.process
 
-import org.compiere.bo.MCurrency
+import org.compiere.bo.getCurrency
 import org.compiere.crm.EMail
 import org.compiere.orm.MSysConfig
 import org.compiere.process.SvrProcess
 import org.idempiere.common.exceptions.AdempiereException
-import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair
 import org.idempiere.common.util.Util
 import software.hsharp.core.util.executeUpdate
@@ -177,7 +176,7 @@ class InitialClientSetup(
 
         // City_ID overrides CityName if both used
         if (p_C_City_ID > 0) {
-            val city = MCity.get(ctx, p_C_City_ID)
+            val city = MCity.get(p_C_City_ID)
             if (city!!.name != p_CityName) {
                 msglog = StringBuilder("City name changed from ").append(p_CityName).append(" to ").append(city.name)
                 if (log.isLoggable(Level.INFO)) log.info(msglog.toString())
@@ -215,7 +214,7 @@ class InitialClientSetup(
             throw AdempiereException("CoaFile $p_CoAFile is empty")
 
         // Process
-        val ms = MSetup(Env.getCtx(), WINDOW_THIS_PROCESS)
+        val ms = MSetup(WINDOW_THIS_PROCESS)
         if (!ms.createClient(
                 p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
                 p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword
@@ -227,7 +226,7 @@ class InitialClientSetup(
         addLog(ms.info)
 
         //  Generate Accounting
-        val currency = MCurrency.get(ctx, p_C_Currency_ID)
+        val currency = getCurrency(p_C_Currency_ID)
         val currency_kp = KeyNamePair(p_C_Currency_ID, currency.description)
         if (!ms.createAccounting(
                 currency_kp,

@@ -12,7 +12,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
@@ -26,23 +25,15 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
      */
     private static CLogger log = CLogger.getCLogger(NaturalAccountMap.class);
     /**
-     * Context
-     */
-    private Properties m_ctx = null;
-    /**
      * Map of Values and Element
      */
-    private HashMap<String, MElementValue> m_valueMap = new HashMap<String, MElementValue>();
+    private HashMap<String, MElementValue> m_valueMap = new HashMap<>();
 
     /**
      * Constructor. Parse File does the processing
-     *
-     * @param ctx     context
-     * @param trxName transaction
      */
-    public NaturalAccountMap(Properties ctx) {
+    public NaturalAccountMap() {
         super(null, "NaturalAccountMap", 100, false);
-        m_ctx = ctx;
     } //  NaturalAccountMap
 
     /**
@@ -191,7 +182,6 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
                 //  Create Account - save later
                 na =
                         new MElementValue(
-                                m_ctx,
                                 Value,
                                 Name,
                                 Description,

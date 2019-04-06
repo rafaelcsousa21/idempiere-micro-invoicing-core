@@ -39,7 +39,7 @@ public class RMACreateOrder extends SvrProcess {
     @Override
     protected String doIt() throws Exception {
         // Load RMA
-        MRMA rma = new MRMA(getCtx(), rmaId);
+        MRMA rma = new MRMA(rmaId);
 
         // Load Original Order
         org.compiere.order.MOrder originalOrder = rma.getOriginalOrder();
@@ -53,7 +53,7 @@ public class RMACreateOrder extends SvrProcess {
         }
 
         // Create new order and set the different values based on original order/RMA doc
-        MOrder order = new MOrder(getCtx(), 0);
+        MOrder order = new MOrder(0);
         order.setOrgId(rma.getOrgId());
         order.setBusinessPartnerId(originalOrder.getBusinessPartnerId());
         order.setBusinessPartnerLocationId(originalOrder.getBusinessPartnerLocationId());
@@ -84,7 +84,7 @@ public class RMACreateOrder extends SvrProcess {
                 // Create order lines if the RMA Doc line has a shipment line
                 MOrderLine orderLine = new MOrderLine(order);
                 MOrderLine originalOLine =
-                        new MOrderLine(getCtx(), line.getShipLine().getOrderLineId());
+                        new MOrderLine(line.getShipLine().getOrderLineId());
                 orderLine.setOrgId(line.getOrgId());
                 orderLine.setProductId(originalOLine.getProductId());
                 orderLine.setAttributeSetInstanceId(originalOLine.getAttributeSetInstanceId());

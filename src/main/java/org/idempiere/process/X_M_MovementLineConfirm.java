@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfirm {
 
@@ -18,8 +17,8 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     /**
      * Standard Constructor
      */
-    public X_M_MovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
-        super(ctx, M_MovementLineConfirm_ID);
+    public X_M_MovementLineConfirm(int M_MovementLineConfirm_ID) {
+        super(M_MovementLineConfirm_ID);
         /*
          * if (M_MovementLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setDifferenceQty (Env.ZERO);
          * setMovementConfirmId (0); setMovementLineConfirm_ID (0); setMovementLine_ID (0);
@@ -30,8 +29,8 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     /**
      * Load Constructor
      */
-    public X_M_MovementLineConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_MovementLineConfirm(Row row) {
+        super(row);
     }
 
     /**

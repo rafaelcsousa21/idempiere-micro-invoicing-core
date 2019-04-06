@@ -5,7 +5,6 @@ import org.compiere.model.I_R_RequestProcessor;
 import org.compiere.orm.BasePOName;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProcessor {
 
@@ -17,15 +16,15 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     /**
      * Standard Constructor
      */
-    public X_R_RequestProcessor(Properties ctx, int R_RequestProcessor_ID) {
-        super(ctx, R_RequestProcessor_ID);
+    public X_R_RequestProcessor(int R_RequestProcessor_ID) {
+        super(R_RequestProcessor_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestProcessor(Row row) {
+        super(row);
     }
 
     /**

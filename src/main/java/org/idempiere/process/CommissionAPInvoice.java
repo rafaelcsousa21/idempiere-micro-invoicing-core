@@ -14,7 +14,6 @@
  */
 package org.idempiere.process;
 
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
 import java.util.logging.Level;
@@ -45,22 +44,22 @@ public class CommissionAPInvoice extends SvrProcess {
 
     /*
     	//	Load Data
-    	MCommissionRun comRun = new MCommissionRun (getCtx(), getRecordId(), null);
+    	MCommissionRun comRun = new MCommissionRun (getRecordId(), null);
     	if (comRun.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission Run");
     	if (Env.ZERO.compareTo(comRun.getGrandTotal()) == 0)
     		throw new IllegalArgumentException("@GrandTotal@ = 0");
-    	MCommission com = new MCommission (getCtx(), comRun.getCommissionId(), null);
+    	MCommission com = new MCommission (comRun.getCommissionId(), null);
     	if (com.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission");
     	if (com.getChargeId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Charge on Commission");
-    	MBPartner bp = new MBPartner (getCtx(), com.getBusinessPartnerId(), null);
+    	MBPartner bp = new MBPartner (com.getBusinessPartnerId(), null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No BPartner");
 
     	//	Create Invoice
-    	MInvoice invoice = new MInvoice (getCtx(), 0, null);
+    	MInvoice invoice = new MInvoice (0, null);
     	invoice.setClientOrg(com.getClientId(), com.getOrgId());
     	invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice);	//	API
     	invoice.setBPartner(bp);

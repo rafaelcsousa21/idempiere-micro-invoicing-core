@@ -526,7 +526,7 @@ public class DocLine {
 
         m_isItem = Boolean.FALSE;
         if (getProductId() != 0) {
-            org.compiere.product.MProduct product = MProduct.get(Env.getCtx(), getProductId());
+            org.compiere.product.MProduct product = MProduct.get(getProductId());
             if (product.getId() == getProductId() && product.isItem()) m_isItem = Boolean.TRUE;
         }
         return m_isItem.booleanValue();
@@ -609,7 +609,7 @@ public class DocLine {
         if (m_productCost == null)
             m_productCost =
                     new ProductCost(
-                            Env.getCtx(), getProductId(), getAttributeSetInstanceId());
+                            getProductId(), getAttributeSetInstanceId());
         return m_productCost;
     } //	getProductCost
     // end MZ
@@ -629,7 +629,7 @@ public class DocLine {
                 && !as.getCostingMethod().equals(MAcctSchema.COSTINGMETHOD_StandardCosting)) {
             MCostDetail cd =
                     MCostDetail.get(
-                            Env.getCtx(),
+
                             whereClause,
                             getId(),
                             getAttributeSetInstanceId(),
@@ -666,7 +666,7 @@ public class DocLine {
         if (m_productCost == null)
             m_productCost =
                     new ProductCost(
-                            Env.getCtx(), getProductId(), getAttributeSetInstanceId());
+                            getProductId(), getAttributeSetInstanceId());
         return m_productCost.getProduct();
     } //	getProduct
 

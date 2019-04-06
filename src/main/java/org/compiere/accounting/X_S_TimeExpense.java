@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
 
@@ -43,8 +42,8 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
     /**
      * Standard Constructor
      */
-    public X_S_TimeExpense(Properties ctx, int S_TimeExpense_ID) {
-        super(ctx, S_TimeExpense_ID);
+    public X_S_TimeExpense(int S_TimeExpense_ID) {
+        super(S_TimeExpense_ID);
         /**
          * if (S_TimeExpense_ID == 0) { setBusinessPartnerId (0); setDateReport (new Timestamp(
          * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // CO setDocStatus (null); //
@@ -56,8 +55,8 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
     /**
      * Load Constructor
      */
-    public X_S_TimeExpense(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_S_TimeExpense(Row row) {
+        super(row);
     }
 
     /**

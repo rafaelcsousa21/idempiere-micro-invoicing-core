@@ -50,7 +50,7 @@ public class BOMFlagValidate extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql.toString());
-            if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
+            if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId());
             else pstmt.setInt(1, p_M_Product_Category_ID);
             rs = pstmt.executeQuery();
 
@@ -76,7 +76,7 @@ public class BOMFlagValidate extends SvrProcess {
             if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
             else update.append("M_Product_Category_ID= ?");
             upstmt = prepareStatement(update.toString());
-            if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
+            if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId());
             else upstmt.setInt(1, p_M_Product_Category_ID);
             upstmt.executeUpdate();
         } catch (SQLException e) {
@@ -98,7 +98,7 @@ public class BOMFlagValidate extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql.toString());
-            if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
+            if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId());
             else pstmt.setInt(1, p_M_Product_Category_ID);
             rs = pstmt.executeQuery();
 
@@ -123,7 +123,7 @@ public class BOMFlagValidate extends SvrProcess {
         PreparedStatement upstmt = null;
         try {
             upstmt = prepareStatement(update.toString());
-            if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
+            if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId());
             else upstmt.setInt(1, p_M_Product_Category_ID);
             upstmt.executeUpdate();
         } catch (SQLException e) {

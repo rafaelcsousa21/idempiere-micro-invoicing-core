@@ -104,7 +104,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
     protected String doIt() throws Exception {
 
         // Fetch price list
-        MPriceList priceList = new MPriceList(getCtx(), m_priceListId);
+        MPriceList priceList = new MPriceList(m_priceListId);
         // Get current client id from price list since I for some reason can't read it from
         // context.
         m_clientId = priceList.getClientId();
@@ -118,7 +118,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
 
         // Read all existing applicable products into memory for quick comparison.
         List<MProduct> products =
-                new Query(getCtx(), I_M_Product.Table_Name, "ProductType=?")
+                new Query(I_M_Product.Table_Name, "ProductType=?")
                         .setParameters(MProduct.PRODUCTTYPE_ExpenseType)
                         .list();
 
@@ -132,7 +132,6 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         MAccount validComb;
         List<MAccount> validCombs =
                 new Query(
-                        getCtx(),
                         I_C_ValidCombination.Table_Name,
                         "C_AcctSchema_ID=? and AD_Client_ID=? and orgId=0"
                 )
@@ -148,7 +147,6 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         // Read all accounttypes that fit the given criteria.
         List<MElementValue> result =
                 new Query(
-                        getCtx(),
                         I_C_ElementValue.Table_Name,
                         "AccountType=? and isSummary='N' and Value>=? and Value<=? and AD_Client_ID=?"
                 )
@@ -171,7 +169,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
             product = productMap.get(expenseItemValue);
             if (product == null) {
                 // Create a new product from the account element
-                product = new MProduct(getCtx(), 0);
+                product = new MProduct(0);
                 product.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
                 product.setSearchKey(expenseItemValue);
                 product.setName(elem.getName());
@@ -188,7 +186,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 product.saveEx();
 
                 // Add a zero product price to the price list so it shows up in the price list
-                priceRec = new MProductPrice(getCtx(), pv.getId(), product.getId());
+                priceRec = new MProductPrice(pv.getId(), product.getId());
                 priceRec.set_ValueOfColumn("AD_Client_ID", m_clientId);
                 priceRec.setPrices(zero, zero, zero);
                 priceRec.saveEx();
@@ -198,7 +196,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 validComb = validCombMap.get(elem.getElementValueId());
                 if (validComb == null) {
                     // Create new valid combination
-                    validComb = new MAccount(getCtx(), 0);
+                    validComb = new MAccount(0);
                     validComb.set_ValueOfColumn("AD_Client_ID", m_clientId);
                     validComb.setOrgId(0);
                     validComb.setAlias(elem.getSearchKey());
@@ -211,7 +209,6 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 // of the process now is to create general accounts so this is intentional.
                 productAcct =
                         new Query(
-                                getCtx(),
                                 I_M_Product_Acct.Table_Name,
                                 "M_Product_ID=? and C_AcctSchema_ID=?"
                         )

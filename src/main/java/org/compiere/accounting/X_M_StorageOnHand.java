@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_StorageOnHand
@@ -25,15 +24,15 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
     /**
      * Standard Constructor
      */
-    public X_M_StorageOnHand(Properties ctx, int M_StorageOnHand_ID) {
-        super(ctx, M_StorageOnHand_ID);
+    public X_M_StorageOnHand(int M_StorageOnHand_ID) {
+        super(M_StorageOnHand_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_StorageOnHand(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_StorageOnHand(Row row) {
+        super(row);
     }
 
 

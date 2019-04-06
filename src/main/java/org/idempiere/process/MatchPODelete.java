@@ -50,14 +50,14 @@ public class MatchPODelete extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("M_MatchPO_ID=" + p_M_MatchPO_ID);
-        MMatchPO po = new MMatchPO(getCtx(), p_M_MatchPO_ID);
+        MMatchPO po = new MMatchPO(p_M_MatchPO_ID);
         if (po.getId() == 0)
             throw new AdempiereUserError("@NotFound@ @M_MatchPO_ID@ " + p_M_MatchPO_ID);
         //
         MOrderLine orderLine = null;
         boolean isMatchReceipt = (po.getInOutLineId() != 0);
         if (isMatchReceipt) {
-            orderLine = new MOrderLine(getCtx(), po.getOrderLineId());
+            orderLine = new MOrderLine(po.getOrderLineId());
             orderLine.setQtyReserved(orderLine.getQtyReserved().add(po.getQty()));
         }
         //

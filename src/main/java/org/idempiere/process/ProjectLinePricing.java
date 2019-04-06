@@ -14,7 +14,6 @@
  */
 package org.idempiere.process;
 
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.IProductPricing;
 import org.compiere.product.MProduct;
@@ -51,11 +50,11 @@ public class ProjectLinePricing extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (m_C_ProjectLine_ID == 0) throw new IllegalArgumentException("No Project Line");
-        MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
+        MProjectLine projectLine = new MProjectLine(m_C_ProjectLine_ID);
         if (log.isLoggable(Level.INFO)) log.info("doIt - " + projectLine);
         if (projectLine.getProductId() == 0) throw new IllegalArgumentException("No Product");
         //
-        MProject project = new MProject(getCtx(), projectLine.getProjectId());
+        MProject project = new MProject(projectLine.getProjectId());
         if (project.getPriceListId() == 0) throw new IllegalArgumentException("No PriceList");
         //
         boolean isSOTrx = true;
@@ -74,13 +73,13 @@ public class ProjectLinePricing extends SvrProcess {
         //
         StringBuilder retValue =
                 new StringBuilder()
-                        .append(Msg.getElement(getCtx(), "PriceList"))
+                        .append(Msg.getElement("PriceList"))
                         .append(pp.getPriceList())
                         .append(" - ")
-                        .append(Msg.getElement(getCtx(), "PriceStd"))
+                        .append(Msg.getElement("PriceStd"))
                         .append(pp.getPriceStd())
                         .append(" - ")
-                        .append(Msg.getElement(getCtx(), "PriceLimit"))
+                        .append(Msg.getElement("PriceLimit"))
                         .append(pp.getPriceLimit());
         return retValue.toString();
     } //	doIt

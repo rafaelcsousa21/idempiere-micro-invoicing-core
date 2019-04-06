@@ -2,9 +2,6 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.CLogger;
-
-import java.util.Properties;
 
 
 /**
@@ -25,11 +22,9 @@ public class MLandedCost extends X_C_LandedCost {
      * @param ctx             context
      * @param C_LandedCost_ID id
      */
-    public MLandedCost(Properties ctx, int C_LandedCost_ID) {
-        super(ctx, C_LandedCost_ID);
+    public MLandedCost(int C_LandedCost_ID) {
+        super(C_LandedCost_ID);
         if (C_LandedCost_ID == 0) {
-            //	setInvoiceLineId (0);
-            //	setCostElementId (0);
             setLandedCostDistribution(X_C_LandedCost.LANDEDCOSTDISTRIBUTION_Quantity); // Q
         }
     } //	MLandedCost
@@ -39,8 +34,8 @@ public class MLandedCost extends X_C_LandedCost {
      *
      * @param ctx context
      */
-    public MLandedCost(Properties ctx, Row row) {
-        super(ctx, row);
+    public MLandedCost(Row row) {
+        super(row);
     } //	MLandedCost
 
     /**
@@ -65,7 +60,7 @@ public class MLandedCost extends X_C_LandedCost {
             log.saveError(
                     "Error",
                     Msg.parseTranslation(
-                            getCtx(), "@NotFound@ @M_Product_ID@ | @M_InOut_ID@ | @M_InOutLine_ID@"));
+                            "@NotFound@ @M_Product_ID@ | @M_InOut_ID@ | @M_InOutLine_ID@"));
             return false;
         }
         //	No Product if Line entered
@@ -80,7 +75,7 @@ public class MLandedCost extends X_C_LandedCost {
      * @return error message or ""
      */
     public String allocateCosts() {
-        MInvoiceLine il = new MInvoiceLine(getCtx(), getInvoiceLineId());
+        MInvoiceLine il = new MInvoiceLine(getInvoiceLineId());
         return il.allocateLandedCosts();
     } //	allocateCosts
 

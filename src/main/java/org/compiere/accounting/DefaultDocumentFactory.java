@@ -5,7 +5,6 @@ import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
 import java.lang.reflect.Constructor;
 import java.util.logging.Level;
@@ -64,7 +63,7 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
     * 53092	HR_Process			Doc_HRProcess
     */
 
-        String tableName = MTable.getDbTableName(Env.getCtx(), tableId);
+        String tableName = MTable.getDbTableName(tableId);
         String packageName = "org.compiere.accounting";
         String className = null;
 

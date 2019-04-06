@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_AllocationHdr
@@ -77,15 +76,15 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
     /**
      * Standard Constructor
      */
-    public X_C_AllocationHdr(Properties ctx, int C_AllocationHdr_ID) {
-        super(ctx, C_AllocationHdr_ID);
+    public X_C_AllocationHdr(int C_AllocationHdr_ID) {
+        super(C_AllocationHdr_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_AllocationHdr(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AllocationHdr(Row row) {
+        super(row);
     }
 
     /**

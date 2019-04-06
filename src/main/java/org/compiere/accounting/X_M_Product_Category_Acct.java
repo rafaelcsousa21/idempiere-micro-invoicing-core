@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_Product_Category_Acct
  *
@@ -23,15 +21,15 @@ public class X_M_Product_Category_Acct extends PO
     /**
      * Standard Constructor
      */
-    public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID) {
-        super(ctx, M_Product_Category_Acct_ID);
+    public X_M_Product_Category_Acct(int M_Product_Category_Acct_ID) {
+        super(M_Product_Category_Acct_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Product_Category_Acct(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Product_Category_Acct(Row row) {
+        super(row);
     }
 
     /**

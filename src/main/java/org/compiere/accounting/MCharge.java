@@ -3,8 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 
-import java.util.Properties;
-
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 
@@ -16,11 +14,12 @@ public class MCharge extends org.compiere.order.MCharge {
      * @param ctx         context
      * @param C_Charge_ID id
      */
-    public MCharge(Properties ctx, int C_Charge_ID) {
-        super(ctx, C_Charge_ID);
+    public MCharge(int C_Charge_ID) {
+        super(C_Charge_ID);
     }
-    public MCharge(Properties ctx, Row row) {
-        super(ctx, row);
+
+    public MCharge(Row row) {
+        super(row);
     }
 
     /**
@@ -43,6 +42,6 @@ public class MCharge extends org.compiere.order.MCharge {
         }
 
         //	Return Account
-        return MAccount.get(as.getCtx(), Account_ID);
+        return MAccount.get(Account_ID);
     } //  getAccount
 }

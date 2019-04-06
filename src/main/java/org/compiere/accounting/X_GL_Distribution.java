@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for GL_Distribution
@@ -24,15 +23,15 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
     /**
      * Standard Constructor
      */
-    public X_GL_Distribution(Properties ctx, int GL_Distribution_ID) {
-        super(ctx, GL_Distribution_ID);
+    public X_GL_Distribution(int GL_Distribution_ID) {
+        super(GL_Distribution_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_GL_Distribution(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_Distribution(Row row) {
+        super(row);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
 
@@ -19,8 +18,8 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
     /**
      * Standard Constructor
      */
-    public X_S_TimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID) {
-        super(ctx, S_TimeExpenseLine_ID);
+    public X_S_TimeExpenseLine(int S_TimeExpenseLine_ID) {
+        super(S_TimeExpenseLine_ID);
         /**
          * if (S_TimeExpenseLine_ID == 0) { setDateExpense (new Timestamp( System.currentTimeMillis()
          * )); // @DateExpense@;@DateReport@ setIsInvoiced (false); setIsTimeReport (false); setLine
@@ -33,8 +32,8 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
     /**
      * Load Constructor
      */
-    public X_S_TimeExpenseLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_S_TimeExpenseLine(Row row) {
+        super(row);
     }
 
     /**

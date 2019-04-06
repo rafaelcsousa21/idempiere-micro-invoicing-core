@@ -206,7 +206,7 @@ public class InvoicePrint extends SvrProcess {
     		if (copies == 0)
     			copies = 1;
     		int AD_User_ID = rs.getInt(6);
-    		MUser to = new MUser (getCtx(), AD_User_ID, null);
+    		MUser to = new MUser (AD_User_ID, null);
     		String DocumentNo = rs.getString(7);
     		C_BPartner_ID = rs.getInt(8);
     		//
@@ -229,7 +229,7 @@ public class InvoicePrint extends SvrProcess {
     		//	Get Format & Data
     		if (AD_PrintFormat_ID != old_AD_PrintFormat_ID)
     		{
-    			format = MPrintFormat.get (getCtx(), AD_PrintFormat_ID, false);
+    			format = MPrintFormat.get (AD_PrintFormat_ID, false);
     			old_AD_PrintFormat_ID = AD_PrintFormat_ID;
     		}
     		format.setLanguage(language);
@@ -245,7 +245,7 @@ public class InvoicePrint extends SvrProcess {
     			C_Invoice_ID,
     			C_BPartner_ID);
     		info.setCopies(copies);
-    		ReportEngine re = new ReportEngine(getCtx(), format, query, info);
+    		ReportEngine re = new ReportEngine(format, query, info);
     		boolean printed = false;
     		if (p_EMailPDF)
     		{
@@ -260,10 +260,10 @@ public class InvoicePrint extends SvrProcess {
     			}
     			mText.setUser(to);					//	Context
     			mText.setBPartner(C_BPartner_ID);	//	Context
-    			mText.setPO(new MInvoice(getCtx(), C_Invoice_ID, null));
+    			mText.setPO(new MInvoice(C_Invoice_ID, null));
     			String message = mText.getMailText(true);
     			if (mText.isHtml())
-    				email.setMessageHTML(subject.toString(), message);
+    				email.setMessageInHTML(subject.toString(), message);
     			else
     			{
     				email.setSubject (subject.toString());

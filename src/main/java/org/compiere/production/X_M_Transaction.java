@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Transaction
@@ -53,11 +52,12 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
     /**
      * Standard Constructor
      */
-    public X_M_Transaction(Properties ctx, int M_Transaction_ID) {
-        super(ctx, M_Transaction_ID);
+    public X_M_Transaction(int M_Transaction_ID) {
+        super(M_Transaction_ID);
     }
-    public X_M_Transaction(Properties ctx, Row row) {
-        super(ctx, row);
+
+    public X_M_Transaction(Row row) {
+        super(row);
     }
 
     /**

@@ -18,8 +18,6 @@ import org.compiere.model.I_M_LocatorType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Properties;
-
 /**
  * Warehouse Locator Type Object
  *
@@ -47,8 +45,8 @@ public class MLocatorType extends X_M_LocatorType {
      * @param ctx              Context
      * @param M_LocatorType_ID id
      */
-    public MLocatorType(Properties ctx, int M_LocatorType_ID) {
-        super(ctx, M_LocatorType_ID);
+    public MLocatorType(int M_LocatorType_ID) {
+        super(M_LocatorType_ID);
         if (M_LocatorType_ID == 0) {
             setIsAvailableForReplenishment(true);
             setIsAvailableForReservation(true);
@@ -61,8 +59,8 @@ public class MLocatorType extends X_M_LocatorType {
      *
      * @param ctx context
      */
-    public MLocatorType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MLocatorType(Row row) {
+        super(row);
     } //	MLocatorType
 
     /**
@@ -72,13 +70,13 @@ public class MLocatorType extends X_M_LocatorType {
      * @param M_LocatorType_ID id
      * @return MLocator
      */
-    public static MLocatorType get(Properties ctx, int M_LocatorType_ID) {
+    public static MLocatorType get(int M_LocatorType_ID) {
         if (s_cache == null)
             s_cache = new CCache<Integer, MLocatorType>(I_M_LocatorType.Table_Name, 20);
         Integer key = M_LocatorType_ID;
         MLocatorType retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MLocatorType(ctx, M_LocatorType_ID);
+        retValue = new MLocatorType(M_LocatorType_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

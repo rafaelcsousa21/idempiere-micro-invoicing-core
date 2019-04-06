@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
 
@@ -18,15 +17,15 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
     /**
      * Standard Constructor
      */
-    public X_I_InOutLineConfirm(Properties ctx, int I_InOutLineConfirm_ID) {
-        super(ctx, I_InOutLineConfirm_ID);
+    public X_I_InOutLineConfirm(int I_InOutLineConfirm_ID) {
+        super(I_InOutLineConfirm_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_InOutLineConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_InOutLineConfirm(Row row) {
+        super(row);
     }
 
     /**

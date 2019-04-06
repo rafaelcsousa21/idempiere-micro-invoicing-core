@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_InvoiceBatchLine
@@ -25,15 +24,15 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
     /**
      * Standard Constructor
      */
-    public X_C_InvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
-        super(ctx, C_InvoiceBatchLine_ID);
+    public X_C_InvoiceBatchLine(int C_InvoiceBatchLine_ID) {
+        super(C_InvoiceBatchLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_InvoiceBatchLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_InvoiceBatchLine(Row row) {
+        super(row);
     }
 
     /**

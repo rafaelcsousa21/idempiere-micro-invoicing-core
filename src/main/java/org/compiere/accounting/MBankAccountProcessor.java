@@ -3,10 +3,8 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.CLogger;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 
 /**
@@ -22,18 +20,18 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
      */
     private static final long serialVersionUID = -9082774421123292838L;
 
-    public MBankAccountProcessor(Properties ctx, int ignored) {
-        super(ctx, 0);
+    public MBankAccountProcessor(int ignored) {
+        super(0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     }
 
-    public MBankAccountProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankAccountProcessor(Row row) {
+        super(row);
     }
 
     public MBankAccountProcessor(
-            Properties ctx, int C_BankAccount_ID, int C_PaymentProcessor_ID) {
-        this(ctx, 0);
+            int C_BankAccount_ID, int C_PaymentProcessor_ID) {
+        this(0);
         setBankAccountId(C_BankAccount_ID); // 	FK
         setPaymentProcessorId(C_PaymentProcessor_ID); // 	FK
     }
@@ -50,23 +48,23 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
      * @return Array of BankAccount[0] & PaymentProcessor[1] or null
      */
     public static MBankAccountProcessor[] find(
-            Properties ctx,
+
             String tender,
             String CCType,
             int AD_Client_ID,
             int C_Currency_ID,
             BigDecimal Amt) {
-        return MBaseBankAccountProcessorKt.findBankAccountProcessors(ctx, tender, CCType, AD_Client_ID, C_Currency_ID, Amt);
+        return MBaseBankAccountProcessorKt.findBankAccountProcessors(tender, CCType, AD_Client_ID, C_Currency_ID, Amt);
     } //  find
 
     @Override
     protected boolean beforeSave(boolean newRecord) {
         if (getPaymentProcessorId() > 0 && isActive()) {
             MPaymentProcessor pp =
-                    new MPaymentProcessor(getCtx(), getPaymentProcessorId());
+                    new MPaymentProcessor(getPaymentProcessorId());
             if (!pp.isActive())
                 throw new AdempiereException(
-                        Msg.translate(getCtx(), "InactivePaymentProcessor") + ". " + pp.toString());
+                        Msg.translate("InactivePaymentProcessor") + ". " + pp.toString());
         }
 
         return true;
@@ -82,7 +80,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     public boolean accepts(String TenderType, String CreditCardType) {
         if (getPaymentProcessorId() > 0) {
             MPaymentProcessor pp =
-                    new MPaymentProcessor(getCtx(), getPaymentProcessorId());
+                    new MPaymentProcessor(getPaymentProcessorId());
 
             return (MPayment.TENDERTYPE_DirectDeposit.equals(TenderType)
                     && isAcceptDirectDeposit()
@@ -129,14 +127,12 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     } //	accepts
 
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder("MBankAccountProcessor[")
-                        .append("C_BankAccount_ID=")
-                        .append(getBankAccountId())
-                        .append(",C_PaymentProcessor_ID=")
-                        .append(getPaymentProcessorId())
-                        .append("]");
-        return sb.toString();
+        return "MBankAccountProcessor[" +
+                "C_BankAccount_ID=" +
+                getBankAccountId() +
+                ",C_PaymentProcessor_ID=" +
+                getPaymentProcessorId() +
+                "]";
     }
 
 }

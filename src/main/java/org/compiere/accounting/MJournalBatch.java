@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -51,16 +50,11 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     /**
      * ************************************************************************ Standard Construvtore
      *
-     * @param ctx                context
      * @param GL_JournalBatch_ID id if 0 - create actual batch
      */
-    public MJournalBatch(Properties ctx, int GL_JournalBatch_ID) {
-        super(ctx, GL_JournalBatch_ID);
+    public MJournalBatch(int GL_JournalBatch_ID) {
+        super(GL_JournalBatch_ID);
         if (GL_JournalBatch_ID == 0) {
-            //	setGLJournalBatch_ID (0);	PK
-            //	setDescription (null);
-            //	setDocumentNo (null);
-            //	setDocumentTypeId (0);
             setPostingType(X_GL_JournalBatch.POSTINGTYPE_Actual);
             setDocAction(X_GL_JournalBatch.DOCACTION_Complete);
             setDocStatus(X_GL_JournalBatch.DOCSTATUS_Drafted);
@@ -77,8 +71,8 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @param ctx context
      */
-    public MJournalBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public MJournalBatch(Row row) {
+        super(row);
     } //	MJournalBatch
 
     /**
@@ -87,7 +81,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @param original original
      */
     public MJournalBatch(MJournalBatch original) {
-        this(original.getCtx(), 0);
+        this(0);
         setClientOrg(original);
         //
         setGLCategoryId(original.getGLCategoryId());
@@ -118,7 +112,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         super.setDateAcct(DateAcct);
         if (DateAcct == null) return;
         if (getPeriodId() != 0) return;
-        int C_Period_ID = MPeriod.getPeriodId(getCtx(), DateAcct, getOrgId());
+        int C_Period_ID = MPeriod.getPeriodId(DateAcct, getOrgId());
         if (C_Period_ID == 0) log.warning("Period not found");
         else setPeriodId(C_Period_ID);
     } //	setDateAcct
@@ -130,7 +124,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @return Array of lines
      */
     public MJournal[] getJournals(boolean requery) {
-        return MBaseJournalBatchKt.getJournalLines(getCtx(), getGLJournalBatchId());
+        return MBaseJournalBatchKt.getJournalLines(getGLJournalBatchId());
     } //	getJournals
 
     /**
@@ -145,7 +139,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         int lineCount = 0;
         MJournal[] fromJournals = jb.getJournals(false);
         for (int i = 0; i < fromJournals.length; i++) {
-            MJournal toJournal = new MJournal(getCtx(), 0);
+            MJournal toJournal = new MJournal(0);
             PO.copyValues(fromJournals[i], toJournal, getClientId(), getOrgId());
             toJournal.setGLJournalBatchId(getGLJournalBatchId());
             toJournal.setValueNoCheck("DocumentNo", null); // 	create new
@@ -216,10 +210,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
 
         //	Std Period open?
-        if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getOrgId())) {
+        if (!MPeriod.isOpen(getDateAcct(), dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
@@ -240,16 +234,16 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
                     && !X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
                     && !X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())
                     && !X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) {
-                        String status = journal.prepareIt();
-                        if (!DocAction.Companion.getSTATUS_InProgress().equals(status)) {
-                            journal.setDocStatus(status);
-                            journal.saveEx();
-                            m_processMsg = journal.getProcessMsg();
-                            return status;
-                        }
-                        journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_InProgress);
-                        journal.saveEx();
-                    }
+                String status = journal.prepareIt();
+                if (!DocAction.Companion.getSTATUS_InProgress().equals(status)) {
+                    journal.setDocStatus(status);
+                    journal.saveEx();
+                    m_processMsg = journal.getProcessMsg();
+                    return status;
+                }
+                journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_InProgress);
+                journal.saveEx();
+            }
             //
             TotalDr = TotalDr.add(journal.getTotalDr());
             TotalCr = TotalCr.add(journal.getTotalCr());
@@ -393,12 +387,12 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             if (getDateAcct().before(getDateDoc())) {
                 setDateAcct(getDateDoc());
-                MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
+                MPeriod.testPeriodOpen(getDateAcct(), getDocumentTypeId(), getOrgId());
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
@@ -459,12 +453,12 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             if (!X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
                     && !X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
                     && !X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())) {
-                        if (!journal.closeIt()) {
-                            m_processMsg = "Cannot close: " + journal.getSummary();
-                            return false;
-                        }
-                        journal.saveEx();
-                    }
+                if (!journal.closeIt()) {
+                    m_processMsg = "Cannot close: " + journal.getSummary();
+                    return false;
+                }
+                journal.saveEx();
+            }
         }
         // After Close
         m_processMsg =
@@ -572,7 +566,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         //	Reverse it
         MJournalBatch reverse = new MJournalBatch(this);
         reverse.setPeriodId(0);
-        Timestamp reversalDate = Env.getContextAsDate(getCtx(), "#Date");
+        Timestamp reversalDate = Env.getContextAsDate();
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
@@ -662,11 +656,11 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "TotalDr"))
+                .append(Msg.translate("TotalDr"))
                 .append("=")
                 .append(getTotalDr())
                 .append(" ")
-                .append(Msg.translate(getCtx(), "TotalCR"))
+                .append(Msg.translate("TotalCR"))
                 .append("=")
                 .append(getTotalCr())
                 .append(" (#")
@@ -703,7 +697,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();

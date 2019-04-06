@@ -8,7 +8,6 @@ import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for PP_Product_BOM
@@ -26,15 +25,15 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
     /**
      * Standard Constructor
      */
-    public X_PP_Product_BOM(Properties ctx, int PP_Product_BOM_ID) {
-        super(ctx, PP_Product_BOM_ID);
+    public X_PP_Product_BOM(int PP_Product_BOM_ID) {
+        super(PP_Product_BOM_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PP_Product_BOM(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PP_Product_BOM(Row row) {
+        super(row);
     }
 
     /**
@@ -108,7 +107,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
-                MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
+                MTable.get(org.compiere.model.I_C_UOM.Table_Name)
                         .getPO(getUOMId());
     }
 
@@ -189,7 +188,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
+                MTable.get(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getAttributeSetInstanceId());
     }
 
@@ -217,7 +216,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_M_ChangeNotice getChangeNotice() throws RuntimeException {
         return (org.compiere.model.I_M_ChangeNotice)
-                MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
+                MTable.get(org.compiere.model.I_M_ChangeNotice.Table_Name)
                         .getPO(getChangeNoticeId());
     }
 
@@ -244,7 +243,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -275,7 +274,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @return Alphanumeric identifier of the entity
      */
     public String getName() {
-        return (String) getValue(HasName.Companion.getCOLUMNNAME_Name());
+        return (String) getValue(HasName.COLUMNNAME_Name);
     }
 
     /**
@@ -284,7 +283,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Name Alphanumeric identifier of the entity
      */
     public void setName(String Name) {
-        setValue(HasName.Companion.getCOLUMNNAME_Name(), Name);
+        setValue(HasName.COLUMNNAME_Name, Name);
     }
 
     /**

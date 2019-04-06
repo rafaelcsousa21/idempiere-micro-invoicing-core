@@ -7,7 +7,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Project Phase Task Model
@@ -27,16 +26,11 @@ public class MProjectTask extends X_C_ProjectTask {
      *
      * @param ctx              context
      * @param C_ProjectTask_ID id
-     * @param trxName          transaction
      */
-    public MProjectTask(Properties ctx, int C_ProjectTask_ID) {
-        super(ctx, C_ProjectTask_ID);
+    public MProjectTask(int C_ProjectTask_ID) {
+        super(C_ProjectTask_ID);
         if (C_ProjectTask_ID == 0) {
-            //	setProjectTaskId (0);	//	PK
-            //	setProjectPhaseId (0);	//	Parent
-            //	setTask_ID (0);			//	FK
             setSeqNo(0);
-            //	setName (null);
             setQty(Env.ZERO);
         }
     } //	MProjectTask
@@ -44,12 +38,10 @@ public class MProjectTask extends X_C_ProjectTask {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MProjectTask(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectTask(Row row) {
+        super(row);
     } //	MProjectTask
 
     /**
@@ -58,7 +50,7 @@ public class MProjectTask extends X_C_ProjectTask {
      * @param phase parent
      */
     public MProjectTask(MProjectPhase phase) {
-        this(phase.getCtx(), 0);
+        this(0);
         setClientOrg(phase);
         setProjectPhaseId(phase.getProjectPhaseId());
     } //	MProjectTask
@@ -90,7 +82,7 @@ public class MProjectTask extends X_C_ProjectTask {
     public MProjectLine[] getLines() {
         final String whereClause = "C_ProjectPhase_ID=? and C_ProjectTask_ID=? ";
         List<MProjectLine> list =
-                new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
+                new Query(I_C_ProjectLine.Table_Name, whereClause)
                         .setParameters(getProjectPhaseId(), getProjectTaskId())
                         .setOrderBy("Line")
                         .list();
@@ -112,9 +104,9 @@ public class MProjectTask extends X_C_ProjectTask {
         //
         MProjectLine[] fromLines = fromTask.getLines();
         //	Copy Project Lines
-        for (int i = 0; i < fromLines.length; i++) {
-            MProjectLine toLine = new MProjectLine(getCtx(), 0);
-            PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
+        for (MProjectLine fromLine : fromLines) {
+            MProjectLine toLine = new MProjectLine(0);
+            PO.copyValues(fromLine, toLine, getClientId(), getOrgId());
             toLine.setProjectId(getProjectId(false));
             toLine.setProjectPhaseId(getProjectPhaseId());
             toLine.setProjectTaskId(getProjectTaskId());

@@ -57,14 +57,14 @@ public class OrderRePrice extends SvrProcess {
 
         StringBuilder retValue = new StringBuilder();
         if (p_C_Order_ID != 0) {
-            MOrder order = new MOrder(getCtx(), p_C_Order_ID);
+            MOrder order = new MOrder(p_C_Order_ID);
             BigDecimal oldPrice = order.getGrandTotal();
             MOrderLine[] lines = order.getLines();
             for (int i = 0; i < lines.length; i++) {
                 lines[i].setPrice(order.getPriceListId());
                 lines[i].saveEx();
             }
-            order = new MOrder(getCtx(), p_C_Order_ID);
+            order = new MOrder(p_C_Order_ID);
             BigDecimal newPrice = order.getGrandTotal();
             retValue =
                     new StringBuilder()
@@ -75,7 +75,7 @@ public class OrderRePrice extends SvrProcess {
                             .append(newPrice);
         }
         if (p_C_Invoice_ID != 0) {
-            MInvoice invoice = new MInvoice(getCtx(), p_C_Invoice_ID);
+            MInvoice invoice = new MInvoice(p_C_Invoice_ID);
             BigDecimal oldPrice = invoice.getGrandTotal();
             MInvoiceLine[] lines = invoice.getLines(false);
             for (int i = 0; i < lines.length; i++) {
@@ -85,7 +85,7 @@ public class OrderRePrice extends SvrProcess {
                     lines[i].saveEx();
                 }
             }
-            invoice = new MInvoice(getCtx(), p_C_Invoice_ID);
+            invoice = new MInvoice(p_C_Invoice_ID);
             BigDecimal newPrice = invoice.getGrandTotal();
             if (retValue.length() > 0) retValue.append(Env.NL);
             retValue

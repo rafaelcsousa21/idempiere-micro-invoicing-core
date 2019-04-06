@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Invoice
@@ -90,8 +89,8 @@ public class X_C_Invoice extends PO {
     /**
      * Standard Constructor
      */
-    public X_C_Invoice(Properties ctx, int C_Invoice_ID) {
-        super(ctx, C_Invoice_ID);
+    public X_C_Invoice(int C_Invoice_ID) {
+        super(C_Invoice_ID);
         /**
          * if (C_Invoice_ID == 0) { setBusinessPartnerId (0); setBusinessPartnerLocationId (0);
          * setCurrencyId (0); // @C_Currency_ID@ setDocumentTypeId (0); // 0 setTargetDocumentTypeId (0);
@@ -110,8 +109,8 @@ public class X_C_Invoice extends PO {
     /**
      * Load Constructor
      */
-    public X_C_Invoice(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Invoice(Row row) {
+        super(row);
     }
 
     /**
@@ -193,7 +192,7 @@ public class X_C_Invoice extends PO {
 
     public org.compiere.model.I_C_BPartner getBPartner() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner)
-                MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
+                MTable.get(org.compiere.model.I_C_BPartner.Table_Name)
                         .getPO(getBusinessPartnerId());
     }
 
@@ -339,7 +338,7 @@ public class X_C_Invoice extends PO {
 
     public org.compiere.model.I_C_Currency getCurrency() throws RuntimeException {
         return (org.compiere.model.I_C_Currency)
-                MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
+                MTable.get(org.compiere.model.I_C_Currency.Table_Name)
                         .getPO(getCurrencyId());
     }
 
@@ -387,7 +386,7 @@ public class X_C_Invoice extends PO {
 
     public org.compiere.model.I_C_DocType getDocTypeTarget() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
-                MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getTargetDocumentTypeId());
     }
 
@@ -445,7 +444,7 @@ public class X_C_Invoice extends PO {
 
     public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
-                MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
+                MTable.get(org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getOrderId());
     }
 
@@ -853,7 +852,7 @@ public class X_C_Invoice extends PO {
 
     public org.compiere.model.I_M_PriceList getPriceList() throws RuntimeException {
         return (org.compiere.model.I_M_PriceList)
-                MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
+                MTable.get(org.compiere.model.I_M_PriceList.Table_Name)
                         .getPO(getPriceListId());
     }
 

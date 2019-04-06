@@ -6,7 +6,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -45,8 +44,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
      * @param GL_DistributionLine_ID id
      * @param trxName                transaction
      */
-    public MDistributionLine(Properties ctx, int GL_DistributionLine_ID) {
-        super(ctx, GL_DistributionLine_ID);
+    public MDistributionLine(int GL_DistributionLine_ID) {
+        super(GL_DistributionLine_ID);
         if (GL_DistributionLine_ID == 0) {
             //	setGLDistributionId (0);		//	Parent
             //	setLine (0);
@@ -76,8 +75,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MDistributionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDistributionLine(Row row) {
+        super(row);
     } //	MDistributionLine
 
     /**
@@ -87,7 +86,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      */
     public MDistribution getParent() {
         if (m_parent == null)
-            m_parent = new MDistribution(getCtx(), getGLDistributionId());
+            m_parent = new MDistribution(getGLDistributionId());
         return m_parent;
     } //	getParent
 
@@ -108,7 +107,6 @@ public class MDistributionLine extends X_GL_DistributionLine {
     public MAccount getAccount() {
         MAccount acct =
                 MAccount.get(
-                        getCtx(),
                         m_account.getClientId(),
                         isOverwriteOrg() && getOrgId() != 0 ? getOrgId() : m_account.getOrgId(),
                         m_account.getAccountingSchemaId(),
@@ -230,12 +228,12 @@ public class MDistributionLine extends X_GL_DistributionLine {
 
         //	Account Overwrite cannot be 0
         if (isOverwriteAcct() && getAccountId() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@Account_ID@ = 0"));
+            log.saveError("Error", Msg.parseTranslation("@Account_ID@ = 0"));
             return false;
         }
         //	Org Overwrite cannot be 0
         if (isOverwriteOrg() && getOrgId() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@Org_ID@ = 0"));
+            log.saveError("Error", Msg.parseTranslation("@Org_ID@ = 0"));
             return false;
         }
         return true;

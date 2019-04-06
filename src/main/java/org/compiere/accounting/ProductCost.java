@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -88,12 +87,11 @@ public class ProductCost {
      * @param ctx                       context
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID asi
-     * @param trxName                   trx
      */
     public ProductCost(
-            Properties ctx, int M_Product_ID, int M_AttributeSetInstance_ID) {
+            int M_Product_ID, int M_AttributeSetInstance_ID) {
         m_M_Product_ID = M_Product_ID;
-        if (m_M_Product_ID != 0) m_product = new MProduct(ctx, M_Product_ID);
+        if (m_M_Product_ID != 0) m_product = new MProduct(M_Product_ID);
         m_M_AttributeSetInstance_ID = M_AttributeSetInstance_ID;
     } //	ProductCost
 
@@ -143,8 +141,8 @@ public class ProductCost {
                         + "WHERE M_Product_ID=? AND C_AcctSchema_ID=?";
         //
         int validCombination_ID = 0;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, m_M_Product_ID);
@@ -153,13 +151,9 @@ public class ProductCost {
             if (rs.next()) validCombination_ID = rs.getInt(AcctType);
         } catch (SQLException e) {
             log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         if (validCombination_ID == 0) return null;
-        return MAccount.get(as.getCtx(), validCombination_ID);
+        return MAccount.get(validCombination_ID);
     } //  getAccount
 
     /**
@@ -204,7 +198,7 @@ public class ProductCost {
             pstmt = null;
         }
         if (validCombination_ID == 0) return null;
-        return MAccount.get(as.getCtx(), validCombination_ID);
+        return MAccount.get(validCombination_ID);
     } //  getAccountDefault
 
     /**
@@ -308,7 +302,7 @@ public class ProductCost {
   		price = PriceList;
   	//  Convert
   	if (price != null && price.compareTo(Env.ZERO)!=0)
-  		price = MConversionRate.convert (as.getCtx(),
+  		price = MConversionRate.convert (
   			price, C_Currency_ID, as.getCurrencyId(),
   			as. getClientId(), 0);
   	return price;
@@ -364,7 +358,7 @@ public class ProductCost {
   		cost = PriceList;
   	//  Convert - standard precision!! - should be costing precision
   	if (cost != null && cost.compareTo(Env.ZERO)!=0)
-  		cost = MConversionRate.convert (as.getCtx(),
+  		cost = MConversionRate.convert (
   			cost, C_Currency_ID, as.getCurrencyId(), as. getClientId(), as. getOrgId());
   	return cost;
   }   //  getPOCost*/

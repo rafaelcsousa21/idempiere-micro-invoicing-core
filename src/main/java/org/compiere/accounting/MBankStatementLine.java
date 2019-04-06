@@ -9,7 +9,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -39,11 +38,10 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
     /**
      * Standard Constructor
      *
-     * @param ctx                    context
      * @param C_BankStatementLine_ID id
      */
-    public MBankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
-        super(ctx, C_BankStatementLine_ID);
+    public MBankStatementLine(int C_BankStatementLine_ID) {
+        super(C_BankStatementLine_ID);
         if (C_BankStatementLine_ID == 0) {
             setStmtAmt(Env.ZERO);
             setTrxAmt(Env.ZERO);
@@ -55,11 +53,9 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MBankStatementLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankStatementLine(Row row) {
+        super(row);
     } //	MBankStatementLine
 
     /**
@@ -68,7 +64,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      * @param statement Bank Statement that the line is part of
      */
     public MBankStatementLine(MBankStatement statement) {
-        this(statement.getCtx(), 0);
+        this(0);
         setClientOrg(statement);
         setBankStatementId(statement.getBankStatementId());
         setStatementLineDate(statement.getStatementDate());
@@ -138,7 +134,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "C_BankStatementLine"));
+            log.saveError("ParentComplete", Msg.translate("C_BankStatementLine"));
             return false;
         }
         //	Calculate Charge = Statement - trx - Interest
@@ -148,7 +144,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         if (amt.compareTo(getChargeAmt()) != 0) setChargeAmt(amt);
         //
         if (getChargeAmt().signum() != 0 && getChargeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_Charge_ID"));
+            log.saveError("FillMandatory", Msg.getElement("C_Charge_ID"));
             return false;
         }
         // Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ]
@@ -166,12 +162,12 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
 
         //	Set References
         if (getPaymentId() != 0 && getBusinessPartnerId() == 0) {
-            MPayment payment = new MPayment(getCtx(), getPaymentId());
+            MPayment payment = new MPayment(getPaymentId());
             setBusinessPartnerId(payment.getBusinessPartnerId());
             if (payment.getInvoiceId() != 0) setInvoiceId(payment.getInvoiceId());
         }
         if (getInvoiceId() != 0 && getBusinessPartnerId() == 0) {
-            MInvoice invoice = new MInvoice(getCtx(), getInvoiceId());
+            MInvoice invoice = new MInvoice(getInvoiceId());
             setBusinessPartnerId(invoice.getBusinessPartnerId());
         }
 
@@ -185,7 +181,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      */
     public MBankStatement getParent() {
         if (m_parent == null)
-            m_parent = new MBankStatement(getCtx(), getBankStatementId());
+            m_parent = new MBankStatement(getBankStatementId());
         return m_parent;
     } //	getParent
 

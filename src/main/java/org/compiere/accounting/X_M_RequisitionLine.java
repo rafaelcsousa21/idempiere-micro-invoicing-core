@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_RequisitionLine
@@ -25,15 +24,15 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
     /**
      * Standard Constructor
      */
-    public X_M_RequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
-        super(ctx, M_RequisitionLine_ID);
+    public X_M_RequisitionLine(int M_RequisitionLine_ID) {
+        super(M_RequisitionLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_RequisitionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_RequisitionLine(Row row) {
+        super(row);
     }
 
     /**
@@ -215,7 +214,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 

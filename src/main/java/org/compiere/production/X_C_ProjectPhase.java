@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_ProjectPhase
@@ -24,8 +23,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
     /**
      * Standard Constructor
      */
-    public X_C_ProjectPhase(Properties ctx, int C_ProjectPhase_ID) {
-        super(ctx, C_ProjectPhase_ID);
+    public X_C_ProjectPhase(int C_ProjectPhase_ID) {
+        super(C_ProjectPhase_ID);
         /**
          * if (C_ProjectPhase_ID == 0) { setCommittedAmt (Env.ZERO); setProjectId (0);
          * setProjectPhaseId (0); setIsCommitCeiling (false); setIsComplete (false); setName (null);
@@ -38,8 +37,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
     /**
      * Load Constructor
      */
-    public X_C_ProjectPhase(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ProjectPhase(Row row) {
+        super(row);
     }
 
     /**

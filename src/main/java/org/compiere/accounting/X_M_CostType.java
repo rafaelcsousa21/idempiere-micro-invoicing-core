@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_CostType;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_CostType
  *
@@ -22,15 +20,15 @@ public class X_M_CostType extends BasePOName implements I_M_CostType {
     /**
      * Standard Constructor
      */
-    public X_M_CostType(Properties ctx, int M_CostType_ID) {
-        super(ctx, M_CostType_ID);
+    public X_M_CostType(int M_CostType_ID) {
+        super(M_CostType_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_CostType(Row row) {
+        super(row);
     }
 
     /**

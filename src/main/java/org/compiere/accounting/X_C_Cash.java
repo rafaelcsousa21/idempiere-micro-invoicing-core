@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Cash
@@ -61,15 +60,15 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
     /**
      * Standard Constructor
      */
-    public X_C_Cash(Properties ctx, int C_Cash_ID) {
-        super(ctx, C_Cash_ID);
+    public X_C_Cash(int C_Cash_ID) {
+        super(C_Cash_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Cash(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Cash(Row row) {
+        super(row);
     }
 
     /**

@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -62,11 +61,10 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     /**
      * Standard Constructor
      *
-     * @param ctx                context
      * @param C_BankStatement_ID id
      */
-    public MBankStatement(Properties ctx, int C_BankStatement_ID) {
-        super(ctx, C_BankStatement_ID);
+    public MBankStatement(int C_BankStatement_ID) {
+        super(C_BankStatement_ID);
         if (C_BankStatement_ID == 0) {
             //	setBankAccountId (0);	//	parent
             setStatementDate(new Timestamp(System.currentTimeMillis())); // @Date@
@@ -84,11 +82,9 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
 
     /**
      * Load Constructor
-     *
-     * @param ctx Current context
      */
-    public MBankStatement(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankStatement(Row row) {
+        super(row);
     } //	MBankStatement
 
     /**
@@ -98,7 +94,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @param isManual Manual statement
      */
     public MBankStatement(MBankAccount account, boolean isManual) {
-        this(account.getCtx(), 0);
+        this(0);
         setClientOrg(account);
         setBankAccountId(account.getBankAccountId());
         setStatementDate(new Timestamp(System.currentTimeMillis()));
@@ -130,7 +126,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         //
         final String whereClause = I_C_BankStatementLine.COLUMNNAME_C_BankStatement_ID + "=?";
         List<MBankStatementLine> list =
-                new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause)
+                new Query(I_C_BankStatementLine.Table_Name, whereClause)
                         .setParameters(getBankStatementId())
                         .setOrderBy("Line")
                         .list();
@@ -177,7 +173,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @return bank Account
      */
     public MBankAccount getBankAccount() {
-        return MBankAccount.get(getCtx(), getBankAccountId());
+        return MBankAccount.get(getBankAccountId());
     } //	getBankAccount
 
     /**
@@ -266,7 +262,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
 
         //	Std Period open?
         MPeriod.testPeriodOpen(
-                getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
+                getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
         MBankStatementLine[] lines = getLines(true);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
@@ -285,8 +281,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         }
         setStatementDifference(total);
         setEndingBalance(getBeginningBalance().add(total));
-        MPeriod.testPeriodOpen(getCtx(), minDate, MDocType.DOCBASETYPE_BankStatement, 0);
-        MPeriod.testPeriodOpen(getCtx(), maxDate, MDocType.DOCBASETYPE_BankStatement, 0);
+        MPeriod.testPeriodOpen(minDate, MDocType.DOCBASETYPE_BankStatement, 0);
+        MPeriod.testPeriodOpen(maxDate, MDocType.DOCBASETYPE_BankStatement, 0);
 
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
@@ -349,7 +345,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         for (int i = 0; i < lines.length; i++) {
             MBankStatementLine line = lines[i];
             if (line.getPaymentId() != 0) {
-                MPayment payment = new MPayment(getCtx(), line.getPaymentId());
+                MPayment payment = new MPayment(line.getPaymentId());
                 payment.setIsReconciled(true);
                 payment.saveEx();
             }
@@ -400,10 +396,10 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 && !X_C_BankStatement.DOCSTATUS_InProgress.equals(getDocStatus())
                 && !X_C_BankStatement.DOCSTATUS_Approved.equals(getDocStatus())
                 && !X_C_BankStatement.DOCSTATUS_NotApproved.equals(getDocStatus())) {
-                    MPeriod.testPeriodOpen(
-                            getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
-                    MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getBankStatementId());
-                }
+            MPeriod.testPeriodOpen(
+                    getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
+            MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getBankStatementId());
+        }
         //	Std Period open?
 
         if (isProcessed()) {
@@ -422,27 +418,27 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
             MBankStatementLine line = lines[i];
             if (line.getStmtAmt().compareTo(Env.ZERO) != 0) {
                 StringBuilder description =
-                        new StringBuilder(Msg.getMsg(getCtx(), "Voided"))
+                        new StringBuilder(Msg.getMsg("Voided"))
                                 .append(" (")
-                                .append(Msg.translate(getCtx(), "StmtAmt"))
+                                .append(Msg.translate("StmtAmt"))
                                 .append("=")
                                 .append(line.getStmtAmt());
                 if (line.getTrxAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate(getCtx(), "TrxAmt"))
+                            .append(Msg.translate("TrxAmt"))
                             .append("=")
                             .append(line.getTrxAmt());
                 if (line.getChargeAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate(getCtx(), "ChargeAmt"))
+                            .append(Msg.translate("ChargeAmt"))
                             .append("=")
                             .append(line.getChargeAmt());
                 if (line.getInterestAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate(getCtx(), "InterestAmt"))
+                            .append(Msg.translate("InterestAmt"))
                             .append("=")
                             .append(line.getInterestAmt());
                 description.append(")");
@@ -453,7 +449,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 line.setChargeAmt(Env.ZERO);
                 line.setInterestAmt(Env.ZERO);
                 if (line.getPaymentId() != 0) {
-                    MPayment payment = new MPayment(getCtx(), line.getPaymentId());
+                    MPayment payment = new MPayment(line.getPaymentId());
                     payment.setIsReconciled(false);
                     payment.saveEx();
                     line.setPaymentId(0);
@@ -461,7 +457,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 line.saveEx();
             }
         }
-        addDescription(Msg.getMsg(getCtx(), "Voided"));
+        addDescription(Msg.getMsg("Voided"));
         setStatementDifference(Env.ZERO);
 
         // After Void
@@ -568,7 +564,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         sb.append(getName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "StatementDifference"))
+                .append(Msg.translate("StatementDifference"))
                 .append("=")
                 .append(getStatementDifference())
                 .append(" (#")
@@ -615,7 +611,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @return C_Currency_ID
      */
     public int getCurrencyId() {
-        //	MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+        //	MPriceList pl = MPriceList.get(getPriceListId());
         //	return pl.getCurrencyId();
         return 0;
     } //	getCurrencyId

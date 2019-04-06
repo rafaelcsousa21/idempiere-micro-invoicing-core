@@ -6,7 +6,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.KeyNamePair;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  * Default Accounts for MAcctSchema
@@ -31,8 +30,8 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @param C_AcctSchema_ID parent
      * @param trxName         transaction
      */
-    public MAcctSchemaDefault(Properties ctx, int C_AcctSchema_ID) {
-        super(ctx, C_AcctSchema_ID);
+    public MAcctSchemaDefault(int C_AcctSchema_ID) {
+        super(C_AcctSchema_ID);
     } //	MAcctSchemaDefault
 
     /**
@@ -42,8 +41,8 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchemaDefault(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAcctSchemaDefault(Row row) {
+        super(row);
     } //	MAcctSchemaDefault
 
     /**
@@ -53,9 +52,9 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @param C_AcctSchema_ID id
      * @return defaults
      */
-    public static MAcctSchemaDefault get(Properties ctx, int C_AcctSchema_ID) {
+    public static MAcctSchemaDefault get(int C_AcctSchema_ID) {
         final String whereClause = "C_AcctSchema_ID=?";
-        return new Query(ctx, I_C_AcctSchema_Default.Table_Name, whereClause)
+        return new Query(I_C_AcctSchema_Default.Table_Name, whereClause)
                 .setParameters(C_AcctSchema_ID)
                 .firstOnly();
     } //	get

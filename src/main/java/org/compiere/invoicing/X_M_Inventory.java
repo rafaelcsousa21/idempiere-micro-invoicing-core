@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Inventory
@@ -78,8 +77,8 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
     /**
      * Standard Constructor
      */
-    public X_M_Inventory(Properties ctx, int M_Inventory_ID) {
-        super(ctx, M_Inventory_ID);
+    public X_M_Inventory(int M_Inventory_ID) {
+        super(M_Inventory_ID);
         /**
          * if (M_Inventory_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setInventoryId (0);
@@ -91,8 +90,8 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
     /**
      * Load Constructor
      */
-    public X_M_Inventory(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Inventory(Row row) {
+        super(row);
     }
 
     /**
@@ -144,7 +143,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
 
     public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
-                MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 

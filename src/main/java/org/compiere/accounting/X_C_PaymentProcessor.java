@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaymentProcessor
@@ -24,15 +23,15 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
     /**
      * Standard Constructor
      */
-    public X_C_PaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
-        super(ctx, C_PaymentProcessor_ID);
+    public X_C_PaymentProcessor(int C_PaymentProcessor_ID) {
+        super(C_PaymentProcessor_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_PaymentProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaymentProcessor(Row row) {
+        super(row);
     }
 
     /**
@@ -280,7 +279,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
 
     public org.compiere.model.I_C_BankAccount getBankAccount() throws RuntimeException {
         return (org.compiere.model.I_C_BankAccount)
-                MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
+                MTable.get(org.compiere.model.I_C_BankAccount.Table_Name)
                         .getPO(getBankAccountId());
     }
 

@@ -7,16 +7,15 @@ import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.convertString
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 import java.util.logging.Level
 
 /**
  * Basic client class that allows setting up a new client info
  */
 open class MBaseClient : org.compiere.orm.MClient {
-    constructor(ctx: Properties, ID: Int) : super(ctx, ID)
-    constructor(ctx: Properties, rs: Row) : super(ctx, rs)
-    constructor(ctx: Properties, clientId: Int, createNew: Boolean) : super(ctx, clientId, createNew)
+    constructor(Id: Int) : super(Id)
+    constructor(rs: Row) : super(rs)
+    constructor(clientId: Int, createNew: Boolean) : super(clientId, createNew)
 
     /** Client Info Setup Tree for Account  */
     private var m_AD_Tree_Account_ID: Int = 0
@@ -133,8 +132,7 @@ open class MBaseClient : org.compiere.orm.MClient {
             AD_Tree_SalesRegion_ID,
             AD_Tree_Product_ID,
             AD_Tree_Campaign_ID,
-            AD_Tree_Activity_ID,
-            null
+            AD_Tree_Activity_ID
         )
         val result = clientInfo.save()
         return result

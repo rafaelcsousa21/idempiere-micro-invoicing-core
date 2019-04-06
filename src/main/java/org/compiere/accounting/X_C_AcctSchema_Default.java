@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_AcctSchema_Default
  *
@@ -22,8 +20,8 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
     /**
      * Standard Constructor
      */
-    public X_C_AcctSchema_Default(Properties ctx, int C_AcctSchema_Default_ID) {
-        super(ctx, C_AcctSchema_Default_ID);
+    public X_C_AcctSchema_Default(int C_AcctSchema_Default_ID) {
+        super(C_AcctSchema_Default_ID);
         /**
          * if (C_AcctSchema_Default_ID == 0) { setB_Asset_Acct (0); setB_InterestExp_Acct (0);
          * setB_InterestRev_Acct (0); setB_InTransit_Acct (0); setB_PaymentSelect_Acct (0);
@@ -43,8 +41,8 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_Default(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AcctSchema_Default(Row row) {
+        super(row);
     }
 
     /**

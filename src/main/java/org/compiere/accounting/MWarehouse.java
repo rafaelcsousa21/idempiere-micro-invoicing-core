@@ -12,7 +12,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
@@ -46,12 +45,10 @@ public class MWarehouse extends X_M_Warehouse {
     /**
      * Standard Constructor
      *
-     * @param ctx            context
      * @param M_Warehouse_ID id
-     * @param trxName        transaction
      */
-    public MWarehouse(Properties ctx, int M_Warehouse_ID) {
-        super(ctx, M_Warehouse_ID);
+    public MWarehouse(int M_Warehouse_ID) {
+        super(M_Warehouse_ID);
         if (M_Warehouse_ID == 0) {
             //	setValue (null);
             //	setName (null);
@@ -62,13 +59,9 @@ public class MWarehouse extends X_M_Warehouse {
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
-    public MWarehouse(Properties ctx, Row row) {
-        super(ctx, row);
+    public MWarehouse(Row row) {
+        super(row);
     } //	MWarehouse
 
     /**
@@ -77,7 +70,7 @@ public class MWarehouse extends X_M_Warehouse {
      * @param org parent
      */
     public MWarehouse(MOrg org) {
-        this(org.getCtx(), 0);
+        this(0);
         setClientOrg(org);
         setSearchKey(org.getSearchKey());
         setName(org.getName());
@@ -87,17 +80,15 @@ public class MWarehouse extends X_M_Warehouse {
     /**
      * Retrieves warehouse from cache under transaction scope
      *
-     * @param ctx            context
      * @param M_Warehouse_ID id of warehouse to load
-     * @param trxName        transaction name
      * @return warehouse
      */
-    public static MWarehouse get(Properties ctx, int M_Warehouse_ID) {
-        Integer key = new Integer(M_Warehouse_ID);
+    public static MWarehouse get(int M_Warehouse_ID) {
+        Integer key = M_Warehouse_ID;
         MWarehouse retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         //
-        retValue = new MWarehouse(ctx, M_Warehouse_ID);
+        retValue = new MWarehouse(M_Warehouse_ID);
         s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -105,14 +96,13 @@ public class MWarehouse extends X_M_Warehouse {
     /**
      * Get Warehouses for Org
      *
-     * @param ctx       context
      * @param AD_Org_ID id
      * @return warehouse
      */
-    public static MWarehouse[] getForOrg(Properties ctx, int AD_Org_ID) {
+    public static MWarehouse[] getForOrg(int AD_Org_ID) {
         final String whereClause = "AD_Org_ID=?";
         List<MWarehouse> list =
-                new Query(ctx, I_M_Warehouse.Table_Name, whereClause)
+                new Query(I_M_Warehouse.Table_Name, whereClause)
                         .setParameters(AD_Org_ID)
                         .setOnlyActiveRecords(true)
                         .setOrderBy(I_M_Warehouse.COLUMNNAME_M_Warehouse_ID)
@@ -131,7 +121,7 @@ public class MWarehouse extends X_M_Warehouse {
         //
         final String whereClause = "M_Warehouse_ID=?";
         List<PO> list =
-                new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
+                new Query(I_M_Locator.Table_Name, whereClause)
                         .setParameters(getWarehouseId())
                         .setOnlyActiveRecords(true)
                         .setOrderBy("X,Y,Z")
@@ -157,7 +147,7 @@ public class MWarehouse extends X_M_Warehouse {
         } else {
             String whereClause = "M_Warehouse_ID=?";
             List<PO> list =
-                    new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
+                    new Query(I_M_Locator.Table_Name, whereClause)
                             .setParameters(getWarehouseId())
                             .setOnlyActiveRecords(false)
                             .list();
@@ -180,7 +170,6 @@ public class MWarehouse extends X_M_Warehouse {
      * Before Save
      *
      * @param newRecord new
-     * @param success   success
      * @return success
      */
     @Override
@@ -197,18 +186,18 @@ public class MWarehouse extends X_M_Warehouse {
 
             int prdid = getSQLValueEx(sql, getWarehouseId());
             if (prdid > 0) {
-                log.saveError("Error", Msg.translate(getCtx(), "NegativeOnhandExists"));
+                log.saveError("Error", Msg.translate("NegativeOnhandExists"));
                 return false;
             }
         }
 
         if (getOrgId() == 0) {
-            int context_AD_Org_ID = Env.getOrgId(getCtx());
+            int context_AD_Org_ID = Env.getOrgId();
             if (context_AD_Org_ID != 0) {
                 setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
             } else {
-                log.saveError("Error", Msg.translate(getCtx(), "Org0NotAllowed"));
+                log.saveError("Error", Msg.translate("Org0NotAllowed"));
                 return false;
             }
         }

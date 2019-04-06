@@ -56,7 +56,7 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
         if (m_order == null) {
             if (log.isLoggable(Level.INFO))
                 log.info("New Order for " + bp + ", Project=" + tel.getProjectId());
-            m_order = new MOrder(getCtx(), 0);
+            m_order = new MOrder(0);
             m_order.setOrgId(tel.getOrgId());
             m_order.setTargetDocumentTypeId(MOrder.DocSubTypeSO_OnCredit);
             //
@@ -79,7 +79,7 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
             if (tel.getProjectId() != 0) {
                 m_order.setProjectId(tel.getProjectId());
                 //	Optionally Overwrite BP Price list from Project
-                MProject project = new MProject(getCtx(), tel.getProjectId());
+                MProject project = new MProject(tel.getProjectId());
                 if (project.getPriceListId() != 0)
                     m_order.setPriceListId(project.getPriceListId());
             }
@@ -117,7 +117,6 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
             if (tel.getCurrencyId() != m_order.getCurrencyId())
                 price =
                         MConversionRate.convert(
-                                getCtx(),
                                 price,
                                 tel.getCurrencyId(),
                                 m_order.getCurrencyId(),

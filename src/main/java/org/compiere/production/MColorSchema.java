@@ -5,7 +5,6 @@ import org.compiere.model.I_PA_ColorSchema;
 import org.idempiere.common.util.CCache;
 
 import java.awt.*;
-import java.util.Properties;
 
 /**
  * Performance Color Schema
@@ -31,8 +30,8 @@ public class MColorSchema extends X_PA_ColorSchema {
      * @param PA_ColorSchema_ID id
      * @param trxName           trx
      */
-    public MColorSchema(Properties ctx, int PA_ColorSchema_ID) {
-        super(ctx, PA_ColorSchema_ID);
+    public MColorSchema(int PA_ColorSchema_ID) {
+        super(PA_ColorSchema_ID);
     } //	MColorSchema
 
     /**
@@ -40,8 +39,8 @@ public class MColorSchema extends X_PA_ColorSchema {
      *
      * @param ctx context
      */
-    public MColorSchema(Properties ctx, Row row) {
-        super(ctx, row);
+    public MColorSchema(Row row) {
+        super(row);
     } //	MColorSchema
 
     /**
@@ -52,8 +51,8 @@ public class MColorSchema extends X_PA_ColorSchema {
      * @param percent           percent
      * @return color
      */
-    public static Color getColor(Properties ctx, int PA_ColorSchema_ID, int percent) {
-        MColorSchema cs = get(ctx, PA_ColorSchema_ID);
+    public static Color getColor(int PA_ColorSchema_ID, int percent) {
+        MColorSchema cs = get(PA_ColorSchema_ID);
         return cs.getColor(percent);
     } //	getColor
 
@@ -64,16 +63,16 @@ public class MColorSchema extends X_PA_ColorSchema {
      * @param PA_ColorSchema_ID id
      * @return MColorSchema
      */
-    public static MColorSchema get(Properties ctx, int PA_ColorSchema_ID) {
+    public static MColorSchema get(int PA_ColorSchema_ID) {
         if (PA_ColorSchema_ID == 0) {
-            MColorSchema retValue = new MColorSchema(ctx, 0);
+            MColorSchema retValue = new MColorSchema(0);
             retValue.setDefault();
             return retValue;
         }
         Integer key = PA_ColorSchema_ID;
         MColorSchema retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MColorSchema(ctx, PA_ColorSchema_ID);
+        retValue = new MColorSchema(PA_ColorSchema_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

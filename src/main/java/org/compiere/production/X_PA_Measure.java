@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for PA_Measure
@@ -60,15 +59,15 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
     /**
      * Standard Constructor
      */
-    public X_PA_Measure(Properties ctx, int PA_Measure_ID) {
-        super(ctx, PA_Measure_ID);
+    public X_PA_Measure(int PA_Measure_ID) {
+        super(PA_Measure_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_Measure(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_Measure(Row row) {
+        super(row);
     }
 
     /**

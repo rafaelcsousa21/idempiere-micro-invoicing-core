@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Year;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Year
  *
@@ -22,16 +20,16 @@ public class X_C_Year extends PO implements I_C_Year {
     /**
      * Standard Constructor
      */
-    public X_C_Year(Properties ctx, int C_Year_ID) {
-        super(ctx, C_Year_ID);
+    public X_C_Year(int C_Year_ID) {
+        super(C_Year_ID);
         /* if (C_Year_ID == 0) { setCalendarId (0); setYearId (0); setFiscalYear (null); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Year(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Year(Row row) {
+        super(row);
     }
 
     /**

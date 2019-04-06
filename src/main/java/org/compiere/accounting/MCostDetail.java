@@ -11,7 +11,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.forUpdate;
@@ -54,8 +53,8 @@ public class MCostDetail extends X_M_CostDetail {
      * @param ctx             context
      * @param M_CostDetail_ID id
      */
-    public MCostDetail(Properties ctx, int M_CostDetail_ID) {
-        super(ctx, M_CostDetail_ID);
+    public MCostDetail(int M_CostDetail_ID) {
+        super(M_CostDetail_ID);
         if (M_CostDetail_ID == 0) {
             //	setAccountingSchemaId (0);
             //	setProductId (0);
@@ -77,8 +76,8 @@ public class MCostDetail extends X_M_CostDetail {
      *
      * @param ctx context
      */
-    public MCostDetail(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCostDetail(Row row) {
+        super(row);
     } //	MCostDetail
 
 
@@ -103,7 +102,7 @@ public class MCostDetail extends X_M_CostDetail {
             BigDecimal Amt,
             BigDecimal Qty,
             String Description) {
-        this(as.getCtx(), 0);
+        this(0);
         setClientOrg(as.getClientId(), AD_Org_ID);
         setAccountingSchemaId(as.getAccountingSchemaId());
         setProductId(M_Product_ID);
@@ -143,7 +142,6 @@ public class MCostDetail extends X_M_CostDetail {
             String Description) {
         MCostDetail cd =
                 get(
-                        as.getCtx(),
                         "C_InvoiceLine_ID=? AND Coalesce(M_CostElement_ID,0)="
                                 + M_CostElement_ID
                                 + " AND M_Product_ID="
@@ -221,7 +219,6 @@ public class MCostDetail extends X_M_CostDetail {
             boolean IsSOTrx) {
         MCostDetail cd =
                 get(
-                        as.getCtx(),
                         "M_InOutLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
                         M_InOutLine_ID,
                         M_AttributeSetInstance_ID,
@@ -297,7 +294,7 @@ public class MCostDetail extends X_M_CostDetail {
             String trxName) {
         MCostDetail cd =
                 get(
-                        as.getCtx(),
+
                         "M_InventoryLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
                         M_InventoryLine_ID,
                         M_AttributeSetInstance_ID,
@@ -347,14 +344,13 @@ public class MCostDetail extends X_M_CostDetail {
     /**
      * ************************************************************************ Get Cost Detail
      *
-     * @param ctx                       context
      * @param whereClause               where clause
      * @param ID                        1st parameter
      * @param M_AttributeSetInstance_ID ASI
      * @return cost detail
      */
     public static MCostDetail get(
-            Properties ctx,
+
             String whereClause,
             int ID,
             int M_AttributeSetInstance_ID,
@@ -364,7 +360,7 @@ public class MCostDetail extends X_M_CostDetail {
                         .append(" AND M_AttributeSetInstance_ID=?")
                         .append(" AND C_AcctSchema_ID=?");
         MCostDetail retValue =
-                new Query(ctx, I_M_CostDetail.Table_Name, localWhereClause.toString())
+                new Query(I_M_CostDetail.Table_Name, localWhereClause.toString())
                         .setParameters(ID, M_AttributeSetInstance_ID, C_AcctSchema_ID)
                         .first();
         return retValue;
@@ -386,7 +382,7 @@ public class MCostDetail extends X_M_CostDetail {
         int counterOK = 0;
         int counterError = 0;
         List<MCostDetail> list =
-                new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause)
+                new Query(I_M_CostDetail.Table_Name, whereClause)
                         .setParameters(product.getProductId(), false)
                         .setOrderBy(
                                 "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
@@ -502,8 +498,8 @@ public class MCostDetail extends X_M_CostDetail {
         boolean ok = false;
 
         //	get costing level for product
-        MAcctSchema as = MAcctSchema.get(getCtx(), getAccountingSchemaId());
-        MProduct product = new MProduct(getCtx(), getProductId());
+        MAcctSchema as = MAcctSchema.get(getAccountingSchemaId());
+        MProduct product = new MProduct(getProductId());
         String CostingLevel = product.getCostingLevel(as);
         //	Org Element
         int Org_ID = getOrgId();
@@ -527,7 +523,7 @@ public class MCostDetail extends X_M_CostDetail {
             }
         } //	Material Cost elements
         else {
-            MCostElement ce = MCostElement.get(getCtx(), getCostElementId());
+            MCostElement ce = MCostElement.get(getCostElementId());
             if (ce.getCostingMethod() == null) {
                 MCostElement[] ces = MCostElement.getCostingMethods(this);
                 for (MCostElement costingElement : ces) {
@@ -589,7 +585,7 @@ public class MCostDetail extends X_M_CostDetail {
         //			as, Org_ID, ce.getCostElementId());
 
         // save history for m_cost
-        X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0);
+        X_M_CostHistory history = new X_M_CostHistory(0);
         history.setAttributeSetInstanceId(cost.getAttributeSetInstanceId());
         history.setCostDetailId(this.getCostDetailId());
         history.setCostElementId(ce.getCostElementId());
@@ -616,7 +612,7 @@ public class MCostDetail extends X_M_CostDetail {
         // determine whether this is cost only adjustment entry
         boolean costAdjustment = false;
         if (this.getCostElementId() > 0 && this.getCostElementId() != ce.getCostElementId()) {
-            MCostElement thisCostElement = MCostElement.get(getCtx(), getCostElementId());
+            MCostElement thisCostElement = MCostElement.get(getCostElementId());
             if (thisCostElement.getCostingMethod() == null && ce.getCostingMethod() != null) {
                 qty = BigDecimal.ZERO;
                 costAdjustment = true;
@@ -851,7 +847,7 @@ public class MCostDetail extends X_M_CostDetail {
                 } else if (addition) {
                     MProductionLine productionLine =
                             getProductionLineId() > 0
-                                    ? new MProductionLine(getCtx(), getProductionLineId())
+                                    ? new MProductionLine(getProductionLineId())
                                     : null;
                     if (productionLine != null && productionLine.getProductionReversalId() > 0)
                         cost.setCurrentQty(cost.getCurrentQty().add(qty));

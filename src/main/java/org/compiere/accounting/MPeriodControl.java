@@ -2,8 +2,6 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 
-import java.util.Properties;
-
 /**
  * Period Control Model
  *
@@ -21,13 +19,10 @@ public class MPeriodControl extends X_C_PeriodControl {
      *
      * @param ctx                context
      * @param C_PeriodControl_ID 0
-     * @param trxName            transaction
      */
-    public MPeriodControl(Properties ctx, int C_PeriodControl_ID) {
-        super(ctx, C_PeriodControl_ID);
+    public MPeriodControl(int C_PeriodControl_ID) {
+        super(C_PeriodControl_ID);
         if (C_PeriodControl_ID == 0) {
-            //	setPeriodId (0);
-            //	setDocBaseType (null);
             setPeriodAction(X_C_PeriodControl.PERIODACTION_NoAction);
             setPeriodStatus(X_C_PeriodControl.PERIODSTATUS_NeverOpened);
         }
@@ -38,8 +33,8 @@ public class MPeriodControl extends X_C_PeriodControl {
      *
      * @param ctx context
      */
-    public MPeriodControl(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPeriodControl(Row row) {
+        super(row);
     } //	MPeriodControl
 
     /**
@@ -50,7 +45,7 @@ public class MPeriodControl extends X_C_PeriodControl {
      */
     public MPeriodControl(MPeriod period, String DocBaseType) {
         this(
-                period.getCtx(),
+
                 period.getClientId(),
                 period.getPeriodId(),
                 DocBaseType);
@@ -64,11 +59,10 @@ public class MPeriodControl extends X_C_PeriodControl {
      * @param AD_Client_ID client
      * @param C_Period_ID  period
      * @param DocBaseType  doc base type
-     * @param trxName      transaction
      */
     public MPeriodControl(
-            Properties ctx, int AD_Client_ID, int C_Period_ID, String DocBaseType) {
-        this(ctx, 0);
+            int AD_Client_ID, int C_Period_ID, String DocBaseType) {
+        this(0);
         setClientOrg(AD_Client_ID, 0);
         setPeriodId(C_Period_ID);
         setDocBaseType(DocBaseType);
@@ -89,13 +83,11 @@ public class MPeriodControl extends X_C_PeriodControl {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MPeriodControl[");
-        sb.append(getId())
-                .append(",")
-                .append(getDocBaseType())
-                .append(",Status=")
-                .append(getPeriodStatus())
-                .append("]");
-        return sb.toString();
+        return "MPeriodControl[" + getId() +
+                "," +
+                getDocBaseType() +
+                ",Status=" +
+                getPeriodStatus() +
+                "]";
     } //	toString
 } //	MPeriodControl

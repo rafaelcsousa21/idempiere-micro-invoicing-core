@@ -59,7 +59,7 @@ public class Doc_BankStatement extends Doc {
         setAmount(AMTTYPE_Gross, bs.getStatementDifference());
 
         //  Set Bank Account Info (Currency)
-        MBankAccount ba = MBankAccount.get(getCtx(), m_C_BankAccount_ID);
+        MBankAccount ba = MBankAccount.get(m_C_BankAccount_ID);
         setCurrencyId(ba.getCurrencyId());
 
         //	Contained Objects
@@ -271,7 +271,7 @@ public class Doc_BankStatement extends Doc {
     protected int getBankAccountOrganizationId() {
         if (m_C_BankAccount_ID == 0) return 0;
         //
-        MBankAccount ba = MBankAccount.get(getCtx(), m_C_BankAccount_ID);
+        MBankAccount ba = MBankAccount.get(m_C_BankAccount_ID);
         return ba.getOrgId();
     } //	getBank_Org_ID
 } //  Doc_Bank

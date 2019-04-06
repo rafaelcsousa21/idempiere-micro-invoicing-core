@@ -125,7 +125,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         if (p_Amount.signum() == 0) throw new AdempiereUserError("Amount required");
 
         //	Login Date
-        if (p_StatementDate == null) p_StatementDate = Env.getContextAsDate(getCtx(), "#Date");
+        if (p_StatementDate == null) p_StatementDate = Env.getContextAsDate();
         if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());
 
         if (p_DateAcct == null) p_DateAcct = p_StatementDate;
@@ -142,9 +142,9 @@ public class ImmediateBankTransfer extends SvrProcess {
      */
     private boolean isSameCurrency() {
 
-        MCashBook mcash = new MCashBook(getCtx(), p_C_CashBook_ID);
-        MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID);
-        MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID);
+        MCashBook mcash = new MCashBook(p_C_CashBook_ID);
+        MBankAccount mBankFrom = new MBankAccount(p_From_C_BankAccount_ID);
+        MBankAccount mBankTo = new MBankAccount(p_To_C_BankAccount_ID);
 
         if ((mcash.getCurrencyId() != mBankFrom.getCurrencyId())
                 || (mcash.getCurrencyId() != mBankTo.getCurrencyId())) return false;
@@ -156,7 +156,7 @@ public class ImmediateBankTransfer extends SvrProcess {
 
     private MCash createCash() {
 
-        MCash cash = new MCash(getCtx(), 0);
+        MCash cash = new MCash(0);
 
         cash.setName(p_Name);
         cash.setDescription(p_Description);

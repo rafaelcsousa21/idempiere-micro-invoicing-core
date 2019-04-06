@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_SalesRegion;
 import org.compiere.orm.MTree_Base;
 
-import java.util.Properties;
-
 /**
  * Sales Region Model
  *
@@ -25,8 +23,8 @@ public class MSalesRegion extends X_C_SalesRegion {
      * @param C_SalesRegion_ID id
      * @param trxName          transaction
      */
-    public MSalesRegion(Properties ctx, int C_SalesRegion_ID) {
-        super(ctx, C_SalesRegion_ID);
+    public MSalesRegion(int C_SalesRegion_ID) {
+        super(C_SalesRegion_ID);
     } //	MSalesRegion
 
     /**
@@ -36,8 +34,8 @@ public class MSalesRegion extends X_C_SalesRegion {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MSalesRegion(Properties ctx, Row row) {
-        super(ctx, row);
+    public MSalesRegion(Row row) {
+        super(row);
     } //	MSalesRegion
 
     /**
@@ -55,7 +53,7 @@ public class MSalesRegion extends X_C_SalesRegion {
         //	Value/Name change
         if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
             MAccount.updateValueDescription(
-                    getCtx(), "C_SalesRegion_ID=" + getSalesRegionId());
+                    "C_SalesRegion_ID=" + getSalesRegionId());
 
         return true;
     } //	afterSave

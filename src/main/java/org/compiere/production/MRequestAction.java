@@ -2,8 +2,6 @@ package org.compiere.production;
 
 import kotliquery.Row;
 
-import java.util.Properties;
-
 /**
  * Request History Model
  *
@@ -22,8 +20,8 @@ public class MRequestAction extends X_R_RequestAction {
      * @param ctx                context
      * @param R_RequestAction_ID id
      */
-    public MRequestAction(Properties ctx, int R_RequestAction_ID) {
-        super(ctx, R_RequestAction_ID);
+    public MRequestAction(int R_RequestAction_ID) {
+        super(R_RequestAction_ID);
     } //	MRequestAction
 
     /**
@@ -31,8 +29,8 @@ public class MRequestAction extends X_R_RequestAction {
      *
      * @param ctx context
      */
-    public MRequestAction(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestAction(Row row) {
+        super(row);
     } //	MRequestAction
 
     /**
@@ -42,7 +40,7 @@ public class MRequestAction extends X_R_RequestAction {
      * @param newRecord new (copy all)
      */
     public MRequestAction(MRequest request, boolean newRecord) {
-        this(request.getCtx(), 0);
+        this(0);
         setClientOrg(request);
         setRequestId(request.getRequestId());
     } //	MRequestAction

@@ -9,7 +9,6 @@ import org.compiere.util.Msg;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.Properties;
 
 
 public class MAcctProcessor extends X_C_AcctProcessor
@@ -26,8 +25,8 @@ public class MAcctProcessor extends X_C_AcctProcessor
      * @param C_AcctProcessor_ID id
      * @param trxName            transaction
      */
-    public MAcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
-        super(ctx, C_AcctProcessor_ID);
+    public MAcctProcessor(int C_AcctProcessor_ID) {
+        super(C_AcctProcessor_ID);
         if (C_AcctProcessor_ID == 0) {
             //	setName (null);
             //	setSupervisorId (0);
@@ -42,8 +41,8 @@ public class MAcctProcessor extends X_C_AcctProcessor
      *
      * @param ctx context
      */
-    public MAcctProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAcctProcessor(Row row) {
+        super(row);
     } //	MAcctProcessor
 
     /**
@@ -53,13 +52,13 @@ public class MAcctProcessor extends X_C_AcctProcessor
      * @param Supervisor_ID admin
      */
     public MAcctProcessor(MClient client, int Supervisor_ID) {
-        this(client.getCtx(), 0);
+        this(0);
         setClientOrg(client);
         StringBuilder msgset =
                 new StringBuilder()
                         .append(client.getName())
                         .append(" - ")
-                        .append(Msg.translate(getCtx(), "C_AcctProcessor_ID"));
+                        .append(Msg.translate("C_AcctProcessor_ID"));
         setName(msgset.toString());
         setSupervisorId(Supervisor_ID);
     } //	MAcctProcessor
@@ -93,33 +92,33 @@ public class MAcctProcessor extends X_C_AcctProcessor
      * @return date next run
      */
     public Timestamp getDateNextRun(boolean requery) {
-        if (requery) load((HashMap) null);
+        if (requery) loadFromMap(null);
         return getDateNextRun();
     } //	getDateNextRun
 
     @Override
     public String getFrequencyType() {
-        return MSchedule.get(getCtx(), getScheduleId()).getFrequencyType();
+        return MSchedule.get(getScheduleId()).getFrequencyType();
     }
 
     @Override
     public int getFrequency() {
-        return MSchedule.get(getCtx(), getScheduleId()).getFrequency();
+        return MSchedule.get(getScheduleId()).getFrequency();
     }
 
     @Override
     public boolean isIgnoreProcessingTime() {
-        return MSchedule.get(getCtx(), getScheduleId()).isIgnoreProcessingTime();
+        return MSchedule.get(getScheduleId()).isIgnoreProcessingTime();
     }
 
     @Override
     public String getScheduleType() {
-        return MSchedule.get(getCtx(), getScheduleId()).getScheduleType();
+        return MSchedule.get(getScheduleId()).getScheduleType();
     }
 
     @Override
     public String getCronPattern() {
-        return MSchedule.get(getCtx(), getScheduleId()).getCronPattern();
+        return MSchedule.get(getScheduleId()).getCronPattern();
     }
 
     /**

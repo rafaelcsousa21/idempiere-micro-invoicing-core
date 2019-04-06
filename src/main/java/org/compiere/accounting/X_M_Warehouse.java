@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_Warehouse
  *
@@ -22,15 +20,15 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
     /**
      * Standard Constructor
      */
-    public X_M_Warehouse(Properties ctx, int M_Warehouse_ID) {
-        super(ctx, M_Warehouse_ID);
+    public X_M_Warehouse(int M_Warehouse_ID) {
+        super(M_Warehouse_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Warehouse(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Warehouse(Row row) {
+        super(row);
     }
 
     /**

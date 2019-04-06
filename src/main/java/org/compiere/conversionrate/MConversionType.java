@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_ConversionType;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
 
@@ -37,8 +35,8 @@ public class MConversionType extends X_C_ConversionType {
      * @param ctx                 context
      * @param C_ConversionType_ID id
      */
-    public MConversionType(Properties ctx, int C_ConversionType_ID) {
-        super(ctx, C_ConversionType_ID);
+    public MConversionType(int C_ConversionType_ID) {
+        super(C_ConversionType_ID);
     } //	MConversionType
 
     /**
@@ -46,8 +44,8 @@ public class MConversionType extends X_C_ConversionType {
      *
      * @param ctx context
      */
-    public MConversionType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MConversionType(Row row) {
+        super(row);
     } //	MConversionType
 
     /**

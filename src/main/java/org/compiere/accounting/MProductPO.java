@@ -7,7 +7,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
 
 import java.util.List;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -31,8 +30,8 @@ public class MProductPO extends X_M_Product_PO {
      * @param ignored ignored
      * @param trxName transaction
      */
-    public MProductPO(Properties ctx, int ignored) {
-        super(ctx, 0);
+    public MProductPO(int ignored) {
+        super(0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
             //	setProductId (0);	// @M_Product_ID@
@@ -47,8 +46,8 @@ public class MProductPO extends X_M_Product_PO {
      *
      * @param ctx context
      */
-    public MProductPO(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProductPO(Row row) {
+        super(row);
     } //	MProductPO
 
     /**
@@ -58,10 +57,10 @@ public class MProductPO extends X_M_Product_PO {
      * @param M_Product_ID product
      * @return PO - current vendor first
      */
-    public static MProductPO[] getOfProduct(Properties ctx, int M_Product_ID) {
+    public static MProductPO[] getOfProduct(int M_Product_ID) {
         final String whereClause = "M_Product_ID=?";
         List<MProductPO> list =
-                new Query(ctx, I_M_Product_PO.Table_Name, whereClause)
+                new Query(I_M_Product_PO.Table_Name, whereClause)
                         .setParameters(M_Product_ID)
                         .setOnlyActiveRecords(true)
                         .setOrderBy("IsCurrentVendor DESC")
@@ -91,8 +90,8 @@ public class MProductPO extends X_M_Product_PO {
             if (cnt > 0) {
                 log.saveError(
                         "SaveError",
-                        Msg.getMsg(getCtx(), DBException.SAVE_ERROR_NOT_UNIQUE_MSG, true)
-                                + Msg.getElement(getCtx(), I_M_Product_PO.COLUMNNAME_IsCurrentVendor));
+                        Msg.getMsg(DBException.SAVE_ERROR_NOT_UNIQUE_MSG, true)
+                                + Msg.getElement(I_M_Product_PO.COLUMNNAME_IsCurrentVendor));
                 return false;
             }
         }

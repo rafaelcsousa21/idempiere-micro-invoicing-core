@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_RequestProcessorLog;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorLog {
 
     /**
@@ -16,15 +14,15 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
     /**
      * Standard Constructor
      */
-    public X_R_RequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID) {
-        super(ctx, R_RequestProcessorLog_ID);
+    public X_R_RequestProcessorLog(int R_RequestProcessorLog_ID) {
+        super(R_RequestProcessorLog_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessorLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestProcessorLog(Row row) {
+        super(row);
     }
 
     /**

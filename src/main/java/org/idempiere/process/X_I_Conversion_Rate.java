@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
 
@@ -19,15 +18,15 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
     /**
      * Standard Constructor
      */
-    public X_I_Conversion_Rate(Properties ctx, int I_Conversion_Rate_ID) {
-        super(ctx, I_Conversion_Rate_ID);
+    public X_I_Conversion_Rate(int I_Conversion_Rate_ID) {
+        super(I_Conversion_Rate_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Conversion_Rate(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_Conversion_Rate(Row row) {
+        super(row);
     }
 
     /**

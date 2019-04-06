@@ -11,6 +11,6 @@ import software.hsharp.core.util.queryOf
  */
 fun getInvoiceLineLandedCosts(il: MInvoiceLine): Array<MLandedCost> {
     val sql = "SELECT * FROM C_LandedCost WHERE C_InvoiceLine_ID=?"
-    val query = queryOf(sql, listOf(il.invoiceLineId)).map { row -> MLandedCost(il.ctx, row) }.asList
+    val query = queryOf(sql, listOf(il.invoiceLineId)).map { row -> MLandedCost(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // getLandedCosts

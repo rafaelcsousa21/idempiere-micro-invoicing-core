@@ -68,11 +68,11 @@ public class CopyOrder extends SvrProcess {
                             + ", CloseDocument="
                             + p_IsCloseDocument);
         if (p_C_Order_ID == 0) throw new IllegalArgumentException("No Order");
-        MDocType dt = MDocType.get(getCtx(), p_C_DocType_ID);
+        MDocType dt = MDocType.get(p_C_DocType_ID);
         if (dt.getId() == 0) throw new IllegalArgumentException("No DocType");
         if (p_DateDoc == null) p_DateDoc = new Timestamp(System.currentTimeMillis());
         //
-        MOrder from = new MOrder(getCtx(), p_C_Order_ID);
+        MOrder from = new MOrder(p_C_Order_ID);
         MOrder newOrder =
                 MOrder.copyFrom(
                         from,
@@ -80,15 +80,15 @@ public class CopyOrder extends SvrProcess {
                         dt.getDocTypeId(),
                         dt.isSOTrx(),
                         false,
-                        true,
-                        null); //	copy ASI
+                        true
+                ); //	copy ASI
         newOrder.setTargetDocumentTypeId(p_C_DocType_ID);
         newOrder.setQuotationOrderId(from.getOrderId()); // IDEMPIERE-475
         boolean OK = newOrder.save();
         if (!OK) throw new IllegalStateException("Could not create new Order");
         //
         if (p_IsCloseDocument) {
-            MOrder original = new MOrder(getCtx(), p_C_Order_ID);
+            MOrder original = new MOrder(p_C_Order_ID);
             original.setDocAction(MOrder.DOCACTION_Complete);
             if (!original.processIt(MOrder.DOCACTION_Complete)) {
                 log.warning(
@@ -108,7 +108,7 @@ public class CopyOrder extends SvrProcess {
             original.saveEx();
         }
         //
-        //	Env.setSOTrx(getCtx(), newOrder.isSOTrx());
+        //	Env.setSOTrx(newOrder.isSOTrx());
         //	return "@C_Order_ID@ " + newOrder.getDocumentNo();
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getName()).append(": ").append(newOrder.getDocumentNo());

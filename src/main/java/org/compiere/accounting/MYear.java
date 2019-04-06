@@ -1,8 +1,8 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.I_C_Year;
-import org.compiere.process.IProcessUI;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.Env;
@@ -37,13 +37,10 @@ public class MYear extends X_C_Year {
      *
      * @param ctx       context
      * @param C_Year_ID id
-     * @param trxName   transaction
      */
-    public MYear(Properties ctx, int C_Year_ID) {
-        super(ctx, C_Year_ID);
+    public MYear(int C_Year_ID) {
+        super(C_Year_ID);
         if (C_Year_ID == 0) {
-            //	setCalendarId (0);
-            //	setYear (null);
             setProcessing(false); // N
         }
     } //	MYear
@@ -53,8 +50,8 @@ public class MYear extends X_C_Year {
      *
      * @param ctx context
      */
-    public MYear(Properties ctx, Row row) {
-        super(ctx, row);
+    public MYear(Row row) {
+        super(row);
     } //	MYear
 
     /**
@@ -63,16 +60,11 @@ public class MYear extends X_C_Year {
      * @param calendar parent
      */
     public MYear(MCalendar calendar) {
-        this(calendar.getCtx(), 0);
+        this(0);
         setClientOrg(calendar);
         setCalendarId(calendar.getCalendarId());
         setYear();
     } //	MYear
-
-    // Current Process
-    public static IProcessUI getProcessUI(Properties ctx) {
-        return (IProcessUI) ctx.get(SvrProcess.PROCESS_UI_CTX_KEY);
-    }
 
     /**
      * Set current Year
@@ -149,13 +141,13 @@ public class MYear extends X_C_Year {
      */
     public boolean createStdPeriods(Locale locale, Timestamp startDate, String dateFormat) {
         if (locale == null) {
-            MClient client = MClient.get(getCtx());
+            ClientWithAccounting client = MClientKt.getClientWithAccounting();
             locale = client.getLocale();
         }
 
         if (locale == null && Language.getLoginLanguage() != null)
             locale = Language.getLoginLanguage().getLocale();
-        if (locale == null) locale = Env.getLanguage(getCtx()).getLocale();
+        if (locale == null) locale = Env.getLanguage().getLocale();
         //
         SimpleDateFormat formatter;
         if (dateFormat == null || dateFormat.equals("")) dateFormat = "MMM-yy";
@@ -180,7 +172,6 @@ public class MYear extends X_C_Year {
         cal.set(Calendar.MILLISECOND, 0);
 
         //
-        IProcessUI processMonitor = getProcessUI(getCtx());
         for (int month = 0; month < 12; month++) {
 
             Timestamp start = new Timestamp(cal.getTimeInMillis());
@@ -190,7 +181,7 @@ public class MYear extends X_C_Year {
             cal.add(Calendar.DAY_OF_YEAR, -1);
             Timestamp end = new Timestamp(cal.getTimeInMillis());
             //
-            MPeriod period = MPeriod.findByCalendar(getCtx(), start, getCalendarId());
+            MPeriod period = MPeriod.findByCalendar(start, getCalendarId());
             if (period == null) {
                 period = new MPeriod(this, month + 1, name, start, end);
             } else {
@@ -199,9 +190,6 @@ public class MYear extends X_C_Year {
                 period.setName(name);
                 period.setStartDate(start);
                 period.setEndDate(end);
-            }
-            if (processMonitor != null) {
-                processMonitor.statusUpdate(period.toString());
             }
             period.saveEx(); // 	Creates Period Control
             // get first day of next month

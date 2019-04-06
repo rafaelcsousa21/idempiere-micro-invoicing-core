@@ -5,8 +5,6 @@ import org.compiere.model.I_C_ElementValue;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_ElementValue
  *
@@ -43,15 +41,15 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     /**
      * Standard Constructor
      */
-    public X_C_ElementValue(Properties ctx, int C_ElementValue_ID) {
-        super(ctx, C_ElementValue_ID);
+    public X_C_ElementValue(int C_ElementValue_ID) {
+        super(C_ElementValue_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_ElementValue(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ElementValue(Row row) {
+        super(row);
     }
 
     /**
@@ -98,7 +96,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
 
     public org.compiere.model.I_C_Element getElement() throws RuntimeException {
         return (org.compiere.model.I_C_Element)
-                MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
+                MTable.get(org.compiere.model.I_C_Element.Table_Name)
                         .getPO(getElementId());
     }
 

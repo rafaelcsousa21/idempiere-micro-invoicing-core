@@ -19,7 +19,6 @@ import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -43,8 +42,8 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
      * @param C_BankStatementLine_ID id
      * @param trxName                transaction
      */
-    public MDepositBatchLine(Properties ctx, int C_DepositBatchLine_ID) {
-        super(ctx, C_DepositBatchLine_ID);
+    public MDepositBatchLine(int C_DepositBatchLine_ID) {
+        super(C_DepositBatchLine_ID);
         if (C_DepositBatchLine_ID == 0) {
             setPayAmt(Env.ZERO);
         }
@@ -55,8 +54,8 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
      *
      * @param ctx context
      */
-    public MDepositBatchLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepositBatchLine(Row row) {
+        super(row);
     } //	MDepositBatchLine
 
     /**
@@ -65,7 +64,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
      * @param statement Bank Statement that the line is part of
      */
     public MDepositBatchLine(MDepositBatch statement) {
-        this(statement.getCtx(), 0);
+        this(0);
         setClientOrg(statement);
         setDepositBatchId(statement.getDepositBatchId());
     } //	MDepositBatchLine
@@ -115,7 +114,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
             executeUpdateEx(
                     sql, new Object[]{getDepositBatchId(), getPaymentId()});
 
-            MPayment payment = new MPayment(getCtx(), getPaymentId());
+            MPayment payment = new MPayment(getPaymentId());
             setPayment(payment); // set payment amount
         }
 

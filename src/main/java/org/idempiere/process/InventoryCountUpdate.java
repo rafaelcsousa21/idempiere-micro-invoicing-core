@@ -63,7 +63,7 @@ public class InventoryCountUpdate extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("M_Inventory_ID=" + p_M_Inventory_ID);
-        MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID);
+        MInventory inventory = new MInventory(p_M_Inventory_ID);
         if (inventory.getId() == 0)
             throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
 

@@ -56,7 +56,7 @@ public class YearCreatePeriods extends SvrProcess {
      * @throws Exception
      */
     protected String doIt() throws Exception {
-        MYear year = new MYear(getCtx(), p_C_Year_ID);
+        MYear year = new MYear(p_C_Year_ID);
         if (p_C_Year_ID == 0 || year.getId() != p_C_Year_ID)
             throw new AdempiereUserError("@NotFound@: @C_Year_ID@ - " + p_C_Year_ID);
         if (log.isLoggable(Level.INFO)) log.info(year.toString());

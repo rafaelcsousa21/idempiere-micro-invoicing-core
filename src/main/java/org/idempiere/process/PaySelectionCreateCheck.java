@@ -73,7 +73,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         if (log.isLoggable(Level.INFO))
             log.info("C_PaySelection_ID=" + p_C_PaySelection_ID + ", PaymentRule=" + p_PaymentRule);
 
-        MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID);
+        MPaySelection psel = new MPaySelection(p_C_PaySelection_ID);
         if (psel.getId() == 0)
             throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
         if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");
@@ -121,7 +121,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         MPaySelectionCheck check = new MPaySelectionCheck(line, PaymentRule);
         if (!check.isValid()) {
             int C_BPartner_ID = check.getBusinessPartnerId();
-            I_C_BPartner bp = MBPartner.get(getCtx(), C_BPartner_ID);
+            I_C_BPartner bp = MBPartner.get(C_BPartner_ID);
             StringBuilder msg = new StringBuilder("@NotFound@ @C_BP_BankAccount@: ").append(bp.getName());
             throw new AdempiereUserError(msg.toString());
         }

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_InvoicePaySchedule
@@ -25,15 +24,15 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
     /**
      * Standard Constructor
      */
-    public X_C_InvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
-        super(ctx, C_InvoicePaySchedule_ID);
+    public X_C_InvoicePaySchedule(int C_InvoicePaySchedule_ID) {
+        super(C_InvoicePaySchedule_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_InvoicePaySchedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_InvoicePaySchedule(Row row) {
+        super(row);
     }
 
     /**

@@ -1,11 +1,9 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MProduct;
 import org.idempiere.common.util.Util;
-
-import java.util.Properties;
 
 /**
  * @author Teo Sarca, SC ARHIPAC SRL
@@ -25,22 +23,20 @@ public class MIFixedAsset extends X_I_FixedAsset {
     /**
      * Standard Constructor
      */
-    public MIFixedAsset(Properties ctx, int I_FixedAsset_ID) {
-        super(ctx, I_FixedAsset_ID);
+    public MIFixedAsset(int I_FixedAsset_ID) {
+        super(I_FixedAsset_ID);
     } //	MIFixedAsset
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MIFixedAsset(Properties ctx, Row row) {
-        super(ctx, row);
+    public MIFixedAsset(Row row) {
+        super(row);
     } //	MIFixedAsset
 
     public MProduct getProduct() {
         if (m_product == null && getProductId() > 0) {
-            m_product = new MProduct(getCtx(), getProductId());
+            m_product = new MProduct(getProductId());
         }
         return m_product;
     }
@@ -56,7 +52,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
      * Currency
      */
     public int getStdPrecision() {
-        return MClient.get(getCtx()).getAcctSchema().getStdPrecision();
+        return MClientKt.getClientWithAccounting().getAcctSchema().getStdPrecision();
     }
 
 }

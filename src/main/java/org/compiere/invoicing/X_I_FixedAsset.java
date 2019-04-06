@@ -5,7 +5,6 @@ import org.compiere.model.I_I_FixedAsset;
 import org.compiere.orm.BasePOName;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for I_FixedAsset
@@ -23,15 +22,15 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
     /**
      * Standard Constructor
      */
-    public X_I_FixedAsset(Properties ctx, int I_FixedAsset_ID) {
-        super(ctx, I_FixedAsset_ID);
+    public X_I_FixedAsset(int I_FixedAsset_ID) {
+        super(I_FixedAsset_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_FixedAsset(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_FixedAsset(Row row) {
+        super(row);
     }
 
     /**

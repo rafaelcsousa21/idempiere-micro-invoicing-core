@@ -2,8 +2,6 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 
-import java.util.Properties;
-
 public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
     /**
      *
@@ -16,8 +14,8 @@ public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
      * @param ctx                         context
      * @param R_RequestProcessor_Route_ID id
      */
-    public MRequestProcessorRoute(Properties ctx, int R_RequestProcessor_Route_ID) {
-        super(ctx, R_RequestProcessor_Route_ID);
+    public MRequestProcessorRoute(int R_RequestProcessor_Route_ID) {
+        super(R_RequestProcessor_Route_ID);
     } //	MRequestProcessorRoute
 
     /**
@@ -26,7 +24,7 @@ public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
      * @param ctx context
      * @param rs  result set
      */
-    public MRequestProcessorRoute(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestProcessorRoute(Row row) {
+        super(row);
     } //	MRequestProcessorRoute
 } //	MRequestProcessorRoute

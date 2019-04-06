@@ -5,7 +5,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
@@ -28,8 +27,8 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
      * @param C_InvoiceBatchLine_ID id
      * @param trxName               trx
      */
-    public MInvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
-        super(ctx, C_InvoiceBatchLine_ID);
+    public MInvoiceBatchLine(int C_InvoiceBatchLine_ID) {
+        super(C_InvoiceBatchLine_ID);
         if (C_InvoiceBatchLine_ID == 0) {
             setDateAcct(new Timestamp(System.currentTimeMillis())); // @DateDoc@
             setDateInvoiced(new Timestamp(System.currentTimeMillis())); // @DateDoc@
@@ -48,8 +47,8 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
      *
      * @param ctx context
      */
-    public MInvoiceBatchLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInvoiceBatchLine(Row row) {
+        super(row);
     } //	MInvoiceBatchLine
 
     /**
@@ -61,7 +60,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
     protected boolean beforeSave(boolean newRecord) {
         // Amount
         if (getPriceEntered().signum() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "PriceEntered"));
+            log.saveError("FillMandatory", Msg.getElement("PriceEntered"));
             return false;
         }
         return true;

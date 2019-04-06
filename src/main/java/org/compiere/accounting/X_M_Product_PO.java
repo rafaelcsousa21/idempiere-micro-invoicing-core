@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Product_PO
@@ -24,8 +23,8 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
     /**
      * Standard Constructor
      */
-    public X_M_Product_PO(Properties ctx, int M_Product_PO_ID) {
-        super(ctx, M_Product_PO_ID);
+    public X_M_Product_PO(int M_Product_PO_ID) {
+        super(M_Product_PO_ID);
         /*
          * if (M_Product_PO_ID == 0) { setBusinessPartnerId (0); setIsCurrentVendor (true); // Y
          * setProductId (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
@@ -35,8 +34,8 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
     /**
      * Load Constructor
      */
-    public X_M_Product_PO(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Product_PO(Row row) {
+        super(row);
     }
 
     /**

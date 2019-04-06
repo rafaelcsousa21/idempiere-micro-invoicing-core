@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_POSPayment
@@ -24,15 +23,15 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
     /**
      * Standard Constructor
      */
-    public X_C_POSPayment(Properties ctx, int C_POSPayment_ID) {
-        super(ctx, C_POSPayment_ID);
+    public X_C_POSPayment(int C_POSPayment_ID) {
+        super(C_POSPayment_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_POSPayment(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_POSPayment(Row row) {
+        super(row);
     }
 
     /**

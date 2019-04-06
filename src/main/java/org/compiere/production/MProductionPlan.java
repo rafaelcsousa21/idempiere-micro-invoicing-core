@@ -1,69 +1,64 @@
-/**
- *
- */
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MStorageOnHand;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MProduct;
 import org.compiere.product.MProductCategory;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
-/** @author hengsin */
+/**
+ * @author hengsin
+ */
 public class MProductionPlan extends X_M_ProductionPlan {
 
-    /** generated serial id */
+    /**
+     * generated serial id
+     */
     private static final long serialVersionUID = -8189507724698695756L;
 
     /**
-     * @param ctx
      * @param M_ProductionPlan_ID
      */
-    public MProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
-        super(ctx, M_ProductionPlan_ID);
+    public MProductionPlan(int M_ProductionPlan_ID) {
+        super(M_ProductionPlan_ID);
     }
 
     /**
-     * @param ctx
+     *
      */
-    public MProductionPlan(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProductionPlan(Row row) {
+        super(row);
     }
 
     public MProductionLine[] getLines() {
-        ArrayList<MProductionLine> list = new ArrayList<MProductionLine>();
+        ArrayList<MProductionLine> list = new ArrayList<>();
 
         String sql =
                 "SELECT pl.M_ProductionLine_ID "
                         + "FROM M_ProductionLine pl "
                         + "WHERE pl.M_ProductionPlan_ID = ?";
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getId());
             rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1)));
+            while (rs.next()) list.add(new MProductionLine(rs.getInt(1)));
         } catch (SQLException ex) {
             throw new AdempiereException("Unable to load production lines", ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         MProductionLine[] retValue = new MProductionLine[list.size()];
@@ -71,7 +66,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
         return retValue;
     }
 
-    public void deleteLines(String trxName) {
+    public void deleteLines() {
 
         for (MProductionLine line : getLines()) {
             line.deleteEx(true);
@@ -85,7 +80,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
         int count = 0;
 
         // product to be produced
-        MProduct finishedProduct = new MProduct(getCtx(), getProductId());
+        MProduct finishedProduct = new MProduct(getProductId());
 
         MProductionLine line = new MProductionLine(this);
         line.setLine(lineno);
@@ -106,9 +101,9 @@ public class MProductionPlan extends X_M_ProductionPlan {
             boolean mustBeStocked, MProduct finishedProduct, BigDecimal requiredQty, int lineno) {
 
         int count = 0;
-        int defaultLocator = 0;
+        int defaultLocator;
 
-        MLocator finishedLocator = MLocator.get(getCtx(), getLocatorId());
+        MLocator finishedLocator = MLocator.get(getLocatorId());
 
         int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
@@ -122,8 +117,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
                         + finishedProduct.getProductId()
                         + " ORDER BY Line";
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
 
         try {
             pstmt = prepareStatement(sql);
@@ -136,7 +131,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 BigDecimal BOMQty = rs.getBigDecimal(2);
                 BigDecimal BOMMovementQty = BOMQty.multiply(requiredQty);
 
-                MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID);
+                MProduct bomproduct = new MProduct(BOMProduct_ID);
 
                 if (bomproduct.isBOM() && bomproduct.isPhantom()) {
                     count = count + createLines(mustBeStocked, bomproduct, BOMMovementQty, lineno);
@@ -173,14 +168,14 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
                         // BOM stock info
                         MStorageOnHand[] storages = null;
-                        MProduct usedProduct = MProduct.get(getCtx(), BOMProduct_ID);
+                        MProduct usedProduct = MProduct.get(BOMProduct_ID);
                         defaultLocator = usedProduct.getLocatorId();
                         if (defaultLocator == 0) defaultLocator = getLocatorId();
                         if (usedProduct == null || usedProduct.getId() == 0) return 0;
 
-                        MClient client = MClient.get(getCtx());
+                        ClientWithAccounting client = MClientKt.getClientWithAccounting();
                         MProductCategory pc =
-                                MProductCategory.get(getCtx(), usedProduct.getProductCategoryId());
+                                MProductCategory.get(usedProduct.getProductCategoryId());
                         String MMPolicy = pc.getMMPolicy();
                         if (MMPolicy == null || MMPolicy.length() == 0) {
                             MMPolicy = client.getMMPolicy();
@@ -188,7 +183,6 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
                         storages =
                                 MStorageOnHand.getWarehouse(
-                                        getCtx(),
                                         M_Warehouse_ID,
                                         BOMProduct_ID,
                                         0,
@@ -202,16 +196,16 @@ public class MProductionPlan extends X_M_ProductionPlan {
                         int prevLoc = -1;
                         int previousAttribSet = -1;
                         // Create lines from storage until qty is reached
-                        for (int sl = 0; sl < storages.length; sl++) {
+                        for (MStorageOnHand storage : storages) {
 
-                            BigDecimal lineQty = storages[sl].getQtyOnHand();
+                            BigDecimal lineQty = storage.getQtyOnHand();
                             if (lineQty.signum() != 0) {
                                 if (lineQty.compareTo(BOMMovementQty) > 0) lineQty = BOMMovementQty;
 
-                                int loc = storages[sl].getLocatorId();
-                                int slASI = storages[sl].getAttributeSetInstanceId();
+                                int loc = storage.getLocatorId();
+                                int slASI = storage.getAttributeSetInstanceId();
                                 int locAttribSet =
-                                        new MAttributeSetInstance(getCtx(), asi).getAttributeSetId();
+                                        new MAttributeSetInstance(asi).getAttributeSetId();
 
                                 // roll up costing attributes if in the same locator
                                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
@@ -285,7 +279,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
     @Override
     protected boolean beforeDelete() {
-        deleteLines(null);
+        deleteLines();
         return true;
     }
 }

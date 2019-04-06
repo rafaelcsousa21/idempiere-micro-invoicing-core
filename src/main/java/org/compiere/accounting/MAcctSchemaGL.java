@@ -6,7 +6,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.KeyNamePair;
 
 import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  * Accounting Schema GL info
@@ -31,8 +30,8 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @param C_AcctSchema_ID AcctSchema
      * @param trxName         transaction
      */
-    public MAcctSchemaGL(Properties ctx, int C_AcctSchema_ID) {
-        super(ctx, C_AcctSchema_ID);
+    public MAcctSchemaGL(int C_AcctSchema_ID) {
+        super(C_AcctSchema_ID);
         if (C_AcctSchema_ID == 0) {
             setUseCurrencyBalancing(false);
             setUseSuspenseBalancing(false);
@@ -47,8 +46,8 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchemaGL(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAcctSchemaGL(Row row) {
+        super(row);
     } //	MAcctSchemaGL
 
     /**
@@ -58,9 +57,9 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @param C_AcctSchema_ID id
      * @return defaults
      */
-    public static MAcctSchemaGL get(Properties ctx, int C_AcctSchema_ID) {
+    public static MAcctSchemaGL get(int C_AcctSchema_ID) {
         final String whereClause = "C_AcctSchema_ID=?";
-        return new Query(ctx, I_C_AcctSchema_GL.Table_Name, whereClause)
+        return new Query(I_C_AcctSchema_GL.Table_Name, whereClause)
                 .setParameters(C_AcctSchema_ID)
                 .firstOnly();
     } //	get

@@ -5,7 +5,6 @@ import org.compiere.model.I_T_BOM_Indented;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
 
@@ -17,15 +16,15 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
     /**
      * Standard Constructor
      */
-    public X_T_BOM_Indented(Properties ctx, int T_BOM_Indented_ID) {
-        super(ctx, T_BOM_Indented_ID);
+    public X_T_BOM_Indented(int T_BOM_Indented_ID) {
+        super(T_BOM_Indented_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_T_BOM_Indented(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_T_BOM_Indented(Row row) {
+        super(row);
     }
 
     /**

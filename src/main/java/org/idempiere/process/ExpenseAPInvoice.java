@@ -71,17 +71,17 @@ public class ExpenseAPInvoice extends SvrProcess {
         //
         MTimeExpense[] items =
                 BaseCreateAPInvoicesFromExpenseReportsKt.getExpensesToBeInvoices(
-                        getCtx(), sql.toString(), getClientId(), m_C_BPartner_ID, m_DateFrom, m_DateTo
+                        sql.toString(), getClientId(), m_C_BPartner_ID, m_DateFrom, m_DateTo
                 );
         for (MTimeExpense te : items) // 	********* Expense Line Loop
         {
             //	New BPartner - New Order
             if (te.getBusinessPartnerId() != old_BPartner_ID) {
                 completeInvoice(invoice);
-                MBPartner bp = new MBPartner(getCtx(), te.getBusinessPartnerId());
+                MBPartner bp = new MBPartner(te.getBusinessPartnerId());
                 //
                 if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
-                invoice = new MInvoice(getCtx(), 0);
+                invoice = new MInvoice(0);
                 invoice.setClientOrg(te.getClientId(), te.getOrgId());
                 invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice); // 	API
                 invoice.setDocumentNo(te.getDocumentNo());
@@ -103,7 +103,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                 invoice.setSalesRepresentativeId(te.getDocumentUserId());
                 StringBuilder descr =
                         new StringBuilder()
-                                .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))
+                                .append(Msg.translate("S_TimeExpense_ID"))
                                 .append(": ")
                                 .append(te.getDocumentNo())
                                 .append(" ")

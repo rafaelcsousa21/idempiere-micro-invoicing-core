@@ -7,7 +7,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -43,8 +42,8 @@ public class MStatusCategory extends X_R_StatusCategory {
      * @param ctx                 context
      * @param R_StatusCategory_ID id
      */
-    public MStatusCategory(Properties ctx, int R_StatusCategory_ID) {
-        super(ctx, R_StatusCategory_ID);
+    public MStatusCategory(int R_StatusCategory_ID) {
+        super(R_StatusCategory_ID);
         if (R_StatusCategory_ID == 0) {
             //	setName (null);
             setIsDefault(false);
@@ -53,35 +52,31 @@ public class MStatusCategory extends X_R_StatusCategory {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MStatusCategory(Properties ctx, Row row) {
-        super(ctx, row);
+    public MStatusCategory(Row row) {
+        super(row);
     } //	RStatusCategory
 
     /**
      * Get Default Status category for Client
      *
-     * @param ctx context
      * @return status category or null
      */
-    public static MStatusCategory getDefault(Properties ctx) {
-        int AD_Client_ID = Env.getClientId(ctx);
-        return MBaseStatusCategoryKt.getDefaultStatusCategoryForClient(ctx, AD_Client_ID);
+    public static MStatusCategory getDefault() {
+        int AD_Client_ID = Env.getClientId();
+        return MBaseStatusCategoryKt.getDefaultStatusCategoryForClient(AD_Client_ID);
     } //	getDefault
 
     /**
      * Get Default Status Categpru for Client
      *
-     * @param ctx context
      * @return status category or null
      */
-    public static MStatusCategory createDefault(Properties ctx) {
-        int AD_Client_ID = Env.getClientId(ctx);
-        MStatusCategory retValue = new MStatusCategory(ctx, 0);
+    public static MStatusCategory createDefault() {
+        int AD_Client_ID = Env.getClientId();
+        MStatusCategory retValue = new MStatusCategory(0);
         retValue.setClientOrg(AD_Client_ID, 0);
-        retValue.setName(Msg.getMsg(ctx, "Standard"));
+        retValue.setName(Msg.getMsg("Standard"));
         retValue.setIsDefault(true);
         if (!retValue.save()) return null;
         String sql =
@@ -102,11 +97,11 @@ public class MStatusCategory extends X_R_StatusCategory {
      * @param R_StatusCategory_ID id
      * @return RStatusCategory
      */
-    public static MStatusCategory get(Properties ctx, int R_StatusCategory_ID) {
+    public static MStatusCategory get(int R_StatusCategory_ID) {
         Integer key = new Integer(R_StatusCategory_ID);
         MStatusCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MStatusCategory(ctx, R_StatusCategory_ID);
+        retValue = new MStatusCategory(R_StatusCategory_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -119,7 +114,7 @@ public class MStatusCategory extends X_R_StatusCategory {
      */
     public MStatus[] getStatus(boolean reload) {
         if (m_status != null && !reload) return m_status;
-        m_status = MBaseStatusCategoryKt.getAllStatus(getCtx(), getStatusCategoryId());
+        m_status = MBaseStatusCategoryKt.getAllStatus(getStatusCategoryId());
         return m_status;
     } //	getStatus
 

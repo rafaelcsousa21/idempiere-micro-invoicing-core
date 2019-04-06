@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_BankStatementLine
@@ -25,15 +24,15 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
     /**
      * Standard Constructor
      */
-    public X_C_BankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
-        super(ctx, C_BankStatementLine_ID);
+    public X_C_BankStatementLine(int C_BankStatementLine_ID) {
+        super(C_BankStatementLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BankStatementLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BankStatementLine(Row row) {
+        super(row);
     }
 
     /**

@@ -14,7 +14,6 @@ package org.idempiere.process;
 
 import org.compiere.orm.M_Element;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.CLogger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,42 +64,13 @@ public class SynchronizeTerminology extends SvrProcess {
                 String desc = rs.getString(3);
                 String help = rs.getString(4);
                 String entityType = rs.getString(5);
-                M_Element elem = new M_Element(getCtx(), columnName, entityType);
+                M_Element elem = new M_Element(columnName, entityType);
                 elem.setDescription(desc);
                 elem.setHelp(help);
                 elem.setPrintName(name);
                 elem.saveEx();
             }
 
-            rs = null;
-            pstmt = null;
-            // Create Elements for Process Parameters which are centrally maintained
-      /* IDEMPIERE 109 - this create unwanted Element
-      sql="SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
-      	+" FROM	AD_PROCESS_PARA p "
-      	+" WHERE NOT EXISTS "
-      	+" (SELECT 1 FROM AD_ELEMENT e "
-      	+" WHERE UPPER(p.ColumnName)=UPPER(e.ColumnName))"
-      	+" AND p.isCentrallyMaintained = 'Y'"
-      	+" AND p.isActive = 'Y'";
-      pstmt = prepareStatement(sql, null);
-      rs = pstmt.executeQuery ();
-      while (rs.next()){
-      	String columnName = rs.getString(1);
-      	String name = rs.getString(2);
-      	String desc = rs.getString(3);
-      	String help =rs.getString(4);
-      	String entityType=rs.getString(5);
-      	//TODO AD_SEQ system !!!
-      	M_Element elem = new M_Element(getCtx(),columnName,entityType,null);
-      	elem.setDescription(desc);
-      	elem.setHelp(help);
-      	elem.setPrintName(name);
-      	elem.saveEx();
-      }
-      pstmt.close();
-      rs.close();
-      trx.commit(true);*/
             log.info("Adding missing Element Translations");
             sql =
                     "INSERT INTO AD_ELEMENT_TRL (AD_Element_ID, AD_LANGUAGE, AD_Client_ID, AD_Org_ID,"
@@ -636,14 +606,6 @@ public class SynchronizeTerminology extends SvrProcess {
             no = executeUpdate(sql, false);
             if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
 
-            /**
-             * SELECT e.PrintName "Element", pfi.PrintName "FormatItem", trl.AD_Language, trl.PrintName
-             * "Trl" FROM AD_Element e INNER JOIN AD_Column c ON (e.AD_Element_ID=c.AD_Element_ID) INNER
-             * JOIN AD_PrintFormatItem pfi ON (c.AD_Column_ID=pfi.AD_Column_ID) INNER JOIN
-             * AD_PrintFormatItem_Trl trl ON (pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID) WHERE
-             * pfi.AD_PrintFormatItem_ID=?
-             */
-
             //	Sync Names - Window
             log.info("Synchronizing Menu with Window");
             sql =
@@ -912,10 +874,6 @@ public class SynchronizeTerminology extends SvrProcess {
         } catch (Exception e) {
             log.log(Level.SEVERE, "@Failed@: " + e.getLocalizedMessage(), e);
             throw e;
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         return "@OK@";

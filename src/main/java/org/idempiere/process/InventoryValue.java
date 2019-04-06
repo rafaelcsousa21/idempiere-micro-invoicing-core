@@ -14,10 +14,11 @@
  */
 package org.idempiere.process;
 
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MWarehouse;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.process.SvrProcess;
 
 import java.sql.Timestamp;
@@ -97,9 +98,9 @@ public class InventoryValue extends SvrProcess {
                             + ",M_CostElement_ID="
                             + p_M_CostElement_ID);
 
-        MWarehouse wh = MWarehouse.get(getCtx(), p_M_Warehouse_ID);
-        MClient c = MClient.get(getCtx(), wh.getClientId());
-        MAcctSchema as = c.getAcctSchema();
+        MWarehouse wh = MWarehouse.get(p_M_Warehouse_ID);
+        ClientWithAccounting c = MClientKt.getClientWithAccounting(wh.getClientId());
+        I_C_AcctSchema as = c.getAcctSchema();
 
         //  Delete (just to be sure)
         StringBuilder sql = new StringBuilder("DELETE T_InventoryValue WHERE AD_PInstance_ID=");

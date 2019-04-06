@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_CostHistory
@@ -24,15 +23,15 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
     /**
      * Standard Constructor
      */
-    public X_M_CostHistory(Properties ctx, int M_CostHistory_ID) {
-        super(ctx, M_CostHistory_ID);
+    public X_M_CostHistory(int M_CostHistory_ID) {
+        super(M_CostHistory_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostHistory(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_CostHistory(Row row) {
+        super(row);
     }
 
     /**

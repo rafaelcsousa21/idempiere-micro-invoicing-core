@@ -1,5 +1,6 @@
 package org.compiere.invoicing.test
 
+import company.bigger.idempiere.service.SimpleModelFactory
 import org.compiere.accounting.MWarehouse
 import org.compiere.accounting.MCharge
 import org.compiere.accounting.MCostDetail
@@ -28,7 +29,6 @@ import org.compiere.product.MProduct
 import org.compiere.product.MUOM
 import org.compiere.tax.MTax
 import org.compiere.tax.MTaxCategory
-import org.idempiere.common.util.Env
 import org.idempiere.icommon.model.IPO
 import org.junit.Before
 import org.slf4j.impl.SimpleLogger
@@ -37,13 +37,16 @@ import software.hsharp.core.util.HikariCPI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import org.compiere.orm.MOrg
 import org.compiere.orm.Query
 import org.compiere.orm.IModelFactory
 import org.compiere.orm.DefaultModelFactory
+import org.compiere.orm.getClientOrganizations
+import org.compiere.orm.getOrg
 import java.util.Random
-import java.util.Properties
 import org.idempiere.common.util.AdempiereSystemError
+import org.idempiere.common.util.EnvironmentServiceImpl
+import software.hsharp.core.modules.BaseModuleImpl
+import software.hsharp.core.util.Environment
 
 internal val sessionUrl =
     System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
@@ -59,6 +62,9 @@ fun randomString(length: Int): String {
     return ('a'..'z').randomString(length)
 }
 
+internal val environmentService = EnvironmentServiceImpl(0, 0, 0)
+internal val baseModule = BaseModuleImpl(environmentService = environmentService, modelFactory = SimpleModelFactory())
+
 abstract class BaseComponentTest {
     companion object {
         val NEW_AD_CLIENT_ID = 1000000
@@ -70,23 +76,15 @@ abstract class BaseComponentTest {
         HikariCPI.default(sessionUrl, "adempiere", "adempiere")
     }
 
-    protected fun loginClient(idClient: Int) {
-        val ctx = Env.getCtx()
-        val clientId = idClient
-        val clientIdS = clientId.toString()
-        ctx.setProperty(Env.AD_CLIENT_ID, clientIdS)
-        Env.setContext(ctx, Env.AD_CLIENT_ID, clientIdS)
-    }
-
     private var _taxCategory: I_C_TaxCategory? = null
     protected val taxCategory: I_C_TaxCategory get() = _taxCategory ?: throw AdempiereSystemError("tax category is null")
     private var _tax: I_C_Tax? = null
     protected val tax: I_C_Tax get() = _tax ?: throw AdempiereSystemError("tax is null")
 
     protected val org: I_AD_Org
-        get() = MOrg(ctx, 1000000)
+        get() = getOrg(1000000)
     protected val warehouse: I_M_Warehouse
-        get() = MWarehouse(ctx, 1000000)
+        get() = MWarehouse(1000000)
     private var _paymentTerm: I_C_PaymentTerm? = null
     protected val paymentTerm: I_C_PaymentTerm get() = _paymentTerm ?: throw AdempiereSystemError("payment term is null")
     private var _bankAccount: I_C_BankAccount? = null
@@ -96,27 +94,30 @@ abstract class BaseComponentTest {
 
     @Before
     fun prepareEnv() {
-        DB.run {
-            val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
-            val result = query.list<MClient>()
-            if (result.isEmpty()) {
-                createClient(ctx) { loginClient(0) }
-            }
+        Environment.run(baseModule) {
+            environmentService.login(NEW_AD_CLIENT_ID, 0, 0)
+            DB.run {
+                val query = Query("AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
+                val result = query.list<MClient>()
+                if (result.isEmpty()) {
+                    environmentService.login(0, 0, 0)
+                    createClient()
+                }
 
-            loginClient(NEW_AD_CLIENT_ID)
-            if (_taxCategory == null) ensureTaxCategory10Pct()
-            if (_paymentTerm == null) ensurePaymentTerm14Days()
-            if (_bankAccount == null) ensureBankAccount()
-            if (_charge == null) ensureCharge()
+                if (_taxCategory == null) ensureTaxCategory10Pct()
+                if (_paymentTerm == null) ensurePaymentTerm14Days()
+                if (_bankAccount == null) ensureBankAccount()
+                if (_charge == null) ensureCharge()
+            }
         }
     }
 
     private fun ensureBankAccount() {
-        val newBank = MBank(ctx, 0)
+        val newBank = MBank(0)
         newBank.name = "B-" + randomString(10)
         newBank.routingNo = newBank.name
         newBank.save()
-        val newBankAccount = MBankAccount(ctx, 0)
+        val newBankAccount = MBankAccount(0)
         newBankAccount.bankId = newBank.id
         newBankAccount.name = newBank.name
         newBankAccount.setSearchKey(newBankAccount.name)
@@ -128,21 +129,21 @@ abstract class BaseComponentTest {
     }
 
     private fun ensureCharge() {
-        val newCharge = MCharge(ctx, 0)
+        val newCharge = MCharge(0)
         newCharge.name = "CH-" + randomString(5)
         newCharge.save()
         _charge = getById(newCharge.id, I_C_Charge.Table_Name)
     }
 
     private fun ensurePaymentTerm14Days() {
-        val newPaymentTerm = MPaymentTerm(ctx, 0)
+        val newPaymentTerm = MPaymentTerm(0)
         newPaymentTerm.setIsValid(true)
         newPaymentTerm.name = "P-" + randomString(10)
         newPaymentTerm.setSearchKey(newPaymentTerm.name)
         newPaymentTerm.save()
         _paymentTerm = getById(newPaymentTerm.id, I_C_PaymentTerm.Table_Name)
         assertNotNull(_paymentTerm)
-        val paySchedule = MPaySchedule(ctx, 0)
+        val paySchedule = MPaySchedule(0)
         paySchedule.paymentTermId = paymentTerm.id
         paySchedule.percentage = 100.toBigDecimal()
         paySchedule.save()
@@ -150,37 +151,29 @@ abstract class BaseComponentTest {
 
     fun <T : IPO> getById(id: Int, tableName: String): T {
         val modelFactory: IModelFactory = DefaultModelFactory()
-        val result = modelFactory.getPO(tableName, id)
+        val result: T = modelFactory.getPO(tableName, id)
         println(result)
         assertNotNull(result)
-        @Suppress("UNCHECKED_CAST")
-        val obj = result as T
-        assertNotNull(obj)
-        assertEquals(id, obj.id)
-        return obj
+        assertEquals(id, result.id)
+        return result
     }
-
-    val ctx: Properties get() = Env.getCtx()
-    val AD_CLIENT_ID get() = ctx.getProperty(Env.AD_CLIENT_ID).toInt()
 
     protected fun getProductById(product_id: Int): I_M_Product {
         val modelFactory: IModelFactory = DefaultModelFactory()
-        val result = modelFactory.getPO(I_M_Product.Table_Name, product_id)
-        println(result)
-        assertNotNull(result)
-        val product = result as I_M_Product
+        val product: I_M_Product = modelFactory.getPO(I_M_Product.Table_Name, product_id)
+        println(product)
         assertNotNull(product)
         assertEquals(product_id, product.id)
         return product
     }
 
     fun ensureTaxCategory10Pct() {
-        val newCategory = MTaxCategory(ctx, 0)
+        val newCategory = MTaxCategory(0)
         newCategory.name = "T-" + randomString(10)
         newCategory.save()
         _taxCategory = getById(newCategory.id, I_C_TaxCategory.Table_Name)
         assertNotNull(_taxCategory)
-        val newTax = MTax(ctx, newCategory.name, 10.toBigDecimal(), taxCategory.id)
+        val newTax = MTax(newCategory.name, 10.toBigDecimal(), taxCategory.id)
         newTax.setIsActive(true)
         newTax.setIsDefault(true)
         newTax.save()
@@ -189,23 +182,22 @@ abstract class BaseComponentTest {
     }
 
     fun createAProduct(name: String, productType: String): I_M_Product {
-        val standardProduct = MProduct.get(ctx, "name = 'Standard'").first()
-        val ctx = Env.getCtx()
-        val product = MProduct(ctx, 0)
+        val standardProduct = MProduct.get("name = 'Standard'").first()
+        val product = MProduct(0)
         product.name = name
         product.searchKey = name
-        product.uomId = MUOM.getDefault_UOMId(ctx)
+        product.uomId = MUOM.getDefault_UOMId()
         product.productCategoryId = standardProduct.productCategoryId
         product.taxCategoryId = taxCategory.taxCategoryId
         product.productType = productType // I_M_Product.PRODUCTTYPE_Service
         product.save()
 
-        val org = MOrg.getOfClient(product).first()
-        val warehouse = MWarehouse.getForOrg(ctx, org.id).first()
-        val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
+        val org = getClientOrganizations(product).first()
+        val warehouse = MWarehouse.getForOrg(org.id).first()
+        val attributeSetInstance = MAttributeSetInstance.get(0, product.id)
 
         val inventory = MInventory(warehouse)
-        inventory.documentTypeId = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
+        inventory.documentTypeId = MDocType.getOfClient().first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
         val inventoryLine = MInventoryLine(
@@ -222,12 +214,12 @@ abstract class BaseComponentTest {
 
         assertTrue(
             MCostDetail.createInventory(
-                MAcctSchema.getClientAcctSchema(ctx, NEW_AD_CLIENT_ID).first(),
+                MAcctSchema.getClientAcctSchema(NEW_AD_CLIENT_ID).first(),
                 org.id,
                 product.id,
                 attributeSetInstance.id,
                 inventoryLine.id,
-                MCostElement.getElements(ctx).first().id,
+                MCostElement.getElements().first().id,
                 // amount (costs), quantity
                 0.8.toBigDecimal(), 1.toBigDecimal(),
                 "initial", null

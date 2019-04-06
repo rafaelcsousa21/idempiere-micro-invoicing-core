@@ -1,12 +1,12 @@
 package org.idempiere.process
 
 import kotliquery.Row
-import org.compiere.accounting.MClient
 import org.compiere.accounting.MOrder
 import org.compiere.accounting.MOrderLine
 import org.compiere.accounting.MStorageOnHand
 import org.compiere.invoicing.MInOut
 import org.compiere.invoicing.MInOutLine
+import org.compiere.orm.MClient.Companion.MMPOLICY_FiFo
 import org.compiere.process.SvrProcess
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.Env
@@ -98,7 +98,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
      */
     private fun generate(sql: String, parameters: List<Any?>): String {
         fun load(row: Row): Int {
-            val order = MOrder(ctx, row)
+            val order = MOrder(row)
 
             val shipment = m_shipment
 
@@ -152,7 +152,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 if (p_IsUnconfirmedInOut && product != null && toDeliver.signum() != 0) {
                     val where2 =
                         "EXISTS (SELECT * FROM M_InOut io WHERE io.M_InOut_ID=M_InOutLine.M_InOut_ID AND io.DocStatus IN ('DR','IN','IP','WC'))"
-                    val iols = MInOutLine.getOfOrderLine(ctx, line.orderLineId, where2)
+                    val iols = MInOutLine.getOfOrderLine(line.orderLineId, where2)
                     for (j in iols.indices)
                         unconfirmedShippedQty = unconfirmedShippedQty.add(iols[j].movementQty)
                     val logInfo = StringBuilder("Unconfirmed Qty=")
@@ -191,7 +191,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                     line.productId,
                     line.attributeSetInstanceId,
                     minGuaranteeDate,
-                    MClient.MMPOLICY_FiFo == MMPolicy
+                    MMPOLICY_FiFo == MMPolicy
                 )
 
                 for (j in storages.indices) {
@@ -310,7 +310,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                             line.productId,
                             line.attributeSetInstanceId,
                             minGuaranteeDate,
-                            MClient.MMPOLICY_FiFo == MMPolicy
+                            MMPOLICY_FiFo == MMPolicy
                         )
                     }
                     //
@@ -373,7 +373,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
 
         val parameters =
             if (p_Selection) {
-                listOf(Env.getClientId(ctx), processInstanceId)
+                listOf(Env.getClientId(), processInstanceId)
             } else {
                 listOf(p_M_Warehouse_ID) +
                         (if (p_DatePromised != null) listOf(p_DatePromised) else emptyList()) +

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for GL_JournalBatch
@@ -73,15 +72,15 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
     /**
      * Standard Constructor
      */
-    public X_GL_JournalBatch(Properties ctx, int GL_JournalBatch_ID) {
-        super(ctx, GL_JournalBatch_ID);
+    public X_GL_JournalBatch(int GL_JournalBatch_ID) {
+        super(GL_JournalBatch_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_GL_JournalBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_JournalBatch(Row row) {
+        super(row);
     }
 
     /**

@@ -150,7 +150,7 @@ public class RequisitionPOCreate extends SvrProcess {
         //	Specific
         if (p_M_Requisition_ID != 0) {
             if (log.isLoggable(Level.INFO)) log.info("M_Requisition_ID=" + p_M_Requisition_ID);
-            MRequisition req = new MRequisition(getCtx(), p_M_Requisition_ID);
+            MRequisition req = new MRequisition(p_M_Requisition_ID);
             if (!MRequisition.DOCSTATUS_Completed.equals(req.getDocStatus())) {
                 throw new AdempiereUserError("@DocStatus@ = " + req.getDocStatus());
             }
@@ -262,7 +262,7 @@ public class RequisitionPOCreate extends SvrProcess {
         orderClause.append("M_Product_ID, C_Charge_ID, M_AttributeSetInstance_ID");
 
         List<MRequisitionLine> result =
-                new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString())
+                new Query(MRequisitionLine.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(orderClause.toString())
                         .setClientId()
@@ -328,7 +328,7 @@ public class RequisitionPOCreate extends SvrProcess {
 
         //	BPartner
         if (m_bpartner == null || C_BPartner_ID != m_bpartner.getId()) {
-            m_bpartner = MBPartner.get(getCtx(), C_BPartner_ID);
+            m_bpartner = MBPartner.get(C_BPartner_ID);
         }
 
         //	Order
@@ -337,7 +337,7 @@ public class RequisitionPOCreate extends SvrProcess {
         MultiKey key = new MultiKey(C_BPartner_ID, DateRequired, M_PriceList_ID);
         m_order = m_cacheOrders.get(key);
         if (m_order == null) {
-            m_order = new MOrder(getCtx(), 0);
+            m_order = new MOrder(0);
             m_order.setOrgId(rLine.getOrgId());
             m_order.setWarehouseId(rLine.getParent().getWarehouseId());
             m_order.setDatePromised(DateRequired);
@@ -349,7 +349,7 @@ public class RequisitionPOCreate extends SvrProcess {
             if (!p_ConsolidateDocument) {
                 StringBuilder msgsd =
                         new StringBuilder()
-                                .append(Msg.getElement(getCtx(), "M_Requisition_ID"))
+                                .append(Msg.getElement("M_Requisition_ID"))
                                 .append(": ")
                                 .append(rLine.getParent().getDocumentNo());
                 m_order.setDescription(msgsd.toString());
@@ -374,7 +374,7 @@ public class RequisitionPOCreate extends SvrProcess {
         }
         if (m_order != null) {
             m_order.load();
-            String message = Msg.parseTranslation(getCtx(), "@GeneratedPO@ " + m_order.getDocumentNo());
+            String message = Msg.parseTranslation("@GeneratedPO@ " + m_order.getDocumentNo());
             addBufferLog(
                     0,
                     null,
@@ -398,13 +398,13 @@ public class RequisitionPOCreate extends SvrProcess {
             m_orderLine.saveEx();
         }
         m_orderLine = null;
-        MProduct product = MProduct.get(getCtx(), rLine.getProductId());
+        MProduct product = MProduct.get(rLine.getProductId());
 
         //	Get Business Partner
         int C_BPartner_ID = rLine.getBusinessPartnerId();
         if (C_BPartner_ID != 0) {
         } else if (rLine.getChargeId() != 0) {
-            MCharge charge = MCharge.get(getCtx(), rLine.getChargeId());
+            MCharge charge = MCharge.get(rLine.getChargeId());
             C_BPartner_ID = charge.getBusinessPartnerId();
             if (C_BPartner_ID == 0) {
                 throw new AdempiereUserError("No Vendor for Charge " + charge.getName());
@@ -412,7 +412,7 @@ public class RequisitionPOCreate extends SvrProcess {
         } else {
             // Find Strategic Vendor for Product
             // TODO: refactor
-            MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getProductId());
+            MProductPO[] ppos = MProductPO.getOfProduct(product.getProductId());
             for (int i = 0; i < ppos.length; i++) {
                 if (ppos[i].isCurrentVendor() && ppos[i].getBusinessPartnerId() != 0) {
                     C_BPartner_ID = ppos[i].getBusinessPartnerId();
@@ -471,7 +471,6 @@ public class RequisitionPOCreate extends SvrProcess {
         //
         boolean match =
                 new Query(
-                        getCtx(),
                         MBPartner.Table_Name,
                         "C_BPartner_ID=? AND C_BP_Group_ID=?"
                 )

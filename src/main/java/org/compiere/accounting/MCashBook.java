@@ -7,7 +7,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
 import java.util.Iterator;
-import java.util.Properties;
 
 /**
  * Cash Book Model
@@ -38,8 +37,8 @@ public class MCashBook extends X_C_CashBook {
      * @param ctx           context
      * @param C_CashBook_ID id
      */
-    public MCashBook(Properties ctx, int C_CashBook_ID) {
-        super(ctx, C_CashBook_ID);
+    public MCashBook(int C_CashBook_ID) {
+        super(C_CashBook_ID);
     } //	MCashBook
 
     /**
@@ -47,8 +46,8 @@ public class MCashBook extends X_C_CashBook {
      *
      * @param ctx context
      */
-    public MCashBook(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCashBook(Row row) {
+        super(row);
     } //	MCashBook
 
     /**
@@ -58,11 +57,11 @@ public class MCashBook extends X_C_CashBook {
      * @param C_CashBook_ID id of cashbook to load
      * @return Cashbook
      */
-    public static MCashBook get(Properties ctx, int C_CashBook_ID) {
+    public static MCashBook get(int C_CashBook_ID) {
         Integer key = C_CashBook_ID;
         MCashBook retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MCashBook(ctx, C_CashBook_ID);
+        retValue = new MCashBook(C_CashBook_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -75,7 +74,7 @@ public class MCashBook extends X_C_CashBook {
      * @param C_Currency_ID currency
      * @return cash book or null
      */
-    public static MCashBook get(Properties ctx, int AD_Org_ID, int C_Currency_ID) {
+    public static MCashBook get(int AD_Org_ID, int C_Currency_ID) {
         //	Try from cache
         Iterator<MCashBook> it = s_cache.values().iterator();
         while (it.hasNext()) {
@@ -90,7 +89,7 @@ public class MCashBook extends X_C_CashBook {
                         + I_C_CashBook.COLUMNNAME_C_Currency_ID
                         + "=?";
         MCashBook retValue =
-                new Query(ctx, I_C_CashBook.Table_Name, whereClause)
+                new Query(I_C_CashBook.Table_Name, whereClause)
                         .setParameters(AD_Org_ID, C_Currency_ID)
                         .setOrderBy("IsDefault DESC")
                         .first();

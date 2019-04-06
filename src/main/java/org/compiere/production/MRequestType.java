@@ -9,7 +9,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.convertDate;
 
@@ -40,15 +39,11 @@ public class MRequestType extends X_R_RequestType {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx              context
      * @param R_RequestType_ID id
-     * @param trxName          transaction
      */
-    public MRequestType(Properties ctx, int R_RequestType_ID) {
-        super(ctx, R_RequestType_ID);
+    public MRequestType(int R_RequestType_ID) {
+        super(R_RequestType_ID);
         if (R_RequestType_ID == 0) {
-            //	setRequestTypeId (0);
-            //	setName (null);
             setDueDateTolerance(7);
             setIsDefault(false);
             setIsEMailWhenDue(false);
@@ -65,27 +60,22 @@ public class MRequestType extends X_R_RequestType {
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
-    public MRequestType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestType(Row row) {
+        super(row);
     } //	MRequestType
 
     /**
      * Get Request Type (cached)
      *
-     * @param ctx              context
      * @param R_RequestType_ID id
      * @return Request Type
      */
-    public static MRequestType get(Properties ctx, int R_RequestType_ID) {
+    public static MRequestType get(int R_RequestType_ID) {
         Integer key = R_RequestType_ID;
         MRequestType retValue = s_cache.get(key);
         if (retValue == null) {
-            retValue = new MRequestType(ctx, R_RequestType_ID);
+            retValue = new MRequestType(R_RequestType_ID);
             s_cache.put(key, retValue);
         }
         return retValue;
@@ -94,16 +84,15 @@ public class MRequestType extends X_R_RequestType {
     /**
      * Get Default Request Type
      *
-     * @param ctx context
      * @return Request Type
      */
-    public static MRequestType getDefault(Properties ctx) {
-        int AD_Client_ID = Env.getClientId(ctx);
+    public static MRequestType getDefault() {
+        int AD_Client_ID = Env.getClientId();
 
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "AD_Client_ID IN (0," + AD_Client_ID + ")";
         MRequestType retValue =
-                new Query(ctx, I_R_RequestType.Table_Name, whereClause)
+                new Query(I_R_RequestType.Table_Name, whereClause)
                         .setOrderBy("IsDefault DESC, clientId DESC")
                         .first();
 
@@ -120,7 +109,7 @@ public class MRequestType extends X_R_RequestType {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (getStatusCategoryId() == 0) {
-            MStatusCategory sc = MStatusCategory.getDefault(getCtx());
+            MStatusCategory sc = MStatusCategory.getDefault();
             if (sc != null && sc.getStatusCategoryId() != 0)
                 setStatusCategoryId(sc.getStatusCategoryId());
         }
@@ -133,9 +122,7 @@ public class MRequestType extends X_R_RequestType {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MRequestType[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MRequestType[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**

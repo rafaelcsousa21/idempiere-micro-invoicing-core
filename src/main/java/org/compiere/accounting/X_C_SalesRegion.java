@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_SalesRegion;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_SalesRegion
  *
@@ -22,8 +20,8 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion 
     /**
      * Standard Constructor
      */
-    public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID) {
-        super(ctx, C_SalesRegion_ID);
+    public X_C_SalesRegion(int C_SalesRegion_ID) {
+        super(C_SalesRegion_ID);
         /**
          * if (C_SalesRegion_ID == 0) { setSalesRegionId (0); setIsDefault (false); setIsSummary
          * (false); setName (null); setValue (null); }
@@ -33,8 +31,8 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion 
     /**
      * Load Constructor
      */
-    public X_C_SalesRegion(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_SalesRegion(Row row) {
+        super(row);
     }
 
     /**

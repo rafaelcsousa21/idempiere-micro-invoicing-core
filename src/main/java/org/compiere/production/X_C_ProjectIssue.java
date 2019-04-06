@@ -9,7 +9,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_ProjectIssue
@@ -27,8 +26,8 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
     /**
      * Standard Constructor
      */
-    public X_C_ProjectIssue(Properties ctx, int C_ProjectIssue_ID) {
-        super(ctx, C_ProjectIssue_ID);
+    public X_C_ProjectIssue(int C_ProjectIssue_ID) {
+        super(C_ProjectIssue_ID);
         /**
          * if (C_ProjectIssue_ID == 0) { setProjectId (0); setProjectIssueId (0); setLine (0);
          * // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_ProjectIssue WHERE
@@ -41,8 +40,8 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
     /**
      * Load Constructor
      */
-    public X_C_ProjectIssue(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ProjectIssue(Row row) {
+        super(row);
     }
 
     /**
@@ -61,7 +60,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
+                MTable.get(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 
@@ -169,7 +168,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
 
     public I_M_Locator getLocator() throws RuntimeException {
         return (I_M_Locator)
-                MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getLocatorId());
+                MTable.get(I_M_Locator.Table_Name).getPO(getLocatorId());
     }
 
     /**

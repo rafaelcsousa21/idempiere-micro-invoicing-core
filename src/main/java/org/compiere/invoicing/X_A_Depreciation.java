@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_A_Depreciation;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for A_Depreciation
  *
@@ -22,15 +20,15 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
     /**
      * Standard Constructor
      */
-    public X_A_Depreciation(Properties ctx, int A_Depreciation_ID) {
-        super(ctx, A_Depreciation_ID);
+    public X_A_Depreciation(int A_Depreciation_ID) {
+        super(A_Depreciation_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_A_Depreciation(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_A_Depreciation(Row row) {
+        super(row);
     }
 
     /**

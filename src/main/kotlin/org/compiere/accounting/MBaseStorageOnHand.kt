@@ -2,13 +2,11 @@ package org.compiere.accounting
 
 import kotliquery.Row
 import org.compiere.product.MProduct
-import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.asResource
 import software.hsharp.core.util.forUpdate
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
-import java.util.Properties
 import kotlin.collections.emptyList
 import kotlin.collections.listOf
 import kotlin.collections.plus
@@ -17,7 +15,6 @@ import kotlin.collections.toTypedArray
 /**
  * Get Storage Info for Warehouse or locator
  *
- * @param ctx context
  * @param warehouseId ignore if M_Locator_ID > 0
  * @param productId product
  * @param attributeSetInstanceId instance id, 0 to retrieve all instance
@@ -29,7 +26,6 @@ import kotlin.collections.toTypedArray
  * @return existing - ordered by location priority (desc) and/or guarantee date
  */
 fun getStorageInfoForWarehouseOrLocator(
-    ctx: Properties,
     warehouseId: Int,
     productId: Int,
     attributeSetInstanceId: Int,
@@ -85,7 +81,7 @@ fun getStorageInfoForWarehouseOrLocator(
                 partialSql += "AND (asi.GuaranteeDate IS NULL OR asi.GuaranteeDate>?) "
             }
 
-            val product = MProduct.get(Env.getCtx(), productId)
+            val product = MProduct.get(productId)
 
             if (product.isUseGuaranteeDateForMPolicy) {
                 partialSql += "ORDER BY l.PriorityNo DESC, COALESCE(asi.GuaranteeDate,s.DateMaterialPolicy)"
@@ -112,7 +108,7 @@ fun getStorageInfoForWarehouseOrLocator(
         else if (minGuaranteeDate != null) listOf(minGuaranteeDate) else emptyList())
 
     fun load(row: Row): MStorageOnHand {
-        val storage = MStorageOnHand(ctx, row)
+        val storage = MStorageOnHand(row)
         if (lockForUpdate) {
             forUpdate(storage)
         }
@@ -126,7 +122,6 @@ fun getStorageInfoForWarehouseOrLocator(
 /**
  * Get Storage Info for Warehouse or locator
  *
- * @param ctx context
  * @param M_Warehouse_ID ignore if M_Locator_ID > 0
  * @param M_Product_ID product
  * @param M_AttributeSetInstance_ID instance id, 0 to retrieve storages that don't have asi, -1 to
@@ -138,7 +133,6 @@ fun getStorageInfoForWarehouseOrLocator(
  * @return existing - ordered by location priority (desc) and/or guarantee date
  */
 fun getStorageInfoForWarehouseOrLocatorNegative(
-    ctx: Properties,
     M_Warehouse_ID: Int,
     M_Product_ID: Int,
     M_AttributeSetInstance_ID: Int,
@@ -168,7 +162,7 @@ fun getStorageInfoForWarehouseOrLocatorNegative(
             partialSql += "AND (s.M_AttributeSetInstance_ID=0 OR s.M_AttributeSetInstance_ID IS NULL) "
         }
 
-        val product = MProduct.get(Env.getCtx(), M_Product_ID)
+        val product = MProduct.get(M_Product_ID)
 
         if (product.isUseGuaranteeDateForMPolicy) {
             partialSql += "ORDER BY l.PriorityNo DESC, " + "asi.GuaranteeDate"
@@ -195,7 +189,7 @@ fun getStorageInfoForWarehouseOrLocatorNegative(
 
     fun load(row: Row): MStorageOnHand? {
         if (row.bigDecimal(11).signum() != 0) {
-            val storage = MStorageOnHand(ctx, row)
+            val storage = MStorageOnHand(row)
             if (lockForUpdate) {
                 forUpdate(storage)
             }

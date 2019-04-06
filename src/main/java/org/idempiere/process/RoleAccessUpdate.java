@@ -18,7 +18,6 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MRole;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.CLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class RoleAccessUpdate extends SvrProcess {
         if (log.isLoggable(Level.INFO))
             log.info("AD_Client_ID=" + p_AD_Client_ID + ", AD_Role_ID=" + p_AD_Role_ID);
         //
-        if (p_AD_Role_ID > 0) updateRole(new MRole(getCtx(), p_AD_Role_ID));
+        if (p_AD_Role_ID > 0) updateRole(new MRole(p_AD_Role_ID));
         else {
             List<Object> params = new ArrayList<Object>();
             StringBuilder whereClause = new StringBuilder("1=1");
@@ -89,7 +88,7 @@ public class RoleAccessUpdate extends SvrProcess {
             // sql += "ORDER BY AD_Client_ID, Name";
 
             List<MRole> roles =
-                    new Query(getCtx(), MRole.Table_Name, whereClause.toString())
+                    new Query(MRole.Table_Name, whereClause.toString())
                             .setOnlyActiveRecords(true)
                             .setParameters(params)
                             .setOrderBy("AD_Client_ID, Name")

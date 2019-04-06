@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_Invoice extends BasePOName implements I_I_Invoice {
 
@@ -19,15 +18,15 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
     /**
      * Standard Constructor
      */
-    public X_I_Invoice(Properties ctx, int I_Invoice_ID) {
-        super(ctx, I_Invoice_ID);
+    public X_I_Invoice(int I_Invoice_ID) {
+        super(I_Invoice_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Invoice(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_Invoice(Row row) {
+        super(row);
     }
 
     /**

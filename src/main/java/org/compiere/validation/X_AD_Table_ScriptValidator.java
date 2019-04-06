@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_AD_Table_ScriptValidator;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for AD_Table_ScriptValidator
  *
@@ -124,15 +122,15 @@ public class X_AD_Table_ScriptValidator extends PO
      * Standard Constructor
      */
     public X_AD_Table_ScriptValidator(
-            Properties ctx, int AD_Table_ScriptValidator_ID) {
-        super(ctx, AD_Table_ScriptValidator_ID);
+            int AD_Table_ScriptValidator_ID) {
+        super(AD_Table_ScriptValidator_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Table_ScriptValidator(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_Table_ScriptValidator(Row row) {
+        super(row);
     }
 
     /**

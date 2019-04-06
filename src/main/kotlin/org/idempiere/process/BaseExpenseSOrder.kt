@@ -71,7 +71,7 @@ abstract class BaseExpenseSOrder : SvrProcess() {
         var te: MTimeExpense? = null
 
         fun processRow(row: Row): Int {
-            val tel = MTimeExpenseLine(ctx, row)
+            val tel = MTimeExpenseLine(row)
             if (!tel.isInvoiced) return 0
 
             val localOldBPartner = oldBPartner
@@ -79,7 +79,7 @@ abstract class BaseExpenseSOrder : SvrProcess() {
             // 	New BPartner - New Order
             if (localOldBPartner == null || localOldBPartner.businessPartnerId != tel.businessPartnerId) {
                 completeOrder()
-                oldBPartner = MBPartner(ctx, tel.businessPartnerId)
+                oldBPartner = MBPartner(tel.businessPartnerId)
             }
             // 	New Project - New Order
             if (old_Project_ID != tel.projectId) {
@@ -89,7 +89,7 @@ abstract class BaseExpenseSOrder : SvrProcess() {
 
             val localTe = te
             if (localTe == null || localTe.timeExpenseId != tel.timeExpenseId)
-                te = MTimeExpense(getCtx(), tel.timeExpenseId)
+                te = MTimeExpense(tel.timeExpenseId)
             //
             processLine(localTe, tel, localOldBPartner)
 

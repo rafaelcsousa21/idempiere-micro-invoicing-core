@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_ConversionType;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_ConversionType
  *
@@ -23,15 +21,15 @@ public class X_C_ConversionType extends BasePONameValue
     /**
      * Standard Constructor
      */
-    public X_C_ConversionType(Properties ctx, int C_ConversionType_ID) {
-        super(ctx, C_ConversionType_ID);
+    public X_C_ConversionType(int C_ConversionType_ID) {
+        super(C_ConversionType_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_ConversionType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ConversionType(Row row) {
+        super(row);
     }
 
     /**

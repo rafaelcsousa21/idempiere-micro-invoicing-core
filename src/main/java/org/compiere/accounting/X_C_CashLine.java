@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_CashLine
@@ -44,15 +43,15 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
     /**
      * Standard Constructor
      */
-    public X_C_CashLine(Properties ctx, int C_CashLine_ID) {
-        super(ctx, C_CashLine_ID);
+    public X_C_CashLine(int C_CashLine_ID) {
+        super(C_CashLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_CashLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_CashLine(Row row) {
+        super(row);
     }
 
     /**

@@ -5,7 +5,6 @@ import org.compiere.invoicing.MInvoice;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
@@ -30,16 +29,10 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      *
      * @param ctx                   context
      * @param C_PaySelectionLine_ID id
-     * @param trxName               transaction
      */
-    public MPaySelectionLine(Properties ctx, int C_PaySelectionLine_ID) {
-        super(ctx, C_PaySelectionLine_ID);
+    public MPaySelectionLine(int C_PaySelectionLine_ID) {
+        super(C_PaySelectionLine_ID);
         if (C_PaySelectionLine_ID == 0) {
-            //	setPaySelectionId (0);
-            //	setPaymentRule (null);	// S
-            //	setLine (0);	// @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_PaySelectionLine
-            // WHERE C_PaySelection_ID=@C_PaySelection_ID@
-            //	setInvoiceId (0);
             setIsSOTrx(false);
             setOpenAmt(Env.ZERO);
             setPayAmt(Env.ZERO);
@@ -55,8 +48,8 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      *
      * @param ctx context
      */
-    public MPaySelectionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaySelectionLine(Row row) {
+        super(row);
     } //	MPaySelectionLine
 
     /**
@@ -67,7 +60,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      * @param PaymentRule payment rule
      */
     public MPaySelectionLine(MPaySelection ps, int Line, String PaymentRule) {
-        this(ps.getCtx(), 0);
+        this(0);
         setClientOrg(ps);
         setPaySelectionId(ps.getPaySelectionId());
         setLine(Line);
@@ -106,7 +99,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      * @return invoice
      */
     public MInvoice getInvoice() {
-        if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getInvoiceId());
+        if (m_invoice == null) m_invoice = new MInvoice(getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -168,15 +161,13 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MPaySelectionLine[");
-        sb.append(getId())
-                .append(",C_Invoice_ID=")
-                .append(getInvoiceId())
-                .append(",PayAmt=")
-                .append(getPayAmt())
-                .append(",DifferenceAmt=")
-                .append(getDifferenceAmt())
-                .append("]");
-        return sb.toString();
+        return "MPaySelectionLine[" + getId() +
+                ",C_Invoice_ID=" +
+                getInvoiceId() +
+                ",PayAmt=" +
+                getPayAmt() +
+                ",DifferenceAmt=" +
+                getDifferenceAmt() +
+                "]";
     } //	toString
 } //	MPaySelectionLine

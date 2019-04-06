@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -24,12 +23,12 @@ public class MStorageReservation extends X_M_StorageReservation {
     private static final long serialVersionUID = 8179093165315835613L;
     private static CLogger s_log = CLogger.getCLogger(MStorageReservation.class);
 
-    public MStorageReservation(Properties ctx, int M_StorageReservation_ID) {
-        super(ctx, M_StorageReservation_ID);
+    public MStorageReservation(int M_StorageReservation_ID) {
+        super(M_StorageReservation_ID);
     }
 
-    public MStorageReservation(Properties ctx, Row row) {
-        super(ctx, row);
+    public MStorageReservation(Row row) {
+        super(row);
     }
 
     /**
@@ -42,7 +41,7 @@ public class MStorageReservation extends X_M_StorageReservation {
      */
     private MStorageReservation(
             MWarehouse warehouse, int M_Product_ID, int M_AttributeSetInstance_ID, boolean isSOTrx) {
-        this(warehouse.getCtx(), 0);
+        this(0);
         setClientOrg(warehouse);
         setWarehouseId(warehouse.getWarehouseId());
         setProductId(M_Product_ID);
@@ -62,13 +61,12 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @return existing or null
      */
     public static MStorageReservation get(
-            Properties ctx,
+
             int M_Warehouse_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             boolean isSOTrx) {
         return MBaseStorageReservationKt.getStorageInfo(
-                ctx,
                 M_Warehouse_ID,
                 M_Product_ID,
                 M_AttributeSetInstance_ID,
@@ -84,11 +82,11 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @return existing or null
      */
     public static MStorageReservation[] getOfProduct(
-            Properties ctx, int M_Product_ID) {
+            int M_Product_ID) {
         String sqlWhere = "M_Product_ID=?";
 
         List<MStorageReservation> list =
-                new Query(ctx, I_M_StorageReservation.Table_Name, sqlWhere)
+                new Query(I_M_StorageReservation.Table_Name, sqlWhere)
                         .setParameters(M_Product_ID)
                         .list();
 
@@ -164,7 +162,7 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @return
      */
     public static boolean add(
-            Properties ctx,
+
             int M_Warehouse_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -174,7 +172,7 @@ public class MStorageReservation extends X_M_StorageReservation {
         if (diffQty == null || diffQty.signum() == 0) return true;
 
         /* Do NOT use FIFO ASI for reservation */
-        MProduct prd = new MProduct(ctx, M_Product_ID);
+        MProduct prd = new MProduct(M_Product_ID);
         if (prd.getAttributeSetId() == 0 || !prd.getMAttributeSet().isInstanceAttribute()) {
             // Product doesn't manage attribute set, always reserved with 0
             M_AttributeSetInstance_ID = 0;
@@ -182,7 +180,7 @@ public class MStorageReservation extends X_M_StorageReservation {
 
         //	Get Storage
         MStorageReservation storage =
-                getCreate(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx);
+                getCreate(M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx);
         forUpdate(storage);
         //	Verify
         if (storage.getWarehouseId() != M_Warehouse_ID
@@ -222,7 +220,7 @@ public class MStorageReservation extends X_M_StorageReservation {
      */
     @Deprecated
     public static boolean add(
-            Properties ctx,
+
             int M_Warehouse_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -232,7 +230,7 @@ public class MStorageReservation extends X_M_StorageReservation {
             String trxName) {
 
         return add(
-                ctx,
+
                 M_Warehouse_ID,
                 M_Product_ID,
                 reservationAttributeSetInstance_ID,
@@ -250,7 +248,7 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @return existing/new or null
      */
     public static MStorageReservation getCreate(
-            Properties ctx,
+
             int M_Warehouse_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -258,11 +256,11 @@ public class MStorageReservation extends X_M_StorageReservation {
         if (M_Warehouse_ID == 0) throw new IllegalArgumentException("M_Warehouse_ID=0");
         if (M_Product_ID == 0) throw new IllegalArgumentException("M_Product_ID=0");
         MStorageReservation retValue =
-                get(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx);
+                get(M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx);
         if (retValue != null) return retValue;
 
         //	Insert row based on warehouse
-        MWarehouse warehouse = new MWarehouse(ctx, M_Warehouse_ID);
+        MWarehouse warehouse = new MWarehouse(M_Warehouse_ID);
         if (warehouse.getId() != M_Warehouse_ID)
             throw new IllegalArgumentException("Not found M_Warehouse_ID=" + M_Warehouse_ID);
         //
@@ -285,14 +283,14 @@ public class MStorageReservation extends X_M_StorageReservation {
                 sql,
                 new Object[]{
                         addition,
-                        Env.getUserId(Env.getCtx()),
+                        Env.getUserId(),
                         getProductId(),
                         getWarehouseId(),
                         getAttributeSetInstanceId(),
                         isSOTrx()
                 }
         );
-        load((HashMap) null);
+        loadFromMap(null);
     }
 
     /**

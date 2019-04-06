@@ -14,7 +14,6 @@ import org.idempiere.common.util.Env;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -53,8 +52,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param M_RequisitionLine_ID id
      * @param trxName              transaction
      */
-    public MRequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
-        super(ctx, M_RequisitionLine_ID);
+    public MRequisitionLine(int M_RequisitionLine_ID) {
+        super(M_RequisitionLine_ID);
         if (M_RequisitionLine_ID == 0) {
             //	setRequisition_ID (0);
             setLine(
@@ -71,8 +70,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      *
      * @param ctx context
      */
-    public MRequisitionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequisitionLine(Row row) {
+        super(row);
     } //	MRequisitionLine
 
     /**
@@ -81,7 +80,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param req requisition
      */
     public MRequisitionLine(MRequisition req) {
-        this(req.getCtx(), 0);
+        this(0);
         setClientOrg(req);
         setRequisitionId(req.getRequisitionId());
         m_M_PriceList_ID = req.getPriceListId();
@@ -94,13 +93,13 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param ctx
      * @return Requisition Line
      */
-    public static MRequisitionLine[] forC_OrderId(Properties ctx, int C_Order_ID) {
+    public static MRequisitionLine[] forC_OrderId(int C_Order_ID) {
         final String whereClause =
                 "EXISTS (SELECT 1 FROM C_OrderLine ol"
                         + " WHERE ol.C_OrderLine_ID=M_RequisitionLine.C_OrderLine_ID"
                         + " AND ol.C_Order_ID=?)";
         List<MRequisitionLine> list =
-                new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause)
+                new Query(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(C_Order_ID)
                         .list();
         return list.toArray(new MRequisitionLine[list.size()]);
@@ -113,8 +112,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param C_Order_ID
      * @param trxName
      */
-    public static void unlinkC_OrderId(Properties ctx, int C_Order_ID) {
-        for (MRequisitionLine line : MRequisitionLine.forC_OrderId(ctx, C_Order_ID)) {
+    public static void unlinkC_OrderId(int C_Order_ID) {
+        for (MRequisitionLine line : MRequisitionLine.forC_OrderId(C_Order_ID)) {
             line.setOrderLineId(0);
             line.saveEx();
         }
@@ -129,10 +128,10 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @return array of Requisition Line(s)
      */
     public static MRequisitionLine[] forC_OrderLineId(
-            Properties ctx, int C_OrderLine_ID) {
+            int C_OrderLine_ID) {
         final String whereClause = I_M_RequisitionLine.COLUMNNAME_C_OrderLine_ID + "=?";
         List<MRequisitionLine> list =
-                new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause)
+                new Query(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(C_OrderLine_ID)
                         .list();
         return list.toArray(new MRequisitionLine[list.size()]);
@@ -145,8 +144,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param C_OrderLine_ID
      * @param trxName
      */
-    public static void unlinkC_OrderLineId(Properties ctx, int C_OrderLine_ID) {
-        for (MRequisitionLine line : forC_OrderLineId(ctx, C_OrderLine_ID)) {
+    public static void unlinkC_OrderLineId(int C_OrderLine_ID) {
+        for (MRequisitionLine line : forC_OrderLineId(C_OrderLine_ID)) {
             line.setOrderLineId(0);
             line.saveEx();
         }
@@ -159,7 +158,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      */
     public MRequisition getParent() {
         if (m_parent == null)
-            m_parent = new MRequisition(getCtx(), getRequisitionId());
+            m_parent = new MRequisition(getRequisitionId());
         return m_parent;
     } //	getParent
 
@@ -176,7 +175,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      */
     public void setPrice() {
         if (getChargeId() != 0) {
-            MCharge charge = MCharge.get(getCtx(), getChargeId());
+            MCharge charge = MCharge.get(getChargeId());
             setPriceActual(charge.getChargeAmt());
         }
         if (getProductId() == 0) return;
@@ -220,7 +219,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "M_RequisitionLine"));
+            log.saveError("ParentComplete", Msg.translate("M_RequisitionLine"));
             return false;
         }
         if (getLine() == 0) {
@@ -246,7 +245,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
          */
         if (getParent().getDocumentType().isChargeOrProductMandatory()) {
             if (getChargeId() == 0 && getProductId() == 0 && getPriceActual().signum() != 0) {
-                log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
+                log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
                 return false;
             }
         }
@@ -279,7 +278,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
 
     @Override
     public I_M_Product getProduct() {
-        return MProduct.get(getCtx(), getProductId());
+        return MProduct.get(getProductId());
     }
 
     /**

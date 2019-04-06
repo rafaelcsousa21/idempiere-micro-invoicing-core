@@ -1,6 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_AcctSchema_Element;
@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -56,13 +55,12 @@ public final class FactLine extends X_Fact_Acct {
     /**
      * Constructor
      *
-     * @param ctx         context
      * @param AD_Table_ID - Table of Document Source
      * @param Record_ID   - Record of document
      * @param Line_ID     - Optional line id
      */
-    public FactLine(Properties ctx, int AD_Table_ID, int Record_ID, int Line_ID) {
-        super(ctx, 0);
+    public FactLine(int AD_Table_ID, int Record_ID, int Line_ID) {
+        super(0);
         setADClientID(0); // 	do not derive
         setOrgId(0); // 	do not derive
         //
@@ -83,7 +81,7 @@ public final class FactLine extends X_Fact_Acct {
      */
     public FactLine reverse(String description) {
         FactLine reversal =
-                new FactLine(getCtx(), getRowTableId(), getRecordId(), getLineId());
+                new FactLine(getRowTableId(), getRecordId(), getLineId());
         reversal.setClientOrg(this); // 	needs to be set explicitly
         reversal.setDocumentInfo(m_doc, m_docLine);
         reversal.setAccount(m_acctSchema, m_acct);
@@ -191,7 +189,7 @@ public final class FactLine extends X_Fact_Acct {
         if (getAmtSourceDr().compareTo(Env.ZERO) == 0 && getAmtSourceCr().compareTo(Env.ZERO) == 0)
             return false;
         //	Currency Precision
-        int precision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
+        int precision = MCurrencyKt.getCurrencyStdPrecision(C_Currency_ID);
         if (AmtSourceDr != null && AmtSourceDr.scale() > precision) {
             BigDecimal AmtSourceDr1 = AmtSourceDr.setScale(precision, BigDecimal.ROUND_HALF_UP);
             if (AmtSourceDr1.compareTo(AmtSourceDr) != 0)
@@ -257,7 +255,7 @@ public final class FactLine extends X_Fact_Acct {
         setAmtAcctDr(AmtAcctDr);
         setAmtAcctCr(AmtAcctCr);
         //	Currency Precision
-        int precision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
+        int precision = MCurrencyKt.getCurrencyStdPrecision(C_Currency_ID);
         if (AmtAcctDr != null && AmtAcctDr.scale() > precision) {
             BigDecimal AmtAcctDr1 = AmtAcctDr.setScale(precision, BigDecimal.ROUND_HALF_UP);
             if (AmtAcctDr1.compareTo(AmtAcctDr) != 0)
@@ -608,7 +606,6 @@ public final class FactLine extends X_Fact_Acct {
 
         setAmtAcctDr(
                 MConversionRate.convert(
-                        getCtx(),
                         getAmtSourceDr(),
                         getCurrencyId(),
                         m_acctSchema.getCurrencyId(),
@@ -619,7 +616,6 @@ public final class FactLine extends X_Fact_Acct {
         if (getAmtAcctDr() == null) return false;
         setAmtAcctCr(
                 MConversionRate.convert(
-                        getCtx(),
                         getAmtSourceCr(),
                         getCurrencyId(),
                         m_acctSchema.getCurrencyId(),
@@ -897,7 +893,6 @@ public final class FactLine extends X_Fact_Acct {
         //  get VC for P_Revenue (from Product)
         MAccount revenue =
                 MAccount.get(
-                        getCtx(),
                         AD_Client_ID,
                         AD_Org_ID,
                         getAccountingSchemaId(),
@@ -956,7 +951,7 @@ public final class FactLine extends X_Fact_Acct {
             return Account_ID;
         }
 
-        MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0);
+        MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(0);
         plan.setRevenueRecognitionId(C_RevenueRecognition_ID);
         plan.setAccountingSchemaId(getAccountingSchemaId());
         plan.setInvoiceLineId(C_InvoiceLine_ID);
@@ -997,7 +992,7 @@ public final class FactLine extends X_Fact_Acct {
         boolean success = false;
 
         MFactAcct fact = BaseFactLineKt.updateReverseLineGetData(AD_Table_ID, Record_ID, Line_ID,
-                getAccountingSchemaId(), m_acct.getAccountId(), getLocatorId(), getCtx()
+                getAccountingSchemaId(), m_acct.getAccountId(), getLocatorId()
         );
         //  Accounted Amounts - reverse
         BigDecimal dr = fact.getAmtAcctDr();

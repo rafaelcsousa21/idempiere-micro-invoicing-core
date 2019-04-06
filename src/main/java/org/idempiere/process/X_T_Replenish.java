@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_T_Replenish extends PO implements I_T_Replenish {
 
@@ -22,15 +21,15 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
     /**
      * Standard Constructor
      */
-    public X_T_Replenish(Properties ctx, int T_Replenish_ID) {
-        super(ctx, T_Replenish_ID);
+    public X_T_Replenish(int T_Replenish_ID) {
+        super(T_Replenish_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_T_Replenish(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_T_Replenish(Row row) {
+        super(row);
     }
 
     /**

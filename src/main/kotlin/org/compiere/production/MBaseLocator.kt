@@ -13,6 +13,6 @@ fun getOldestDefaultLocatorOfWarehouseWithLocator(warehouse: I_M_Warehouse): MLo
     val sql = ("SELECT * FROM M_Locator l " +
             "WHERE IsActive = 'Y' AND IsDefault='Y' AND l.M_Warehouse_ID=? " +
             "ORDER BY PriorityNo")
-    val query = queryOf(sql, listOf(warehouse.warehouseId)).map { row -> MLocator(warehouse.ctx, row) }.asSingle
+    val query = queryOf(sql, listOf(warehouse.warehouseId)).map { row -> MLocator(row) }.asSingle
     return DB.current.run(query)
 } // 	getDefault

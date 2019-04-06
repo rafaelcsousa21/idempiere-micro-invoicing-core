@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_RequestAction;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_RequestAction
  *
@@ -22,15 +20,15 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction {
     /**
      * Standard Constructor
      */
-    public X_R_RequestAction(Properties ctx, int R_RequestAction_ID) {
-        super(ctx, R_RequestAction_ID);
+    public X_R_RequestAction(int R_RequestAction_ID) {
+        super(R_RequestAction_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestAction(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestAction(Row row) {
+        super(row);
     }
 
     /**

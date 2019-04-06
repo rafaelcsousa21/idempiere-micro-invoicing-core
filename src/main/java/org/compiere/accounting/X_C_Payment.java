@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Payment
@@ -154,8 +153,8 @@ public class X_C_Payment extends PO implements I_C_Payment {
     /**
      * Standard Constructor
      */
-    public X_C_Payment(Properties ctx, int C_Payment_ID) {
-        super(ctx, C_Payment_ID);
+    public X_C_Payment(int C_Payment_ID) {
+        super(C_Payment_ID);
         /**
          * if (C_Payment_ID == 0) { setBusinessPartnerId (0); setCurrencyId (0); setDocumentTypeId (0);
          * setPaymentId (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); // @#Date@
@@ -171,8 +170,8 @@ public class X_C_Payment extends PO implements I_C_Payment {
     /**
      * Load Constructor
      */
-    public X_C_Payment(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Payment(Row row) {
+        super(row);
     }
 
     /**
@@ -1491,7 +1490,7 @@ public class X_C_Payment extends PO implements I_C_Payment {
 
     public org.compiere.model.I_C_Payment getReversal() throws RuntimeException {
         return (org.compiere.model.I_C_Payment)
-                MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
+                MTable.get(org.compiere.model.I_C_Payment.Table_Name)
                         .getPO(getReversalId());
     }
 

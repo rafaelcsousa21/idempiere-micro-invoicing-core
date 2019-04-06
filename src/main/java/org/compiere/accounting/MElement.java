@@ -5,8 +5,6 @@ import org.compiere.orm.MClient;
 import org.compiere.orm.X_AD_Tree;
 import org.compiere.util.Msg;
 
-import java.util.Properties;
-
 /**
  * Accounting Element Model.
  *
@@ -26,12 +24,10 @@ public class MElement extends X_C_Element {
     /**
      * Standard Constructor
      *
-     * @param ctx          context
      * @param C_Element_ID id
-     * @param trxName      transaction
      */
-    public MElement(Properties ctx, int C_Element_ID) {
-        super(ctx, C_Element_ID);
+    public MElement(int C_Element_ID) {
+        super(C_Element_ID);
         if (C_Element_ID == 0) {
             //	setName (null);
             //	setTreeId (0);
@@ -43,11 +39,9 @@ public class MElement extends X_C_Element {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MElement(Properties ctx, Row row) {
-        super(ctx, row);
+    public MElement(Row row) {
+        super(row);
     } //	MElement
 
     /**
@@ -59,7 +53,7 @@ public class MElement extends X_C_Element {
      * @param AD_Tree_ID  tree
      */
     public MElement(MClient client, String Name, String ElementType, int AD_Tree_ID) {
-        this(client.getCtx(), 0);
+        this(0);
         setClientOrg(client);
         setName(Name);
         setElementType(ElementType); // A
@@ -73,7 +67,7 @@ public class MElement extends X_C_Element {
      * @return tree
      */
     public X_AD_Tree getTree() {
-        if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getTreeId());
+        if (m_tree == null) m_tree = new X_AD_Tree(getTreeId());
         return m_tree;
     } //	getTree
 
@@ -96,13 +90,13 @@ public class MElement extends X_C_Element {
         if (X_C_Element.ELEMENTTYPE_UserDefined.equals(elementType)) {
             if (!X_AD_Tree.TREETYPE_User1.equals(treeType) && !X_AD_Tree.TREETYPE_User2.equals(treeType)) {
                 log.saveError(
-                        "Error", Msg.parseTranslation(getCtx(), "@TreeType@ <> @ElementType@ (U)"), false);
+                        "Error", Msg.parseTranslation("@TreeType@ <> @ElementType@ (U)"), false);
                 return false;
             }
         } else {
             if (!X_AD_Tree.TREETYPE_ElementValue.equals(treeType)) {
                 log.saveError(
-                        "Error", Msg.parseTranslation(getCtx(), "@TreeType@ <> @ElementType@ (A)"), false);
+                        "Error", Msg.parseTranslation("@TreeType@ <> @ElementType@ (A)"), false);
                 return false;
             }
         }

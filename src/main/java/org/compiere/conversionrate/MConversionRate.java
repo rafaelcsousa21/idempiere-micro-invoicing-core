@@ -1,7 +1,7 @@
 package org.compiere.conversionrate;
 
 import kotliquery.Row;
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
 import org.compiere.util.DisplayType;
@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -39,16 +38,11 @@ public class MConversionRate extends X_C_Conversion_Rate {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx                  context
      * @param C_Conversion_Rate_ID id
-     * @param trxName              transaction
      */
-    public MConversionRate(Properties ctx, int C_Conversion_Rate_ID) {
-        super(ctx, C_Conversion_Rate_ID);
+    public MConversionRate(int C_Conversion_Rate_ID) {
+        super(C_Conversion_Rate_ID);
         if (C_Conversion_Rate_ID == 0) {
-            //	setConversionRateId (0);
-            //	setCurrencyId (0);
-            //	setTargetCurrencyId (null);
             super.setDivideRate(Env.ZERO);
             super.setMultiplyRate(Env.ZERO);
             setValidFrom(new Timestamp(System.currentTimeMillis()));
@@ -57,11 +51,9 @@ public class MConversionRate extends X_C_Conversion_Rate {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MConversionRate(Properties ctx, Row row) {
-        super(ctx, row);
+    public MConversionRate(Row row) {
+        super(row);
     } //	MConversionRate
 
     /**
@@ -81,7 +73,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
             int C_Currency_ID_To,
             BigDecimal MultiplyRate,
             Timestamp ValidFrom) {
-        this(po.getCtx(), 0);
+        this(0);
         setClientOrg(po);
         setConversionTypeId(C_ConversionType_ID);
         setCurrencyId(C_Currency_ID);
@@ -94,7 +86,6 @@ public class MConversionRate extends X_C_Conversion_Rate {
     /**
      * Convert an amount with today's default rate
      *
-     * @param ctx          context
      * @param CurFrom_ID   The C_Currency_ID FROM
      * @param CurTo_ID     The C_Currency_ID TO
      * @param Amt          amount to be converted
@@ -103,19 +94,18 @@ public class MConversionRate extends X_C_Conversion_Rate {
      * @return converted amount
      */
     public static BigDecimal convert(
-            Properties ctx,
+
             BigDecimal Amt,
             int CurFrom_ID,
             int CurTo_ID,
             int AD_Client_ID,
             int AD_Org_ID) {
-        return convert(ctx, Amt, CurFrom_ID, CurTo_ID, null, 0, AD_Client_ID, AD_Org_ID);
+        return convert(Amt, CurFrom_ID, CurTo_ID, null, 0, AD_Client_ID, AD_Org_ID);
     } //  convert
 
     /**
      * Convert an amount
      *
-     * @param ctx                 context
      * @param CurFrom_ID          The C_Currency_ID FROM
      * @param CurTo_ID            The C_Currency_ID TO
      * @param ConvDate            conversion date - if null - use current date
@@ -126,7 +116,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
      * @return converted amount or null if no rate
      */
     public static BigDecimal convert(
-            Properties ctx,
+
             BigDecimal Amt,
             int CurFrom_ID,
             int CurTo_ID,
@@ -135,7 +125,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
             int AD_Client_ID,
             int AD_Org_ID) {
         return convert(
-                ctx,
+
                 Amt,
                 CurFrom_ID,
                 CurTo_ID,
@@ -149,7 +139,6 @@ public class MConversionRate extends X_C_Conversion_Rate {
     /**
      * Convert an amount
      *
-     * @param ctx                 context
      * @param CurFrom_ID          The C_Currency_ID FROM
      * @param CurTo_ID            The C_Currency_ID TO
      * @param ConvDate            conversion date - if null - use current date
@@ -157,11 +146,10 @@ public class MConversionRate extends X_C_Conversion_Rate {
      * @param Amt                 amount to be converted
      * @param AD_Client_ID        client
      * @param AD_Org_ID           organization
-     * @param use                 for costing
      * @return converted amount or null if no rate
      */
     public static BigDecimal convert(
-            Properties ctx,
+
             BigDecimal Amt,
             int CurFrom_ID,
             int CurTo_ID,
@@ -181,8 +169,8 @@ public class MConversionRate extends X_C_Conversion_Rate {
         retValue = retValue.multiply(Amt);
         int stdPrecision =
                 isCosting
-                        ? MCurrency.getCostingPrecision(ctx, CurTo_ID)
-                        : MCurrency.getStdPrecision(ctx, CurTo_ID);
+                        ? MCurrencyKt.getCurrencyCostingPrecision(CurTo_ID)
+                        : MCurrencyKt.getCurrencyStdPrecision(CurTo_ID);
 
         if (retValue.scale() > stdPrecision)
             retValue = retValue.setScale(stdPrecision, BigDecimal.ROUND_HALF_UP);
@@ -229,8 +217,8 @@ public class MConversionRate extends X_C_Conversion_Rate {
                         + " AND IsActive = 'Y' "
                         + "ORDER BY clientId DESC, orgId DESC, ValidFrom DESC";
         BigDecimal retValue = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, CurFrom_ID);
@@ -243,10 +231,6 @@ public class MConversionRate extends X_C_Conversion_Rate {
             if (rs.next()) retValue = rs.getBigDecimal(1);
         } catch (Exception e) {
             s_log.log(Level.SEVERE, "getRate", e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         if (retValue == null)
             if (s_log.isLoggable(Level.INFO))
@@ -309,20 +293,18 @@ public class MConversionRate extends X_C_Conversion_Rate {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MConversionRate[");
-        sb.append(getId())
-                .append(",Currency=")
-                .append(getCurrencyId())
-                .append(",To=")
-                .append(getTargetCurrencyId())
-                .append(", Multiply=")
-                .append(getMultiplyRate())
-                .append(",Divide=")
-                .append(getDivideRate())
-                .append(", ValidFrom=")
-                .append(getValidFrom());
-        sb.append("]");
-        return sb.toString();
+        return "MConversionRate[" + getId() +
+                ",Currency=" +
+                getCurrencyId() +
+                ",To=" +
+                getTargetCurrencyId() +
+                ", Multiply=" +
+                getMultiplyRate() +
+                ",Divide=" +
+                getDivideRate() +
+                ", ValidFrom=" +
+                getValidFrom() +
+                "]";
     } //	toString
 
     /**
@@ -334,12 +316,12 @@ public class MConversionRate extends X_C_Conversion_Rate {
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
         if (getCurrencyId() == getTargetCurrencyId()) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@C_Currency_ID@ = @C_Currency_ID@"));
+            log.saveError("Error", Msg.parseTranslation("@C_Currency_ID@ = @C_Currency_ID@"));
             return false;
         }
         //	Nothing to convert
         if (getMultiplyRate().compareTo(Env.ZERO) <= 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@MultiplyRate@ <= 0"));
+            log.saveError("Error", Msg.parseTranslation("@MultiplyRate@ <= 0"));
             return false;
         }
 
@@ -348,7 +330,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         if (getValidTo() == null) {
             // setValidTo (TimeUtil.getDay(2056, 1, 29));	//	 no exchange rates after my 100th birthday
             log.saveError(
-                    "FillMandatory", Msg.getElement(getCtx(), I_C_Conversion_Rate.COLUMNNAME_ValidTo));
+                    "FillMandatory", Msg.getElement(I_C_Conversion_Rate.COLUMNNAME_ValidTo));
             return false;
         }
         Timestamp to = getValidTo();

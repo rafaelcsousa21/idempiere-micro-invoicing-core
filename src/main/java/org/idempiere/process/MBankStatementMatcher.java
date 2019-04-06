@@ -3,7 +3,6 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 public class MBankStatementMatcher extends X_C_BankStatementMatcher {
@@ -24,8 +23,8 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      * @param ctx                       context
      * @param C_BankStatementMatcher_ID id
      */
-    public MBankStatementMatcher(Properties ctx, int C_BankStatementMatcher_ID) {
-        super(ctx, C_BankStatementMatcher_ID);
+    public MBankStatementMatcher(int C_BankStatementMatcher_ID) {
+        super(C_BankStatementMatcher_ID);
     } //	MBankStatementMatcher
 
     /**
@@ -33,8 +32,8 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      *
      * @param ctx context
      */
-    public MBankStatementMatcher(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankStatementMatcher(Row row) {
+        super(row);
     } //	MBankStatementMatcher
 
     /**
@@ -43,8 +42,8 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      * @param ctx context
      * @return matchers
      */
-    public static MBankStatementMatcher[] getMatchers(Properties ctx) {
-        return MBaseBankStatementMatcherKt.getBankStatementMatcherAlgorithms(ctx);
+    public static MBankStatementMatcher[] getMatchers() {
+        return MBaseBankStatementMatcherKt.getBankStatementMatcherAlgorithms();
     } //	getMatchers
 
     /**

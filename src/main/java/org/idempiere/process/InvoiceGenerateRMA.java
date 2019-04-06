@@ -73,7 +73,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
-        m_dateinvoiced = Env.getContextAsDate(getCtx(), "#Date");
+        m_dateinvoiced = Env.getContextAsDate();
         if (m_dateinvoiced == null) {
             m_dateinvoiced = new Timestamp(System.currentTimeMillis());
         }
@@ -94,7 +94,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, Env.getClientId(getCtx()));
+            pstmt.setInt(1, Env.getClientId());
             pstmt.setInt(2, getProcessInstanceId());
             rs = pstmt.executeQuery();
 
@@ -130,7 +130,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
             throw new IllegalStateException("Could not get invoice document type for Vendor RMA");
         }
 
-        MInvoice invoice = new MInvoice(getCtx(), 0);
+        MInvoice invoice = new MInvoice(0);
         invoice.setRMA(rma);
 
         invoice.setTargetDocumentTypeId(docTypeId);
@@ -173,8 +173,8 @@ public class InvoiceGenerateRMA extends SvrProcess {
     }
 
     private void generateInvoice(int M_RMA_ID) {
-        MRMA rma = new MRMA(getCtx(), M_RMA_ID);
-        statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
+        MRMA rma = new MRMA(M_RMA_ID);
+        statusUpdate(Msg.getMsg("Processing") + " " + rma.getDocumentInfo());
 
         MInvoice invoice = createInvoice(rma);
         MInvoiceLine[] invoiceLines = createInvoiceLines(rma, invoice);
@@ -206,7 +206,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         }
 
         // Add processing information to process log
-        String message = Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + processMsg.toString());
+        String message = Msg.parseTranslation("@InvoiceProcessed@ " + processMsg.toString());
         addBufferLog(
                 invoice.getInvoiceId(),
                 invoice.getDateInvoiced(),

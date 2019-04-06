@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.orm.MClient;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MTree_Base;
@@ -9,14 +8,13 @@ import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.Env;
 
 import javax.sql.RowSet;
-import java.awt.Color;
+import java.awt.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getRowSet;
@@ -62,8 +60,8 @@ public class MTree extends MTree_Base {
      * @param ctx        context for security
      * @param AD_Tree_ID The tree to build
      */
-    public MTree(Properties ctx, int AD_Tree_ID) {
-        super(ctx, AD_Tree_ID);
+    public MTree(int AD_Tree_ID) {
+        super(AD_Tree_ID);
     } //  MTree
 
     /**
@@ -75,21 +73,21 @@ public class MTree extends MTree_Base {
      * @param clientTree the tree is displayed on the java client (not on web)
      */
     public MTree(
-            Properties ctx, int AD_Tree_ID, boolean editable, boolean clientTree) {
-        this(ctx, AD_Tree_ID, editable, clientTree, false);
+            int AD_Tree_ID, boolean editable, boolean clientTree) {
+        this(AD_Tree_ID, editable, clientTree, false);
     } //  MTree
 
     public MTree(
-            Properties ctx,
+
             int AD_Tree_ID,
             boolean editable,
             boolean clientTree,
             boolean allNodes) {
-        this(ctx, AD_Tree_ID);
+        this(AD_Tree_ID);
         m_editable = editable;
         int AD_User_ID;
         if (allNodes) AD_User_ID = -1;
-        else AD_User_ID = Env.getContextAsInt(ctx, "AD_User_ID");
+        else AD_User_ID = Env.getContextAsInt("AD_User_ID");
         m_clientTree = clientTree;
         if (log.isLoggable(Level.INFO))
             log.info(
@@ -110,8 +108,8 @@ public class MTree extends MTree_Base {
      *
      * @param ctx context
      */
-    public MTree(Properties ctx, Row row) {
-        super(ctx, row);
+    public MTree(Row row) {
+        super(row);
     } //	MTree_Base
 
     /**
@@ -141,7 +139,7 @@ public class MTree extends MTree_Base {
         {
             String sourceTableName = getSourceTableName(getTreeType());
             if (sourceTableName == null) {
-                if (getTreeTableId() > 0) sourceTableName = MTable.getDbTableName(getCtx(), getTreeTableId());
+                if (getTreeTableId() > 0) sourceTableName = MTable.getDbTableName(getTreeTableId());
             }
             sql =
                     new StringBuffer("SELECT " + "tn.Node_ID,tn.Parent_ID,tn.SeqNo,st.IsActive " + "FROM ")
@@ -301,7 +299,7 @@ public class MTree extends MTree_Base {
         String columnNameX = getSourceTableName(true);
         String color = getActionColorName();
         if (getTreeType().equals(TREETYPE_Menu)) {
-            boolean base = Env.isBaseLanguage(getCtx(), "AD_Menu");
+            boolean base = Env.isBaseLanguage("AD_Menu");
             sourceTable = "m";
             if (base)
                 sqlNode.append(
@@ -316,14 +314,14 @@ public class MTree extends MTree_Base {
             if (!base)
                 sqlNode
                         .append(" WHERE m.AD_Menu_ID=t.AD_Menu_ID AND t.AD_Language='")
-                        .append(Env.getADLanguage(getCtx()))
+                        .append(Env.getADLanguage())
                         .append("'");
             if (!m_editable) {
                 boolean hasWhere = sqlNode.indexOf(" WHERE ") != -1;
                 sqlNode.append(hasWhere ? " AND " : " WHERE ").append("m.IsActive='Y' ");
             }
             //	Do not show Beta
-            if (!MClient.get(getCtx()).isUseBetaFunctions()) {
+            {
                 boolean hasWhere = sqlNode.indexOf(" WHERE ") != -1;
                 sqlNode.append(hasWhere ? " AND " : " WHERE ");
                 sqlNode
@@ -347,7 +345,7 @@ public class MTree extends MTree_Base {
                 sqlNode.append(" IS NOT NULL))");
             }
         } else if (getTreeTableId() != 0) {
-            String tableName = MTable.getDbTableName(getCtx(), getTreeTableId());
+            String tableName = MTable.getDbTableName(getTreeTableId());
             sqlNode.append("SELECT t.").append(tableName).append("_ID,");
             if (isTreeDrivenByValue()) sqlNode.append("t.Value || ' - ' || t.Name,");
             else sqlNode.append("t.Name,");
@@ -383,10 +381,10 @@ public class MTree extends MTree_Base {
         String sql = sqlNode.toString();
         if (!m_editable) //	editable = menu/etc. window
             sql =
-                    MRole.getDefault(getCtx(), false)
+                    MRole.getDefault(false)
                             .addAccessSQL(sql, sourceTable, MRole.SQL_FULLYQUALIFIED, m_editable);
         log.fine(sql);
-        m_nodeRowSet = getRowSet(sql);
+        m_nodeRowSet = getRowSet();
         m_nodeIdMap = new HashMap<>(50);
         try {
             m_nodeRowSet.beforeFirst();
@@ -438,7 +436,7 @@ public class MTree extends MTree_Base {
                 String actionColor = m_nodeRowSet.getString(index++);
                 //	Menu only
                 if (getTreeType().equals(TREETYPE_Menu) && !isSummary) {
-                    MRole.getDefault(getCtx(), false);
+                    MRole.getDefault(false);
                     Boolean access = null;
                     //	log.fine("getNodeDetail - " + name + " - " + actionColor + " - " + access);
                     //

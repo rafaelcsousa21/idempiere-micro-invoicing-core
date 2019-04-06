@@ -21,7 +21,6 @@ import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.Env;
 
 import java.util.logging.Level;
 
@@ -79,12 +78,12 @@ public class CopyComponentsFromView extends SvrProcess {
                             + ", Target AD_Table_ID="
                             + p_target_AD_Table_ID);
 
-        MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID);
+        MTable targetTable = new MTable(p_target_AD_Table_ID);
         MViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
         if (targetViewComponents.length > 0)
-            throw new AdempiereSystemError(Msg.getMsg(Env.getCtx(), "ErrorCopyView"));
+            throw new AdempiereSystemError(Msg.getMsg("ErrorCopyView"));
 
-        MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID);
+        MTable sourceTable = new MTable(p_source_AD_Table_ID);
         MViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
 
         for (int i = 0; i < sourceViewComponents.length; i++) {

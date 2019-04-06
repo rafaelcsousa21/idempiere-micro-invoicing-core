@@ -424,8 +424,8 @@ public class M_PriceList_Create extends SvrProcess {
                     //	Copy (Insert) Prices
                     //
                     v_temp = rsCurgen.getInt("M_PriceList_Version_Base_ID");
-                    int seqproductpriceid = MSequence.get(getCtx(), "M_ProductPrice").getId();
-                    int currentUserID = Env.getUserId(getCtx());
+                    int seqproductpriceid = MSequence.get("M_ProductPrice").getId();
+                    int currentUserID = Env.getUserId();
                     if (v_temp != p_PriceList_Version_ID)
                     //
                     // We have Prices already
@@ -543,7 +543,7 @@ public class M_PriceList_Create extends SvrProcess {
                                 while (rsconversion != null && rsconversion.next()) {
                                     product_id = rsconversion.getInt(1);
                                     MUOMConversion[] conversions =
-                                            MUOMConversion.getProductConversions(getCtx(), product_id);
+                                            MUOMConversion.getProductConversions(product_id);
                                     for (int i = 0; i < conversions.length; i++) {
                                         if (conversions[i].getTargetUOMId() == rsconversion.getInt(2)) {
                                             conversion = conversions[i];
@@ -650,7 +650,6 @@ public class M_PriceList_Create extends SvrProcess {
                             if (log.isLoggable(Level.FINE)) log.fine("Inserted " + cnti);
                         }
                     } else {
-                        ;
                     }
                     message.append(", @Inserted@=").append(cnti);
                     //
@@ -702,9 +701,9 @@ public class M_PriceList_Create extends SvrProcess {
                             .getString(MDiscountSchemaLine.COLUMNNAME_Limit_Base)
                             .equals(MDiscountSchemaLine.LIMIT_BASE_ProductCost)) {
                         MClientInfo m_clientInfo =
-                                MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"));
+                                MClientInfo.get(rsCurgen.getInt("AD_Client_ID"));
                         MAcctSchema as =
-                                new MAcctSchema(getCtx(), m_clientInfo.getAcctSchema1Id());
+                                new MAcctSchema(m_clientInfo.getAcctSchema1Id());
 
                         StringBuilder sqlpc = new StringBuilder("SELECT p.M_Product_ID ");
                         sqlpc.append(" FROM M_ProductPrice p");
@@ -722,14 +721,14 @@ public class M_PriceList_Create extends SvrProcess {
                             while (rs.next()) {
                                 int M_Product_ID = rs.getInt(MProductPrice.COLUMNNAME_M_Product_ID);
                                 ProductCost m_productCost =
-                                        new ProductCost(getCtx(), M_Product_ID, 0);
+                                        new ProductCost(M_Product_ID, 0);
                                 m_productCost.setQty(BigDecimal.ONE);
                                 BigDecimal costs =
                                         m_productCost.getProductCosts(as, rsCurgen.getInt("AD_Org_ID"), null, 0, false);
 
                                 if (costs == null || costs.signum() == 0) // 	zero costs OK
                                 {
-                                    MProduct product = new MProduct(getCtx(), M_Product_ID);
+                                    MProduct product = new MProduct(M_Product_ID);
                                     if (product.isStocked())
                                         log.log(Level.WARNING, "No Costs for " + product.getName());
                                 } else {

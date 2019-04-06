@@ -65,10 +65,10 @@ public class RfQCopyLines extends SvrProcess {
 
     /*
     //
-    MRfQ to = new MRfQ (getCtx(), p_To_RfQ_ID, null);
+    MRfQ to = new MRfQ (p_To_RfQ_ID, null);
     if (to.getId() == 0)
     	throw new IllegalArgumentException("No To RfQ found");
-    MRfQ from = new MRfQ (getCtx(), p_From_RfQ_ID, null);
+    MRfQ from = new MRfQ (p_From_RfQ_ID, null);
     if (from.getId() == 0)
     	throw new IllegalArgumentException("No From RfQ found");
 

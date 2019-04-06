@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_InOutLineMA
@@ -26,8 +25,8 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
     /**
      * Standard Constructor
      */
-    public X_M_InOutLineMA(Properties ctx, int M_InOutLineMA_ID) {
-        super(ctx, M_InOutLineMA_ID);
+    public X_M_InOutLineMA(int M_InOutLineMA_ID) {
+        super(M_InOutLineMA_ID);
         /**
          * if (M_InOutLineMA_ID == 0) { setAttributeSetInstanceId (0); setInOutLineId (0);
          * setMovementQty (Env.ZERO); // 1 }
@@ -37,8 +36,8 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
     /**
      * Load Constructor
      */
-    public X_M_InOutLineMA(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_InOutLineMA(Row row) {
+        super(row);
     }
 
     /**
@@ -107,7 +106,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
 
     public org.compiere.model.I_M_InOutLine getInOutLine() throws RuntimeException {
         return (org.compiere.model.I_M_InOutLine)
-                MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
+                MTable.get(org.compiere.model.I_M_InOutLine.Table_Name)
                         .getPO(getInOutLineId());
     }
 

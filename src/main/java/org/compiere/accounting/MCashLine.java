@@ -9,8 +9,6 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 import static software.hsharp.core.orm.POKt.I_ZERO;
 import static software.hsharp.core.util.DBKt.executeUpdate;
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -54,8 +52,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @param C_CashLine_ID id
      * @param trxName       transaction
      */
-    public MCashLine(Properties ctx, int C_CashLine_ID) {
-        super(ctx, C_CashLine_ID);
+    public MCashLine(int C_CashLine_ID) {
+        super(C_CashLine_ID);
         if (C_CashLine_ID == 0) {
             //	setLine (0);
             //	setCashType (CASHTYPE_GeneralExpense);
@@ -71,8 +69,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      *
      * @param ctx context
      */
-    public MCashLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCashLine(Row row) {
+        super(row);
     } //	MCashLine
 
     /**
@@ -81,7 +79,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @param cash parent
      */
     public MCashLine(MCash cash) {
-        this(cash.getCtx(), 0);
+        this(0);
         setClientOrg(cash);
         setCashId(cash.getCashId());
         m_parent = cash;
@@ -105,7 +103,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return cash
      */
     public MCash getParent() {
-        if (m_parent == null) m_parent = new MCash(getCtx(), getCashId());
+        if (m_parent == null) m_parent = new MCash(getCashId());
         return m_parent;
     } //	getCash
 
@@ -115,7 +113,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return cash book
      */
     public MCashBook getCashBook() {
-        if (m_cashBook == null) m_cashBook = MCashBook.get(getCtx(), getParent().getCashBookId());
+        if (m_cashBook == null) m_cashBook = MCashBook.get(getParent().getCashBookId());
         return m_cashBook;
     } //	getCashBook
 
@@ -126,7 +124,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      */
     public MBankAccount getBankAccount() {
         if (m_bankAccount == null && getBankAccountId() != 0)
-            m_bankAccount = MBankAccount.get(getCtx(), getBankAccountId());
+            m_bankAccount = MBankAccount.get(getBankAccountId());
         return m_bankAccount;
     } //	getBankAccount
 
@@ -137,7 +135,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      */
     public I_C_Invoice getInvoice() {
         if (m_invoice == null && getInvoiceId() != 0)
-            m_invoice = MInvoice.get(getCtx(), getInvoiceId());
+            m_invoice = MInvoice.get(getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -151,7 +149,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         Boolean generated = (Boolean) getValueOld("IsGenerated");
         if (generated != null && generated.booleanValue()) {
             if (getValueOld("C_Invoice_ID") != null) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "CannotDeleteCashGenInvoice"));
+                log.saveError("Error", Msg.getMsg("CannotDeleteCashGenInvoice"));
                 return false;
             }
         }
@@ -177,14 +175,14 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "C_CashLine"));
+            log.saveError("ParentComplete", Msg.translate("C_CashLine"));
             return false;
         }
         //	Cannot change generated Invoices
         if (isValueChanged(I_C_CashLine.COLUMNNAME_C_Invoice_ID)) {
             Object generated = getValueOld(I_C_CashLine.COLUMNNAME_IsGenerated);
             if (generated != null && ((Boolean) generated).booleanValue()) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeCashGenInvoice"));
+                log.saveError("Error", Msg.getMsg("CannotChangeCashGenInvoice"));
                 return false;
             }
         }

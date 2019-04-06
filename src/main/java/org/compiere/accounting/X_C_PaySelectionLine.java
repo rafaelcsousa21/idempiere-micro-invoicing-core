@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaySelectionLine
@@ -24,8 +23,8 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     /**
      * Standard Constructor
      */
-    public X_C_PaySelectionLine(Properties ctx, int C_PaySelectionLine_ID) {
-        super(ctx, C_PaySelectionLine_ID);
+    public X_C_PaySelectionLine(int C_PaySelectionLine_ID) {
+        super(C_PaySelectionLine_ID);
         /**
          * if (C_PaySelectionLine_ID == 0) { setInvoiceId (0); setPaySelectionId (0);
          * setPaySelectionLine_ID (0); setDifferenceAmt (Env.ZERO); setDiscountAmt (Env.ZERO);
@@ -39,8 +38,8 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     /**
      * Load Constructor
      */
-    public X_C_PaySelectionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaySelectionLine(Row row) {
+        super(row);
     }
 
     /**

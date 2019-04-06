@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_AcctSchema_GL
  *
@@ -22,8 +20,8 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
     /**
      * Standard Constructor
      */
-    public X_C_AcctSchema_GL(Properties ctx, int C_AcctSchema_GL_ID) {
-        super(ctx, C_AcctSchema_GL_ID);
+    public X_C_AcctSchema_GL(int C_AcctSchema_GL_ID) {
+        super(C_AcctSchema_GL_ID);
         /**
          * if (C_AcctSchema_GL_ID == 0) { setAccountingSchemaId (0); setCommitmentOffset_Acct (0);
          * setCommitmentOffsetSales_Acct (0); setIntercompanyDueFrom_Acct (0); setIntercompanyDueToAccount
@@ -35,8 +33,8 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_GL(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AcctSchema_GL(Row row) {
+        super(row);
     }
 
     /**

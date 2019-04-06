@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Bank;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Bank Model
  *
@@ -29,8 +27,8 @@ public class MBank extends X_C_Bank {
      * @param ctx       context
      * @param C_Bank_ID bank
      */
-    public MBank(Properties ctx, int C_Bank_ID) {
-        super(ctx, C_Bank_ID);
+    public MBank(int C_Bank_ID) {
+        super(C_Bank_ID);
     } //	MBank
 
     /**
@@ -38,8 +36,8 @@ public class MBank extends X_C_Bank {
      *
      * @param ctx context
      */
-    public MBank(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBank(Row row) {
+        super(row);
     } //	MBank
 
     /**
@@ -49,11 +47,11 @@ public class MBank extends X_C_Bank {
      * @param C_Bank_ID id
      * @return MBank
      */
-    public static MBank get(Properties ctx, int C_Bank_ID) {
+    public static MBank get(int C_Bank_ID) {
         Integer key = C_Bank_ID;
         MBank retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MBank(ctx, C_Bank_ID);
+        retValue = new MBank(C_Bank_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

@@ -5,8 +5,6 @@ import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 
-import java.util.Properties;
-
 /**
  * Request Update Model
  *
@@ -25,23 +23,17 @@ public class MRequestUpdate extends X_R_RequestUpdate {
     /**
      * Standard Constructor
      *
-     * @param ctx                context
      * @param R_RequestUpdate_ID id
-     * @param trxName            trx
      */
-    public MRequestUpdate(Properties ctx, int R_RequestUpdate_ID) {
-        super(ctx, R_RequestUpdate_ID);
+    public MRequestUpdate(int R_RequestUpdate_ID) {
+        super(R_RequestUpdate_ID);
     } //	MRequestUpdate
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
-    public MRequestUpdate(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestUpdate(Row row) {
+        super(row);
     } //	MRequestUpdate
 
     /**
@@ -50,11 +42,11 @@ public class MRequestUpdate extends X_R_RequestUpdate {
      * @param parent request
      */
     public MRequestUpdate(MRequest parent) {
-        super(parent.getCtx(), 0);
+        super(0);
         setClientOrg(parent);
         setRequestId(parent.getRequestId());
         //
-        for (final MColumn col : MTable.get(getCtx(), I_R_RequestUpdate.Table_ID).getColumns(false)) {
+        for (final MColumn col : MTable.get(I_R_RequestUpdate.Table_ID).getColumns(false)) {
             if (col.isStandardColumn()
                     || col.isKey()
                     || col.isParent()

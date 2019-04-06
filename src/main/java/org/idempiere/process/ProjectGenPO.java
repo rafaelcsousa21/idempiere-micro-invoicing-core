@@ -88,18 +88,18 @@ public class ProjectGenPO extends SvrProcess {
                             + " - Consolidate="
                             + m_ConsolidateDocument);
         if (m_C_ProjectLine_ID != 0) {
-            MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
-            MProject project = new MProject(getCtx(), projectLine.getProjectId());
+            MProjectLine projectLine = new MProjectLine(m_C_ProjectLine_ID);
+            MProject project = new MProject(projectLine.getProjectId());
             createPO(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
-            MProject project = new MProject(getCtx(), m_C_Project_ID);
+            MProject project = new MProject(m_C_Project_ID);
             for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
                 if (line.isActive()) {
                     createPO(project, line);
                 }
             }
         } else {
-            MProject project = new MProject(getCtx(), m_C_Project_ID);
+            MProject project = new MProject(m_C_Project_ID);
             for (MProjectLine line : project.getLines()) {
                 if (line.isActive()) {
                     createPO(project, line);
@@ -126,7 +126,7 @@ public class ProjectGenPO extends SvrProcess {
 
         //	PO Record
         MProductPO[] pos =
-                MProductPO.getOfProduct(getCtx(), projectLine.getProductId());
+                MProductPO.getOfProduct(projectLine.getProductId());
         if (pos == null || pos.length == 0) {
             addLog(projectLine.getLine(), null, null, "Product has no PO record");
             return;
@@ -145,13 +145,13 @@ public class ProjectGenPO extends SvrProcess {
         if (order == null) // 	create new Order
         {
             //	Vendor
-            MBPartner bp = new MBPartner(getCtx(), pos[0].getBusinessPartnerId());
+            MBPartner bp = new MBPartner(pos[0].getBusinessPartnerId());
             //	New Order
             order = new MOrder(project, false, null);
             int AD_Org_ID = projectLine.getOrgId();
             if (AD_Org_ID == 0) {
                 log.warning("createPOfromProjectLine - orgId=0");
-                AD_Org_ID = Env.getOrgId(getCtx());
+                AD_Org_ID = Env.getOrgId();
                 if (AD_Org_ID != 0) projectLine.setOrgId(AD_Org_ID);
             }
             order.setClientOrg(projectLine.getClientId(), AD_Org_ID);
@@ -181,7 +181,6 @@ public class ProjectGenPO extends SvrProcess {
                 if (order.getCurrencyId() != C_Currency_ID)
                     poPrice =
                             MConversionRate.convert(
-                                    getCtx(),
                                     poPrice,
                                     C_Currency_ID,
                                     order.getCurrencyId(),
@@ -203,7 +202,7 @@ public class ProjectGenPO extends SvrProcess {
                 order.getOrderId(),
                 order.getDateOrdered(),
                 new BigDecimal(orderLine.getLine()),
-                Msg.getElement(Env.getADLanguage(Env.getCtx()), "C_Order_ID", false)
+                Msg.getElement(Env.getADLanguage(), "C_Order_ID", false)
                         + ":"
                         + order.getDocumentNo(),
                 order.getTableId(),

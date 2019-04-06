@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_BankAccount;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 /**
  * Payment Processor Model
  *
@@ -25,8 +23,8 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
      * @param ctx                   context
      * @param C_PaymentProcessor_ID payment processor
      */
-    public MPaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
-        super(ctx, C_PaymentProcessor_ID);
+    public MPaymentProcessor(int C_PaymentProcessor_ID) {
+        super(C_PaymentProcessor_ID);
         if (C_PaymentProcessor_ID == 0) {
             //	setBankAccountId (0);		//	Parent
             //	setUserID (null);
@@ -55,8 +53,8 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
      *
      * @param ctx context
      */
-    public MPaymentProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaymentProcessor(Row row) {
+        super(row);
     } //	MPaymentProcessor
 
     /**

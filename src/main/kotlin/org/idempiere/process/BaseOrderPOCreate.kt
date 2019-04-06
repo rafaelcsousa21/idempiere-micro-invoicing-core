@@ -4,13 +4,11 @@ import org.compiere.accounting.MOrder
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
-import java.util.Properties
 
 /**
  * get Sales Order to Generate PO from
  */
 fun getOrdersForPO(
-    ctx: Properties,
     sql: String,
     p_C_Order_ID: Int,
     p_C_BPartner_ID: Int,
@@ -33,6 +31,6 @@ fun getOrdersForPO(
         }
 
     val query =
-        queryOf(sql.toString(), parameters).map { row -> MOrder(ctx, row) }.asList
+        queryOf(sql.toString(), parameters).map { row -> MOrder(row) }.asList
     return DB.current.run(query).toTypedArray()
 }

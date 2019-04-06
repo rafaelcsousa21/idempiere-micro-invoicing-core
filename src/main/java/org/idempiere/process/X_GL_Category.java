@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_GL_Category;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 public class X_GL_Category extends BasePOName implements I_GL_Category {
 
     /**
@@ -28,16 +26,16 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
     /**
      * Standard Constructor
      */
-    public X_GL_Category(Properties ctx, int GL_Category_ID) {
-        super(ctx, GL_Category_ID);
+    public X_GL_Category(int GL_Category_ID) {
+        super(GL_Category_ID);
     }
 
 
     /**
      * Load Constructor
      */
-    public X_GL_Category(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_Category(Row row) {
+        super(row);
     }
 
     /**

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Product_Acct;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
 
     /**
@@ -16,15 +14,15 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
     /**
      * Standard Constructor
      */
-    public X_M_Product_Acct(Properties ctx, int M_Product_Acct_ID) {
-        super(ctx, M_Product_Acct_ID);
+    public X_M_Product_Acct(int M_Product_Acct_ID) {
+        super(M_Product_Acct_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Product_Acct(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Product_Acct(Row row) {
+        super(row);
     }
 
     /**

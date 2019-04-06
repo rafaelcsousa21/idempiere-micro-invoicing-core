@@ -3,8 +3,6 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 /**
  * Project Type Phase Task Model
  *
@@ -17,8 +15,8 @@ public class MProjectTypeTask extends X_C_Task {
      */
     private static final long serialVersionUID = -5649262800489348606L;
 
-    public MProjectTypeTask(Properties ctx, int C_Task_ID) {
-        super(ctx, C_Task_ID);
+    public MProjectTypeTask(int C_Task_ID) {
+        super(C_Task_ID);
         if (C_Task_ID == 0) {
             //	setTask_ID (0);		//	PK
             //	setPhaseId (0);		//	Parent
@@ -28,7 +26,7 @@ public class MProjectTypeTask extends X_C_Task {
         }
     } //	MProjectTypeTask
 
-    public MProjectTypeTask(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectTypeTask(Row row) {
+        super(row);
     } //	MProjectTypeTask
 } //	MProjectTypeTask

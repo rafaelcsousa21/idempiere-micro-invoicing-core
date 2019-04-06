@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaymentAllocate
@@ -24,8 +23,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
     /**
      * Standard Constructor
      */
-    public X_C_PaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
-        super(ctx, C_PaymentAllocate_ID);
+    public X_C_PaymentAllocate(int C_PaymentAllocate_ID) {
+        super(C_PaymentAllocate_ID);
         /**
          * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setInvoiceId (0);
          * setPaymentAllocate_ID (0); setPaymentId (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
@@ -36,8 +35,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
     /**
      * Load Constructor
      */
-    public X_C_PaymentAllocate(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaymentAllocate(Row row) {
+        super(row);
     }
 
     /**

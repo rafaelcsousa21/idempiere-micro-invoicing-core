@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Performance Achievement
@@ -32,8 +31,8 @@ public class MAchievement extends X_PA_Achievement {
      * @param ctx               context
      * @param PA_Achievement_ID id
      */
-    public MAchievement(Properties ctx, int PA_Achievement_ID) {
-        super(ctx, PA_Achievement_ID);
+    public MAchievement(int PA_Achievement_ID) {
+        super(PA_Achievement_ID);
     } //	MAchievement
 
     /**
@@ -41,8 +40,8 @@ public class MAchievement extends X_PA_Achievement {
      *
      * @param ctx context
      */
-    public MAchievement(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAchievement(Row row) {
+        super(row);
     } //	MAchievement
 
     /**
@@ -52,10 +51,10 @@ public class MAchievement extends X_PA_Achievement {
      * @param PA_Measure_ID measure id
      * @return array of Achievements
      */
-    public static MAchievement[] getOfMeasure(Properties ctx, int PA_Measure_ID) {
+    public static MAchievement[] getOfMeasure(int PA_Measure_ID) {
         final String whereClause = "PA_Measure_ID=? AND IsAchieved='Y'";
         List<MAchievement> list =
-                new Query(ctx, I_PA_Achievement.Table_Name, whereClause)
+                new Query(I_PA_Achievement.Table_Name, whereClause)
                         .setParameters(PA_Measure_ID)
                         .setOrderBy("SeqNo, DateDoc")
                         .list();
@@ -115,7 +114,7 @@ public class MAchievement extends X_PA_Achievement {
      * Update Goals with Achievement
      */
     private void updateAchievementGoals() {
-        MMeasure measure = MMeasure.get(getCtx(), getMeasureId());
+        MMeasure measure = MMeasure.get(getMeasureId());
         measure.updateGoals();
     } //	updateAchievementGoals
 } //	MAchievement

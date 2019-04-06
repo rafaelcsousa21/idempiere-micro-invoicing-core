@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.crm.MBPGroup;
+import org.compiere.crm.MBPGroupKt;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.X_C_BP_Group;
 import org.compiere.model.I_R_Request;
@@ -13,7 +14,6 @@ import org.idempiere.common.util.Env;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Request Model
@@ -43,8 +43,8 @@ public class MRequest extends X_R_Request {
      * @param R_Request_ID request or 0 for new
      * @param trxName      transaction
      */
-    public MRequest(Properties ctx, int R_Request_ID) {
-        super(ctx, R_Request_ID);
+    public MRequest(int R_Request_ID) {
+        super(R_Request_ID);
         if (R_Request_ID == 0) {
             setDueType(X_R_Request.DUETYPE_Due);
             //  setSalesRepresentativeId (0);
@@ -73,13 +73,13 @@ public class MRequest extends X_R_Request {
      * @param trxName          transaction
      */
     public MRequest(
-            Properties ctx,
+
             int SalesRep_ID,
             int R_RequestType_ID,
             String Summary,
             boolean isSelfService,
             String trxName) {
-        this(ctx, 0);
+        this(0);
         setValue("SalesRep_ID", new Integer(SalesRep_ID)); // 	could be 0
         setValue("R_RequestType_ID", new Integer(R_RequestType_ID));
         setSummary(Summary);
@@ -101,8 +101,8 @@ public class MRequest extends X_R_Request {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MRequest(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequest(Row row) {
+        super(row);
     } //	MRequest
 
     /**
@@ -110,7 +110,7 @@ public class MRequest extends X_R_Request {
      * Type.
      */
     public void setRequestTypeId() {
-        m_requestType = MRequestType.getDefault(getCtx());
+        m_requestType = MRequestType.getDefault();
         if (m_requestType == null) log.warning("No default found");
         else super.setRequestTypeId(m_requestType.getRequestTypeId());
     } //	setRequestTypeId
@@ -119,7 +119,7 @@ public class MRequest extends X_R_Request {
      * Set Default Request Status.
      */
     public void setStatusId() {
-        MStatus status = MStatus.getDefault(getCtx(), getRequestTypeId());
+        MStatus status = MStatus.getDefault(getRequestTypeId());
         if (status == null) {
             log.warning("No default found");
             if (getStatusId() != 0) setStatusId(0);
@@ -151,7 +151,7 @@ public class MRequest extends X_R_Request {
     public MRequestUpdate[] getUpdates(String confidentialType) {
         final String whereClause = MRequestUpdate.COLUMNNAME_R_Request_ID + "=?";
         List<MRequestUpdate> listUpdates =
-                new Query(getCtx(), I_R_RequestUpdate.Table_Name, whereClause)
+                new Query(I_R_RequestUpdate.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy("Created DESC")
                         .list();
@@ -194,7 +194,7 @@ public class MRequest extends X_R_Request {
                 setRequestTypeId();
                 R_RequestType_ID = getRequestTypeId();
             }
-            m_requestType = MRequestType.get(getCtx(), R_RequestType_ID);
+            m_requestType = MRequestType.get(R_RequestType_ID);
         }
         return m_requestType;
     } //	getRequestType
@@ -207,7 +207,7 @@ public class MRequest extends X_R_Request {
     public MBPartner getBPartner() {
         if (getBusinessPartnerId() == 0) return null;
         if (m_partner != null && m_partner.getBusinessPartnerId() != getBusinessPartnerId()) m_partner = null;
-        if (m_partner == null) m_partner = new MBPartner(getCtx(), getBusinessPartnerId());
+        if (m_partner == null) m_partner = new MBPartner(getBusinessPartnerId());
         return m_partner;
     } //	getBPartner
 
@@ -218,7 +218,7 @@ public class MRequest extends X_R_Request {
         if (getPriorityUser() == null) setPriorityUser(X_R_Request.PRIORITYUSER_Low);
         //
         if (getBPartner() != null) {
-            MBPGroup bpg = MBPGroup.get(getCtx(), getBPartner().getBPGroupId());
+            MBPGroup bpg = MBPGroupKt.getBusinessPartnerGroup(getBPartner().getBPGroupId());
             String prioBase = bpg.getPriorityBase();
             if (prioBase != null && !prioBase.equals(X_C_BP_Group.PRIORITYBASE_Same)) {
                 char targetPrio = getPriorityUser().charAt(0);
@@ -294,8 +294,8 @@ public class MRequest extends X_R_Request {
             }
             //	Is Status Valid
             if (getStatusId() != 0) {
-                MStatus sta = MStatus.get(getCtx(), getStatusId());
-                MRequestType rt = MRequestType.get(getCtx(), getRequestTypeId());
+                MStatus sta = MStatus.get(getStatusId());
+                MRequestType rt = MRequestType.get(getRequestTypeId());
                 if (sta.getStatusCategoryId() != rt.getStatusCategoryId())
                     setStatusId(); //	set to default
             }
@@ -305,7 +305,7 @@ public class MRequest extends X_R_Request {
         if (getStatusId() == 0) setStatusId();
         //	Validate/Update Due Type
         setDueType();
-        MStatus status = MStatus.get(getCtx(), getStatusId());
+        MStatus status = MStatus.get(getStatusId());
         //	Close/Open
         if (status != null) {
             if (status.isOpen()) {
@@ -346,34 +346,34 @@ public class MRequest extends X_R_Request {
    	private String checkEMail()
   	{
   		//  Mail Host
-  		MClient client = MClient.get(getCtx());
+  		MClient client = MClientKt.getClient(Env.getCtx());
   		if (client == null
   			|| client.getSMTPHost() == null
   			|| client.getSMTPHost().length() == 0)
   			return "RequestActionEMailNoSMTP";
 
   		//  Mail To
-  		MUser to = new MUser (getCtx(), getUserId(), null);
+  		MUser to = new MUser (getUserId(), null);
   		if (to == null
   			|| to.getEMail() == null
   			|| to.getEMail().length() == 0)
   			return "RequestActionEMailNoTo";
 
   		//  Mail From real user
-  		MUser from = MUser.get(getCtx(), Env.getUserId(getCtx()));
+  		MUser from = MUserKt.getUser(Env.getUserId(Env.getCtx()));
   		if (from == null
   			|| from.getEMail() == null
   			|| from.getEMail().length() == 0)
   			return "RequestActionEMailNoFrom";
 
   		//  Check that UI user is Request User
-  //		int realSalesRep_ID = Env.getContextAsInt (getCtx(), "#AD_User_ID");
+  //		int realSalesRep_ID = Env.getContextAsInt ("#AD_User_ID");
   //		if (realSalesRep_ID != getSalesRepresentativeId())
   //			setSalesRepresentativeId(realSalesRep_ID);
 
   		//  RequestActionEMailInfo - EMail from {0} to {1}
   //		Object[] args = new Object[] {emailFrom, emailTo};
-  //		String msg = Msg.getMsg(getCtx(), "RequestActionEMailInfo", args);
+  //		String msg = Msg.getMsg( "RequestActionEMailInfo", args);
   //		setLastResult(msg);
   		//
 
@@ -416,11 +416,11 @@ public class MRequest extends X_R_Request {
             if (getGroupId() == 0) {
                 setChangeRequestId(0); // 	not effective as in afterSave
             } else {
-                MGroup oldG = MGroup.get(getCtx(), oldID);
-                MGroup newG = MGroup.get(getCtx(), getGroupId());
+                MGroup oldG = MGroup.get(oldID);
+                MGroup newG = MGroup.get(getGroupId());
                 if (oldG.getPPProductBOMId() != newG.getPPProductBOMId()
                         || oldG.getChangeNoticeId() != newG.getChangeNoticeId()) {
-                    MChangeRequest ecr = new MChangeRequest(getCtx(), getChangeRequestId());
+                    MChangeRequest ecr = new MChangeRequest(getChangeRequestId());
                     if (!ecr.isProcessed() || ecr.getFixChangeNoticeId() == 0) {
                         ecr.setProductBOMId(newG.getPPProductBOMId());
                         ecr.setChangeNoticeId(newG.getChangeNoticeId());
@@ -449,15 +449,15 @@ public class MRequest extends X_R_Request {
 
   		//  RequestActionTransfer - Request {0} was transfered by {1} from {2} to {3}
   		Object[] args = new Object[] {getDocumentNo(),
-  			MUser.getNameOfUser(AD_User_ID),
-  			MUser.getNameOfUser(oldSalesRep_ID),
-  			MUser.getNameOfUser(getSalesRepresentativeId())
+  			MUserKt.getUserNameOfUser(AD_User_ID),
+  			MUserKt.getUserNameOfUser(oldSalesRep_ID),
+  			MUserKt.getUserNameOfUser(getSalesRepresentativeId())
   			};
-  		String subject = Msg.getMsg(getCtx(), "RequestActionTransfer", args);
+  		String subject = Msg.getMsg( "RequestActionTransfer", args);
   		String message = subject + "\n" + getSummary();
-  		MClient client = MClient.get(getCtx());
-  		MUser from = MUser.get (getCtx(), AD_User_ID);
-  		MUser to = MUser.get (getCtx(), getSalesRepresentativeId());
+  		MClient client = MClientKt.getClient(Env.getCtx());
+  		MUser from = MUserKt.getUser (AD_User_ID);
+  		MUser to = MUserKt.getUser (getSalesRepresentativeId());
   		//
   		client.sendEMail(from, to, subject, message, createPDF());
   	}	//	afterSaveTransfer

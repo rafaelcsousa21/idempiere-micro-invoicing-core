@@ -2,9 +2,6 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
-
-import java.util.Properties;
 
 public class MGLCategory extends X_GL_Category {
     /**
@@ -23,8 +20,8 @@ public class MGLCategory extends X_GL_Category {
      * @param ctx            context
      * @param GL_Category_ID id
      */
-    public MGLCategory(Properties ctx, int GL_Category_ID) {
-        super(ctx, GL_Category_ID);
+    public MGLCategory(int GL_Category_ID) {
+        super(GL_Category_ID);
         if (GL_Category_ID == 0) {
             //	setName (null);
             setCategoryType(CATEGORYTYPE_Manual);
@@ -37,8 +34,8 @@ public class MGLCategory extends X_GL_Category {
      *
      * @param ctx context
      */
-    public MGLCategory(Properties ctx, Row row) {
-        super(ctx, row);
+    public MGLCategory(Row row) {
+        super(row);
     } //	MGLCategory
 
     /**
@@ -48,11 +45,11 @@ public class MGLCategory extends X_GL_Category {
      * @param GL_Category_ID id
      * @return MGLCategory
      */
-    public static MGLCategory get(Properties ctx, int GL_Category_ID) {
+    public static MGLCategory get(int GL_Category_ID) {
         Integer key = GL_Category_ID;
         MGLCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MGLCategory(ctx, GL_Category_ID);
+        retValue = new MGLCategory(GL_Category_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -64,8 +61,8 @@ public class MGLCategory extends X_GL_Category {
      * @param CategoryType optional CategoryType (ignored, if not exists)
      * @return GL Category or null
      */
-    public static MGLCategory getDefault(Properties ctx, String CategoryType) {
-        return MBaseGLCategoryKt.getDefault(ctx, CategoryType);
+    public static MGLCategory getDefault(String CategoryType) {
+        return MBaseGLCategoryKt.getDefault(CategoryType);
     } //	getDefault
 
     /**
@@ -74,10 +71,10 @@ public class MGLCategory extends X_GL_Category {
      * @param ctx context
      * @return GL Category
      */
-    public static MGLCategory getDefaultSystem(Properties ctx) {
-        MGLCategory retValue = getDefault(ctx, CATEGORYTYPE_SystemGenerated);
+    public static MGLCategory getDefaultSystem() {
+        MGLCategory retValue = getDefault(CATEGORYTYPE_SystemGenerated);
         if (retValue == null || !retValue.getCategoryType().equals(CATEGORYTYPE_SystemGenerated)) {
-            retValue = new MGLCategory(ctx, 0);
+            retValue = new MGLCategory(0);
             retValue.setName("Default System");
             retValue.setCategoryType(CATEGORYTYPE_SystemGenerated);
             retValue.setIsDefault(true);

@@ -10,7 +10,6 @@ import org.idempiere.common.util.CCache;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * PP Product BOM Model.
@@ -34,12 +33,12 @@ public class MPPProductBOM extends X_PP_Product_BOM {
      */
     private List<MPPProductBOMLine> m_lines = null;
 
-    public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID) {
-        super(ctx, PP_Product_BOM_ID);
+    public MPPProductBOM(int PP_Product_BOM_ID) {
+        super(PP_Product_BOM_ID);
     }
 
-    public MPPProductBOM(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPPProductBOM(Row row) {
+        super(row);
     }
 
     /**
@@ -49,11 +48,11 @@ public class MPPProductBOM extends X_PP_Product_BOM {
      * @param PP_Product_BOM_ID
      * @return product bom
      */
-    public static MPPProductBOM get(Properties ctx, int PP_Product_BOM_ID) {
+    public static MPPProductBOM get(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID <= 0) return null;
         MPPProductBOM bom = s_cache.get(PP_Product_BOM_ID);
         if (bom != null) return bom;
-        bom = new MPPProductBOM(ctx, PP_Product_BOM_ID);
+        bom = new MPPProductBOM(PP_Product_BOM_ID);
         if (bom.getId() == PP_Product_BOM_ID) {
             s_cache.put(PP_Product_BOM_ID, bom);
         } else {
@@ -72,7 +71,6 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     public static MPPProductBOM getDefault(MProduct product) {
         MPPProductBOM bom =
                 new Query(
-                        product.getCtx(),
                         I_PP_Product_BOM.Table_Name,
                         "M_Product_ID=? AND Value=?"
                 )
@@ -113,7 +111,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
         if (this.m_lines == null || reload) {
             final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
             this.m_lines =
-                    new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause)
+                    new Query(MPPProductBOMLine.Table_Name, whereClause)
                             .setParameters(getProductBOMId())
                             .setOnlyActiveRecords(true)
                             .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
@@ -143,14 +141,13 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     private void updateProduct() {
         int count =
                 new Query(
-                        getCtx(),
                         I_PP_Product_BOM.Table_Name,
                         I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
                 )
                         .setParameters(getProductId())
                         .setOnlyActiveRecords(true)
                         .count();
-        MProduct product = new MProduct(getCtx(), getProductId());
+        MProduct product = new MProduct(getProductId());
         product.setIsBOM(count > 0);
         product.saveEx();
     }

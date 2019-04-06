@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_InvoiceLine
@@ -26,8 +25,8 @@ public class X_C_InvoiceLine extends PO {
     /**
      * Standard Constructor
      */
-    public X_C_InvoiceLine(Properties ctx, int C_InvoiceLine_ID) {
-        super(ctx, C_InvoiceLine_ID);
+    public X_C_InvoiceLine(int C_InvoiceLine_ID) {
+        super(C_InvoiceLine_ID);
         /**
          * if (C_InvoiceLine_ID == 0) { setInvoiceId (0); setInvoiceLineId (0); setTaxId (0);
          * setIsDescription (false); // N setIsPrinted (true); // Y setLine (0); // @SQL=SELECT
@@ -41,8 +40,8 @@ public class X_C_InvoiceLine extends PO {
     /**
      * Load Constructor
      */
-    public X_C_InvoiceLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_InvoiceLine(Row row) {
+        super(row);
     }
 
     /**
@@ -176,7 +175,7 @@ public class X_C_InvoiceLine extends PO {
 
     public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
-                MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
+                MTable.get(org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
     }
 

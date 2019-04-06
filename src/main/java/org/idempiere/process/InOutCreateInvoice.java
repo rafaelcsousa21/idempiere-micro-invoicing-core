@@ -2,6 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
 import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MInvoice;
@@ -67,7 +68,7 @@ public class InOutCreateInvoice extends SvrProcess {
                             + p_InvoiceDocumentNo);
         if (p_M_InOut_ID == 0) throw new IllegalArgumentException("No Shipment");
         //
-        MInOut ship = new MInOut(getCtx(), p_M_InOut_ID);
+        MInOut ship = new MInOut(p_M_InOut_ID);
         if (ship.getId() == 0) throw new IllegalArgumentException("Shipment not found");
         if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus()))
             throw new IllegalArgumentException("Shipment not completed");
@@ -90,27 +91,27 @@ public class InOutCreateInvoice extends SvrProcess {
         }
 
         if (invoice.getOrderId() > 0) {
-            MOrder order = new MOrder(getCtx(), invoice.getOrderId());
+            MOrder order = new MOrder(invoice.getOrderId());
             invoice.setPaymentRule(order.getPaymentRule());
             invoice.setPaymentTermId(order.getPaymentTermId());
             invoice.saveEx();
             invoice.load(); // refresh from DB
             // copy payment schedule from order if invoice doesn't have a current payment schedule
             MOrderPaySchedule[] opss =
-                    MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getOrderId(), 0);
+                    MOrderPaySchedule.getOrderPaySchedule(order.getOrderId(), 0);
             MInvoicePaySchedule[] ipss =
                     MInvoicePaySchedule.getInvoicePaySchedule(
-                            getCtx(), invoice.getInvoiceId(), 0);
+                            invoice.getInvoiceId(), 0);
             if (ipss.length == 0 && opss.length > 0) {
                 BigDecimal ogt = order.getGrandTotal();
                 BigDecimal igt = invoice.getGrandTotal();
                 BigDecimal percent = Env.ONE;
                 if (ogt.compareTo(igt) != 0) percent = igt.divide(ogt, 10, BigDecimal.ROUND_HALF_UP);
-                MCurrency cur = MCurrency.get(order.getCtx(), order.getCurrencyId());
+                MCurrency cur = MCurrencyKt.getCurrency(order.getCurrencyId());
                 int scale = cur.getStdPrecision();
 
                 for (MOrderPaySchedule ops : opss) {
-                    MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
+                    MInvoicePaySchedule ips = new MInvoicePaySchedule(0);
                     PO.copyValues(ops, ips);
                     if (!percent.equals(Env.ONE)) {
                         BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);

@@ -9,7 +9,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
@@ -39,8 +38,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      * @param pp_product_planning_id id
      * @return MPPProductPlanning Data Product Planning
      */
-    public MPPProductPlanning(Properties ctx, int pp_product_planning_id) {
-        super(ctx, pp_product_planning_id);
+    public MPPProductPlanning(int pp_product_planning_id) {
+        super(pp_product_planning_id);
     } //	MPPProductPlanning
 
     /**
@@ -49,8 +48,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      * @param ctx context
      * @return MPPProductPlanning Data Product Planning
      */
-    public MPPProductPlanning(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPPProductPlanning(Row row) {
+        super(row);
     }
 
     /**
@@ -62,8 +61,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      * @return MPPProductPlanning
      */
     public static MPPProductPlanning get(
-            Properties ctx, int ad_client_id, int ad_org_id, int m_product_id) {
-        int M_Warehouse_ID = MOrgInfo.get(ctx, ad_org_id).getWarehouseId();
+            int ad_client_id, int ad_org_id, int m_product_id) {
+        int M_Warehouse_ID = MOrgInfo.get(ad_org_id).getWarehouseId();
         if (M_Warehouse_ID <= 0) {
             return null;
         }
@@ -71,18 +70,18 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         int S_Resource_ID = getPlantForWarehouse(M_Warehouse_ID);
         if (S_Resource_ID <= 0) return null;
 
-        return get(ctx, ad_client_id, ad_org_id, M_Warehouse_ID, S_Resource_ID, m_product_id);
+        return get(ad_client_id, ad_org_id, M_Warehouse_ID, S_Resource_ID, m_product_id);
     }
 
     /**
      * Get Data Product Planning
      *
-     * @param ctx            Context
-     *                       *
+     * @param ctx Context
+     *            *
      * @return MPPProductPlanning
      */
     public static MPPProductPlanning get(
-            Properties ctx,
+
             int ad_client_id,
             int ad_org_id,
             int m_warehouse_id,
@@ -117,7 +116,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
                         + I_PP_Product_Planning.COLUMNNAME_S_Resource_ID
                         + "=?";
 
-        return new Query(ctx, MPPProductPlanning.Table_Name, whereClause)
+        return new Query(MPPProductPlanning.Table_Name, whereClause)
                 .setParameters(ad_client_id, ad_org_id, m_product_id, m_warehouse_id, s_resource_id)
                 .setOnlyActiveRecords(true)
                 .firstOnly();
@@ -183,12 +182,12 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
 
     @Override
     public MPPProductBOM getProductBOM() {
-        return MPPProductBOM.get(getCtx(), getProductBOMId());
+        return MPPProductBOM.get(getProductBOMId());
     }
 
     @Override
     public MResource getResource() {
-        return MResource.get(getCtx(), getResourceID());
+        return MResource.get(getResourceID());
     }
 
     /**

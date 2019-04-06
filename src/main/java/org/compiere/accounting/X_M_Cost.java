@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Cost
@@ -33,8 +32,8 @@ public class X_M_Cost extends PO implements I_M_Cost {
     /**
      * Standard Constructor
      */
-    public X_M_Cost(Properties ctx, int M_Cost_ID) {
-        super(ctx, M_Cost_ID);
+    public X_M_Cost(int M_Cost_ID) {
+        super(M_Cost_ID);
         /**
          * if (M_Cost_ID == 0) { setAccountingSchemaId (0); setCurrentCostPrice (Env.ZERO);
          * setCurrentCostPriceLL (Env.ZERO); setCurrentQty (Env.ZERO); setFutureCostPrice (Env.ZERO);
@@ -47,8 +46,8 @@ public class X_M_Cost extends PO implements I_M_Cost {
     /**
      * Load Constructor
      */
-    public X_M_Cost(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Cost(Row row) {
+        super(row);
     }
 
     /**
@@ -67,7 +66,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
 
     public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
-                MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
+                MTable.get(org.compiere.model.I_C_AcctSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 
@@ -229,7 +228,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
 
     public org.compiere.model.I_M_CostElement getCostElement() throws RuntimeException {
         return (org.compiere.model.I_M_CostElement)
-                MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
+                MTable.get(org.compiere.model.I_M_CostElement.Table_Name)
                         .getPO(getCostElementId());
     }
 
@@ -277,7 +276,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 

@@ -3,8 +3,6 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.util.Properties;
-
 public class MRequestProcessorLog extends X_R_RequestProcessorLog implements AdempiereProcessorLog {
     /**
      *
@@ -17,8 +15,8 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
      * @param ctx                      context
      * @param R_RequestProcessorLog_ID id
      */
-    public MRequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID) {
-        super(ctx, R_RequestProcessorLog_ID);
+    public MRequestProcessorLog(int R_RequestProcessorLog_ID) {
+        super(R_RequestProcessorLog_ID);
         if (R_RequestProcessorLog_ID == 0) {
             setIsError(false);
         }
@@ -30,8 +28,8 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
      * @param ctx context
      * @param rs  result set
      */
-    public MRequestProcessorLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestProcessorLog(Row row) {
+        super(row);
     } //	MRequestProcessorLog
 
     /**
@@ -41,7 +39,7 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
      * @param summary summary
      */
     public MRequestProcessorLog(MRequestProcessor parent, String summary) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setRequestProcessorId(parent.getRequestProcessorId());
         setSummary(summary);

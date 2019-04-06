@@ -9,7 +9,6 @@ import org.idempiere.common.util.CLogger;
 import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
-import java.util.Properties;
 
 public class MCity extends X_C_City implements Comparator<Object>, Serializable {
     /**
@@ -30,28 +29,24 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
     /**
      * ************************************************************************ Create empty City
      *
-     * @param ctx       context
      * @param C_City_ID id
-     * @param trxName   transaction
      */
-    public MCity(Properties ctx, int C_City_ID) {
-        super(ctx, C_City_ID);
+    public MCity(int C_City_ID) {
+        super(C_City_ID);
     } //  MCity
 
     /**
      * Create City from current row in ResultSet
-     *
-     * @param ctx context
      */
-    public MCity(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCity(Row row) {
+        super(row);
     } //	MCity
 
     /**
      * Parent Constructor
      */
     public MCity(MRegion region, String cityName) {
-        super(region.getCtx(), 0);
+        super(0);
         setRegionId(region.getRegionId());
         setName(cityName);
     } //  MCity
@@ -59,15 +54,14 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
     /**
      * Get City (cached)
      *
-     * @param ctx       context
      * @param C_City_ID ID
      * @return City
      */
-    public static MCity get(Properties ctx, int C_City_ID) {
+    public static MCity get(int C_City_ID) {
         Integer key = C_City_ID;
         MCity r = s_Cities.get(key);
         if (r != null) return r;
-        r = new MCity(ctx, C_City_ID);
+        r = new MCity(C_City_ID);
         if (r.getCityId() == C_City_ID) {
             s_Cities.put(key, r);
             return r;

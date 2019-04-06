@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctProcessorLog;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
 
     /**
@@ -16,8 +14,8 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
     /**
      * Standard Constructor
      */
-    public X_C_AcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
-        super(ctx, C_AcctProcessorLog_ID);
+    public X_C_AcctProcessorLog(int C_AcctProcessorLog_ID) {
+        super(C_AcctProcessorLog_ID);
         /**
          * if (C_AcctProcessorLog_ID == 0) { setAccountingProcessorId (0); setAcctProcessorLog_ID (0);
          * setIsError (false); }
@@ -27,8 +25,8 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
     /**
      * Load Constructor
      */
-    public X_C_AcctProcessorLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AcctProcessorLog(Row row) {
+        super(row);
     }
 
     /**

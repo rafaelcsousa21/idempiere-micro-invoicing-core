@@ -40,7 +40,7 @@ public class IndentedBOM extends SvrProcess {
             if (para.getParameter() != null) {
                 if (name.equals(MCost.COLUMNNAME_C_AcctSchema_ID)) {
                     p_C_AcctSchema_ID = para.getParameterAsInt();
-                    m_as = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
+                    m_as = MAcctSchema.get(p_C_AcctSchema_ID);
                 } else if (name.equals(MCost.COLUMNNAME_M_CostElement_ID)) {
                     p_M_CostElement_ID = para.getParameterAsInt();
                 } else if (name.equals(MCost.COLUMNNAME_M_Product_ID))
@@ -72,9 +72,9 @@ public class IndentedBOM extends SvrProcess {
      * @param isComponent component / header
      */
     private llCost explodeProduct(int M_Product_ID, BigDecimal qty, BigDecimal accumQty) {
-        MProduct product = MProduct.get(getCtx(), M_Product_ID);
+        MProduct product = MProduct.get(M_Product_ID);
 
-        X_T_BOM_Indented tboml = new X_T_BOM_Indented(getCtx(), 0);
+        X_T_BOM_Indented tboml = new X_T_BOM_Indented(0);
 
         tboml.setOrgId(p_AD_Org_ID);
         tboml.setAcctSchemaId(p_C_AcctSchema_ID);
@@ -147,7 +147,7 @@ public class IndentedBOM extends SvrProcess {
         params.add(product.getId());
 
         List<MProductBOM> list =
-                new Query(getCtx(), MProductBOM.Table_Name, whereClause.toString())
+                new Query(MProductBOM.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOnlyActiveRecords(true)
                         .setOrderBy(MProductBOM.COLUMNNAME_Line)

@@ -2,9 +2,12 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
+import org.compiere.model.ClientInfoWithAccounting;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
@@ -17,7 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -56,8 +58,8 @@ public class MCost extends X_M_Cost {
      * @param ctx     context
      * @param ignored multi-key
      */
-    public MCost(Properties ctx, int ignored) {
-        super(ctx, ignored);
+    public MCost(int ignored) {
+        super(ignored);
         if (ignored == 0) {
             //	setAccountingSchemaId (0);
             //	setCostElementId (0);
@@ -78,8 +80,8 @@ public class MCost extends X_M_Cost {
      *
      * @param ctx context
      */
-    public MCost(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCost(Row row) {
+        super(row);
         m_manual = false;
     } //	MCost
 
@@ -98,7 +100,7 @@ public class MCost extends X_M_Cost {
             I_C_AcctSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
-        this(product.getCtx(), 0);
+        this(0);
         setClientOrg(product.getClientId(), AD_Org_ID);
         setAccountingSchemaId(as.getAccountingSchemaId());
         setCostTypeId(as.getCostTypeId());
@@ -416,14 +418,14 @@ public class MCost extends X_M_Cost {
 
         //	Still nothing try ProductPO
         MProductPO[] pos =
-                MProductPO.getOfProduct(product.getCtx(), product.getProductId());
+                MProductPO.getOfProduct(product.getProductId());
         for (MProductPO po : pos) {
             BigDecimal price = po.getPricePO();
             if (price == null || price.signum() == 0) price = po.getPriceList();
             if (price != null && price.signum() != 0) {
                 price =
                         MConversionRate.convert(
-                                product.getCtx(),
+
                                 price,
                                 po.getCurrencyId(),
                                 as.getCurrencyId(),
@@ -433,7 +435,7 @@ public class MCost extends X_M_Cost {
                     if (po.getUOMId() != product.getUOMId()) {
                         price =
                                 MUOMConversion.convertProductTo(
-                                        Env.getCtx(), product.getProductId(), po.getUOMId(), price);
+                                        product.getProductId(), po.getUOMId(), price);
                     }
                 }
                 if (price != null && price.signum() != 0) {
@@ -626,7 +628,7 @@ public class MCost extends X_M_Cost {
      *
      * @param client client
      */
-    public static void create(MClient client) {
+    public static void create(ClientWithAccounting client) {
         MBaseCostKt.createCostingForClient(client);
     } //	create
 
@@ -654,7 +656,7 @@ public class MCost extends X_M_Cost {
 
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
-                        product.getCtx(), product.getClientId());
+                        product.getClientId());
         MOrg[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
@@ -665,12 +667,12 @@ public class MCost extends X_M_Cost {
                 createCostingRecord(product, M_ASI_ID, as, 0, ce.getCostElementId());
             } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
                 if (as.getOrganizationOnlyId() > 0
-                        && MOrg.get(product.getCtx(), as.getOrganizationOnlyId()).isSummary()) {
-                    MClient client = MClient.get(product.getCtx(), product.getClientId());
-                    MClientInfo ci = client.getInfo();
+                        && MOrgKt.getOrg(as.getOrganizationOnlyId()).isSummary()) {
+                    ClientWithAccounting client = MClientKt.getClientWithAccounting(product.getClientId());
+                    ClientInfoWithAccounting ci = client.getInfo();
                     MTree vTree =
                             new MTree(
-                                    product.getCtx(),
+
                                     ci.getTreeOrgId(),
                                     false,
                                     true,
@@ -679,7 +681,7 @@ public class MCost extends X_M_Cost {
                     MTreeNode root = vTree.getRoot();
                     createForChildOrg(root, product, as, M_ASI_ID, ce, false);
                 } else {
-                    if (orgs == null) orgs = MOrg.getOfClient(product);
+                    if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
 
                     for (MOrg o : orgs) {
                         if (o.isSummary()) continue;
@@ -714,7 +716,7 @@ public class MCost extends X_M_Cost {
                 createForChildOrg(child, product, as, M_ASI_ID, ce, found);
             } else if (found) {
                 int orgId = child.getNodeId();
-                MOrg org = MOrg.get(product.getCtx(), orgId);
+                MOrg org = MOrgKt.getOrg(orgId);
                 if (!org.isSummary())
                     createCostingRecord(product, M_ASI_ID, as, orgId, ce.getCostElementId());
             }
@@ -747,7 +749,7 @@ public class MCost extends X_M_Cost {
 
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
-                        product.getCtx(), product.getClientId());
+                        product.getClientId());
         MOrg[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
@@ -761,7 +763,7 @@ public class MCost extends X_M_Cost {
                     if (cost != null) cost.deleteEx(true);
                 }
             } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
-                if (orgs == null) orgs = MOrg.getOfClient(product);
+                if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
                 for (MOrg o : orgs) {
                     for (MCostElement ce : ces) {
                         MCost cost =
@@ -807,7 +809,7 @@ public class MCost extends X_M_Cost {
                         + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
                         + " AND M_CostElement_ID=?";
         cost =
-                new Query(product.getCtx(), I_M_Cost.Table_Name, whereClause)
+                new Query(I_M_Cost.Table_Name, whereClause)
                         .setParameters(
                                 product.getClientId(),
                                 AD_Org_ID,
@@ -827,7 +829,6 @@ public class MCost extends X_M_Cost {
     /**
      * Get Cost Record
      *
-     * @param ctx                       context
      * @param AD_Client_ID              client
      * @param AD_Org_ID                 org
      * @param M_Product_ID              product
@@ -838,7 +839,6 @@ public class MCost extends X_M_Cost {
      * @return cost or null
      */
     public static MCost get(
-            Properties ctx,
             int AD_Client_ID,
             int AD_Org_ID,
             int M_Product_ID,
@@ -873,7 +873,7 @@ public class MCost extends X_M_Cost {
                         M_CostElement_ID,
                         M_AttributeSetInstance_ID
                 };
-        return new Query(ctx, I_M_Cost.Table_Name, whereClause)
+        return new Query(I_M_Cost.Table_Name, whereClause)
                 .setOnlyActiveRecords(true)
                 .setParameters(params)
                 .firstOnly();
@@ -982,7 +982,7 @@ public class MCost extends X_M_Cost {
      * @return precision (6)
      */
     private int getPrecision() {
-        MAcctSchema as = MAcctSchema.get(getCtx(), getAccountingSchemaId());
+        MAcctSchema as = MAcctSchema.get(getAccountingSchemaId());
         if (as != null) return as.getCostingPrecision();
         return 6;
     } //	gerPrecision
@@ -1048,8 +1048,8 @@ public class MCost extends X_M_Cost {
         MCostElement ce = (MCostElement) getCostElement();
         //	Check if data entry makes sense
         if (m_manual) {
-            MAcctSchema as = new MAcctSchema(getCtx(), getAccountingSchemaId());
-            MProduct product = MProduct.get(getCtx(), getProductId());
+            MAcctSchema as = new MAcctSchema(getAccountingSchemaId());
+            MProduct product = MProduct.get(getProductId());
             String CostingLevel = product.getCostingLevel(as);
             if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
                 if (getOrgId() != 0 || getAttributeSetInstanceId() != 0) {
@@ -1058,7 +1058,7 @@ public class MCost extends X_M_Cost {
                 }
             } else if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(CostingLevel)) {
                 if (getAttributeSetInstanceId() == 0 && ce.isCostingMethod()) {
-                    log.saveError("FillMandatory", Msg.getElement(getCtx(), "M_AttributeSetInstance_ID"));
+                    log.saveError("FillMandatory", Msg.getElement("M_AttributeSetInstance_ID"));
                     return false;
                 }
                 if (getOrgId() != 0) setOrgId(0);
@@ -1067,7 +1067,7 @@ public class MCost extends X_M_Cost {
 
         //	Cannot enter calculated
         if (m_manual && ce != null && ce.isCalculated()) {
-            log.saveError("Error", Msg.getElement(getCtx(), "IsCalculated"));
+            log.saveError("Error", Msg.getElement("IsCalculated"));
             return false;
         }
         //	Percentage
@@ -1152,8 +1152,7 @@ public class MCost extends X_M_Cost {
          * @return info
          */
         public String toString() {
-            StringBuilder sb = new StringBuilder("Qty=").append(Qty).append(",Cost=").append(Cost);
-            return sb.toString();
+            return "Qty=" + Qty + ",Cost=" + Cost;
         } //	toString
     } //	QtyCost
 } //	MCost

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_PA_Hierarchy;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for PA_Hierarchy
  *
@@ -22,15 +20,15 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy {
     /**
      * Standard Constructor
      */
-    public X_PA_Hierarchy(Properties ctx, int PA_Hierarchy_ID) {
-        super(ctx, PA_Hierarchy_ID);
+    public X_PA_Hierarchy(int PA_Hierarchy_ID) {
+        super(PA_Hierarchy_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_Hierarchy(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_Hierarchy(Row row) {
+        super(row);
     }
 
     /**

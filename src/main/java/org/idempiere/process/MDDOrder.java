@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -63,11 +62,10 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     /**
      * ************************************************************************ Default Constructor
      *
-     * @param ctx         context
      * @param DD_Order_ID order to load, (0 create new order)
      */
-    public MDDOrder(Properties ctx, int DD_Order_ID) {
-        super(ctx, DD_Order_ID);
+    public MDDOrder(int DD_Order_ID) {
+        super(DD_Order_ID);
         //  New
         if (DD_Order_ID == 0) {
             setDocStatus(DOCSTATUS_Drafted);
@@ -107,7 +105,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @param DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
      */
     public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
-        this(project.getCtx(), 0);
+        this(0);
         setADClientID(project.getClientId());
         setOrgId(project.getOrgId());
         setCampaignId(project.getCampaignId());
@@ -131,13 +129,9 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set record
-     * @param trxName transaction
      */
-    public MDDOrder(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDDOrder(Row row) {
+        super(row);
     } //	MDDOrder
 
     /**
@@ -177,7 +171,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         ss = bp.getInvoiceRule();
 
         if (getSalesRepresentativeId() == 0) {
-            ii = Env.getUserId(getCtx());
+            ii = Env.getUserId();
             if (ii != 0) setSalesRepresentativeId(ii);
         }
 
@@ -230,7 +224,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
@@ -248,7 +242,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             whereClauseFinal.append(" AND (").append(whereClause).append(")");
         //
         List<MDDOrderLine> list =
-                new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString())
+                new Query(I_DD_OrderLine.Table_Name, whereClauseFinal.toString())
                         .setParameters(getDistributionOrderId())
                         .setOrderBy(orderClause)
                         .list();
@@ -316,7 +310,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     protected boolean beforeSave(boolean newRecord) {
         //	Client/Org Check
         if (getOrgId() == 0) {
-            int context_AD_Org_ID = Env.getOrgId(getCtx());
+            int context_AD_Org_ID = Env.getOrgId();
             if (context_AD_Org_ID != 0) {
                 setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
@@ -332,10 +326,10 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
         //	Default Warehouse
         if (getWarehouseId() == 0) {
-            int ii = Env.getContextAsInt(getCtx(), "#M_Warehouse_ID");
+            int ii = Env.getContextAsInt("#M_Warehouse_ID");
             if (ii != 0) setWarehouseId(ii);
             else {
-                log.saveError("FillMandatory", Msg.getElement(getCtx(), "M_Warehouse_ID"));
+                log.saveError("FillMandatory", Msg.getElement("M_Warehouse_ID"));
                 return false;
             }
         }
@@ -348,13 +342,13 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	No Partner Info - set Template
-        if (getBusinessPartnerId() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getClientId()));
+        if (getBusinessPartnerId() == 0) setBPartner(MBPartner.getTemplate(getClientId()));
         if (getBusinessPartnerLocationId() == 0)
-            setBPartner(new MBPartner(getCtx(), getBusinessPartnerId()));
+            setBPartner(new MBPartner(getBusinessPartnerId()));
 
         //	Default Sales Rep
         if (getSalesRepresentativeId() == 0) {
-            int ii = Env.getContextAsInt(getCtx(), "#AD_User_ID");
+            int ii = Env.getContextAsInt("#AD_User_ID");
             if (ii != 0) setSalesRepresentativeId(ii);
         }
 
@@ -399,7 +393,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (isValueChanged(columnName)) {
             final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
             List<MDDOrderLine> lines =
-                    new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause)
+                    new Query(I_DD_OrderLine.Table_Name, whereClause)
                             .setParameters(getDistributionOrderId())
                             .list();
 
@@ -483,10 +477,10 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
 
         //	Std Period open?
-        if (!MPeriod.isOpen(getCtx(), getDateOrdered(), dt.getDocBaseType(), getOrgId())) {
+        if (!MPeriod.isOpen(getDateOrdered(), dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
@@ -550,8 +544,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         StringBuilder errors = new StringBuilder();
         //	Always check and (un) Reserve Inventory
         for (MDDOrderLine line : lines) {
-            MLocator locator_from = MLocator.get(getCtx(), line.getLocatorId());
-            MLocator locator_to = MLocator.get(getCtx(), line.getLocatorToId());
+            MLocator locator_from = MLocator.get(line.getLocatorId());
+            MLocator locator_to = MLocator.get(line.getLocatorToId());
             BigDecimal reserved_ordered =
                     line.getQtyOrdered().subtract(line.getQtyReserved()).subtract(line.getQtyDelivered());
             if (reserved_ordered.signum() == 0) {
@@ -581,7 +575,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                     if (product.isStocked()) {
                         //	Update Storage
                         if (!MStorageOnHand.add(
-                                getCtx(),
                                 locator_to.getWarehouseId(),
                                 locator_to.getLocatorId(),
                                 line.getProductId(),
@@ -593,7 +586,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         }
 
                         if (!MStorageOnHand.add(
-                                getCtx(),
                                 locator_from.getWarehouseId(),
                                 locator_from.getLocatorId(),
                                 line.getProductId(),
@@ -613,7 +605,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 } catch (NegativeInventoryDisallowedException e) {
                     log.severe(e.getMessage());
                     errors
-                            .append(Msg.getElement(getCtx(), "Line"))
+                            .append(Msg.getElement("Line"))
                             .append(" ")
                             .append(line.getLine())
                             .append(": ");
@@ -658,7 +650,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     @NotNull
     public CompleteActionResult completeIt() {
         @SuppressWarnings("unused")
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
 
         //	Just prepare
         if (DOCACTION_Prepare.equals(getDocAction())) {
@@ -717,11 +709,11 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             MDDOrderLine line = lines[i];
             BigDecimal old = line.getQtyOrdered();
             if (old.signum() != 0) {
-                line.addDescription(Msg.getMsg(getCtx(), "Voided") + " (" + old + ")");
+                line.addDescription(Msg.getMsg("Voided") + " (" + old + ")");
                 line.saveEx();
             }
         }
-        addDescription(Msg.getMsg(getCtx(), "Voided"));
+        addDescription(Msg.getMsg("Voided"));
         //	Clear Reservations
         reserveStock(lines);
         // After Void

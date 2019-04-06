@@ -6,7 +6,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
 import java.util.List;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -38,8 +37,8 @@ public class MPaySelection extends X_C_PaySelection {
      * @param C_PaySelection_ID id
      * @param trxName           transaction
      */
-    public MPaySelection(Properties ctx, int C_PaySelection_ID) {
-        super(ctx, C_PaySelection_ID);
+    public MPaySelection(int C_PaySelection_ID) {
+        super(C_PaySelection_ID);
         if (C_PaySelection_ID == 0) {
             //	setBankAccountId (0);
             //	setName (null);	// @#Date@
@@ -58,8 +57,8 @@ public class MPaySelection extends X_C_PaySelection {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MPaySelection(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaySelection(Row row) {
+        super(row);
     } //	MPaySelection
 
     /**
@@ -75,7 +74,7 @@ public class MPaySelection extends X_C_PaySelection {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "C_PaySelection_ID=?";
         List<MPaySelectionLine> list =
-                new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause)
+                new Query(I_C_PaySelectionLine.Table_Name, whereClause)
                         .setParameters(getPaySelectionId())
                         .setOrderBy("Line")
                         .list();

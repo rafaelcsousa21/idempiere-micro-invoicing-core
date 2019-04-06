@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.crm.MUser;
+import org.compiere.crm.MUserKt;
 import org.compiere.model.I_PA_Measure;
 import org.compiere.model.MeasureInterface;
 import org.compiere.orm.MRole;
@@ -17,7 +18,6 @@ import org.idempiere.common.util.Util;
 import javax.script.ScriptEngine;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
@@ -43,39 +43,35 @@ public class MMeasure extends X_PA_Measure {
      * Cache
      */
     private static CCache<Integer, MMeasure> s_cache =
-            new CCache<Integer, MMeasure>(I_PA_Measure.Table_Name, 10);
+            new CCache<>(I_PA_Measure.Table_Name, 10);
 
     /**
      * Standard Constructor
      *
-     * @param ctx           context
      * @param PA_Measure_ID id
      */
-    public MMeasure(Properties ctx, int PA_Measure_ID) {
-        super(ctx, PA_Measure_ID);
+    public MMeasure(int PA_Measure_ID) {
+        super(PA_Measure_ID);
     } //	MMeasure
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MMeasure(Properties ctx, Row row) {
-        super(ctx, row);
+    public MMeasure(Row row) {
+        super(row);
     } //	MMeasure
 
     /**
      * Get MMeasure from Cache
      *
-     * @param ctx           context
      * @param PA_Measure_ID id
      * @return MMeasure
      */
-    public static MMeasure get(Properties ctx, int PA_Measure_ID) {
+    public static MMeasure get(int PA_Measure_ID) {
         Integer key = PA_Measure_ID;
         MMeasure retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MMeasure(ctx, PA_Measure_ID);
+        retValue = new MMeasure(PA_Measure_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -86,9 +82,7 @@ public class MMeasure extends X_PA_Measure {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MMeasure[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MMeasure[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**
@@ -100,22 +94,22 @@ public class MMeasure extends X_PA_Measure {
     protected boolean beforeSave(boolean newRecord) {
         if (X_PA_Measure.MEASURETYPE_Calculated.equals(getMeasureType())
                 && getMeasureCalcId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_MeasureCalc_ID"));
+            log.saveError("FillMandatory", Msg.getElement("PA_MeasureCalc_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Ratio.equals(getMeasureType()) && getRatioId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_Ratio_ID"));
+            log.saveError("FillMandatory", Msg.getElement("PA_Ratio_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_UserDefined.equals(getMeasureType())
                 && (getCalculationClass() == null || getCalculationClass().length() == 0)) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "CalculationClass"));
+            log.saveError("FillMandatory", Msg.getElement("CalculationClass"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType())
                 && getRequestTypeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "R_RequestType_ID"));
+            log.saveError("FillMandatory", Msg.getElement("R_RequestType_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType())
                 && getProjectTypeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_ProjectType_ID"));
+            log.saveError("FillMandatory", Msg.getElement("C_ProjectType_ID"));
             return false;
         }
         return true;
@@ -164,9 +158,8 @@ public class MMeasure extends X_PA_Measure {
      */
     private boolean updateManualGoals() {
         if (!X_PA_Measure.MEASURETYPE_Manual.equals(getMeasureType())) return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
-        for (int i = 0; i < goals.length; i++) {
-            MGoal goal = goals[i];
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
+        for (MGoal goal : goals) {
             goal.setMeasureActual(getManualActual());
             goal.saveEx();
         }
@@ -181,9 +174,8 @@ public class MMeasure extends X_PA_Measure {
     private boolean updateAchievementGoals() {
         if (!X_PA_Measure.MEASURETYPE_Achievements.equals(getMeasureType())) return false;
         Timestamp today = new Timestamp(System.currentTimeMillis());
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
-        for (int i = 0; i < goals.length; i++) {
-            MGoal goal = goals[i];
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
+        for (MGoal goal : goals) {
             String MeasureScope = goal.getMeasureScope();
             String trunc = TimeUtil.TRUNC_DAY;
             if (MGoal.MEASUREDISPLAY_Year.equals(MeasureScope)) trunc = TimeUtil.TRUNC_YEAR;
@@ -192,10 +184,9 @@ public class MMeasure extends X_PA_Measure {
             else if (MGoal.MEASUREDISPLAY_Week.equals(MeasureScope)) trunc = TimeUtil.TRUNC_WEEK;
             Timestamp compare = TimeUtil.trunc(today, trunc);
             //
-            MAchievement[] achievements = MAchievement.getOfMeasure(getCtx(), getMeasureId());
+            MAchievement[] achievements = MAchievement.getOfMeasure(getMeasureId());
             BigDecimal ManualActual = Env.ZERO;
-            for (int j = 0; j < achievements.length; j++) {
-                MAchievement achievement = achievements[j];
+            for (MAchievement achievement : achievements) {
                 if (achievement.isAchieved() && achievement.getDateDoc() != null) {
                     Timestamp ach = TimeUtil.trunc(achievement.getDateDoc(), trunc);
                     if (compare.equals(ach)) ManualActual = ManualActual.add(achievement.getManualActual());
@@ -214,20 +205,19 @@ public class MMeasure extends X_PA_Measure {
      */
     private boolean updateCalculatedGoals() {
         if (!X_PA_Measure.MEASURETYPE_Calculated.equals(getMeasureType())) return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
-        for (int i = 0; i < goals.length; i++) {
-            MGoal goal = goals[i];
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
+        for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
             else if (goal.getUserId() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getUserId());
+                MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
+            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
             //
-            MMeasureCalc mc = MMeasureCalc.get(getCtx(), getMeasureCalcId());
+            MMeasureCalc mc = MMeasureCalc.get(getMeasureCalcId());
             if (mc == null || mc.getId() == 0 || mc.getId() != getMeasureCalcId()) {
                 log.log(Level.SEVERE, "Not found PA_MeasureCalc_ID=" + getMeasureCalcId());
                 return false;
@@ -269,20 +259,19 @@ public class MMeasure extends X_PA_Measure {
     private boolean updateRequests() {
         if (!X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType()) || getRequestTypeId() == 0)
             return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
-        for (int i = 0; i < goals.length; i++) {
-            MGoal goal = goals[i];
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
+        for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
             else if (goal.getUserId() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getUserId());
+                MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
+            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
             //
-            MRequestType rt = MRequestType.get(getCtx(), getRequestTypeId());
+            MRequestType rt = MRequestType.get(getRequestTypeId());
             String sql =
                     rt.getSqlPI(
                             goal.getRestrictions(false),
@@ -310,20 +299,19 @@ public class MMeasure extends X_PA_Measure {
     private boolean updateProjects() {
         if (!X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType()) || getProjectTypeId() == 0)
             return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
-        for (int i = 0; i < goals.length; i++) {
-            MGoal goal = goals[i];
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
+        for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
             else if (goal.getUserId() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getUserId());
+                MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
+            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
             //
-            MProjectType pt = MProjectType.get(getCtx(), getProjectTypeId());
+            MProjectType pt = MProjectType.get(getProjectTypeId());
             String sql =
                     pt.getSqlPI(
                             goal.getRestrictions(false),
@@ -349,11 +337,11 @@ public class MMeasure extends X_PA_Measure {
      * @return true if updated
      */
     private boolean updateUserDefined() {
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
+        MGoal[] goals = MGoal.getMeasureGoals(getMeasureId());
         for (MGoal goal : goals) {
             BigDecimal amt = Env.ZERO;
             PO po =
-                    (PO) new MTable(getCtx(), getTableId()).getPO(getId());
+                    (PO) new MTable(getTableId()).getPO(getId());
             StringTokenizer st = new StringTokenizer(getCalculationClass(), ";,", false);
             while (st.hasMoreTokens()) //  for each class
             {
@@ -361,7 +349,7 @@ public class MMeasure extends X_PA_Measure {
                 StringBuilder retValue = new StringBuilder();
                 if (cmd.toLowerCase().startsWith(MRule.SCRIPT_PREFIX)) {
 
-                    MRule rule = MRule.get(getCtx(), cmd.substring(MRule.SCRIPT_PREFIX.length()));
+                    MRule rule = MRule.get(cmd.substring(MRule.SCRIPT_PREFIX.length()));
                     if (rule == null) {
                         retValue = new StringBuilder("Script ").append(cmd).append(" not found");
                         log.log(Level.SEVERE, retValue.toString());
@@ -377,19 +365,17 @@ public class MMeasure extends X_PA_Measure {
                         break;
                     }
                     ScriptEngine engine = rule.getScriptEngine();
-                    MRule.setContext(engine, po.getCtx(), 0);
-                    engine.put(MRule.ARGUMENTS_PREFIX + "Ctx", po.getCtx());
+                    MRule.setContext(engine, 0);
                     engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
                     try {
                         Object value = engine.eval(rule.getScript());
                         amt = (BigDecimal) value;
                     } catch (Exception e) {
                         log.log(Level.SEVERE, "", e);
-                        retValue = new StringBuilder("Script Invalid: ").append(e.toString());
                         return false;
                     }
                 } else {
-                    MeasureInterface custom = null;
+                    MeasureInterface custom;
                     try {
                         Class<?> clazz = Class.forName(cmd);
                         custom = (MeasureInterface) clazz.newInstance();

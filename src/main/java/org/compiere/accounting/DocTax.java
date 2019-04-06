@@ -109,7 +109,7 @@ public final class DocTax {
             pstmt = null;
         }
         if (validCombination_ID == 0) return null;
-        return MAccount.get(as.getCtx(), validCombination_ID);
+        return MAccount.get(validCombination_ID);
     } //  getAccount
 
     /**

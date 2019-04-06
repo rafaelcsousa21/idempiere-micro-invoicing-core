@@ -1,6 +1,5 @@
 package org.idempiere.process;
 
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MPaymentTerm;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -29,11 +28,11 @@ public class PaymentTermValidate extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("C_PaymentTerm_ID=" + getRecordId());
-        MPaymentTerm pt = new MPaymentTerm(getCtx(), getRecordId());
+        MPaymentTerm pt = new MPaymentTerm(getRecordId());
         String msg = pt.validate();
         pt.saveEx();
         //
-        String validMsg = Msg.parseTranslation(getCtx(), "@OK@");
+        String validMsg = Msg.parseTranslation("@OK@");
         if (validMsg.equals(msg)) return msg;
         throw new AdempiereUserError(msg);
     } //	doIt

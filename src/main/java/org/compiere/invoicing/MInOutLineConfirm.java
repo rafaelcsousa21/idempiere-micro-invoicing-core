@@ -6,7 +6,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Ship Confirmation Line Model
@@ -29,15 +28,10 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      *
      * @param ctx                   context
      * @param M_InOutLineConfirm_ID id
-     * @param trxName               transaction
      */
-    public MInOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID) {
-        super(ctx, M_InOutLineConfirm_ID);
+    public MInOutLineConfirm(int M_InOutLineConfirm_ID) {
+        super(M_InOutLineConfirm_ID);
         if (M_InOutLineConfirm_ID == 0) {
-            //	setInOutConfirmId (0);
-            //	setInOutLineId (0);
-            //	setTargetQty (Env.ZERO);
-            //	setConfirmedQty (Env.ZERO);
             setDifferenceQty(Env.ZERO);
             setScrappedQty(Env.ZERO);
             setProcessed(false);
@@ -45,14 +39,12 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     } //	MInOutLineConfirm
 
     /**
-     * Load Construvtor
+     * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInOutLineConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInOutLineConfirm(Row row) {
+        super(row);
     } //	MInOutLineConfirm
 
     /**
@@ -61,7 +53,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @param header parent
      */
     public MInOutLineConfirm(MInOutConfirm header) {
-        this(header.getCtx(), 0);
+        this(0);
         setClientOrg(header);
         setInOutConfirmId(header.getInOutConfirmId());
     } //	MInOutLineConfirm
@@ -84,7 +76,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @return line
      */
     public MInOutLine getLine() {
-        if (m_line == null) m_line = new MInOutLine(getCtx(), getInOutLineId());
+        if (m_line == null) m_line = new MInOutLine(getInOutLineId());
         return m_line;
     } //	getLine
 
@@ -150,7 +142,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @return false
      */
     protected boolean beforeDelete() {
-        log.saveError("Error", Msg.getMsg(getCtx(), "CannotDelete"));
+        log.saveError("Error", Msg.getMsg("CannotDelete"));
         return false;
     } //	beforeDelete
 

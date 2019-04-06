@@ -3,11 +3,9 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCostAllocation;
 import org.compiere.orm.Query;
-import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * @author hengsin
@@ -24,15 +22,15 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
      * @param C_OrderLandedCostAllocation_ID
      */
     public MOrderLandedCostAllocation(
-            Properties ctx, int C_OrderLandedCostAllocation_ID) {
-        super(ctx, C_OrderLandedCostAllocation_ID);
+            int C_OrderLandedCostAllocation_ID) {
+        super(C_OrderLandedCostAllocation_ID);
     }
 
     /**
      * @param ctx
      */
-    public MOrderLandedCostAllocation(Properties ctx, Row row) {
-        super(ctx, row);
+    public MOrderLandedCostAllocation(Row row) {
+        super(row);
     }
 
     /**
@@ -43,7 +41,6 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
     public static MOrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID) {
         List<MOrderLandedCostAllocation> list =
                 new Query(
-                        Env.getCtx(),
                         I_C_OrderLandedCostAllocation.Table_Name,
                         I_C_OrderLandedCostAllocation.COLUMNNAME_C_OrderLine_ID + "=?"
                 )

@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_CostDetail
@@ -25,15 +24,15 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
     /**
      * Standard Constructor
      */
-    public X_M_CostDetail(Properties ctx, int M_CostDetail_ID) {
-        super(ctx, M_CostDetail_ID);
+    public X_M_CostDetail(int M_CostDetail_ID) {
+        super(M_CostDetail_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostDetail(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_CostDetail(Row row) {
+        super(row);
     }
 
     /**
@@ -325,7 +324,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
 
     public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
-                MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
+                MTable.get(org.compiere.model.I_M_InventoryLine.Table_Name)
                         .getPO(getInventoryLineId());
     }
 

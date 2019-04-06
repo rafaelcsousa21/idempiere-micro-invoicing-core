@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
 
@@ -38,8 +37,8 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
     /**
      * Standard Constructor
      */
-    public X_M_MovementConfirm(Properties ctx, int M_MovementConfirm_ID) {
-        super(ctx, M_MovementConfirm_ID);
+    public X_M_MovementConfirm(int M_MovementConfirm_ID) {
+        super(M_MovementConfirm_ID);
         /*
          * if (M_MovementConfirm_ID == 0) { setDocAction (null); setDocStatus (null); setDocumentNo
          * (null); setIsApproved (false); // N setMovementConfirmId (0); setMovementId (0);
@@ -50,8 +49,8 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
     /**
      * Load Constructor
      */
-    public X_M_MovementConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_MovementConfirm(Row row) {
+        super(row);
     }
 
     /**

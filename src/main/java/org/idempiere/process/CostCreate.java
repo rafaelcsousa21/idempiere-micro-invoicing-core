@@ -44,7 +44,7 @@ public class CostCreate extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
         if (p_M_Product_ID == 0)
             throw new AdempiereUserError("@NotFound@: @M_Product_ID@ = " + p_M_Product_ID);
-        MProduct product = MProduct.get(getCtx(), p_M_Product_ID);
+        MProduct product = MProduct.get(p_M_Product_ID);
         if (product.getId() != p_M_Product_ID)
             throw new AdempiereUserError("@NotFound@: @M_Product_ID@ = " + p_M_Product_ID);
         //

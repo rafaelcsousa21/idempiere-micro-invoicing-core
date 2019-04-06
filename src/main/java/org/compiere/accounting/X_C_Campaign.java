@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Campaign;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Campaign
  *
@@ -22,15 +20,15 @@ public class X_C_Campaign extends BasePONameValue implements I_C_Campaign {
     /**
      * Standard Constructor
      */
-    public X_C_Campaign(Properties ctx, int C_Campaign_ID) {
-        super(ctx, C_Campaign_ID);
+    public X_C_Campaign(int C_Campaign_ID) {
+        super(C_Campaign_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Campaign(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Campaign(Row row) {
+        super(row);
     }
 
     /**

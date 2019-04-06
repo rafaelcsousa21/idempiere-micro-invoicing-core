@@ -9,7 +9,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for PP_Product_BOMLine
@@ -35,15 +34,15 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
     /**
      * Standard Constructor
      */
-    public X_PP_Product_BOMLine(Properties ctx, int PP_Product_BOMLine_ID) {
-        super(ctx, PP_Product_BOMLine_ID);
+    public X_PP_Product_BOMLine(int PP_Product_BOMLine_ID) {
+        super(PP_Product_BOMLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PP_Product_BOMLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PP_Product_BOMLine(Row row) {
+        super(row);
     }
 
     /**
@@ -138,7 +137,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
-                MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
+                MTable.get(org.compiere.model.I_C_UOM.Table_Name)
                         .getPO(getUOMId());
     }
 
@@ -344,7 +343,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
+                MTable.get(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getAttributeSetInstanceId());
     }
 
@@ -372,7 +371,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_M_ChangeNotice getChangeNotice() throws RuntimeException {
         return (org.compiere.model.I_M_ChangeNotice)
-                MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
+                MTable.get(org.compiere.model.I_M_ChangeNotice.Table_Name)
                         .getPO(getChangeNoticeId());
     }
 
@@ -399,7 +398,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -426,7 +425,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.eevolution.model.I_PP_Product_BOM getProductBOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
-                MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
+                MTable.get(org.eevolution.model.I_PP_Product_BOM.Table_Name)
                         .getPO(getProductBOMId());
     }
 

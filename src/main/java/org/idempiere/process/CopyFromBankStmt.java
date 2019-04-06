@@ -50,8 +50,8 @@ public class CopyFromBankStmt extends SvrProcess {
         if (m_C_BankStatement_ID == 0)
             throw new IllegalArgumentException("Source C_BankStatement_ID == 0");
 
-        MBankStatement from = new MBankStatement(getCtx(), m_C_BankStatement_ID);
-        MBankStatement to = new MBankStatement(getCtx(), To_C_BankStatement_ID);
+        MBankStatement from = new MBankStatement(m_C_BankStatement_ID);
+        MBankStatement to = new MBankStatement(To_C_BankStatement_ID);
         int no = 0;
 
         if (!(MBankStatement.DOCSTATUS_Completed.equals(from.getDocStatus())
@@ -70,7 +70,7 @@ public class CopyFromBankStmt extends SvrProcess {
                                 + " AND bsl.C_Payment_ID=?";
                 if (getSQLValueEx(sql, fromLine.getPaymentId()) < 0) {
                     MBankStatementLine toLine = new MBankStatementLine(to);
-                    toLine.setPayment(new MPayment(getCtx(), fromLine.getPaymentId()));
+                    toLine.setPayment(new MPayment(fromLine.getPaymentId()));
                     toLine.saveEx();
                     no++;
                 } else {

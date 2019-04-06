@@ -7,7 +7,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 
 import java.util.Locale;
-import java.util.Properties;
 
 /**
  * Calendar Model
@@ -24,7 +23,7 @@ public class MCalendar extends X_C_Calendar {
      * Cache
      */
     private static CCache<Integer, MCalendar> s_cache =
-            new CCache<Integer, MCalendar>(I_C_Calendar.Table_Name, 20);
+            new CCache<>(I_C_Calendar.Table_Name, 20);
 
     /**
      * *********************************************************************** Standard Constructor
@@ -32,8 +31,8 @@ public class MCalendar extends X_C_Calendar {
      * @param ctx           context
      * @param C_Calendar_ID id
      */
-    public MCalendar(Properties ctx, int C_Calendar_ID) {
-        super(ctx, C_Calendar_ID);
+    public MCalendar(int C_Calendar_ID) {
+        super(C_Calendar_ID);
     } //	MCalendar
 
     /**
@@ -41,8 +40,8 @@ public class MCalendar extends X_C_Calendar {
      *
      * @param ctx context
      */
-    public MCalendar(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCalendar(Row row) {
+        super(row);
     } //	MCalendar
 
     /**
@@ -51,11 +50,11 @@ public class MCalendar extends X_C_Calendar {
      * @param client parent
      */
     public MCalendar(MClient client) {
-        super(client.getCtx(), 0);
+        super(0);
         setClientOrg(client);
         String msgset = client.getName() +
                 " " +
-                Msg.translate(client.getCtx(), "C_Calendar_ID");
+                Msg.translate("C_Calendar_ID");
         setName(msgset);
     } //	MCalendar
 
@@ -66,11 +65,11 @@ public class MCalendar extends X_C_Calendar {
      * @param C_Calendar_ID id
      * @return MCalendar
      */
-    public static MCalendar get(Properties ctx, int C_Calendar_ID) {
+    public static MCalendar get(int C_Calendar_ID) {
         Integer key = C_Calendar_ID;
         MCalendar retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MCalendar(ctx, C_Calendar_ID);
+        retValue = new MCalendar(C_Calendar_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

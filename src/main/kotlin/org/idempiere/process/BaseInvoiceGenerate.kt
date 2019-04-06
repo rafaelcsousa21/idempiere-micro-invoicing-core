@@ -3,10 +3,8 @@ package org.idempiere.process
 import org.compiere.accounting.MOrder
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 internal fun getOrdersForInvoiceGeneration(
-    ctx: Properties,
     sql: String,
     AD_PInstance_ID: Int,
     p_Selection: Boolean,
@@ -25,6 +23,6 @@ internal fun getOrdersForInvoiceGeneration(
     )
 
     val query =
-        queryOf(sql.toString(), parameters).map { row -> MOrder(ctx, row) }.asList
+        queryOf(sql.toString(), parameters).map { row -> MOrder(row) }.asList
     return DB.current.run(query).toTypedArray()
 }

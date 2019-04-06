@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_GLJournal extends PO implements I_I_GLJournal {
 
@@ -19,16 +18,16 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
     /**
      * Standard Constructor
      */
-    public X_I_GLJournal(Properties ctx, int I_GLJournal_ID) {
-        super(ctx, I_GLJournal_ID);
+    public X_I_GLJournal(int I_GLJournal_ID) {
+        super(I_GLJournal_ID);
         /* if (I_GLJournal_ID == 0) { setI_GLJournal_ID (0); setIsImported (false); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_GLJournal(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_GLJournal(Row row) {
+        super(row);
     }
 
     /**

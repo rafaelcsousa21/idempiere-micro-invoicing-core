@@ -10,27 +10,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
 import static software.hsharp.core.util.DBKt.setParameters;
 
 class ProductLowLevelCalculator {
     private Hashtable<Integer, Integer> tableproduct = new Hashtable<Integer, Integer>();
-    private Properties m_ctx = null;
 
-    public ProductLowLevelCalculator(Properties ctx) {
-        m_ctx = ctx;
+    public ProductLowLevelCalculator() {
     }
 
     /**
      * get low level of a Product
      *
-     * @param ID Product
      * @return int low level
      */
     public int getLowLevel(int M_Product_ID) {
-        int AD_Client_ID = Env.getClientId(m_ctx);
+        int AD_Client_ID = Env.getClientId();
         tableproduct.clear(); // reset tableproduct cache
         DefaultMutableTreeNode ibom = null;
 
@@ -43,8 +39,6 @@ class ProductLowLevelCalculator {
     /**
      * get an implotion the product
      *
-     * @param ID Product
-     * @param ID BOM
      * @return DefaultMutableTreeNode Tree with all parent product
      */
     private DefaultMutableTreeNode iparent(
@@ -89,8 +83,6 @@ class ProductLowLevelCalculator {
     /**
      * get an implotion the product
      *
-     * @param ID Product
-     * @param ID BOM
      * @return DefaultMutableTreeNode Tree with all parent product
      */
     private DefaultMutableTreeNode icomponent(
@@ -116,7 +108,7 @@ class ProductLowLevelCalculator {
                     }
                 } else {
                     // Child = Parent error
-                    MProduct product = MProduct.get(m_ctx, M_Product_ID);
+                    MProduct product = MProduct.get(M_Product_ID);
                     throw new AdempiereException(
                             "Cycle BOM & Formula:"
                                     + rs.getString(2)
@@ -143,8 +135,6 @@ class ProductLowLevelCalculator {
     /**
      * find a product in cache
      *
-     * @param ID Product
-     * @param ID BOM
      * @return true if product is found
      */
     private boolean tableproduct(int M_Product_ID, int PP_Product_BOM_ID) {

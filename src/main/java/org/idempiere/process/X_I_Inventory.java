@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_Inventory extends PO implements I_I_Inventory {
 
@@ -19,15 +18,15 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
     /**
      * Standard Constructor
      */
-    public X_I_Inventory(Properties ctx, int I_Inventory_ID) {
-        super(ctx, I_Inventory_ID);
+    public X_I_Inventory(int I_Inventory_ID) {
+        super(I_Inventory_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Inventory(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_Inventory(Row row) {
+        super(row);
     }
 
     /**

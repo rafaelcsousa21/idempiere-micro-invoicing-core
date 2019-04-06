@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -36,10 +35,6 @@ public class MReportTree {
      */
     private String m_ElementType = null;
     /**
-     * Context
-     */
-    private Properties m_ctx = null;
-    /**
      * Tree Type
      */
     private String m_TreeType = null;
@@ -52,19 +47,18 @@ public class MReportTree {
      */
     private CLogger log = CLogger.getCLogger(getClass());
 
-    public MReportTree(Properties ctx, int PA_Hierarchy_ID, String ElementType) {
-        this(ctx, PA_Hierarchy_ID, false, ElementType);
+    public MReportTree(int PA_Hierarchy_ID, String ElementType) {
+        this(PA_Hierarchy_ID, false, ElementType);
     }
 
     /**
      * ************************************************************************ Report Tree
      *
-     * @param ctx             context
      * @param PA_Hierarchy_ID optional hierarchy
      * @param allNodes        true to always get full tree
      * @param ElementType     Account Schema Element Type
      */
-    public MReportTree(Properties ctx, int PA_Hierarchy_ID, boolean allNodes, String ElementType) {
+    public MReportTree(int PA_Hierarchy_ID, boolean allNodes, String ElementType) {
         m_ElementType = ElementType;
         m_TreeType = m_ElementType;
         if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(m_ElementType)
@@ -74,7 +68,6 @@ public class MReportTree {
         if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(m_ElementType))
             m_TreeType = MTree.TREETYPE_Organization;
         m_PA_Hierarchy_ID = PA_Hierarchy_ID;
-        m_ctx = ctx;
         //
         int AD_Tree_ID = getAD_TreeId();
         //	Not found
@@ -85,7 +78,7 @@ public class MReportTree {
         boolean clientTree = true;
         m_tree =
                 new MTree(
-                        ctx,
+
                         AD_Tree_ID,
                         true,
                         clientTree,
@@ -97,15 +90,14 @@ public class MReportTree {
     /**
      * Get Report Tree (cached)
      *
-     * @param ctx             context
      * @param PA_Hierarchy_ID optional hierarchy
      * @param ElementType     Account Schema Element Type
      * @return tree
      */
-    public static MReportTree get(Properties ctx, int PA_Hierarchy_ID, String ElementType) {
+    public static MReportTree get(int PA_Hierarchy_ID, String ElementType) {
         MRole role = MRole.getDefault();
         String key =
-                Env.getClientId(ctx)
+                Env.getClientId()
                         + "_"
                         + role.getRoleId()
                         + "_"
@@ -114,9 +106,9 @@ public class MReportTree {
                         + ElementType;
         if (!role.isAccessAllOrgs() && role.isUseUserOrgAccess()) {
             key =
-                    Env.getClientId(ctx)
+                    Env.getClientId()
                             + "_"
-                            + Env.getUserId(ctx)
+                            + Env.getUserId()
                             + "_"
                             + role.getRoleId()
                             + "_"
@@ -127,7 +119,7 @@ public class MReportTree {
 
         MReportTree tree = s_trees.get(key);
         if (tree == null) {
-            tree = new MReportTree(ctx, PA_Hierarchy_ID, ElementType);
+            tree = new MReportTree(PA_Hierarchy_ID, ElementType);
             s_trees.put(key, tree);
         }
         return tree;
@@ -141,7 +133,7 @@ public class MReportTree {
     protected int getAD_TreeId() {
         if (m_PA_Hierarchy_ID == 0) return getDefaultAD_TreeId();
 
-        MHierarchy hierarchy = MHierarchy.get(m_ctx, m_PA_Hierarchy_ID);
+        MHierarchy hierarchy = MHierarchy.get(m_PA_Hierarchy_ID);
         int AD_Tree_ID = hierarchy.getAD_TreeId(m_TreeType);
 
         if (AD_Tree_ID == 0) return getDefaultAD_TreeId();
@@ -156,7 +148,7 @@ public class MReportTree {
      */
     protected int getDefaultAD_TreeId() {
         int AD_Tree_ID = 0;
-        int AD_Client_ID = Env.getClientId(m_ctx);
+        int AD_Client_ID = Env.getClientId();
 
         String sql =
                 "SELECT AD_Tree_ID, Name FROM AD_Tree "

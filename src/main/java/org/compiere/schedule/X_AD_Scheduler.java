@@ -5,7 +5,6 @@ import org.compiere.model.I_AD_Scheduler;
 import org.compiere.orm.BasePOName;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for AD_Scheduler
@@ -23,15 +22,15 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
     /**
      * Standard Constructor
      */
-    public X_AD_Scheduler(Properties ctx, int AD_Scheduler_ID) {
-        super(ctx, AD_Scheduler_ID);
+    public X_AD_Scheduler(int AD_Scheduler_ID) {
+        super(AD_Scheduler_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Scheduler(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_Scheduler(Row row) {
+        super(row);
     }
 
     /**

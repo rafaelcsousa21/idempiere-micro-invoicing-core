@@ -3,7 +3,6 @@ package org.idempiere.process;
 // import org.compiere.process.*;
 
 import org.compiere.accounting.MPayment;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
 import java.util.logging.Level;
@@ -30,7 +29,7 @@ public class PaymentOnline extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("Record_ID=" + getRecordId());
         //	get Payment
-        MPayment pp = new MPayment(getCtx(), getRecordId());
+        MPayment pp = new MPayment(getRecordId());
 
         //  Process it
         boolean ok = pp.processOnline();

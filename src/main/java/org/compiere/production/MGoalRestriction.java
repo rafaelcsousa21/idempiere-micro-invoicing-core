@@ -2,8 +2,6 @@ package org.compiere.production;
 
 import kotliquery.Row;
 
-import java.util.Properties;
-
 /**
  * Performance Goal Restriction
  *
@@ -19,23 +17,17 @@ public class MGoalRestriction extends X_PA_GoalRestriction {
     /**
      * Standard Constructor
      *
-     * @param ctx                   context
      * @param PA_GoalRestriction_ID id
-     * @param trxName               trx
      */
-    public MGoalRestriction(Properties ctx, int PA_GoalRestriction_ID) {
-        super(ctx, PA_GoalRestriction_ID);
+    public MGoalRestriction(int PA_GoalRestriction_ID) {
+        super(PA_GoalRestriction_ID);
     } //	MGoalRestriction
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
-    public MGoalRestriction(Properties ctx, Row row) {
-        super(ctx, row);
+    public MGoalRestriction(Row row) {
+        super(row);
     } //	MGoalRestriction
 
     /**
@@ -44,8 +36,6 @@ public class MGoalRestriction extends X_PA_GoalRestriction {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MGoalRestriction[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MGoalRestriction[" + getId() + "-" + getName() + "]";
     } //	toString
 } //	MGoalRestriction

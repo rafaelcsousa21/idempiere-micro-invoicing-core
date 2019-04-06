@@ -72,10 +72,10 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         if (p_SourceAcctSchema_ID == p_TargetAcctSchema_ID)
             throw new AdempiereUserError("Must be different");
 
-        MAcctSchema source = MAcctSchema.get(getCtx(), p_SourceAcctSchema_ID);
+        MAcctSchema source = MAcctSchema.get(p_SourceAcctSchema_ID);
         if (source.getId() == 0)
             throw new AdempiereSystemError("NotFound Source C_AcctSchema_ID=" + p_SourceAcctSchema_ID);
-        MAcctSchema target = new MAcctSchema(getCtx(), p_TargetAcctSchema_ID);
+        MAcctSchema target = new MAcctSchema(p_TargetAcctSchema_ID);
         if (target.getId() == 0)
             throw new AdempiereSystemError("NotFound Target C_AcctSchema_ID=" + p_TargetAcctSchema_ID);
 
@@ -96,8 +96,8 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         if (sourceAcctElement.getElementId() != targetAcctElement.getElementId())
             throw new AdempiereUserError("@C_Element_ID@ different");
 
-        if (MAcctSchemaGL.get(getCtx(), p_TargetAcctSchema_ID) == null) copyGL(target);
-        if (MAcctSchemaDefault.get(getCtx(), p_TargetAcctSchema_ID) == null) copyDefault(target);
+        if (MAcctSchemaGL.get(p_TargetAcctSchema_ID) == null) copyGL(target);
+        if (MAcctSchemaDefault.get(p_TargetAcctSchema_ID) == null) copyDefault(target);
 
         return "@OK@";
     } //	doIt
@@ -109,15 +109,15 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @throws Exception
      */
     private void copyGL(MAcctSchema targetAS) throws Exception {
-        MAcctSchemaGL source = MAcctSchemaGL.get(getCtx(), p_SourceAcctSchema_ID);
-        MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0);
+        MAcctSchemaGL source = MAcctSchemaGL.get(p_SourceAcctSchema_ID);
+        MAcctSchemaGL target = new MAcctSchemaGL(0);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
         for (int i = 0; i < list.size(); i++) {
             KeyNamePair pp = list.get(i);
             int sourceC_ValidCombination_ID = pp.getKey();
             String columnName = pp.getName();
-            MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
+            MAccount sourceAccount = MAccount.get(sourceC_ValidCombination_ID);
             MAccount targetAccount = createAccount(targetAS, sourceAccount);
             target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
@@ -131,8 +131,8 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @throws Exception
      */
     private void copyDefault(MAcctSchema targetAS) throws Exception {
-        MAcctSchemaDefault source = MAcctSchemaDefault.get(getCtx(), p_SourceAcctSchema_ID);
-        MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0);
+        MAcctSchemaDefault source = MAcctSchemaDefault.get(p_SourceAcctSchema_ID);
+        MAcctSchemaDefault target = new MAcctSchemaDefault(0);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
@@ -140,7 +140,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             KeyNamePair pp = list.get(i);
             int sourceC_ValidCombination_ID = pp.getKey();
             String columnName = pp.getName();
-            MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
+            MAccount sourceAccount = MAccount.get(sourceC_ValidCombination_ID);
             MAccount targetAccount = createAccount(targetAS, sourceAccount);
             target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
@@ -217,7 +217,6 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         }
         //
         return MAccount.get(
-                getCtx(),
                 AD_Client_ID,
                 AD_Org_ID,
                 C_AcctSchema_ID,

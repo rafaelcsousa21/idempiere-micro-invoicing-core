@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Project
@@ -45,8 +44,8 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
     /**
      * Standard Constructor
      */
-    public X_C_Project(Properties ctx, int C_Project_ID) {
-        super(ctx, C_Project_ID);
+    public X_C_Project(int C_Project_ID) {
+        super(C_Project_ID);
         /**
          * if (C_Project_ID == 0) { setCurrencyId (0); setCommittedAmt (Env.ZERO); setCommittedQty
          * (Env.ZERO); setProjectId (0); setInvoicedAmt (Env.ZERO); setInvoicedQty (Env.ZERO);
@@ -60,8 +59,8 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
     /**
      * Load Constructor
      */
-    public X_C_Project(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Project(Row row) {
+        super(row);
     }
 
     /**

@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MAllocationHdr;
 import org.compiere.accounting.MAllocationLine;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MPaySelectionCheck;
 import org.compiere.accounting.MPaySelectionLine;
 import org.compiere.accounting.MPayment;
@@ -135,7 +135,7 @@ public class AllocationAuto extends SvrProcess {
             ResultSet rs = null;
             try {
                 pstmt = prepareStatement(sql);
-                pstmt.setInt(1, Env.getClientId(getCtx()));
+                pstmt.setInt(1, Env.getClientId());
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
                     int C_BPartner_ID = rs.getInt(1);
@@ -263,7 +263,7 @@ public class AllocationAuto extends SvrProcess {
      * @return unallocated payments
      */
     private MPayment[] getPayments(int C_BPartner_ID) {
-        return BaseAllocationAutoKt.getBusinessPartnerAllocationPayments(getCtx(), C_BPartner_ID, p_APAR);
+        return BaseAllocationAutoKt.getBusinessPartnerAllocationPayments(C_BPartner_ID, p_APAR);
     } //	getPayments
 
     /**
@@ -273,7 +273,7 @@ public class AllocationAuto extends SvrProcess {
      * @return unallocated Invoices
      */
     private MInvoice[] getInvoices(int C_BPartner_ID) {
-        return BaseAllocationAutoKt.getBusinessPartnerAllocationInvoices(getCtx(), C_BPartner_ID, p_APAR);
+        return BaseAllocationAutoKt.getBusinessPartnerAllocationInvoices(C_BPartner_ID, p_APAR);
     } //	getInvoices
 
     /**
@@ -316,7 +316,7 @@ public class AllocationAuto extends SvrProcess {
                                 if (payment.allocateIt()) {
                                     String message =
                                             Msg.parseTranslation(
-                                                    getCtx(), "@PaymentAllocated@ " + payment.getDocumentNo() + " [1]");
+                                                    "@PaymentAllocated@ " + payment.getDocumentNo() + " [1]");
                                     addBufferLog(
                                             0,
                                             payment.getDateAcct(),
@@ -336,7 +336,7 @@ public class AllocationAuto extends SvrProcess {
             else //	No direct invoice
             {
                 MPaySelectionCheck psCheck =
-                        MPaySelectionCheck.getOfPayment(getCtx(), payment.getPaymentId());
+                        MPaySelectionCheck.getOfPayment(payment.getPaymentId());
                 if (psCheck == null) continue;
                 //
                 BigDecimal totalInvoice = Env.ZERO;
@@ -368,7 +368,7 @@ public class AllocationAuto extends SvrProcess {
                     if (payment.allocateIt()) {
                         String message =
                                 Msg.parseTranslation(
-                                        getCtx(), "@PaymentAllocated@ " + payment.getDocumentNo() + " [n]");
+                                        "@PaymentAllocated@ " + payment.getDocumentNo() + " [n]");
                         addBufferLog(
                                 0,
                                 payment.getDateAcct(),
@@ -454,7 +454,7 @@ public class AllocationAuto extends SvrProcess {
      * @return allocations
      */
     private int allocateBPartnerAll() throws Exception {
-        int C_Currency_ID = MClient.get(getCtx()).getCurrencyId();
+        int C_Currency_ID = MClientKt.getClientWithAccounting().getCurrencyId();
         Timestamp dateAcct = null;
         //	Payments
         BigDecimal totalPayments = Env.ZERO;
@@ -570,12 +570,11 @@ public class AllocationAuto extends SvrProcess {
      * @return allocations
      */
     private int allocateBPOldestFirst() throws Exception {
-        int C_Currency_ID = MClient.get(getCtx()).getCurrencyId();
+        int C_Currency_ID = MClientKt.getClientWithAccounting().getCurrencyId();
         Timestamp dateAcct = null;
         //	Payments
         BigDecimal totalPayments = Env.ZERO;
-        for (int p = 0; p < m_payments.length; p++) {
-            MPayment payment = m_payments[p];
+        for (MPayment payment : m_payments) {
             if (payment.isAllocated()) continue;
             if (payment.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal allocatedAmt = payment.getAllocatedAmt();
@@ -595,8 +594,7 @@ public class AllocationAuto extends SvrProcess {
         }
         //	Invoices
         BigDecimal totalInvoices = Env.ZERO;
-        for (int i = 0; i < m_invoices.length; i++) {
-            MInvoice invoice = m_invoices[i];
+        for (MInvoice invoice : m_invoices) {
             if (invoice.isPaid()) continue;
             if (invoice.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal openAmt = invoice.getOpenAmt(true, null);
@@ -636,8 +634,7 @@ public class AllocationAuto extends SvrProcess {
 
         //	Allocate Payments up to max
         BigDecimal allocatedPayments = Env.ZERO;
-        for (int p = 0; p < m_payments.length; p++) {
-            MPayment payment = m_payments[p];
+        for (MPayment payment : m_payments) {
             if (payment.isAllocated()) continue;
             if (payment.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal allocatedAmt = payment.getAllocatedAmt();
@@ -678,8 +675,7 @@ public class AllocationAuto extends SvrProcess {
         } //	for all payments
         //	Allocated Invoices up to max
         BigDecimal allocatedInvoices = Env.ZERO;
-        for (int i = 0; i < m_invoices.length; i++) {
-            MInvoice invoice = m_invoices[i];
+        for (MInvoice invoice : m_invoices) {
             if (invoice.isPaid()) continue;
             if (invoice.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal openAmt = invoice.getOpenAmt(true, null);
@@ -711,12 +707,11 @@ public class AllocationAuto extends SvrProcess {
         } //	for all invoices
 
         if (allocatedPayments.compareTo(allocatedInvoices) != 0) {
-            StringBuilder msg =
-                    new StringBuilder("Allocated Payments=")
-                            .append(allocatedPayments)
-                            .append(" <> Invoices=")
-                            .append(allocatedInvoices);
-            throw new AdempiereSystemError(msg.toString());
+            String msg = "Allocated Payments=" +
+                    allocatedPayments +
+                    " <> Invoices=" +
+                    allocatedInvoices;
+            throw new AdempiereSystemError(msg);
         }
         processAllocation();
         return 1;
@@ -757,12 +752,11 @@ public class AllocationAuto extends SvrProcess {
         if (m_allocation == null) {
             m_allocation =
                     new MAllocationHdr(
-                            getCtx(),
                             false,
                             dateAcct, //	automatic
                             C_Currency_ID,
-                            "Auto " + description,
-                            null);
+                            "Auto " + description
+                    );
             m_allocation.setOrgId(AD_Org_ID);
             if (!m_allocation.save()) return false;
         }
@@ -785,15 +779,14 @@ public class AllocationAuto extends SvrProcess {
         if (m_allocation == null) return true;
         boolean success = m_allocation.processIt(MAllocationHdr.DOCACTION_Complete);
         if (!success) {
-            StringBuilder msg =
-                    new StringBuilder("Allocation Process Failed ")
-                            .append(m_allocation.getDocumentNo())
-                            .append(" ")
-                            .append(m_allocation.getProcessMsg());
-            throw new IllegalStateException(msg.toString());
+            String msg = "Allocation Process Failed " +
+                    m_allocation.getDocumentNo() +
+                    " " +
+                    m_allocation.getProcessMsg();
+            throw new IllegalStateException(msg);
         } else m_allocation.saveEx();
         String message =
-                Msg.parseTranslation(getCtx(), "@AllocationProcessed@ " + m_allocation.getDescription());
+                Msg.parseTranslation("@AllocationProcessed@ " + m_allocation.getDescription());
         addLog(0, m_allocation.getDateAcct(), null, message);
         m_allocation = null;
         return success;

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_RequestProcessor_Route;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 public class X_R_RequestProcessor_Route extends PO
         implements I_R_RequestProcessor_Route {
 
@@ -18,15 +16,15 @@ public class X_R_RequestProcessor_Route extends PO
      * Standard Constructor
      */
     public X_R_RequestProcessor_Route(
-            Properties ctx, int R_RequestProcessor_Route_ID) {
-        super(ctx, R_RequestProcessor_Route_ID);
+            int R_RequestProcessor_Route_ID) {
+        super(R_RequestProcessor_Route_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessor_Route(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestProcessor_Route(Row row) {
+        super(row);
     }
 
     /**

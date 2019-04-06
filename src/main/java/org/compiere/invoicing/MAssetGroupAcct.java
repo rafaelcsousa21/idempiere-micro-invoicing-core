@@ -7,7 +7,6 @@ import org.compiere.orm.Query;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Asset Group Accounting Model
@@ -27,8 +26,8 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
      * @param ctx                     context
      * @param X_A_Asset_Group_Acct_ID id
      */
-    public MAssetGroupAcct(Properties ctx, int X_A_Asset_Group_Acct_ID) {
-        super(ctx, X_A_Asset_Group_Acct_ID);
+    public MAssetGroupAcct(int X_A_Asset_Group_Acct_ID) {
+        super(X_A_Asset_Group_Acct_ID);
     } //	MAssetGroupAcct
 
     /**
@@ -36,16 +35,15 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
      *
      * @param ctx context
      */
-    public MAssetGroupAcct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAssetGroupAcct(Row row) {
+        super(row);
     } //	MAssetGroupAcct
 
     /**
      * Get Asset Group Accountings for given group
      */
-    public static List<MAssetGroupAcct> forA_Asset_GroupId(Properties ctx, int A_Asset_Group_ID) {
+    public static List<MAssetGroupAcct> forA_Asset_GroupId(int A_Asset_Group_ID) {
         return new Query(
-                ctx,
                 I_A_Asset_Group_Acct.Table_Name,
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
         )
@@ -57,13 +55,13 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
      * Get Asset Group Accountings for given group
      */
     public static MAssetGroupAcct forA_Asset_GroupId(
-            Properties ctx, int A_Asset_Group_ID, String postingType) {
+            int A_Asset_Group_ID, String postingType) {
         final String whereClause =
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
                         + "=? AND "
                         + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
                         + "=?";
-        return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause)
+        return new Query(I_A_Asset_Group_Acct.Table_Name, whereClause)
                 .setParameters(A_Asset_Group_ID, postingType)
                 .firstOnly();
     }

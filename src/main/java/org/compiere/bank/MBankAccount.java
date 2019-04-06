@@ -8,8 +8,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Properties;
-
 /**
  * Bank Account Model
  *
@@ -25,17 +23,15 @@ public class MBankAccount extends X_C_BankAccount {
      * Cache
      */
     private static CCache<Integer, MBankAccount> s_cache =
-            new CCache<Integer, MBankAccount>(I_C_BankAccount.Table_Name, 5);
+            new CCache<>(I_C_BankAccount.Table_Name, 5);
 
     /**
      * Bank Account Model
      *
-     * @param ctx              context
      * @param C_BankAccount_ID bank account
-     * @param trxName          transaction
      */
-    public MBankAccount(Properties ctx, int C_BankAccount_ID) {
-        super(ctx, C_BankAccount_ID);
+    public MBankAccount(int C_BankAccount_ID) {
+        super(C_BankAccount_ID);
         if (C_BankAccount_ID == 0) {
             setIsDefault(false);
             setBankAccountType(X_C_BankAccount.BANKACCOUNTTYPE_Checking);
@@ -49,24 +45,22 @@ public class MBankAccount extends X_C_BankAccount {
     /**
      * Bank Account Model
      *
-     * @param ctx context
      */
-    public MBankAccount(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBankAccount(Row row) {
+        super(row);
     } //	MBankAccount
 
     /**
      * Get BankAccount from Cache
      *
-     * @param ctx              context
      * @param C_BankAccount_ID id
      * @return MBankAccount
      */
-    public static MBankAccount get(Properties ctx, int C_BankAccount_ID) {
+    public static MBankAccount get(int C_BankAccount_ID) {
         Integer key = C_BankAccount_ID;
         MBankAccount retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MBankAccount(ctx, C_BankAccount_ID);
+        retValue = new MBankAccount(C_BankAccount_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -77,13 +71,11 @@ public class MBankAccount extends X_C_BankAccount {
      * @return info
      */
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder("MBankAccount[")
-                        .append(getId())
-                        .append("-")
-                        .append(getAccountNo())
-                        .append("]");
-        return sb.toString();
+        return "MBankAccount[" +
+                getId() +
+                "-" +
+                getAccountNo() +
+                "]";
     } //	toString
 
     /**
@@ -92,7 +84,7 @@ public class MBankAccount extends X_C_BankAccount {
      * @return bank parent
      */
     public MBank getBank() {
-        return MBank.get(getCtx(), getBankId());
+        return MBank.get(getBankId());
     } //	getBank
 
     /**
@@ -102,9 +94,7 @@ public class MBankAccount extends X_C_BankAccount {
      */
     @NotNull
     public String getName() {
-        StringBuilder msgreturn =
-                new StringBuilder().append(getBank().getName()).append(" ").append(getAccountNo());
-        return msgreturn.toString();
+        return getBank().getName() + " " + getAccountNo();
     } //	getName
 
     /**
@@ -116,7 +106,7 @@ public class MBankAccount extends X_C_BankAccount {
     protected boolean beforeSave(boolean newRecord) {
 
         if (MSysConfig.getBooleanValue(
-                MSysConfig.IBAN_VALIDATION, true, Env.getClientId(Env.getCtx()))) {
+                MSysConfig.IBAN_VALIDATION, true, Env.getClientId())) {
             if (!Util.isEmpty(getIBAN())) {
                 setIBAN(IBAN.normalizeIBAN(getIBAN()));
                 if (!IBAN.isValid(getIBAN())) {

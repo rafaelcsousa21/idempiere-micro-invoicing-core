@@ -104,7 +104,7 @@ public class RequestInvoice extends SvrProcess {
                             + ", p_M_Product_ID="
                             + p_M_Product_ID);
 
-        MRequestType type = MRequestType.get(getCtx(), p_R_RequestType_ID);
+        MRequestType type = MRequestType.get(p_R_RequestType_ID);
         if (type.getId() == 0)
             throw new AdempiereSystemError("@R_RequestType_ID@ @NotFound@ " + p_R_RequestType_ID);
         if (!type.isInvoiced()) throw new AdempiereSystemError("@R_RequestType_ID@ <> @IsInvoiced@");
@@ -124,7 +124,7 @@ public class RequestInvoice extends SvrProcess {
 
         MRequest[] requests =
                 BaseRequestInvoiceKt.getRequestsToBeInvoiced(
-                        getCtx(), p_R_RequestType_ID,
+                        p_R_RequestType_ID,
                         p_R_Group_ID, p_R_Category_ID, p_C_BPartner_ID
                 );
 
@@ -158,7 +158,7 @@ public class RequestInvoice extends SvrProcess {
                 }
                 m_invoice.saveEx();
                 String message =
-                        Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+                        Msg.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
                 addBufferLog(
                         0,
                         null,
@@ -177,10 +177,10 @@ public class RequestInvoice extends SvrProcess {
      * @param request request
      */
     private void invoiceNew(MRequest request) {
-        m_invoice = new MInvoice(getCtx(), 0);
+        m_invoice = new MInvoice(0);
         m_invoice.setIsSOTrx(true);
 
-        MBPartner partner = new MBPartner(getCtx(), request.getBusinessPartnerId());
+        MBPartner partner = new MBPartner(request.getBusinessPartnerId());
         m_invoice.setBPartner(partner);
 
         m_invoice.saveEx();

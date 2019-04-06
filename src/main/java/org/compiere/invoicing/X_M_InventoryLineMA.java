@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_InventoryLineMA
@@ -26,15 +25,15 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
     /**
      * Standard Constructor
      */
-    public X_M_InventoryLineMA(Properties ctx, int M_InventoryLineMA_ID) {
-        super(ctx, M_InventoryLineMA_ID);
+    public X_M_InventoryLineMA(int M_InventoryLineMA_ID) {
+        super(M_InventoryLineMA_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_InventoryLineMA(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_InventoryLineMA(Row row) {
+        super(row);
     }
 
     /**
@@ -122,7 +121,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
 
     public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
-                MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
+                MTable.get(org.compiere.model.I_M_InventoryLine.Table_Name)
                         .getPO(getInventoryLineId());
     }
 

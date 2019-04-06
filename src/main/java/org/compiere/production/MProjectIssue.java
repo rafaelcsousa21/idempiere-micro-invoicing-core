@@ -12,7 +12,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -35,10 +34,9 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      *
      * @param ctx               context
      * @param C_ProjectIssue_ID id
-     * @param trxName           transaction
      */
-    public MProjectIssue(Properties ctx, int C_ProjectIssue_ID) {
-        super(ctx, C_ProjectIssue_ID);
+    public MProjectIssue(int C_ProjectIssue_ID) {
+        super(C_ProjectIssue_ID);
         if (C_ProjectIssue_ID == 0) {
             //	setProjectId (0);
             //	setLine (0);
@@ -54,12 +52,10 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MProjectIssue(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectIssue(Row row) {
+        super(row);
     } //	MProjectIssue
 
     /**
@@ -68,7 +64,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      * @param project parent
      */
     public MProjectIssue(MProject project) {
-        this(project.getCtx(), 0);
+        this(0);
         setClientOrg(project.getClientId(), project.getOrgId());
         setProjectId(project.getProjectId()); // 	Parent
         setLine(getNextLine());
@@ -118,7 +114,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
             return false;
         }
 
-        MProduct product = MProduct.get(getCtx(), getProductId());
+        MProduct product = MProduct.get(getProductId());
 
         //	If not a stocked Item nothing to do
         if (!product.isStocked()) {
@@ -131,7 +127,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         //	**	Create Material Transactions **
         MTransaction mTrx =
                 new MTransaction(
-                        getCtx(),
+
                         getOrgId(),
                         MTransaction.MOVEMENTTYPE_WorkOrderPlus,
                         getLocatorId(),
@@ -142,7 +138,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 );
         mTrx.setProjectIssueId(getProjectIssueId());
         //
-        MLocator loc = MLocator.get(getCtx(), getLocatorId());
+        MLocator loc = MLocator.get(getLocatorId());
 
         Timestamp dateMPolicy = getMovementDate();
 
@@ -164,7 +160,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                                 : getProject().getWarehouseId();
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouse(
-                                getCtx(),
+
                                 M_Warehouse_ID,
                                 getProductId(),
                                 getAttributeSetInstanceId(),
@@ -189,7 +185,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 if (qtyToIssue.signum() > 0) {
                     ok =
                             MStorageOnHand.add(
-                                    getCtx(),
+
                                     loc.getWarehouseId(),
                                     getLocatorId(),
                                     getProductId(),
@@ -201,7 +197,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
             } else {
                 ok =
                         MStorageOnHand.add(
-                                getCtx(),
+
                                 loc.getWarehouseId(),
                                 getLocatorId(),
                                 getProductId(),
@@ -213,7 +209,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         } catch (NegativeInventoryDisallowedException e) {
             log.severe(e.getMessage());
             StringBuilder error = new StringBuilder();
-            error.append(Msg.getElement(getCtx(), "Line")).append(" ").append(getLine()).append(": ");
+            error.append(Msg.getElement("Line")).append(" ").append(getLine()).append(": ");
             error.append(e.getMessage()).append("\n");
             throw new AdempiereException(error.toString());
         }

@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_StorageReservation
@@ -24,15 +23,15 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
     /**
      * Standard Constructor
      */
-    public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID) {
-        super(ctx, M_StorageReservation_ID);
+    public X_M_StorageReservation(int M_StorageReservation_ID) {
+        super(M_StorageReservation_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_StorageReservation(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_StorageReservation(Row row) {
+        super(row);
     }
 
     /**

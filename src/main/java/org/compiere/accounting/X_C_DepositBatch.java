@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_DepositBatch
@@ -29,8 +28,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
     /**
      * Standard Constructor
      */
-    public X_C_DepositBatch(Properties ctx, int C_DepositBatch_ID) {
-        super(ctx, C_DepositBatch_ID);
+    public X_C_DepositBatch(int C_DepositBatch_ID) {
+        super(C_DepositBatch_ID);
         /*
          * if (C_DepositBatch_ID == 0) { setBankAccountId (0); setDepositBatchId (0);
          * setDocumentTypeId (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
@@ -42,8 +41,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
     /**
      * Load Constructor
      */
-    public X_C_DepositBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_DepositBatch(Row row) {
+        super(row);
     }
 
     /**

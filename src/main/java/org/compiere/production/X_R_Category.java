@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Category;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_Category
  *
@@ -22,15 +20,15 @@ public class X_R_Category extends BasePOName implements I_R_Category {
     /**
      * Standard Constructor
      */
-    public X_R_Category(Properties ctx, int R_Category_ID) {
-        super(ctx, R_Category_ID);
+    public X_R_Category(int R_Category_ID) {
+        super(R_Category_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Category(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_Category(Row row) {
+        super(row);
     }
 
     /**

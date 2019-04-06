@@ -3,9 +3,6 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.I_R_Status;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
-
-import java.util.Properties;
 
 /**
  * Request Status Model
@@ -35,8 +32,8 @@ public class MStatus extends X_R_Status {
      * @param ctx         context
      * @param R_Status_ID is
      */
-    public MStatus(Properties ctx, int R_Status_ID) {
-        super(ctx, R_Status_ID);
+    public MStatus(int R_Status_ID) {
+        super(R_Status_ID);
         if (R_Status_ID == 0) {
             //	setValue (null);
             //	setName (null);
@@ -53,8 +50,8 @@ public class MStatus extends X_R_Status {
      *
      * @param ctx context
      */
-    public MStatus(Properties ctx, Row row) {
-        super(ctx, row);
+    public MStatus(Row row) {
+        super(row);
     } //	MStatus
 
     /**
@@ -64,12 +61,12 @@ public class MStatus extends X_R_Status {
      * @param R_Status_ID id
      * @return Request Status or null
      */
-    public static MStatus get(Properties ctx, int R_Status_ID) {
+    public static MStatus get(int R_Status_ID) {
         if (R_Status_ID == 0) return null;
         Integer key = R_Status_ID;
         MStatus retValue = s_cache.get(key);
         if (retValue == null) {
-            retValue = new MStatus(ctx, R_Status_ID);
+            retValue = new MStatus(R_Status_ID);
             s_cache.put(key, retValue);
         }
         return retValue;
@@ -82,11 +79,11 @@ public class MStatus extends X_R_Status {
      * @param R_RequestType_ID request type
      * @return Request Type
      */
-    public static MStatus getDefault(Properties ctx, int R_RequestType_ID) {
+    public static MStatus getDefault(int R_RequestType_ID) {
         Integer key = R_RequestType_ID;
         MStatus retValue = s_cacheDefault.get(key);
         if (retValue != null) return retValue;
-        retValue = MBaseStatusKt.getDefaultRequestStatus(ctx, R_RequestType_ID);
+        retValue = MBaseStatusKt.getDefaultRequestStatus(R_RequestType_ID);
         if (retValue != null) s_cacheDefault.put(key, retValue);
         return retValue;
     } //	getDefault
@@ -97,8 +94,8 @@ public class MStatus extends X_R_Status {
      * @param ctx context
      * @return Request Type
      */
-    public static MStatus[] getClosed(Properties ctx) {
-        return MBaseStatusKt.getClosedStatuses(ctx);
+    public static MStatus[] getClosed() {
+        return MBaseStatusKt.getClosedStatuses();
     } //	get
 
     /**

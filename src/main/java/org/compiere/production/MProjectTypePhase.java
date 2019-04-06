@@ -3,8 +3,6 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 /**
  * Project Type Phase Model
  *
@@ -23,8 +21,8 @@ public class MProjectTypePhase extends X_C_Phase {
      * @param ctx        context
      * @param C_Phase_ID id
      */
-    public MProjectTypePhase(Properties ctx, int C_Phase_ID) {
-        super(ctx, C_Phase_ID);
+    public MProjectTypePhase(int C_Phase_ID) {
+        super(C_Phase_ID);
         if (C_Phase_ID == 0) {
             //	setPhaseId (0);			//	PK
             //	setProjectTypeId (0);	//	Parent
@@ -39,8 +37,8 @@ public class MProjectTypePhase extends X_C_Phase {
      *
      * @param ctx context
      */
-    public MProjectTypePhase(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectTypePhase(Row row) {
+        super(row);
     } //	MProjectTypePhase
 
     /**
@@ -49,6 +47,6 @@ public class MProjectTypePhase extends X_C_Phase {
      * @return Array of phases
      */
     public MProjectTypeTask[] getTasks() {
-        return MBaseProjectTypePhaseKt.getProjectTypePhaseTasks(getCtx(), getPhaseId());
+        return MBaseProjectTypePhaseKt.getProjectTypePhaseTasks(getPhaseId());
     } //	getPhases
 } //	MProjectTypePhase

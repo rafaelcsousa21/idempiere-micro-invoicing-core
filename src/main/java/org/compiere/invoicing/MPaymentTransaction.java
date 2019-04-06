@@ -20,7 +20,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
@@ -51,8 +50,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     @SuppressWarnings("unused")
     private IProcessUI m_processUI;
 
-    public MPaymentTransaction(Properties ctx, int C_PaymentTransaction_ID) {
-        super(ctx, C_PaymentTransaction_ID);
+    public MPaymentTransaction(int C_PaymentTransaction_ID) {
+        super(C_PaymentTransaction_ID);
 
         //  New
         if (C_PaymentTransaction_ID == 0) {
@@ -76,8 +75,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         }
     }
 
-    public MPaymentTransaction(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaymentTransaction(Row row) {
+        super(row);
     }
 
     public static IPaymentProcessor createPaymentProcessor(
@@ -85,7 +84,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (s_log.isLoggable(Level.FINE)) s_log.fine("create for " + mbap);
 
         MPaymentProcessor mpp =
-                new MPaymentProcessor(mbap.getCtx(), mbap.getPaymentProcessorId());
+                new MPaymentProcessor(mbap.getPaymentProcessorId());
         String className = mpp.getPayProcessorClass();
         if (className == null || className.length() == 0) {
             s_log.log(Level.SEVERE, "No PaymentProcessor class name in " + mbap);
@@ -111,7 +110,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             String trxType,
             String orig_TrxID,
             String trxName) {
-        MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0);
+        MPaymentTransaction to = new MPaymentTransaction(0);
         PO.copyValues(from, to, from.getClientId(), from.getOrgId());
         to.setValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
         //
@@ -224,7 +223,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         }
 
         if (MSysConfig.getBooleanValue(
-                MSysConfig.IBAN_VALIDATION, true, Env.getClientId(Env.getCtx()))) {
+                MSysConfig.IBAN_VALIDATION, true, Env.getClientId())) {
             if (!Util.isEmpty(getIBAN())) {
                 setIBAN(IBAN.normalizeIBAN(getIBAN()));
                 if (!IBAN.isValid(getIBAN())) {
@@ -247,7 +246,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0)
             m_mBankAccountProcessors =
                     MBankAccountProcessor.find(
-                            getCtx(),
+
                             tender,
                             CCType,
                             getClientId(),
@@ -258,7 +257,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0)
             m_mBankAccountProcessors =
                     MBankAccountProcessor.find(
-                            getCtx(),
+
                             tender,
                             CCType,
                             getClientId(),
@@ -302,21 +301,21 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             if (isVoided()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already voided - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyVoided"));
+                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyVoided"));
                 return true;
             }
         } else if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_DelayedCapture)) {
             if (isDelayedCapture()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already delayed capture - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyDelayedCapture"));
+                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyDelayedCapture"));
                 return true;
             }
         } else {
             if (isApproved()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already processed - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyProcessed"));
+                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyProcessed"));
                 return true;
             }
         }
@@ -325,12 +324,12 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (m_mBankAccountProcessor == null) {
             if (getPaymentProcessorId() > 0) {
                 MPaymentProcessor pp =
-                        new MPaymentProcessor(getCtx(), getPaymentProcessorId());
+                        new MPaymentProcessor(getPaymentProcessorId());
                 log.log(Level.WARNING, "No Payment Processor Model " + pp.toString());
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNoProcessorModel") + ": " + pp.toString());
+                setErrorMessage(Msg.getMsg("PaymentNoProcessorModel") + ": " + pp.toString());
             } else {
                 log.log(Level.WARNING, "No Payment Processor Model");
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNoProcessorModel"));
+                setErrorMessage(Msg.getMsg("PaymentNoProcessorModel"));
             }
             return false;
         }
@@ -340,12 +339,12 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
 
         try {
             IPaymentProcessor pp = createPaymentProcessor(m_mBankAccountProcessor, this);
-            if (pp == null) setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNoProcessor"));
+            if (pp == null) setErrorMessage(Msg.getMsg("PaymentNoProcessor"));
             else {
                 // Validate before trying to process
                 //				String msg = pp.validate();
                 //				if (msg!=null && msg.trim().length()>0) {
-                //					setErrorMessage(Msg.getMsg(getCtx(), msg));
+                //					setErrorMessage(Msg.getMsg( msg));
                 //				} else {
                 // Process if validation succeeds
                 approved = pp.processCC();
@@ -369,7 +368,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                         m_mPayment.saveEx();
                         setPaymentId(m_mPayment.getPaymentId());
                         processed = m_mPayment.processIt(DocAction.Companion.getACTION_Complete());
-                        if (!processed) setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed"));
+                        if (!processed) setErrorMessage(Msg.getMsg("PaymentNotProcessed"));
                         else m_mPayment.saveEx();
                     } else processed = true;
                 } else {
@@ -382,7 +381,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, "processOnline", e);
-            setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed") + ": " + e.getMessage());
+            setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
         }
 
         setIsApproved(approved);
@@ -393,7 +392,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         else if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_DelayedCapture))
             setIsDelayedCapture(approved);
 
-        MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0);
+        MOnlineTrxHistory history = new MOnlineTrxHistory(0);
         history.setRowTableId(MPaymentTransaction.Table_ID);
         history.setRecordId(getPaymentTransactionId());
         history.setIsError(!(approved && processed));
@@ -448,7 +447,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "voidOnlineAuthorizationPaymentTransaction", e);
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed") + ": " + e.getMessage());
+                setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
             }
 
             return ok;
@@ -489,7 +488,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "delayCaptureOnlineAuthorizationPaymentTransaction", e);
-                setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed") + ": " + e.getMessage());
+                setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
             }
 
             return ok;
@@ -526,7 +525,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     }
 
     public MPayment createPayment(String trxName) {
-        MPayment payment = new MPayment(getCtx(), 0);
+        MPayment payment = new MPayment(0);
         payment.setAccountCity(getAccountCity());
         payment.setAccountCountry(getAccountCountry());
         payment.setAccountEMail(getAccountEMail());
@@ -598,11 +597,10 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
      *
      * @param ctx Context
      * @param pi  Process Info
-     * @param trx transaction
      * @return true if the next process should be performed
      */
     @Override
-    public boolean startProcess(Properties ctx, IProcessInfo pi) {
+    public boolean startProcess(IProcessInfo pi) {
         if (log.isLoggable(Level.INFO)) log.info("startProcess - " + pi.getRecordId());
         boolean retValue = false;
         //

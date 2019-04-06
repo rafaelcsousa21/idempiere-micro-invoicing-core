@@ -5,7 +5,6 @@ import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
 
@@ -34,15 +33,15 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
     /**
      * Standard Constructor
      */
-    public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID) {
-        super(ctx, M_BOMProduct_ID);
+    public X_M_BOMProduct(int M_BOMProduct_ID) {
+        super(M_BOMProduct_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_BOMProduct(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_BOMProduct(Row row) {
+        super(row);
     }
 
     /**

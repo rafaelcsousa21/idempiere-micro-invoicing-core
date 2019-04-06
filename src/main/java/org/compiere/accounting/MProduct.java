@@ -20,7 +20,6 @@ import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -50,17 +49,17 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param ctx          context
      * @param M_Product_ID id
      */
-    public MProduct(Properties ctx, int M_Product_ID) {
-        super(ctx, M_Product_ID);
+    public MProduct(int M_Product_ID) {
+        super(M_Product_ID);
     }
 
     /**
      * Load constructor
      *
-     * @param ctx     context
+     * @param ctx context
      */
-    public MProduct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProduct(Row row) {
+        super(row);
     } //	MProduct
 
     /**
@@ -70,7 +69,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param M_Product_ID id
      * @return MProduct or null
      */
-    public static MProduct get(Properties ctx, int M_Product_ID) {
+    public static MProduct get(int M_Product_ID) {
         if (M_Product_ID <= 0) {
             return null;
         }
@@ -79,7 +78,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (retValue != null) {
             return retValue;
         }
-        retValue = new MProduct(ctx, M_Product_ID);
+        retValue = new MProduct(M_Product_ID);
         if (retValue.getId() != 0) {
             s_cache.put(key, retValue);
         }
@@ -90,11 +89,11 @@ public class MProduct extends org.compiere.product.MProduct {
         BigDecimal qtyOnHand = Env.ZERO;
         BigDecimal qtyOrdered = Env.ZERO;
         BigDecimal qtyReserved = Env.ZERO;
-        for (I_M_StorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId())) {
+        for (I_M_StorageOnHand ohs : MStorageOnHand.getOfProduct(getId())) {
             qtyOnHand = qtyOnHand.add(ohs.getQtyOnHand());
         }
         for (MStorageReservation rs :
-                MStorageReservation.getOfProduct(getCtx(), getId())) {
+                MStorageReservation.getOfProduct(getId())) {
             if (rs.isSOTrx()) qtyReserved = qtyReserved.add(rs.getQty());
             else qtyOrdered = qtyOrdered.add(rs.getQty());
         }
@@ -115,7 +114,6 @@ public class MProduct extends org.compiere.product.MProduct {
         // check if it has transactions
         boolean hasTrx =
                 new Query(
-                        getCtx(),
                         I_M_Transaction.Table_Name,
                         I_M_Transaction.COLUMNNAME_M_Product_ID + "=?"
                 )
@@ -128,7 +126,6 @@ public class MProduct extends org.compiere.product.MProduct {
 
         // check if it has cost
         return new Query(
-                getCtx(),
                 I_M_CostDetail.Table_Name,
                 I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?"
         )
@@ -144,7 +141,7 @@ public class MProduct extends org.compiere.product.MProduct {
 
         //	Value/Name change in Account
         if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
-            MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getProductId());
+            MAccount.updateValueDescription("M_Product_ID=" + getProductId());
 
         //	Name/Description Change in Asset	MAsset.setValueNameDescription
         if (!newRecord && (isValueChanged("Name") || isValueChanged("Description"))) {
@@ -188,7 +185,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (isStocked() || I_M_Product.PRODUCTTYPE_Item.equals(getProductType())) {
             String errMsg = verifyStorage();
             if (!Util.isEmpty(errMsg)) {
-                log.saveError("Error", Msg.parseTranslation(getCtx(), errMsg));
+                log.saveError("Error", Msg.parseTranslation(errMsg));
                 return false;
             }
         }
@@ -196,7 +193,7 @@ public class MProduct extends org.compiere.product.MProduct {
         MCost.delete(this);
 
         // [ 1674225 ] Delete Product: Costing deletion error
-    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId(), null);
+    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getClientId(), null);
     for(int i=0; i<mass.length; i++)
     {
     	// Get Cost Elements
@@ -231,7 +228,7 @@ public class MProduct extends org.compiere.product.MProduct {
     public boolean isASIMandatory(boolean isSOTrx) {
         //
         //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas
-        MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
+        MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getClientId());
         for (MAcctSchema as : mass) {
             String cl = getCostingLevel(as);
             if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(cl)) {
@@ -242,7 +239,7 @@ public class MProduct extends org.compiere.product.MProduct {
         // Check Attribute Set settings
         int M_AttributeSet_ID = getAttributeSetId();
         if (M_AttributeSet_ID != 0) {
-            MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
+            MAttributeSet mas = MAttributeSet.get(M_AttributeSet_ID);
             if (mas == null || !mas.isInstanceAttribute()) return false;
                 // Outgoing transaction
             else if (isSOTrx) return mas.isMandatory();
@@ -264,7 +261,7 @@ public class MProduct extends org.compiere.product.MProduct {
     public String getCostingLevel(I_C_AcctSchema as) {
         String costingLevel = null;
         MProductCategoryAcct pca =
-                MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());
+                MProductCategoryAcct.get(getProductCategoryId(), as.getId());
         if (pca != null) {
             costingLevel = pca.getCostingLevel();
         }
@@ -282,7 +279,7 @@ public class MProduct extends org.compiere.product.MProduct {
     public String getCostingMethod(I_C_AcctSchema as) {
         String costingMethod = null;
         MProductCategoryAcct pca =
-                MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());
+                MProductCategoryAcct.get(getProductCategoryId(), as.getId());
         if (pca != null) {
             costingMethod = pca.getCostingMethod();
         }
@@ -292,7 +289,7 @@ public class MProduct extends org.compiere.product.MProduct {
         return costingMethod;
     }
 
-    public MCost getCostingRecord(MAcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
+    public MCost getCostingRecord(I_C_AcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
 
         String costingLevel = getCostingLevel(as);
         if (MAcctSchema.COSTINGLEVEL_Client.equals(costingLevel)) {
@@ -303,7 +300,7 @@ public class MProduct extends org.compiere.product.MProduct {
             AD_Org_ID = 0;
             if (M_ASI_ID == 0) return null;
         }
-        MCostElement ce = MCostElement.getMaterialCostElement(getCtx(), costingMethod, AD_Org_ID);
+        MCostElement ce = MCostElement.getMaterialCostElement(costingMethod, AD_Org_ID);
         if (ce == null) {
             return null;
         }
@@ -322,14 +319,14 @@ public class MProduct extends org.compiere.product.MProduct {
                         && I_M_Product.PRODUCTTYPE_Item.equals(getValueOld("ProductType"))))) {
             String errMsg = verifyStorage();
             if (!Util.isEmpty(errMsg)) {
-                log.saveError("Error", Msg.parseTranslation(getCtx(), errMsg));
+                log.saveError("Error", Msg.parseTranslation(errMsg));
                 return false;
             }
         } //	storage
 
         // it checks if UOM has been changed , if so disallow the change if the condition is true.
         if ((!newRecord) && isValueChanged("C_UOM_ID") && hasInventoryOrCost()) {
-            log.saveError("Error", Msg.getMsg(getCtx(), "SaveUomError"));
+            log.saveError("Error", Msg.getMsg("SaveUomError"));
             return false;
         }
 
@@ -345,7 +342,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (getAttributeSetInstanceId() > 0
                 && isValueChanged(I_M_Product.COLUMNNAME_M_AttributeSet_ID)) {
             MAttributeSetInstance asi =
-                    new MAttributeSetInstance(getCtx(), getAttributeSetInstanceId());
+                    new MAttributeSetInstance(getAttributeSetInstanceId());
             if (asi.getAttributeSetId() != getAttributeSetId()) setAttributeSetInstanceId(0);
         }
         if (!newRecord && isValueChanged(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID)) {
@@ -354,7 +351,7 @@ public class MProduct extends org.compiere.product.MProduct {
             if (oldasiid > 0) {
                 MAttributeSetInstance oldasi =
                         new MAttributeSetInstance(
-                                getCtx(),
+
                                 getValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID));
                 int cnt =
                         getSQLValueEx(
@@ -377,7 +374,7 @@ public class MProduct extends org.compiere.product.MProduct {
 
     @Override
     public List<I_M_StorageOnHand> getStorageOnHand() {
-        return MStorageOnHand.getOfProduct(getCtx(), getId());
+        return MStorageOnHand.getOfProduct(getId());
     }
 
 }

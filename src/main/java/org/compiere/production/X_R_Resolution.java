@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Resolution;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_Resolution
  *
@@ -22,15 +20,15 @@ public class X_R_Resolution extends BasePOName implements I_R_Resolution {
     /**
      * Standard Constructor
      */
-    public X_R_Resolution(Properties ctx, int R_Resolution_ID) {
-        super(ctx, R_Resolution_ID);
+    public X_R_Resolution(int R_Resolution_ID) {
+        super(R_Resolution_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Resolution(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_Resolution(Row row) {
+        super(row);
     }
 
     /**

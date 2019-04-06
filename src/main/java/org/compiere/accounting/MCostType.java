@@ -3,8 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.util.Msg;
 
-import java.util.Properties;
-
 /**
  * Cost Type Model
  *
@@ -23,8 +21,8 @@ public class MCostType extends X_M_CostType {
      * @param ctx           context
      * @param M_CostType_ID id
      */
-    public MCostType(Properties ctx, int M_CostType_ID) {
-        super(ctx, M_CostType_ID);
+    public MCostType(int M_CostType_ID) {
+        super(M_CostType_ID);
     } //	MCostType
 
     /**
@@ -32,8 +30,8 @@ public class MCostType extends X_M_CostType {
      *
      * @param ctx context
      */
-    public MCostType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCostType(Row row) {
+        super(row);
     } //	MCostType
 
     /**
@@ -62,11 +60,11 @@ public class MCostType extends X_M_CostType {
      * @return true if it can be deleted
      */
     protected boolean beforeDelete() {
-        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
+        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
         for (int i = 0; i < ass.length; i++) {
             if (ass[i].getCostTypeId() == getCostTypeId()) {
                 log.saveError(
-                        "CannotDelete", Msg.getElement(getCtx(), "C_AcctSchema_ID") + " - " + ass[i].getName());
+                        "CannotDelete", Msg.getElement("C_AcctSchema_ID") + " - " + ass[i].getName());
                 return false;
             }
         }

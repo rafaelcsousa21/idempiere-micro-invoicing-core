@@ -3,8 +3,6 @@ package org.compiere.schedule;
 import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.util.Properties;
-
 /**
  * Scheduler Log
  *
@@ -23,8 +21,8 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
      * @param ctx                context
      * @param AD_SchedulerLog_ID id
      */
-    public MSchedulerLog(Properties ctx, int AD_SchedulerLog_ID) {
-        super(ctx, AD_SchedulerLog_ID);
+    public MSchedulerLog(int AD_SchedulerLog_ID) {
+        super(AD_SchedulerLog_ID);
         if (AD_SchedulerLog_ID == 0) setIsError(false);
     } //	MSchedulerLog
 
@@ -33,8 +31,8 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
      *
      * @param ctx context
      */
-    public MSchedulerLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public MSchedulerLog(Row row) {
+        super(row);
     } //	MSchedulerLog
 
     /**
@@ -44,7 +42,7 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
      * @param summary summary
      */
     public MSchedulerLog(MScheduler parent, String summary) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setSchedulerId(parent.getSchedulerId());
         setSummary(summary);

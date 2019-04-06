@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for R_Request
@@ -128,8 +127,8 @@ public class X_R_Request extends PO implements I_R_Request {
     /**
      * Standard Constructor
      */
-    public X_R_Request(Properties ctx, int R_Request_ID) {
-        super(ctx, R_Request_ID);
+    public X_R_Request(int R_Request_ID) {
+        super(R_Request_ID);
         /**
          * if (R_Request_ID == 0) { setConfidentialType (null); // C setConfidentialTypeEntry (null); //
          * C setDocumentNo (null); setDueType (null); // 5 setIsEscalated (false); setIsInvoiced
@@ -141,8 +140,8 @@ public class X_R_Request extends PO implements I_R_Request {
     /**
      * Load Constructor
      */
-    public X_R_Request(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_Request(Row row) {
+        super(row);
     }
 
     /**

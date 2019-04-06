@@ -48,8 +48,8 @@ public class CopyFromJournal extends SvrProcess {
             throw new IllegalArgumentException("Target GL_JournalBatch_ID == 0");
         if (m_GL_JournalBatch_ID == 0)
             throw new IllegalArgumentException("Source GL_JournalBatch_ID == 0");
-        MJournalBatch from = new MJournalBatch(getCtx(), m_GL_JournalBatch_ID);
-        MJournalBatch to = new MJournalBatch(getCtx(), To_GL_JournalBatch_ID);
+        MJournalBatch from = new MJournalBatch(m_GL_JournalBatch_ID);
+        MJournalBatch to = new MJournalBatch(To_GL_JournalBatch_ID);
         //
         int no = to.copyDetailsFrom(from);
         //

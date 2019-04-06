@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_QualityTest;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_QualityTest
  *
@@ -22,15 +20,15 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
     /**
      * Standard Constructor
      */
-    public X_M_QualityTest(Properties ctx, int M_QualityTest_ID) {
-        super(ctx, M_QualityTest_ID);
+    public X_M_QualityTest(int M_QualityTest_ID) {
+        super(M_QualityTest_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_QualityTest(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_QualityTest(Row row) {
+        super(row);
     }
 
     /**

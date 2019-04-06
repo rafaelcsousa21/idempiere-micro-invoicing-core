@@ -5,8 +5,6 @@ import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Product Category Account Model
  *
@@ -31,8 +29,8 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @param ignored ignored
      * @param trxName
      */
-    public MProductCategoryAcct(Properties ctx, int ignored) {
-        super(ctx, ignored);
+    public MProductCategoryAcct(int ignored) {
+        super(ignored);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     } //	MProductCategoryAcct
 
@@ -43,8 +41,8 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @param rs      result set
      * @param trxName trx
      */
-    public MProductCategoryAcct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProductCategoryAcct(Row row) {
+        super(row);
     } //	MProductCategoryAcct
 
     /**
@@ -56,14 +54,14 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @return category acct
      */
     public static MProductCategoryAcct get(
-            Properties ctx, int M_Product_Category_ID, int C_AcctSchema_ID) {
+            int M_Product_Category_ID, int C_AcctSchema_ID) {
         String key = M_Product_Category_ID + "#" + C_AcctSchema_ID;
         MProductCategoryAcct acct = s_cache.get(key);
         if (acct != null) return acct;
 
         final String whereClause = "M_Product_Category_ID=? AND C_AcctSchema_ID=?";
         acct =
-                new Query(ctx, I_M_Product_Category_Acct.Table_Name, whereClause)
+                new Query(I_M_Product_Category_Acct.Table_Name, whereClause)
                         .setParameters(M_Product_Category_ID, C_AcctSchema_ID)
                         .firstOnly();
         if (acct != null) {

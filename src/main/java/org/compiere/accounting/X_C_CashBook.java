@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_CashBook
  *
@@ -22,8 +20,8 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
     /**
      * Standard Constructor
      */
-    public X_C_CashBook(Properties ctx, int C_CashBook_ID) {
-        super(ctx, C_CashBook_ID);
+    public X_C_CashBook(int C_CashBook_ID) {
+        super(C_CashBook_ID);
         /**
          * if (C_CashBook_ID == 0) { setCashBookId (0); setCurrencyId (0); setIsDefault (false);
          * setName (null); }
@@ -33,8 +31,8 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
     /**
      * Load Constructor
      */
-    public X_C_CashBook(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_CashBook(Row row) {
+        super(row);
     }
 
     /**

@@ -6,7 +6,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -23,18 +22,11 @@ public class MMovementLine extends X_M_MovementLine {
     /**
      * Standard Cosntructor
      *
-     * @param ctx               context
      * @param M_MovementLine_ID id
-     * @param trxName           transaction
      */
-    public MMovementLine(Properties ctx, int M_MovementLine_ID) {
-        super(ctx, M_MovementLine_ID);
+    public MMovementLine(int M_MovementLine_ID) {
+        super(M_MovementLine_ID);
         if (M_MovementLine_ID == 0) {
-            //	setLocatorTo_ID (0);	// @M_LocatorTo_ID@
-            //	setLocatorId (0);	// @M_Locator_ID@
-            //	setMovementLine_ID (0);
-            //	setLine (0);
-            //	setProductId (0);
             setAttributeSetInstanceId(0); // 	ID
             setMovementQty(Env.ZERO); // 1
             setTargetQty(Env.ZERO); // 0
@@ -49,8 +41,8 @@ public class MMovementLine extends X_M_MovementLine {
      *
      * @param ctx context
      */
-    public MMovementLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MMovementLine(Row row) {
+        super(row);
     } //	MMovementLine
 
     /**
@@ -59,7 +51,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @param parent parent
      */
     public MMovementLine(MMovement parent) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setMovementId(parent.getMovementId());
     } //	MMovementLine
@@ -94,7 +86,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @return product or null if not defined
      */
     public MProduct getProduct() {
-        if (getProductId() != 0) return MProduct.get(getCtx(), getProductId());
+        if (getProductId() != 0) return MProduct.get(getProductId());
         return null;
     } //	getProduct
 
@@ -121,7 +113,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @return Parent Movement
      */
     public MMovement getParent() {
-        if (m_parent == null) m_parent = new MMovement(getCtx(), getMovementId());
+        if (m_parent == null) m_parent = new MMovement(getMovementId());
         return m_parent;
     } //	getParent
 
@@ -134,7 +126,7 @@ public class MMovementLine extends X_M_MovementLine {
     @Override
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "M_MovementLine"));
+            log.saveError("ParentComplete", Msg.translate("M_MovementLine"));
             return false;
         }
         //	Set Line No
@@ -151,7 +143,6 @@ public class MMovementLine extends X_M_MovementLine {
             log.saveError(
                     "Error",
                     Msg.parseTranslation(
-                            getCtx(),
                             "@M_Locator_ID@ == @M_LocatorTo_ID@ and @M_AttributeSetInstance_ID@ == @M_AttributeSetInstanceTo_ID@"));
             return false;
         }
@@ -166,7 +157,7 @@ public class MMovementLine extends X_M_MovementLine {
                 // [ 2092198 ] Error voiding an Inventory Move - globalqss
                 // zero allowed in this case (action Void and status Draft)
             } else {
-                log.saveError("FillMandatory", Msg.getElement(getCtx(), "MovementQty"));
+                log.saveError("FillMandatory", Msg.getElement("MovementQty"));
                 return false;
             }
         }
@@ -184,7 +175,7 @@ public class MMovementLine extends X_M_MovementLine {
     			return false;
     		}
     		if (! product.getAttributeSet().excludeTableEntry(MMovementLine.Table_ID, true)) {  // outgoing
-    			log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_M_AttributeSetInstance_ID));
+    			log.saveError("FillMandatory", Msg.getElement(COLUMNNAME_M_AttributeSetInstance_ID));
     			return false;
     		}
     	}
@@ -205,7 +196,7 @@ public class MMovementLine extends X_M_MovementLine {
       		return false;
       	}
       	if (! product.getAttributeSet().excludeTableEntry(MMovementLine.Table_ID, false)) { // incoming
-      		log.saveError("FillMandatory", Msg.getElement(getCtx(), COLUMNNAME_M_AttributeSetInstanceTo_ID));
+      		log.saveError("FillMandatory", Msg.getElement(COLUMNNAME_M_AttributeSetInstanceTo_ID));
       		return false;
       	}
       }

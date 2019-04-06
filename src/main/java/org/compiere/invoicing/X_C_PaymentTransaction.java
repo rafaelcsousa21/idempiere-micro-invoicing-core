@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_PaymentTransaction
@@ -89,8 +88,8 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     /**
      * Standard Constructor
      */
-    public X_C_PaymentTransaction(Properties ctx, int C_PaymentTransaction_ID) {
-        super(ctx, C_PaymentTransaction_ID);
+    public X_C_PaymentTransaction(int C_PaymentTransaction_ID) {
+        super(C_PaymentTransaction_ID);
         /**
          * if (C_PaymentTransaction_ID == 0) { setBusinessPartnerId (0); setCurrencyId (0);
          * setPaymentTransaction_ID (0); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -104,8 +103,8 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     /**
      * Load Constructor
      */
-    public X_C_PaymentTransaction(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaymentTransaction(Row row) {
+        super(row);
     }
 
     /**

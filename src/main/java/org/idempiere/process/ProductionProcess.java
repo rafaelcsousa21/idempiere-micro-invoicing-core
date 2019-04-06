@@ -1,6 +1,5 @@
 package org.idempiere.process;
 
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.orm.Query;
 import org.compiere.process.ProcessInfo;
@@ -10,7 +9,6 @@ import org.compiere.production.MProductionLine;
 import org.compiere.production.MProductionPlan;
 import org.compiere.server.ServerProcessCtl;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.Env;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -34,7 +32,6 @@ public class ProductionProcess extends SvrProcess {
             if (production.isUseProductionPlan()) {
                 Query planQuery =
                         new Query(
-                                Env.getCtx(),
                                 I_M_ProductionPlan.Table_Name,
                                 "M_ProductionPlan.M_Production_ID=?"
                         );
@@ -55,7 +52,7 @@ public class ProductionProcess extends SvrProcess {
     protected void prepare() {
         p_M_Production_ID = getRecordId();
         if (p_M_Production_ID > 0)
-            m_production = new MProduction(getCtx(), p_M_Production_ID);
+            m_production = new MProduction(p_M_Production_ID);
     } // prepare
 
     @Override

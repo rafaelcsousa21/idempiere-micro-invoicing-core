@@ -86,7 +86,7 @@ public class InvoiceBatchProcess extends SvrProcess {
         if (log.isLoggable(Level.INFO))
             log.info("C_InvoiceBatch_ID=" + p_C_InvoiceBatch_ID + ", DocAction=" + p_DocAction);
         if (p_C_InvoiceBatch_ID == 0) throw new AdempiereUserError("C_InvoiceBatch_ID = 0");
-        MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID);
+        MInvoiceBatch batch = new MInvoiceBatch(p_C_InvoiceBatch_ID);
         if (batch.getId() == 0)
             throw new AdempiereUserError("@NotFound@: @C_InvoiceBatch_ID@ - " + p_C_InvoiceBatch_ID);
         if (batch.isProcessed()) throw new AdempiereUserError("@Processed@");
@@ -162,7 +162,7 @@ public class InvoiceBatchProcess extends SvrProcess {
         m_invoice.saveEx();
 
         String message =
-                Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+                Msg.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
         addBufferLog(
                 0,
                 m_invoice.getDateInvoiced(),

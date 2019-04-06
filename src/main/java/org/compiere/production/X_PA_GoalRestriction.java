@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_PA_GoalRestriction;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for PA_GoalRestriction
  *
@@ -42,15 +40,15 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
     /**
      * Standard Constructor
      */
-    public X_PA_GoalRestriction(Properties ctx, int PA_GoalRestriction_ID) {
-        super(ctx, PA_GoalRestriction_ID);
+    public X_PA_GoalRestriction(int PA_GoalRestriction_ID) {
+        super(PA_GoalRestriction_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_GoalRestriction(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_GoalRestriction(Row row) {
+        super(row);
     }
 
     /**

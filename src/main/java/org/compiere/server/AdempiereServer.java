@@ -8,7 +8,6 @@ import org.compiere.orm.TimeUtil;
 import org.compiere.schedule.MSchedule;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.ServerContext;
 
 import java.sql.Timestamp;
 import java.util.Properties;
@@ -67,15 +66,6 @@ public abstract class AdempiereServer implements Runnable {
      */
     private long m_nextWork = 0;
 
-    /**
-     * Get Server Context
-     *
-     * @return context
-     */
-    public Properties getCtx() {
-        return Env.getCtx();
-    } //	getCtx
-
     public void run() {
         final Thread currentThread = Thread.currentThread();
         final String oldThreadName = currentThread.getName();
@@ -90,22 +80,22 @@ public abstract class AdempiereServer implements Runnable {
         }
 
         Properties context = new Properties();
-        Env.setContext(context, "#clientId", p_model.getClientId());
+        Env.setContext("#clientId", p_model.getClientId());
         if (p_model instanceof PO) {
             PO po = (PO) p_model;
             if (po.getColumnIndex("AD_Org_ID") >= 0)
-                Env.setContext(context, "#orgId", po.getValueAsInt("AD_Org_ID"));
+                Env.setContext("#orgId", po.getValueAsInt("AD_Org_ID"));
             if (po.getColumnIndex("AD_User_ID") >= 0)
-                Env.setContext(context, "#AD_User_ID", po.getValueAsInt("AD_User_ID"));
+                Env.setContext("#AD_User_ID", po.getValueAsInt("AD_User_ID"));
         }
 
         try {
-            ServerContext.setCurrentInstance(context);
+            // DAP ServerContext.setCurrentInstance(context);
             m_sleeping = false;
             doRun();
         } finally {
             m_sleeping = true;
-            ServerContext.dispose();
+            // DAP ServerContext.dispose();
             if (renamed) {
                 // Revert the name back if the current thread was renamed.
                 // We do not check the exception here because we know it works.

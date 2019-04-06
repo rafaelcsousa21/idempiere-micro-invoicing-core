@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_StatusCategory;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_StatusCategory
  *
@@ -22,15 +20,15 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
     /**
      * Standard Constructor
      */
-    public X_R_StatusCategory(Properties ctx, int R_StatusCategory_ID) {
-        super(ctx, R_StatusCategory_ID);
+    public X_R_StatusCategory(int R_StatusCategory_ID) {
+        super(R_StatusCategory_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_StatusCategory(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_StatusCategory(Row row) {
+        super(row);
     }
 
     /**

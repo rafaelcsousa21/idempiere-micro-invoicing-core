@@ -94,7 +94,7 @@ public class InOutGenerate extends BaseInOutGenerate {
 
             //  juddm - added ability to specify a shipment date from Generate Shipments
             if (p_DateShipped == null) {
-                setM_movementDate(Env.getContextAsDate(getCtx(), "#Date"));
+                setM_movementDate(Env.getContextAsDate());
                 if (getM_movementDate() == null) setM_movementDate(new Timestamp(System.currentTimeMillis()));
             } else setM_movementDate(p_DateShipped);
         }
@@ -245,7 +245,6 @@ public class InOutGenerate extends BaseInOutGenerate {
         if (m_lastStorages == null) {
             MStorageOnHand[] tmpStorages =
                     MStorageOnHand.getWarehouse(
-                            getCtx(),
                             M_Warehouse_ID,
                             M_Product_ID,
                             M_AttributeSetInstance_ID,
@@ -258,10 +257,10 @@ public class InOutGenerate extends BaseInOutGenerate {
             /* IDEMPIERE-2668 - filter just locators enabled for shipping */
             List<MStorageOnHand> m_storagesForShipping = new ArrayList<MStorageOnHand>();
             for (MStorageOnHand soh : tmpStorages) {
-                MLocator loc = MLocator.get(getCtx(), soh.getLocatorId());
+                MLocator loc = MLocator.get(soh.getLocatorId());
                 MLocatorType lt = null;
                 if (loc.getLocatorTypeId() > 0)
-                    lt = MLocatorType.get(getCtx(), loc.getLocatorTypeId());
+                    lt = MLocatorType.get(loc.getLocatorTypeId());
                 if (lt == null || lt.isAvailableForShipping()) m_storagesForShipping.add(soh);
             }
             m_lastStorages = new MStorageOnHand[m_storagesForShipping.size()];
@@ -288,7 +287,7 @@ public class InOutGenerate extends BaseInOutGenerate {
             }
             m_shipment.saveEx();
             String message =
-                    Msg.parseTranslation(getCtx(), "@ShipmentProcessed@ " + m_shipment.getDocumentNo());
+                    Msg.parseTranslation("@ShipmentProcessed@ " + m_shipment.getDocumentNo());
             addBufferLog(
                     m_shipment.getInOutId(),
                     m_shipment.getMovementDate(),

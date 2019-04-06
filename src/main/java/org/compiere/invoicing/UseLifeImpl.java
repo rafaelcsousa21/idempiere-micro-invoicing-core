@@ -7,7 +7,6 @@ import org.compiere.orm.SetGetUtil;
 import org.idempiere.common.util.CLogger;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -70,13 +69,6 @@ public class UseLifeImpl implements UseLife {
                 from,
                 new String[]{"UseLifeMonths", "UseLifeYears", "UseLifeMonths_F", "UseLifeYears_F"},
                 null);
-    }
-
-    /**
-     *
-     */
-    public Properties getCtx() {
-        return m_obj.getCtx();
     }
 
     public int getTableId() {

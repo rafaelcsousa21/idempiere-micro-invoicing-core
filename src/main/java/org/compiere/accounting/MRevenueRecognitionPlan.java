@@ -3,8 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 /**
  * Revenue Recognition Plan
  *
@@ -23,8 +21,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
      * @param ctx                          context
      * @param C_RevenueRecognition_Plan_ID id
      */
-    public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID) {
-        super(ctx, C_RevenueRecognition_Plan_ID);
+    public MRevenueRecognitionPlan(int C_RevenueRecognition_Plan_ID) {
+        super(C_RevenueRecognition_Plan_ID);
         if (C_RevenueRecognition_Plan_ID == 0) {
             setTotalAmt(Env.ZERO);
             setRecognizedAmt(Env.ZERO);
@@ -36,8 +34,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
      *
      * @param ctx context
      */
-    public MRevenueRecognitionPlan(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRevenueRecognitionPlan(Row row) {
+        super(row);
     } //	MRevenueRecognitionPlan
 
 

@@ -4,14 +4,12 @@ import org.compiere.accounting.MTimeExpense
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
-import java.util.Properties
 
 /**
  *  get Expense Reports to Create AP Invoices from
  *  see [ExpenseAPInvoice]
  */
 fun getExpensesToBeInvoices(
-    ctx: Properties,
     sql: String,
     clientId: Int,
     m_C_BPartner_ID: Int,
@@ -23,6 +21,6 @@ fun getExpensesToBeInvoices(
         (if (m_DateFrom != null) listOf(m_DateFrom) else emptyList()) +
         (if (m_DateTo != null) listOf(m_DateTo) else emptyList())
 
-    val query = queryOf(sql, parameters).map { row -> MTimeExpense(ctx, row) }.asList
+    val query = queryOf(sql, parameters).map { row -> MTimeExpense(row) }.asList
     return DB.current.run(query).toTypedArray()
 }

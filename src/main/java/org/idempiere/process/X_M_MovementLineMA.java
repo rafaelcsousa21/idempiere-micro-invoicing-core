@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
 
@@ -20,8 +19,8 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
     /**
      * Standard Constructor
      */
-    public X_M_MovementLineMA(Properties ctx, int M_MovementLineMA_ID) {
-        super(ctx, M_MovementLineMA_ID);
+    public X_M_MovementLineMA(int M_MovementLineMA_ID) {
+        super(M_MovementLineMA_ID);
         /*
          * if (M_MovementLineMA_ID == 0) { setAttributeSetInstanceId (0); setMovementLine_ID (0); }
          */
@@ -30,8 +29,8 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
     /**
      * Load Constructor
      */
-    public X_M_MovementLineMA(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_MovementLineMA(Row row) {
+        super(row);
     }
 
     /**
@@ -119,7 +118,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
 
     public org.compiere.model.I_M_MovementLine getMovementLine() throws RuntimeException {
         return (org.compiere.model.I_M_MovementLine)
-                MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
+                MTable.get(org.compiere.model.I_M_MovementLine.Table_Name)
                         .getPO(getMovementLineId());
     }
 

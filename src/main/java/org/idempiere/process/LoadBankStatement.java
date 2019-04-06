@@ -6,7 +6,6 @@ import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -40,11 +39,6 @@ public class LoadBankStatement extends SvrProcess {
     /**
      * Current context
      */
-    private Properties m_ctx;
-
-    /**
-     * Current context
-     */
     private MBankStatementLoader m_controller = null;
 
     /**
@@ -52,18 +46,17 @@ public class LoadBankStatement extends SvrProcess {
      */
     protected void prepare() {
         log.info("");
-        m_ctx = Env.getCtx();
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
             if (name.equals("C_BankStatementLoader_ID"))
-                m_C_BankStmtLoader_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("FileName")) fileName = (String) para[i].getParameter();
+                m_C_BankStmtLoader_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+            else if (name.equals("FileName")) fileName = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        m_AD_Client_ID = Env.getClientId(m_ctx);
+        m_AD_Client_ID = Env.getClientId();
         if (log.isLoggable(Level.INFO)) log.info("AD_Client_ID=" + m_AD_Client_ID);
-        m_AD_Org_ID = Env.getOrgId(m_ctx);
+        m_AD_Org_ID = Env.getOrgId();
         if (log.isLoggable(Level.INFO)) {
             log.info("AD_Org_ID=" + m_AD_Org_ID);
             log.info("C_BankStatementLoader_ID=" + m_C_BankStmtLoader_ID);
@@ -80,7 +73,7 @@ public class LoadBankStatement extends SvrProcess {
         log.info("LoadBankStatement.doIt");
         String message = "@Error@";
 
-        m_controller = new MBankStatementLoader(m_ctx, m_C_BankStmtLoader_ID, fileName);
+        m_controller = new MBankStatementLoader(m_C_BankStmtLoader_ID, fileName);
         if (log.isLoggable(Level.INFO)) log.info(m_controller.toString());
 
         if (m_controller == null || m_controller.getId() == 0) log.log(Level.SEVERE, "Invalid Loader");

@@ -19,7 +19,6 @@ import java.io.InvalidClassException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -41,7 +40,7 @@ public class ServerProcessCtl implements Runnable {
     /**
      * ************************************************************************ Constructor
      *
-     * @param pi  Process info
+     * @param pi Process info
      */
     public ServerProcessCtl(ProcessInfo pi) {
         m_pi = pi;
@@ -56,7 +55,7 @@ public class ServerProcessCtl implements Runnable {
      * ASyncProcess <br>
      * Called from APanel.cmd_print, APanel.actionButton and VPaySelect.cmd_generate
      *
-     * @param pi  ProcessInfo process info
+     * @param pi ProcessInfo process info
      * @return worker started ProcessCtl instance or null for workflow
      */
     public static ServerProcessCtl process(ProcessInfo pi) {
@@ -65,7 +64,7 @@ public class ServerProcessCtl implements Runnable {
         MPInstance instance = null;
         if (pi.getPInstanceId() <= 0) {
             try {
-                instance = new MPInstance(Env.getCtx(), pi.getProcessId(), pi.getRecordId());
+                instance = new MPInstance(pi.getProcessId(), pi.getRecordId());
             } catch (Exception e) {
                 pi.setSummary(e.getLocalizedMessage());
                 pi.setError(true);
@@ -78,13 +77,13 @@ public class ServerProcessCtl implements Runnable {
                 return null;
             }
             if (!instance.save()) {
-                pi.setSummary(Msg.getMsg(Env.getCtx(), "ProcessNoInstance"));
+                pi.setSummary(Msg.getMsg("ProcessNoInstance"));
                 pi.setError(true);
                 return null;
             }
             pi.setProcessInstanceId(instance.getPInstanceId());
         } else {
-            instance = new MPInstance(Env.getCtx(), pi.getPInstanceId(), null);
+            instance = new MPInstance(pi.getPInstanceId(), null);
         }
 
         //	execute
@@ -110,7 +109,7 @@ public class ServerProcessCtl implements Runnable {
      */
     public static ProcessInfo runDocumentActionWorkflow(PO po, String docAction) {
         int AD_Table_ID = po.getTableId();
-        MTable table = MTable.get(Env.getCtx(), AD_Table_ID);
+        MTable table = MTable.get(AD_Table_ID);
         MColumn column = table.getColumn("DocAction");
         if (column == null) return null;
         if (!docAction.equals(po.getValue(column.getColumnName()))) {
@@ -161,7 +160,7 @@ public class ServerProcessCtl implements Runnable {
                         + " INNER JOIN AD_PInstance i ON (p.AD_Process_ID=i.AD_Process_ID) "
                         + "WHERE p.IsActive='Y'"
                         + " AND i.AD_PInstance_ID=?";
-        if (!Env.isBaseLanguage(Env.getCtx(), "AD_Process"))
+        if (!Env.isBaseLanguage("AD_Process"))
             sql =
                     "SELECT t.Name, p.ProcedureName,p.ClassName, p.AD_Process_ID," //	1..4
                             + " p.isReport, p.IsDirectPrint,p.AD_ReportView_ID,p.AD_Workflow_ID," //	5..8
@@ -171,7 +170,7 @@ public class ServerProcessCtl implements Runnable {
                             + " INNER JOIN AD_PInstance i ON (p.AD_Process_ID=i.AD_Process_ID) "
                             + " INNER JOIN AD_Process_Trl t ON (p.AD_Process_ID=t.AD_Process_ID"
                             + " AND t.AD_Language='"
-                            + Env.getADLanguage(Env.getCtx())
+                            + Env.getADLanguage()
                             + "') "
                             + "WHERE p.IsActive='Y'"
                             + " AND i.AD_PInstance_ID=?";
@@ -204,7 +203,7 @@ public class ServerProcessCtl implements Runnable {
             } else log.log(Level.SEVERE, "No AD_PInstance_ID=" + m_pi.getPInstanceId());
         } catch (Throwable e) {
             m_pi.setSummary(
-                    Msg.getMsg(Env.getCtx(), "ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);
+                    Msg.getMsg("ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);
             log.log(Level.SEVERE, "run", e);
             return;
         } finally {
@@ -289,7 +288,7 @@ public class ServerProcessCtl implements Runnable {
             try {
                 if (server != null) {
                     //	See ServerBean
-                    m_pi = server.process(Env.getRemoteCallCtx(Env.getCtx()), m_pi);
+                    m_pi = server.process(m_pi);
                     if (log.isLoggable(Level.FINEST)) log.finest("server => " + m_pi);
                     started = true;
                 }
@@ -313,9 +312,9 @@ public class ServerProcessCtl implements Runnable {
         //	Run locally
         if (!started && (!m_IsServerProcess || clientOnly)) {
             if (m_pi.getClassName().toLowerCase().startsWith(MRule.SCRIPT_PREFIX)) {
-                return ProcessUtil.startScriptProcess(Env.getCtx(), m_pi);
+                return ProcessUtil.startScriptProcess(m_pi);
             } else {
-                return ProcessUtil.startJavaProcess(Env.getCtx(), m_pi);
+                return ProcessUtil.startJavaProcess(m_pi);
             }
         }
         return !m_pi.isError();

@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
 
@@ -58,8 +57,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
     /**
      * Standard Constructor
      */
-    public X_C_InvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
-        super(ctx, C_InvoiceSchedule_ID);
+    public X_C_InvoiceSchedule(int C_InvoiceSchedule_ID) {
+        super(C_InvoiceSchedule_ID);
         /*
          * if (C_InvoiceSchedule_ID == 0) { setAmt (Env.ZERO); setInvoiceSchedule_ID (0);
          * setInvoiceDay (0); // 1 setInvoiceFrequency (null); setInvoiceWeekDay (null); setIsAmount
@@ -70,8 +69,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
     /**
      * Load Constructor
      */
-    public X_C_InvoiceSchedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_InvoiceSchedule(Row row) {
+        super(row);
     }
 
     /**

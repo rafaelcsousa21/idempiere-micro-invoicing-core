@@ -49,7 +49,7 @@ public class DiscountSchemaReSeq extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
         if (p_M_DiscountSchema_ID == 0) throw new AdempiereUserError("@M_DiscountSchema_ID@ = 0");
-        MDiscountSchema ds = new MDiscountSchema(getCtx(), p_M_DiscountSchema_ID);
+        MDiscountSchema ds = new MDiscountSchema(p_M_DiscountSchema_ID);
         if (ds.getId() == 0)
             throw new AdempiereUserError("@NotFound@ M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
         //

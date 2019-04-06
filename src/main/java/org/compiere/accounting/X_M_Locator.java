@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_Locator
  *
@@ -22,15 +20,15 @@ public class X_M_Locator extends PO implements I_M_Locator {
     /**
      * Standard Constructor
      */
-    public X_M_Locator(Properties ctx, int M_Locator_ID) {
-        super(ctx, M_Locator_ID);
+    public X_M_Locator(int M_Locator_ID) {
+        super(M_Locator_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Locator(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Locator(Row row) {
+        super(row);
     }
 
     /**

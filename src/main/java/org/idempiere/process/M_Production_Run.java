@@ -13,7 +13,7 @@
  */
 package org.idempiere.process;
 
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MStorageReservation;
@@ -30,7 +30,6 @@ import org.compiere.production.X_M_ProductionLine;
 import org.compiere.production.X_M_ProductionPlan;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
 
 import java.math.BigDecimal;
@@ -84,7 +83,7 @@ public class M_Production_Run extends SvrProcess {
     protected String doIt() throws Exception {
         log.info("Search fields in M_Production");
 
-        X_M_Production production = new X_M_Production(getCtx(), p_Record_ID);
+        X_M_Production production = new X_M_Production(p_Record_ID);
         /** No Action */
         if (production.isProcessed()) {
             log.info("Already Posted");
@@ -93,7 +92,7 @@ public class M_Production_Run extends SvrProcess {
 
         String whereClause = "M_Production_ID=? ";
         List<X_M_ProductionPlan> lines =
-                new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause)
+                new Query(X_M_ProductionPlan.Table_Name, whereClause)
                         .setParameters(p_Record_ID)
                         .setOrderBy("Line, M_Product_ID")
                         .list();
@@ -111,9 +110,9 @@ public class M_Production_Run extends SvrProcess {
                             "ERROR",
                             "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = " + pp.getProductionPlanId());
 
-                MProduct product = MProduct.get(getCtx(), pp.getProductId());
+                MProduct product = MProduct.get(pp.getProductId());
 
-                X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
+                X_M_ProductionLine pl = new X_M_ProductionLine(0);
                 pl.setOrgId(pp.getOrgId());
                 pl.setLine(line);
                 pl.setDescription(pp.getDescription());
@@ -128,13 +127,13 @@ public class M_Production_Run extends SvrProcess {
             } else {
                 whereClause = "M_ProductionPlan_ID= ? ";
                 List<X_M_ProductionLine> production_lines =
-                        new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause)
+                        new Query(X_M_ProductionLine.Table_Name, whereClause)
                                 .setParameters(pp.getProductionPlanId())
                                 .setOrderBy("Line")
                                 .list();
 
                 for (X_M_ProductionLine pline : production_lines) {
-                    MLocator locator = MLocator.get(getCtx(), pline.getLocatorId());
+                    MLocator locator = MLocator.get(pline.getLocatorId());
                     String MovementType = MTransaction.MOVEMENTTYPE_ProductionPlus;
                     BigDecimal MovementQty = pline.getMovementQty();
                     if (MovementQty.signum() == 0) continue;
@@ -161,7 +160,6 @@ public class M_Production_Run extends SvrProcess {
                     }
 
                     if (!MStorageOnHand.add(
-                            getCtx(),
                             locator.getWarehouseId(),
                             locator.getLocatorId(),
                             pline.getProductId(),
@@ -175,7 +173,6 @@ public class M_Production_Run extends SvrProcess {
                     // Create Transaction
                     MTransaction mtrx =
                             new MTransaction(
-                                    getCtx(),
                                     pline.getOrgId(),
                                     MovementType,
                                     locator.getLocatorId(),
@@ -204,11 +201,10 @@ public class M_Production_Run extends SvrProcess {
             production.saveEx();
 
             /* Immediate accounting */
-            if (MClient.get(Env.getCtx()).isClientAccountingImmediate()) {
+            if (MClientKt.getClientWithAccounting().isClientAccountingImmediate()) {
                 @SuppressWarnings("unused")
                 String ignoreError =
                         DocumentEngine.postImmediate(
-                                getCtx(),
                                 getClientId(),
                                 production.getTableId(),
                                 production.getId(),
@@ -244,13 +240,13 @@ public class M_Production_Run extends SvrProcess {
         int components = 0;
         line = line * m_level;
         for (MPPProductBOMLine bomline : bom_lines) {
-            MProduct component = MProduct.get(getCtx(), bomline.getProductId());
+            MProduct component = MProduct.get(bomline.getProductId());
 
             if (component.isBOM() && !component.isStocked()) {
                 explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
             } else {
                 line += 1;
-                X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
+                X_M_ProductionLine pl = new X_M_ProductionLine(0);
                 pl.setOrgId(pp.getOrgId());
                 pl.setLine(line);
                 pl.setDescription(bomline.getDescription());

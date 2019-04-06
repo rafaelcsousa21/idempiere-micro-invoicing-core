@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Element;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Element
  *
@@ -30,16 +28,16 @@ public class X_C_Element extends BasePOName implements I_C_Element {
     /**
      * Standard Constructor
      */
-    public X_C_Element(Properties ctx, int C_Element_ID) {
-        super(ctx, C_Element_ID);
+    public X_C_Element(int C_Element_ID) {
+        super(C_Element_ID);
     }
 
 
     /**
      * Load Constructor
      */
-    public X_C_Element(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Element(Row row) {
+        super(row);
     }
 
     /**

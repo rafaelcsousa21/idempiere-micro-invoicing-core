@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Period
@@ -28,8 +27,8 @@ public class X_C_Period extends BasePOName implements I_C_Period {
     /**
      * Standard Constructor
      */
-    public X_C_Period(Properties ctx, int C_Period_ID) {
-        super(ctx, C_Period_ID);
+    public X_C_Period(int C_Period_ID) {
+        super(C_Period_ID);
         /**
          * if (C_Period_ID == 0) { setPeriodId (0); setYearId (0); setName (null); setPeriodNo
          * (0); setPeriodType (null); // S setStartDate (new Timestamp( System.currentTimeMillis() )); }
@@ -39,8 +38,8 @@ public class X_C_Period extends BasePOName implements I_C_Period {
     /**
      * Load Constructor
      */
-    public X_C_Period(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Period(Row row) {
+        super(row);
     }
 
     /**
@@ -70,7 +69,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
 
     public org.compiere.model.I_C_Year getYear() throws RuntimeException {
         return (org.compiere.model.I_C_Year)
-                MTable.get(getCtx(), org.compiere.model.I_C_Year.Table_Name)
+                MTable.get(org.compiere.model.I_C_Year.Table_Name)
                         .getPO(getYearId());
     }
 

@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_InventoryLine
@@ -33,8 +32,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     /**
      * Standard Constructor
      */
-    public X_M_InventoryLine(Properties ctx, int M_InventoryLine_ID) {
-        super(ctx, M_InventoryLine_ID);
+    public X_M_InventoryLine(int M_InventoryLine_ID) {
+        super(M_InventoryLine_ID);
         /**
          * if (M_InventoryLine_ID == 0) { setInventoryType (null); // D setAttributeSetInstanceId
          * (0); setInventoryId (0); setInventoryLineId (0); setProductId (0); setProcessed
@@ -45,8 +44,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     /**
      * Load Constructor
      */
-    public X_M_InventoryLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_InventoryLine(Row row) {
+        super(row);
     }
 
     /**
@@ -185,7 +184,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
 
     public org.compiere.model.I_M_Inventory getInventory() throws RuntimeException {
         return (org.compiere.model.I_M_Inventory)
-                MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
+                MTable.get(org.compiere.model.I_M_Inventory.Table_Name)
                         .getPO(getInventoryId());
     }
 
@@ -244,7 +243,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 

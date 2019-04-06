@@ -5,7 +5,6 @@ import org.compiere.model.I_AD_HouseKeeping;
 import org.compiere.orm.BasePONameValue;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeeping {
 
@@ -17,15 +16,15 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
     /**
      * Standard Constructor
      */
-    public X_AD_HouseKeeping(Properties ctx, int AD_HouseKeeping_ID) {
-        super(ctx, AD_HouseKeeping_ID);
+    public X_AD_HouseKeeping(int AD_HouseKeeping_ID) {
+        super(AD_HouseKeeping_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_HouseKeeping(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_HouseKeeping(Row row) {
+        super(row);
     }
 
     /**

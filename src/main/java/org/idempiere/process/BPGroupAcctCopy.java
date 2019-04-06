@@ -63,7 +63,7 @@ public class BPGroupAcctCopy extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("C_AcctSchema_ID=" + p_C_AcctSchema_ID);
         if (p_C_AcctSchema_ID == 0) throw new AdempiereSystemError("C_AcctSchema_ID=0");
-        MAcctSchema as = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
+        MAcctSchema as = MAcctSchema.get(p_C_AcctSchema_ID);
         if (as.getId() == 0)
             throw new AdempiereSystemError("Not Found - C_AcctSchema_ID=" + p_C_AcctSchema_ID);
         //

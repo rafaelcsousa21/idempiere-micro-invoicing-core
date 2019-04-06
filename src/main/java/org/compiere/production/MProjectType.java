@@ -6,7 +6,6 @@ import org.compiere.orm.MRole;
 import org.idempiere.common.util.CCache;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.convertDate;
 
@@ -26,7 +25,7 @@ public class MProjectType extends X_C_ProjectType {
      * Cache
      */
     private static CCache<Integer, MProjectType> s_cache =
-            new CCache<Integer, MProjectType>(I_C_ProjectType.Table_Name, 20);
+            new CCache<>(I_C_ProjectType.Table_Name, 20);
 
     /**
      * ************************************************************************ Standrad Constructor
@@ -34,8 +33,8 @@ public class MProjectType extends X_C_ProjectType {
      * @param ctx              context
      * @param C_ProjectType_ID id
      */
-    public MProjectType(Properties ctx, int C_ProjectType_ID) {
-        super(ctx, C_ProjectType_ID);
+    public MProjectType(int C_ProjectType_ID) {
+        super(C_ProjectType_ID);
     } //	MProjectType
 
     /**
@@ -43,8 +42,8 @@ public class MProjectType extends X_C_ProjectType {
      *
      * @param ctx context
      */
-    public MProjectType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProjectType(Row row) {
+        super(row);
     } //	MProjectType
 
     /**
@@ -54,11 +53,11 @@ public class MProjectType extends X_C_ProjectType {
      * @param C_ProjectType_ID id
      * @return MProjectType
      */
-    public static MProjectType get(Properties ctx, int C_ProjectType_ID) {
+    public static MProjectType get(int C_ProjectType_ID) {
         Integer key = C_ProjectType_ID;
         MProjectType retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MProjectType(ctx, C_ProjectType_ID);
+        retValue = new MProjectType(C_ProjectType_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -69,9 +68,7 @@ public class MProjectType extends X_C_ProjectType {
      * @return info
      */
     public String toString() {
-        StringBuffer sb =
-                new StringBuffer("MProjectType[").append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MProjectType[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**
@@ -81,7 +78,7 @@ public class MProjectType extends X_C_ProjectType {
      * @return Array of phases
      */
     public MProjectTypePhase[] getPhases() {
-        return MBaseProjectTypeKt.getProjectTypePhases(getCtx(), getProjectTypeId());
+        return MBaseProjectTypeKt.getProjectTypePhases(getProjectTypeId());
     } //	getPhases
 
     /**

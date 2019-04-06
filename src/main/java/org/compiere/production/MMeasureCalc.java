@@ -5,11 +5,9 @@ import org.compiere.model.I_PA_MeasureCalc;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.convertDate;
 
@@ -36,8 +34,8 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @param ctx               context
      * @param PA_MeasureCalc_ID id
      */
-    public MMeasureCalc(Properties ctx, int PA_MeasureCalc_ID) {
-        super(ctx, PA_MeasureCalc_ID);
+    public MMeasureCalc(int PA_MeasureCalc_ID) {
+        super(PA_MeasureCalc_ID);
     } //	MMeasureCalc
 
     /**
@@ -45,8 +43,8 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      *
      * @param ctx context
      */
-    public MMeasureCalc(Properties ctx, Row row) {
-        super(ctx, row);
+    public MMeasureCalc(Row row) {
+        super(row);
     } //	MMeasureCalc
 
     /**
@@ -56,11 +54,11 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @param PA_MeasureCalc_ID id
      * @return MMeasureCalc
      */
-    public static MMeasureCalc get(Properties ctx, int PA_MeasureCalc_ID) {
+    public static MMeasureCalc get(int PA_MeasureCalc_ID) {
         Integer key = PA_MeasureCalc_ID;
         MMeasureCalc retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MMeasureCalc(ctx, PA_MeasureCalc_ID);
+        retValue = new MMeasureCalc(PA_MeasureCalc_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -272,7 +270,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @return Table Name
      */
     public String getDbTableName() {
-        return MTable.getDbTableName(Env.getCtx(), getRowTableId());
+        return MTable.getDbTableName(getRowTableId());
     } //	getTavleName
 
     /**

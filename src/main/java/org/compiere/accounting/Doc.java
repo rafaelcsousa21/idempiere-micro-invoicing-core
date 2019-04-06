@@ -32,7 +32,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -376,10 +375,6 @@ public abstract class Doc implements IDoc {
      */
     private I_C_AcctSchema m_as = null;
     /**
-     * Properties
-     */
-    private Properties m_ctx = null;
-    /**
      * Document Type
      */
     private String m_DocumentType = null;
@@ -480,15 +475,13 @@ public abstract class Doc implements IDoc {
             I_C_AcctSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
         p_Status = STATUS_Error;
         m_as = as;
-        m_ctx = new Properties(m_as.getCtx());
-        m_ctx.setProperty("#clientId", String.valueOf(m_as.getClientId()));
 
         String className = clazz.getName();
         className = className.substring(className.lastIndexOf('.') + 1);
         try {
             Constructor<?> constructor =
-                    clazz.getConstructor(Properties.class, Row.class);
-            p_po = (IPODoc) constructor.newInstance(new Object[]{m_ctx, rs});
+                    clazz.getConstructor(Row.class);
+            p_po = (IPODoc) constructor.newInstance(new Object[]{rs});
         } catch (Exception e) {
             String msg = className + ": " + e.getLocalizedMessage();
             log.severe(msg);
@@ -552,15 +545,6 @@ public abstract class Doc implements IDoc {
     public String getPostStatus() {
         return p_Status;
     }
-
-    /**
-     * Get Context
-     *
-     * @return context
-     */
-    public Properties getCtx() {
-        return m_ctx;
-    } //	getCtx
 
     /**
      * Get Table Name
@@ -638,7 +622,7 @@ public abstract class Doc implements IDoc {
         }
 
         //  Lock Record ----
-         // 	outside trx if on server
+        // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(getTableName())
                 .append(" SET Processing='Y' WHERE ")
@@ -661,9 +645,9 @@ public abstract class Doc implements IDoc {
                             + force
                             + ",RePost="
                             + repost);
-            if (!p_po.isActive()) return Msg.translate(getCtx(), "CannotPostInactiveDocument");
-            if (force) return Msg.translate(getCtx(), "CannotLockReSubmit");
-            return Msg.translate(getCtx(), "CannotLockReSubmitOrRePostWithForce");
+            if (!p_po.isActive()) return Msg.translate("CannotPostInactiveDocument");
+            if (force) return Msg.translate("CannotLockReSubmit");
+            return Msg.translate("CannotLockReSubmitOrRePostWithForce");
         }
 
         p_Error = loadDocumentDetails();
@@ -750,7 +734,7 @@ public abstract class Doc implements IDoc {
             //  Insert Note
             String AD_MessageValue = "PostingError-" + p_Status;
             //	Text
-            StringBuilder Text = new StringBuilder(Msg.getMsg(Env.getCtx(), AD_MessageValue));
+            StringBuilder Text = new StringBuilder(Msg.getMsg(AD_MessageValue));
             if (p_Error != null) Text.append(" (").append(p_Error).append(")");
             String cn = getClass().getName();
             Text.append(" - ")
@@ -904,7 +888,7 @@ public abstract class Doc implements IDoc {
      * Unlock Document
      */
     private void unlock() {
-         // 	outside trx if on server
+        // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(getTableName())
                 .append(" SET Processing='N' WHERE ")
@@ -1106,10 +1090,10 @@ public abstract class Doc implements IDoc {
         int index = p_po.getColumnIndex("C_Period_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) m_period = MPeriod.get(getCtx(), ii.intValue());
+            if (ii != null) m_period = MPeriod.get(ii.intValue());
         }
         if (m_period == null)
-            m_period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
+            m_period = MPeriod.get(getDateAcct(), getOrgId());
         //	Is Period Open?
         if (m_period != null && m_period.isOpen(getDocumentType(), getDateAcct()))
             m_C_Period_ID = m_period.getPeriodId();
@@ -1392,7 +1376,7 @@ public abstract class Doc implements IDoc {
         int C_ValidCombination_ID = getValidCombinationId(AcctType, as);
         if (C_ValidCombination_ID == 0) return null;
         //	Return Account
-        MAccount acct = MAccount.get(as.getCtx(), C_ValidCombination_ID);
+        MAccount acct = MAccount.get(C_ValidCombination_ID);
         return acct;
     } //	getAccount
 

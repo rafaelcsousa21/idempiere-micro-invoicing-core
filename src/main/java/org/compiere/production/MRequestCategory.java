@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Category;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Request Category Model
  *
@@ -29,8 +27,8 @@ public class MRequestCategory extends X_R_Category {
      * @param ctx           context
      * @param R_Category_ID id
      */
-    public MRequestCategory(Properties ctx, int R_Category_ID) {
-        super(ctx, R_Category_ID);
+    public MRequestCategory(int R_Category_ID) {
+        super(R_Category_ID);
     } //	MCategory
 
     /**
@@ -38,8 +36,8 @@ public class MRequestCategory extends X_R_Category {
      *
      * @param ctx context
      */
-    public MRequestCategory(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequestCategory(Row row) {
+        super(row);
     } //	MCategory
 
     /**
@@ -49,11 +47,11 @@ public class MRequestCategory extends X_R_Category {
      * @param R_Category_ID id
      * @return MCategory
      */
-    public static MRequestCategory get(Properties ctx, int R_Category_ID) {
+    public static MRequestCategory get(int R_Category_ID) {
         Integer key = R_Category_ID;
         MRequestCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MRequestCategory(ctx, R_Category_ID);
+        retValue = new MRequestCategory(R_Category_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

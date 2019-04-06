@@ -41,7 +41,7 @@ class ProductionCreate(
         }
 
         if (p_M_Production_ID == 0) p_M_Production_ID = recordId
-        if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID)
+        if (m_production == null) m_production = MProduction(p_M_Production_ID)
     } // prepare
 
     @Throws(Exception::class)
@@ -99,7 +99,7 @@ class ProductionCreate(
             m_production!!.deleteLines(null)
             created = m_production!!.createLines(mustBeStocked)
         } else {
-            val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
+            val planQuery = Query(I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
             val plans = planQuery.setParameters(m_production!!.productionId).list<MProductionPlan>()
             for (plan in plans) {
                 validateEndProduct(plan.productId)
@@ -107,7 +107,7 @@ class ProductionCreate(
                 if (!recreate && "Y".equals(m_production!!.isCreated, ignoreCase = true))
                     throw AdempiereUserError("Production already created.")
 
-                plan.deleteLines(null)
+                plan.deleteLines()
                 val n = plan.createLines(mustBeStocked)
                 if (n == 0) {
                     return "Failed to create production lines"

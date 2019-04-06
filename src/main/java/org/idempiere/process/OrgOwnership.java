@@ -121,7 +121,7 @@ public class OrgOwnership extends SvrProcess {
                 .append(" AND orgId<>")
                 .append(p_AD_Org_ID);
         int no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Warehouse_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("M_Warehouse_ID"));
 
         //	Set Accounts
         sql = new StringBuilder();
@@ -135,7 +135,7 @@ public class OrgOwnership extends SvrProcess {
                 .append(" AND orgId<>")
                 .append(p_AD_Org_ID);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_AcctSchema_ID"));
 
         //	Set Locators
         sql = new StringBuilder();
@@ -149,7 +149,7 @@ public class OrgOwnership extends SvrProcess {
                 .append(" AND orgId<>")
                 .append(p_AD_Org_ID);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Locator_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("M_Locator_ID"));
 
         //	Set Storage
         sql = new StringBuilder();
@@ -165,7 +165,7 @@ public class OrgOwnership extends SvrProcess {
                 .append(" AND orgId<>")
                 .append(p_AD_Org_ID);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "Storage"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("Storage"));
 
         //	Set Storage Reservation
         sql = new StringBuilder();
@@ -179,7 +179,7 @@ public class OrgOwnership extends SvrProcess {
                 .append(" AND orgId<>")
                 .append(p_AD_Org_ID);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "StorageReservation"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("StorageReservation"));
 
         return "";
     } //	warehouseOwnership
@@ -213,27 +213,27 @@ public class OrgOwnership extends SvrProcess {
         //	Product
         StringBuilder sql = new StringBuilder("UPDATE M_Product x ").append(set);
         int no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Product_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("M_Product_ID"));
 
         //	Acct
         sql = new StringBuilder("UPDATE M_Product_Acct x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_AcctSchema_ID"));
 
         //	BOM
         sql = new StringBuilder("UPDATE M_Product_BOM x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Product_BOM_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("M_Product_BOM_ID"));
 
         //	PO
         sql = new StringBuilder("UPDATE M_Product_PO x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "PO"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("PO"));
 
         //	Trl
         sql = new StringBuilder("UPDATE M_Product_Trl x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "AD_Language"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("AD_Language"));
 
         return "";
     } //	productOwnership
@@ -267,33 +267,33 @@ public class OrgOwnership extends SvrProcess {
         //	BPartner
         StringBuilder sql = new StringBuilder("UPDATE C_BPartner x ").append(set);
         int no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BPartner_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_BPartner_ID"));
 
         //	Acct xxx
         sql = new StringBuilder("UPDATE C_BP_Customer_Acct x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_AcctSchema_ID"));
         sql = new StringBuilder("UPDATE C_BP_Employee_Acct x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_AcctSchema_ID"));
         sql = new StringBuilder("UPDATE C_BP_Vendor_Acct x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_AcctSchema_ID"));
 
         //	Location
         sql = new StringBuilder("UPDATE C_BPartner_Location x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BPartner_Location_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_BPartner_Location_ID"));
 
         //	Contcat/User
         sql = new StringBuilder("UPDATE AD_User x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "AD_User_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("AD_User_ID"));
 
         //	BankAcct
         sql = new StringBuilder("UPDATE C_BP_BankAccount x ").append(set);
         no = executeUpdate(sql.toString());
-        addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BP_BankAccount_ID"));
+        addLog(0, null, new BigDecimal(no), Msg.translate("C_BP_BankAccount_ID"));
 
         return "";
     } //	bPartnerOwnership

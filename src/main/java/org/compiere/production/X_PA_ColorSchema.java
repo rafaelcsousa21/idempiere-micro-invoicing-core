@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_PA_ColorSchema;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for PA_ColorSchema
  *
@@ -22,15 +20,15 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
     /**
      * Standard Constructor
      */
-    public X_PA_ColorSchema(Properties ctx, int PA_ColorSchema_ID) {
-        super(ctx, PA_ColorSchema_ID);
+    public X_PA_ColorSchema(int PA_ColorSchema_ID) {
+        super(PA_ColorSchema_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_ColorSchema(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_ColorSchema(Row row) {
+        super(row);
     }
 
     /**

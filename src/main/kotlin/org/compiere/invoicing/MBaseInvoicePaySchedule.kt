@@ -2,18 +2,15 @@ package org.compiere.invoicing
 
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 /**
  * Get Payment Schedule of the invoice
  *
- * @param ctx context
  * @param C_Invoice_ID invoice id (direct)
  * @param C_InvoicePaySchedule_ID id (indirect)
  * @return array of schedule
  */
 fun getInvoicePaySchedule(
-    ctx: Properties,
     C_Invoice_ID: Int,
     C_InvoicePaySchedule_ID: Int
 ): Array<MInvoicePaySchedule> {
@@ -34,6 +31,6 @@ fun getInvoicePaySchedule(
     )
 
     val query =
-        queryOf(sql.toString(), parameters).map { row -> MInvoicePaySchedule(ctx, row) }.asList
+        queryOf(sql.toString(), parameters).map { row -> MInvoicePaySchedule(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getSchedule

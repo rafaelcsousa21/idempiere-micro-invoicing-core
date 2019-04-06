@@ -1,14 +1,13 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.order.MPaySchedule;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Invoice Payment Schedule Model
@@ -29,11 +28,10 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx                     context
      * @param C_InvoicePaySchedule_ID id
      */
-    public MInvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
-        super(ctx, C_InvoicePaySchedule_ID);
+    public MInvoicePaySchedule(int C_InvoicePaySchedule_ID) {
+        super(C_InvoicePaySchedule_ID);
         if (C_InvoicePaySchedule_ID == 0) {
             setIsValid(false);
         }
@@ -41,11 +39,9 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MInvoicePaySchedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInvoicePaySchedule(Row row) {
+        super(row);
     } //	MInvoicePaySchedule
 
     /**
@@ -55,14 +51,14 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      * @param paySchedule payment schedule
      */
     public MInvoicePaySchedule(MInvoice invoice, MPaySchedule paySchedule) {
-        super(invoice.getCtx(), 0);
+        super(0);
         m_parent = invoice;
         setClientOrg(invoice);
         setInvoiceId(invoice.getInvoiceId());
         setPayScheduleId(paySchedule.getPayScheduleId());
 
         //	Amounts
-        int scale = MCurrency.getStdPrecision(getCtx(), invoice.getCurrencyId());
+        int scale = MCurrencyKt.getCurrencyStdPrecision(invoice.getCurrencyId());
         BigDecimal due = invoice.getGrandTotal();
         if (due.compareTo(Env.ZERO) == 0) {
             setDueAmt(Env.ZERO);
@@ -91,21 +87,20 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     /**
      * Get Payment Schedule of the invoice
      *
-     * @param ctx                     context
      * @param C_Invoice_ID            invoice id (direct)
      * @param C_InvoicePaySchedule_ID id (indirect)
      * @return array of schedule
      */
     public static MInvoicePaySchedule[] getInvoicePaySchedule(
-            Properties ctx, int C_Invoice_ID, int C_InvoicePaySchedule_ID) {
-        return MBaseInvoicePayScheduleKt.getInvoicePaySchedule(ctx, C_Invoice_ID, C_InvoicePaySchedule_ID);
+            int C_Invoice_ID, int C_InvoicePaySchedule_ID) {
+        return MBaseInvoicePayScheduleKt.getInvoicePaySchedule(C_Invoice_ID, C_InvoicePaySchedule_ID);
     } //	getSchedule
 
     /**
      * @return Returns the parent.
      */
     public MInvoice getParent() {
-        if (m_parent == null) m_parent = new MInvoice(getCtx(), getInvoiceId());
+        if (m_parent == null) m_parent = new MInvoice(getInvoiceId());
         return m_parent;
     } //	getParent
 

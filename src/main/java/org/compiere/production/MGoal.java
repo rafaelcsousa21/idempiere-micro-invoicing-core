@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.crm.MUser;
+import org.compiere.crm.MUserKt;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
 import org.compiere.util.Msg;
@@ -9,7 +10,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -35,11 +35,10 @@ public class MGoal extends X_PA_Goal {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx        context
      * @param PA_Goal_ID id
      */
-    public MGoal(Properties ctx, int PA_Goal_ID) {
-        super(ctx, PA_Goal_ID);
+    public MGoal(int PA_Goal_ID) {
+        super(PA_Goal_ID);
         if (PA_Goal_ID == 0) {
             //	setName (null);
             //	setUserId (0);
@@ -56,24 +55,21 @@ public class MGoal extends X_PA_Goal {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MGoal(Properties ctx, Row row) {
-        super(ctx, row);
+    public MGoal(Row row) {
+        super(row);
     } //	MGoal
 
     /**
      * Base Constructor
      *
-     * @param ctx           context
      * @param Name          Name
      * @param Description   Decsription
      * @param MeasureTarget target
      */
     public MGoal(
-            Properties ctx, String Name, String Description, BigDecimal MeasureTarget) {
-        super(ctx, 0);
+            String Name, String Description, BigDecimal MeasureTarget) {
+        super(0);
         setName(Name);
         setDescription(Description);
         setMeasureTarget(MeasureTarget);
@@ -82,12 +78,11 @@ public class MGoal extends X_PA_Goal {
     /**
      * Get Goals with Measure
      *
-     * @param ctx           context
      * @param PA_Measure_ID measure
      * @return goals
      */
-    public static MGoal[] getMeasureGoals(Properties ctx, int PA_Measure_ID) {
-        return MBaseGoalKt.getGoalsWithMeasure(ctx, PA_Measure_ID);
+    public static MGoal[] getMeasureGoals(int PA_Measure_ID) {
+        return MBaseGoalKt.getGoalsWithMeasure(PA_Measure_ID);
     } //	getMeasureGoals
 
     /**
@@ -98,7 +93,7 @@ public class MGoal extends X_PA_Goal {
      */
     public MGoalRestriction[] getRestrictions(boolean reload) {
         if (m_restrictions != null && !reload) return m_restrictions;
-        m_restrictions = MBaseGoalKt.getRestrictions(getCtx(), getGoalId());
+        m_restrictions = MBaseGoalKt.getRestrictions(getGoalId());
         return m_restrictions;
     } //	getRestrictions
 
@@ -111,7 +106,7 @@ public class MGoal extends X_PA_Goal {
      */
     public boolean updateGoal(boolean force) {
         if (log.isLoggable(Level.CONFIG)) log.config("Force=" + force);
-        MMeasure measure = MMeasure.get(getCtx(), getMeasureId());
+        MMeasure measure = MMeasure.get(getMeasureId());
 
         boolean isUpdateByInterfal = false;
         if (getDateLastRun() != null) {
@@ -120,7 +115,7 @@ public class MGoal extends X_PA_Goal {
                     MSysConfig.getIntValue(
                             MSysConfig.ZK_DASHBOARD_PERFORMANCE_REFRESH_INTERVAL,
                             1800000,
-                            Env.getClientId(Env.getCtx()));
+                            Env.getClientId());
             isUpdateByInterfal = (System.currentTimeMillis() - getDateLastRun().getTime()) > interval;
         }
 
@@ -202,7 +197,7 @@ public class MGoal extends X_PA_Goal {
 
         //	Measure required if nor Summary
         if (!isSummary() && getMeasureId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_Measure_ID"));
+            log.saveError("FillMandatory", Msg.getElement("PA_Measure_ID"));
             return false;
         }
         if (isSummary() && getMeasureId() != 0) setMeasureId(0);
@@ -210,7 +205,7 @@ public class MGoal extends X_PA_Goal {
         //	User/Role Check
         if ((newRecord || isValueChanged("AD_User_ID") || isValueChanged("AD_Role_ID"))
                 && getUserId() != 0) {
-            MUser user = MUser.get(getCtx(), getUserId());
+            MUser user = MUserKt.getUser(getUserId());
             MRole[] roles = user.getRoles(getOrgId());
             if (roles.length == 0) // 	No Role
                 setRoleId(0);

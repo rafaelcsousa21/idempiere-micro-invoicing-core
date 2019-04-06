@@ -57,9 +57,9 @@ public class HouseKeeping extends SvrProcess {
     protected String doIt() throws Exception {
 
         X_AD_HouseKeeping houseKeeping =
-                new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID);
+                new X_AD_HouseKeeping(p_AD_HouseKeeping_ID);
         int tableID = houseKeeping.getTableID();
-        MTable table = new MTable(getCtx(), tableID);
+        MTable table = new MTable(tableID);
         String tableName = table.getDbTableName();
         String whereClause = houseKeeping.getWhereClause();
         int noins = 0;
@@ -123,7 +123,7 @@ public class HouseKeeping extends SvrProcess {
         addLog("@Deleted@ " + nodel);
         StringBuilder msg =
                 new StringBuilder()
-                        .append(Msg.getElement(getCtx(), tableName + "_ID"))
+                        .append(Msg.getElement(tableName + "_ID"))
                         .append(" #")
                         .append(nodel);
         return msg.toString();

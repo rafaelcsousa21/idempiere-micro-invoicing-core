@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_ProductionPlan
@@ -24,15 +23,15 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
     /**
      * Standard Constructor
      */
-    public X_M_ProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
-        super(ctx, M_ProductionPlan_ID);
+    public X_M_ProductionPlan(int M_ProductionPlan_ID) {
+        super(M_ProductionPlan_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_ProductionPlan(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_ProductionPlan(Row row) {
+        super(row);
     }
 
     /**

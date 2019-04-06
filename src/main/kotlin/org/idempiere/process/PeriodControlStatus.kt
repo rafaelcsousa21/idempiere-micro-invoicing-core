@@ -35,7 +35,7 @@ class PeriodControlStatus(var p_C_PeriodControl_ID: Int = 0) : SvrProcess() {
     @Throws(Exception::class)
     override fun doIt(): String {
         if (log.isLoggable(Level.INFO)) log.info("C_PeriodControl_ID=$p_C_PeriodControl_ID")
-        val pc = MPeriodControl(ctx, p_C_PeriodControl_ID)
+        val pc = MPeriodControl(p_C_PeriodControl_ID)
         if (pc.id == 0)
             throw AdempiereUserError("@NotFound@  @C_PeriodControl_ID@=$p_C_PeriodControl_ID")
         // 	Permanently closed

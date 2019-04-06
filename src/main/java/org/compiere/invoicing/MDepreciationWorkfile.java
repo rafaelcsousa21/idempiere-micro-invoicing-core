@@ -15,7 +15,6 @@ import org.idempiere.common.util.Env;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -53,11 +52,9 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
 
     /**
      * Default Constructor
-     *
-     * @param ctx                context
      */
-    public MDepreciationWorkfile(Properties ctx, int A_Depreciation_Workfile_ID) {
-        super(ctx, A_Depreciation_Workfile_ID);
+    public MDepreciationWorkfile(int A_Depreciation_Workfile_ID) {
+        super(A_Depreciation_Workfile_ID);
         if (A_Depreciation_Workfile_ID == 0) {
             setPostingType(X_A_Depreciation_Workfile.POSTINGTYPE_Actual);
             setQtyCurrent(Env.ZERO);
@@ -70,18 +67,16 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MDepreciationWorkfile(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepreciationWorkfile(Row row) {
+        super(row);
     } //	MDepreciationWorkfile
 
     /**
      *
      */
     public MDepreciationWorkfile(MAsset asset, String postingType, MAssetGroupAcct assetgrpacct) {
-        this(asset.getCtx(), 0);
+        this(0);
         setAssetId(asset.getAssetId());
         setOrgId(asset.getOrgId()); // @win added
         setAssetCost(asset.getA_Asset_Cost());
@@ -96,7 +91,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (assetgrpacct == null) {
             assetgrpacct =
                     MAssetGroupAcct.forA_Asset_GroupId(
-                            asset.getCtx(), asset.getAssetGroupId(), postingType);
+                            asset.getAssetGroupId(), postingType);
         }
         UseLifeImpl.copyValues(this, assetgrpacct);
 
@@ -120,9 +115,8 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     }
 
     public static Collection<MDepreciationWorkfile> forA_AssetId(
-            Properties ctx, int asset_id) {
+            int asset_id) {
         return new Query(
-                ctx,
                 I_A_Depreciation_Workfile.Table_Name,
                 I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_ID + "=?"
         )
@@ -133,14 +127,12 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      * Get/load workfile from cache (if trxName is null)
      *
-     * @param ctx
      * @param A_Asset_ID
      * @param postingType
-     * @param trxName
      * @return workfile
      */
     public static MDepreciationWorkfile get(
-            Properties ctx, int A_Asset_ID, String postingType) {
+            int A_Asset_ID, String postingType) {
         if (A_Asset_ID <= 0 || postingType == null) {
             return null;
         }
@@ -151,7 +143,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /* @win temporary change as this code is causing duplicate create MDepreciationWorkfile on asset addition
     final String whereClause = COLUMNNAME_A_Asset_ID+"=?"
     							+" AND "+COLUMNNAME_PostingType+"=? AND "+COLUMNNAME_A_QTY_Current+">?";
-    MDepreciationWorkfile wk = new Query(ctx, MDepreciationWorkfile.Table_Name, whereClause)
+    MDepreciationWorkfile wk = new Query(MDepreciationWorkfile.Table_Name, whereClause)
     									.setParameters(new Object[]{A_Asset_ID, postingType, 0})
     									.firstOnly();
     */
@@ -162,7 +154,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                         + I_A_Depreciation_Workfile.COLUMNNAME_PostingType
                         + "=? ";
         wk =
-                new Query(ctx, I_A_Depreciation_Workfile.Table_Name, whereClause)
+                new Query(I_A_Depreciation_Workfile.Table_Name, whereClause)
                         .setParameters(A_Asset_ID, postingType)
                         .firstOnly();
 
@@ -242,7 +234,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      */
     public MAsset getAsset(boolean requery) {
         if (m_asset == null || requery) {
-            m_asset = MAsset.get(getCtx(), getAssetId());
+            m_asset = MAsset.get(getAssetId());
         }
         if (m_asset.getId() <= 0) {
             m_asset = null;
@@ -359,7 +351,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @return asset accounting model
      */
     public MAssetAcct getAssetAccounting(Timestamp dateAcct) {
-        return MAssetAcct.forA_AssetId(getCtx(), getAssetId(), getPostingType(), dateAcct);
+        return MAssetAcct.forA_AssetId(getAssetId(), getPostingType(), dateAcct);
     }
 
     /**
@@ -505,7 +497,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                         + "=? AND IsActive=?";
         //
         MDepreciationExp depexp =
-                new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
+                new Query(MDepreciationExp.Table_Name, whereClause)
                         .setParameters(getAssetId(), getPostingType(), true, true)
                         .setOrderBy(
                                 MDepreciationExp.COLUMNNAME_A_Period

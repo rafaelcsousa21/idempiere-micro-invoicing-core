@@ -3,12 +3,13 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.accounting.Doc;
 import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.docengine.DocumentEngine;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_Production;
@@ -39,7 +40,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -53,7 +53,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
      */
     private static final long serialVersionUID = 8047044372956625013L;
 
-    /** */
     /**
      * Log
      */
@@ -71,29 +70,29 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
      */
     private boolean m_justPrepared = false;
 
-    public MProduction(Properties ctx, int M_Production_ID) {
-        super(ctx, M_Production_ID);
+    public MProduction(int M_Production_ID) {
+        super(M_Production_ID);
         if (M_Production_ID == 0) {
             setDocStatus(X_M_Production.DOCSTATUS_Drafted);
             setDocAction(X_M_Production.DOCACTION_Prepare);
         }
     }
 
-    public MProduction(Properties ctx, Row row) {
-        super(ctx, row);
+    public MProduction(Row row) {
+        super(row);
     }
 
     public MProduction(MOrderLine line) {
-        super(line.getCtx(), 0);
+        super(0);
         setADClientID(line.getClientId());
         setOrgId(line.getOrgId());
         setMovementDate(line.getDatePromised());
     }
 
     public MProduction(MProjectLine line) {
-        super(line.getCtx(), 0);
-        MProject project = new MProject(line.getCtx(), line.getProjectId());
-        MWarehouse wh = new MWarehouse(line.getCtx(), project.getWarehouseId());
+        super(0);
+        MProject project = new MProject(line.getProjectId());
+        MWarehouse wh = new MWarehouse(project.getWarehouseId());
 
         MLocator M_Locator = null;
         int M_Locator_ID = 0;
@@ -113,7 +112,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         setBusinessActivityId(project.getBusinessActivityId());
         setProjectPhaseId(line.getProjectPhaseId());
         setProjectTaskId(line.getProjectTaskId());
-        setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
+        setMovementDate(Env.getContextAsDate());
     }
 
     @NotNull
@@ -151,7 +150,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         } else {
             Query planQuery =
                     new Query(
-                            Env.getCtx(),
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
@@ -231,7 +229,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getId());
             rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1)));
+            while (rs.next()) list.add(new MProductionLine(rs.getInt(1)));
         } catch (SQLException ex) {
             throw new AdempiereException("Unable to load production lines", ex);
         } finally {
@@ -259,7 +257,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         count = 0;
 
         // product to be produced
-        MProduct finishedProduct = new MProduct(getCtx(), getProductId());
+        MProduct finishedProduct = new MProduct(getProductId());
 
         MProductionLine line = new MProductionLine(this);
         line.setLine(lineno);
@@ -280,7 +278,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         int defaultLocator = 0;
 
-        MLocator finishedLocator = MLocator.get(getCtx(), getLocatorId());
+        MLocator finishedLocator = MLocator.get(getLocatorId());
 
         int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
@@ -308,7 +306,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 BigDecimal BOMQty = rs.getBigDecimal(2);
                 BigDecimal BOMMovementQty = BOMQty.multiply(requiredQty);
 
-                MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID);
+                MProduct bomproduct = new MProduct(BOMProduct_ID);
 
                 if (bomproduct.isBOM() && bomproduct.isPhantom()) {
                     createLines(mustBeStocked, bomproduct, BOMMovementQty);
@@ -345,14 +343,14 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
                         // BOM stock info
                         MStorageOnHand[] storages = null;
-                        MProduct usedProduct = MProduct.get(getCtx(), BOMProduct_ID);
+                        MProduct usedProduct = MProduct.get(BOMProduct_ID);
                         defaultLocator = usedProduct.getLocatorId();
                         if (defaultLocator == 0) defaultLocator = getLocatorId();
                         if (usedProduct == null || usedProduct.getId() == 0) return 0;
 
-                        MClient client = MClient.get(getCtx());
+                        ClientWithAccounting client = MClientKt.getClientWithAccounting();
                         MProductCategory pc =
-                                MProductCategory.get(getCtx(), usedProduct.getProductCategoryId());
+                                MProductCategory.get(usedProduct.getProductCategoryId());
                         String MMPolicy = pc.getMMPolicy();
                         if (MMPolicy == null || MMPolicy.length() == 0) {
                             MMPolicy = client.getMMPolicy();
@@ -360,7 +358,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
                         storages =
                                 MStorageOnHand.getWarehouse(
-                                        getCtx(),
                                         M_Warehouse_ID,
                                         BOMProduct_ID,
                                         0,
@@ -383,7 +380,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                                 int loc = storages[sl].getLocatorId();
                                 int slASI = storages[sl].getAttributeSetInstanceId();
                                 int locAttribSet =
-                                        new MAttributeSetInstance(getCtx(), asi).getAttributeSetId();
+                                        new MAttributeSetInstance(asi).getAttributeSetId();
 
                                 // roll up costing attributes if in the same locator
                                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
@@ -492,7 +489,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         //	Std Period open?
         MPeriod.testPeriodOpen(
-                getCtx(), getMovementDate(), MDocType.DOCBASETYPE_MaterialProduction, getOrgId());
+                getMovementDate(), MDocType.DOCBASETYPE_MaterialProduction, getOrgId());
 
         if (getIsCreated().equals("N")) {
             m_processMsg = "Not created";
@@ -507,7 +504,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         } else {
             Query planQuery =
                     new Query(
-                            getCtx(),
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
@@ -565,8 +561,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     protected boolean costsOK(int M_Product_ID) throws AdempiereUserError {
-        MProduct product = MProduct.get(getCtx(), M_Product_ID);
-        String costingMethod = product.getCostingMethod(MClient.get(getCtx()).getAcctSchema());
+        MProduct product = MProduct.get(M_Product_ID);
+        String costingMethod = product.getCostingMethod(MClientKt.getClientWithAccounting().getAcctSchema());
         // will not work if non-standard costing is used
         if (MAcctSchema.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
             String sql =
@@ -640,13 +636,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             } else {
                 Query planQuery =
                         new Query(
-                                Env.getCtx(),
                                 I_M_ProductionPlan.Table_Name,
                                 "M_ProductionPlan.M_Production_ID=?"
                         );
                 List<MProductionPlan> plans = planQuery.setParameters(getProductionId()).list();
                 for (MProductionPlan plan : plans) {
-                    plan.deleteLines(null);
+                    plan.deleteLines();
                     plan.setProductionQty(BigDecimal.ZERO);
                     plan.setProcessed(true);
                     plan.saveEx();
@@ -657,7 +652,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             boolean accrual = false;
             try {
                 MPeriod.testPeriodOpen(
-                        getCtx(), getMovementDate(), Doc.DOCTYPE_MatProduction, getOrgId());
+                        getMovementDate(), Doc.DOCTYPE_MatProduction, getOrgId());
             } catch (PeriodClosedException e) {
                 accrual = true;
             }
@@ -717,13 +712,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     private MProduction reverse(boolean accrual) {
-        Timestamp reversalDate = accrual ? Env.getContextAsDate(getCtx(), "#Date") : getMovementDate();
+        Timestamp reversalDate = accrual ? Env.getContextAsDate() : getMovementDate();
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
 
-        MPeriod.testPeriodOpen(getCtx(), reversalDate, Doc.DOCTYPE_MatProduction, getOrgId());
-        MProduction reversal = null;
+        MPeriod.testPeriodOpen(reversalDate, Doc.DOCTYPE_MatProduction, getOrgId());
+        MProduction reversal;
         reversal = copyFrom(reversalDate);
 
         StringBuilder msgadd = new StringBuilder("{->").append(getDocumentNo()).append(")");
@@ -737,7 +732,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         for (int i = 0; i < sLines.length; i++) {
             //	We need to copy MA
             if (sLines[i].getAttributeSetInstanceId() == 0) {
-                MProductionLineMA[] mas = MProductionLineMA.get(getCtx(), sLines[i].getId());
+                MProductionLineMA[] mas = MProductionLineMA.get(sLines[i].getId());
                 for (int j = 0; j < mas.length; j++) {
                     MProductionLineMA ma =
                             new MProductionLineMA(
@@ -773,7 +768,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     private MProduction copyFrom(Timestamp reversalDate) {
-        MProduction to = new MProduction(getCtx(), 0);
+        MProduction to = new MProduction(0);
         PO.copyValues(this, to, getClientId(), getOrgId());
 
         to.setValueNoCheck("DocumentNo", null);
@@ -790,13 +785,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             to.saveEx();
             Query planQuery =
                     new Query(
-                            Env.getCtx(),
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
             List<MProductionPlan> fplans = planQuery.setParameters(getProductionId()).list();
             for (MProductionPlan fplan : fplans) {
-                MProductionPlan tplan = new MProductionPlan(getCtx(), 0);
+                MProductionPlan tplan = new MProductionPlan(0);
                 PO.copyValues(fplan, tplan, getClientId(), getOrgId());
                 tplan.setProductionId(to.getProductionId());
                 tplan.setProductionQty(fplan.getProductionQty().negate());
@@ -909,7 +903,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     @Override
     public int getCurrencyId() {
-        return MClient.get(getCtx()).getCurrencyId();
+        return MClientKt.getClientWithAccounting().getCurrencyId();
     }
 
     @NotNull

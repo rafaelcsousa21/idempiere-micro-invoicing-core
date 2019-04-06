@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_BP_BankAccount;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_BP_BankAccount
  *
@@ -34,15 +32,15 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
     /**
      * Standard Constructor
      */
-    public X_C_BP_BankAccount(Properties ctx, int C_BP_BankAccount_ID) {
-        super(ctx, C_BP_BankAccount_ID);
+    public X_C_BP_BankAccount(int C_BP_BankAccount_ID) {
+        super(C_BP_BankAccount_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BP_BankAccount(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BP_BankAccount(Row row) {
+        super(row);
     }
 
     /**

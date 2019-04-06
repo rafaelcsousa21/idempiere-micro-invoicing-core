@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for GL_Journal
@@ -78,8 +77,8 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
     /**
      * Standard Constructor
      */
-    public X_GL_Journal(Properties ctx, int GL_Journal_ID) {
-        super(ctx, GL_Journal_ID);
+    public X_GL_Journal(int GL_Journal_ID) {
+        super(GL_Journal_ID);
         /**
          * if (GL_Journal_ID == 0) { setAccountingSchemaId (0); // @$C_AcctSchema_ID@
          * setConversionTypeId (0); setCurrencyId (0); // @C_Currency_ID@ setDocumentTypeId (0);
@@ -96,8 +95,8 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
     /**
      * Load Constructor
      */
-    public X_GL_Journal(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_Journal(Row row) {
+        super(row);
     }
 
     /**
@@ -116,7 +115,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
 
     public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
-                MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
+                MTable.get(org.compiere.model.I_C_AcctSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 
@@ -226,7 +225,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
 
     public org.compiere.model.I_C_Period getPeriod() throws RuntimeException {
         return (org.compiere.model.I_C_Period)
-                MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
+                MTable.get(org.compiere.model.I_C_Period.Table_Name)
                         .getPO(getPeriodId());
     }
 

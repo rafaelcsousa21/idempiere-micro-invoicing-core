@@ -3,8 +3,6 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.util.Msg;
 
-import java.util.Properties;
-
 /**
  * Change Request Model
  *
@@ -20,12 +18,10 @@ public class MChangeRequest extends X_M_ChangeRequest {
     /**
      * Standard Constructor
      *
-     * @param ctx                context
      * @param M_ChangeRequest_ID ix
-     * @param trxName            trx
      */
-    public MChangeRequest(Properties ctx, int M_ChangeRequest_ID) {
-        super(ctx, M_ChangeRequest_ID);
+    public MChangeRequest(int M_ChangeRequest_ID) {
+        super(M_ChangeRequest_ID);
         if (M_ChangeRequest_ID == 0) {
             //	setName (null);
             setIsApproved(false);
@@ -40,11 +36,11 @@ public class MChangeRequest extends X_M_ChangeRequest {
      * @param group   request group
      */
     public MChangeRequest(MRequest request, MGroup group) {
-        this(request.getCtx(), 0);
+        this(0);
         setClientOrg(request);
         StringBuilder msgset =
                 new StringBuilder()
-                        .append(Msg.getElement(getCtx(), "R_Request_ID"))
+                        .append(Msg.getElement("R_Request_ID"))
                         .append(": ")
                         .append(request.getDocumentNo());
         setName(msgset.toString());
@@ -56,13 +52,9 @@ public class MChangeRequest extends X_M_ChangeRequest {
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
-    public MChangeRequest(Properties ctx, Row row) {
-        super(ctx, row);
+    public MChangeRequest(Row row) {
+        super(row);
     } //	MChangeRequest
 
     /**
@@ -75,13 +67,13 @@ public class MChangeRequest extends X_M_ChangeRequest {
         //	Have at least one
         if (getProductBOMId() == 0 && getChangeNoticeId() == 0) {
             log.saveError(
-                    "Error", Msg.parseTranslation(getCtx(), "@NotFound@: @M_BOM_ID@ / @M_ChangeNotice_ID@"));
+                    "Error", Msg.parseTranslation("@NotFound@: @M_BOM_ID@ / @M_ChangeNotice_ID@"));
             return false;
         }
 
         //	Derive ChangeNotice from BOM if defined
         if (newRecord && getProductBOMId() != 0 && getChangeNoticeId() == 0) {
-            MPPProductBOM bom = MPPProductBOM.get(getCtx(), getProductBOMId());
+            MPPProductBOM bom = MPPProductBOM.get(getProductBOMId());
             if (bom.getChangeNoticeId() != 0) {
                 setChangeNoticeId(bom.getChangeNoticeId());
             }

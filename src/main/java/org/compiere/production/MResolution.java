@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Resolution;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Request Resolution Model
  *
@@ -29,8 +27,8 @@ public class MResolution extends X_R_Resolution {
      * @param ctx             context
      * @param R_Resolution_ID id
      */
-    public MResolution(Properties ctx, int R_Resolution_ID) {
-        super(ctx, R_Resolution_ID);
+    public MResolution(int R_Resolution_ID) {
+        super(R_Resolution_ID);
     } //	MResolution
 
     /**
@@ -38,8 +36,8 @@ public class MResolution extends X_R_Resolution {
      *
      * @param ctx context
      */
-    public MResolution(Properties ctx, Row row) {
-        super(ctx, row);
+    public MResolution(Row row) {
+        super(row);
     } //	MResolution
 
     /**
@@ -49,11 +47,11 @@ public class MResolution extends X_R_Resolution {
      * @param R_Resolution_ID id
      * @return MResolution
      */
-    public static MResolution get(Properties ctx, int R_Resolution_ID) {
+    public static MResolution get(int R_Resolution_ID) {
         Integer key = R_Resolution_ID;
         MResolution retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MResolution(ctx, R_Resolution_ID);
+        retValue = new MResolution(R_Resolution_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

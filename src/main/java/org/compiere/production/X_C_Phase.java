@@ -6,7 +6,6 @@ import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Phase
@@ -24,15 +23,15 @@ public class X_C_Phase extends BasePOName implements I_C_Phase {
     /**
      * Standard Constructor
      */
-    public X_C_Phase(Properties ctx, int C_Phase_ID) {
-        super(ctx, C_Phase_ID);
+    public X_C_Phase(int C_Phase_ID) {
+        super(C_Phase_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Phase(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Phase(Row row) {
+        super(row);
     }
 
     /**

@@ -8,7 +8,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
 import java.util.List;
-import java.util.Properties;
 
 public class MBOM extends X_M_BOM {
     /**
@@ -32,8 +31,8 @@ public class MBOM extends X_M_BOM {
      * @param M_BOM_ID id
      * @param trxName  trx
      */
-    public MBOM(Properties ctx, int M_BOM_ID) {
-        super(ctx, M_BOM_ID);
+    public MBOM(int M_BOM_ID) {
+        super(M_BOM_ID);
         if (M_BOM_ID == 0) {
             //	setProductId (0);
             //	setName (null);
@@ -47,8 +46,8 @@ public class MBOM extends X_M_BOM {
      *
      * @param ctx ctx
      */
-    public MBOM(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBOM(Row row) {
+        super(row);
     } //	MBOM
 
     /**
@@ -58,11 +57,11 @@ public class MBOM extends X_M_BOM {
      * @param M_BOM_ID id
      * @return MBOM
      */
-    public static MBOM get(Properties ctx, int M_BOM_ID) {
+    public static MBOM get(int M_BOM_ID) {
         Integer key = M_BOM_ID;
         MBOM retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MBOM(ctx, M_BOM_ID);
+        retValue = new MBOM(M_BOM_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -77,12 +76,12 @@ public class MBOM extends X_M_BOM {
      * @return array of BOMs
      */
     public static MBOM[] getOfProduct(
-            Properties ctx, int M_Product_ID, String trxName, String whereClause) {
+            int M_Product_ID, String trxName, String whereClause) {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         StringBuilder where = new StringBuilder("M_Product_ID=?");
         if (whereClause != null && whereClause.length() > 0) where.append(" AND ").append(whereClause);
         List<MBOM> list =
-                new Query(ctx, I_M_BOM.Table_Name, where.toString())
+                new Query(I_M_BOM.Table_Name, where.toString())
                         .setParameters(M_Product_ID)
                         .list();
 
@@ -106,29 +105,28 @@ public class MBOM extends X_M_BOM {
                         new StringBuilder("BOMType='A' AND BOMUse='")
                                 .append(getBOMUse())
                                 .append("' AND IsActive='Y'");
-                MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, msgofp.toString());
+                MBOM[] boms = getOfProduct(getProductId(), null, msgofp.toString());
                 if (boms.length != 0 // 	only one = this
                         && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
-                            log.saveError(
-                                    "Error",
-                                    Msg.parseTranslation(
-                                            getCtx(),
-                                            "Can only have one Current Active BOM for Product BOM Use ("
-                                                    + getBOMType()
-                                                    + ")"));
-                            return false;
-                        }
+                    log.saveError(
+                            "Error",
+                            Msg.parseTranslation(
+                                    "Can only have one Current Active BOM for Product BOM Use ("
+                                            + getBOMType()
+                                            + ")"));
+                    return false;
+                }
             }
             //	Only one MTO
             else if (getBOMType().equals(BOMTYPE_Make_To_Order)) {
-                MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, "IsActive='Y'");
+                MBOM[] boms = getOfProduct(getProductId(), null, "IsActive='Y'");
                 if (boms.length != 0 // 	only one = this
                         && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
-                            log.saveError(
-                                    "Error",
-                                    Msg.parseTranslation(getCtx(), "Can only have single Make-to-Order BOM for Product"));
-                            return false;
-                        }
+                    log.saveError(
+                            "Error",
+                            Msg.parseTranslation("Can only have single Make-to-Order BOM for Product"));
+                    return false;
+                }
             }
         } //	BOM Type
 

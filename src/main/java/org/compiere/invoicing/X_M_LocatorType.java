@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_LocatorType;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_LocatorType
  *
@@ -22,15 +20,15 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
     /**
      * Standard Constructor
      */
-    public X_M_LocatorType(Properties ctx, int M_LocatorType_ID) {
-        super(ctx, M_LocatorType_ID);
+    public X_M_LocatorType(int M_LocatorType_ID) {
+        super(M_LocatorType_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_LocatorType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_LocatorType(Row row) {
+        super(row);
     }
 
     /**

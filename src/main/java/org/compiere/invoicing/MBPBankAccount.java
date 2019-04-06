@@ -14,7 +14,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.util.List;
-import java.util.Properties;
 
 /**
  * BP Bank Account Model
@@ -44,8 +43,8 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      * @param C_BP_BankAccount_ID BP bank account
      * @param trxName             transaction
      */
-    public MBPBankAccount(Properties ctx, int C_BP_BankAccount_ID) {
-        super(ctx, C_BP_BankAccount_ID);
+    public MBPBankAccount(int C_BP_BankAccount_ID) {
+        super(C_BP_BankAccount_ID);
         if (C_BP_BankAccount_ID == 0) {
             //	setBusinessPartnerId (0);
             setIsACH(false);
@@ -58,8 +57,8 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      *
      * @param ctx context
      */
-    public MBPBankAccount(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBPBankAccount(Row row) {
+        super(row);
     } //	MBP_BankAccount
 
     /**
@@ -70,8 +69,8 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      * @param bpc      BP Contact
      * @param location Location
      */
-    public MBPBankAccount(Properties ctx, MBPartner bp, MUser bpc, MLocation location) {
-        this(ctx, 0);
+    public MBPBankAccount(MBPartner bp, MUser bpc, MLocation location) {
+        this(0);
         setIsACH(false);
         //
         setBusinessPartnerId(bp.getBusinessPartnerId());
@@ -93,10 +92,10 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      * @param C_BPartner_ID bpartner
      * @return
      */
-    public static MBPBankAccount[] getOfBPartner(Properties ctx, int C_BPartner_ID) {
+    public static MBPBankAccount[] getOfBPartner(int C_BPartner_ID) {
         final String whereClause = MBPBankAccount.COLUMNNAME_C_BPartner_ID + "=?";
         List<MBPBankAccount> list =
-                new Query(ctx, I_C_BP_BankAccount.Table_Name, whereClause)
+                new Query(I_C_BP_BankAccount.Table_Name, whereClause)
                         .setParameters(C_BPartner_ID)
                         .setOnlyActiveRecords(true)
                         .list();
@@ -140,7 +139,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
     public MBank getBank() {
         int C_Bank_ID = getBankId();
         if (C_Bank_ID == 0) return null;
-        if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID);
+        if (m_bank == null) m_bank = new MBank(C_Bank_ID);
         return m_bank;
     } //	getBank
 
@@ -188,7 +187,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
         }
 
         if (MSysConfig.getBooleanValue(
-                MSysConfig.IBAN_VALIDATION, true, Env.getClientId(Env.getCtx()))) {
+                MSysConfig.IBAN_VALIDATION, true, Env.getClientId())) {
             if (!Util.isEmpty(getIBAN())) {
                 setIBAN(IBAN.normalizeIBAN(getIBAN()));
                 if (!IBAN.isValid(getIBAN())) {

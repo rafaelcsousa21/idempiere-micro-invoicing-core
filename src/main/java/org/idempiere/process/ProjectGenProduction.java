@@ -67,18 +67,18 @@ public class ProjectGenProduction extends SvrProcess {
             log.info(
                     "doIt - C_Project_ID=" + m_C_Project_ID + " - C_ProjectLine_ID=" + m_C_ProjectLine_ID);
         if (m_C_ProjectLine_ID != 0) {
-            MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
-            MProject project = new MProject(getCtx(), projectLine.getProjectId());
+            MProjectLine projectLine = new MProjectLine(m_C_ProjectLine_ID);
+            MProject project = new MProject(projectLine.getProjectId());
             createProduction(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
-            MProject project = new MProject(getCtx(), m_C_Project_ID);
+            MProject project = new MProject(m_C_Project_ID);
             for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
                 if (line.isActive()) {
                     createProduction(project, line);
                 }
             }
         } else {
-            MProject project = new MProject(getCtx(), m_C_Project_ID);
+            MProject project = new MProject(m_C_Project_ID);
             for (MProjectLine line : project.getLines()) {
                 if (line.isActive()) {
                     createProduction(project, line);
@@ -108,7 +108,7 @@ public class ProjectGenProduction extends SvrProcess {
             return;
         }
 
-        MProduct M_Product = new MProduct(getCtx(), projectLine.getProductId());
+        MProduct M_Product = new MProduct(projectLine.getProductId());
         if (!M_Product.isManufactured()) {
             addLog(
                     project.getProjectId(),
@@ -136,7 +136,7 @@ public class ProjectGenProduction extends SvrProcess {
         int AD_Org_ID = projectLine.getOrgId();
         if (AD_Org_ID == 0) {
             log.warning("createProductionfromProjectLine - orgId=0");
-            AD_Org_ID = Env.getOrgId(getCtx());
+            AD_Org_ID = Env.getOrgId();
             if (AD_Org_ID != 0) projectLine.setOrgId(AD_Org_ID);
         }
         production.setBusinessPartnerId(project.getBusinessPartnerId());
@@ -150,7 +150,7 @@ public class ProjectGenProduction extends SvrProcess {
                 production.getProductionId(),
                 production.getMovementDate(),
                 new BigDecimal(0),
-                Msg.getElement(Env.getADLanguage(Env.getCtx()), "M_Production_ID", false)
+                Msg.getElement(Env.getADLanguage(), "M_Production_ID", false)
                         + ":"
                         + production.getDocumentNo(),
                 production.getTableId(),

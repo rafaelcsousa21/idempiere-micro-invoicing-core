@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_PaymentBatch;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_PaymentBatch
  *
@@ -22,8 +20,8 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
     /**
      * Standard Constructor
      */
-    public X_C_PaymentBatch(Properties ctx, int C_PaymentBatch_ID) {
-        super(ctx, C_PaymentBatch_ID);
+    public X_C_PaymentBatch(int C_PaymentBatch_ID) {
+        super(C_PaymentBatch_ID);
         /**
          * if (C_PaymentBatch_ID == 0) { setPaymentBatchId (0); setPaymentProcessor_ID (0); setName
          * (null); setProcessed (false); setProcessing (false); }
@@ -33,8 +31,8 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
     /**
      * Load Constructor
      */
-    public X_C_PaymentBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PaymentBatch(Row row) {
+        super(row);
     }
 
     /**

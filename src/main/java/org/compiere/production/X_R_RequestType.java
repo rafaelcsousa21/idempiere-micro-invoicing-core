@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_RequestType
  *
@@ -26,8 +24,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
     /**
      * Standard Constructor
      */
-    public X_R_RequestType(Properties ctx, int R_RequestType_ID) {
-        super(ctx, R_RequestType_ID);
+    public X_R_RequestType(int R_RequestType_ID) {
+        super(R_RequestType_ID);
         /**
          * if (R_RequestType_ID == 0) { setConfidentialType (null); // C setDueDateTolerance (0); // 7
          * setIsAutoChangeRequest (false); setIsConfidentialInfo (false); // N setIsDefault (false); //
@@ -40,8 +38,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
     /**
      * Load Constructor
      */
-    public X_R_RequestType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_RequestType(Row row) {
+        super(row);
     }
 
     /**

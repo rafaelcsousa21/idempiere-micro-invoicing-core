@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_BankStatementLoader;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 public class X_C_BankStatementLoader extends BasePOName
         implements I_C_BankStatementLoader {
 
@@ -17,8 +15,8 @@ public class X_C_BankStatementLoader extends BasePOName
     /**
      * Standard Constructor
      */
-    public X_C_BankStatementLoader(Properties ctx, int C_BankStatementLoader_ID) {
-        super(ctx, C_BankStatementLoader_ID);
+    public X_C_BankStatementLoader(int C_BankStatementLoader_ID) {
+        super(C_BankStatementLoader_ID);
         /**
          * if (C_BankStatementLoader_ID == 0) { setBankAccountId (0); setBankStatementLoader_ID
          * (0); setName (null); }
@@ -28,8 +26,8 @@ public class X_C_BankStatementLoader extends BasePOName
     /**
      * Load Constructor
      */
-    public X_C_BankStatementLoader(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BankStatementLoader(Row row) {
+        super(row);
     }
 
     /**

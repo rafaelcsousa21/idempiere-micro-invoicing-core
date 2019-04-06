@@ -22,7 +22,6 @@ import org.idempiere.common.util.CLogger;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -51,7 +50,7 @@ public class DocumentTypeVerify extends SvrProcess {
      * @param trxName      transaction
      */
     public static void createDocumentTypes(
-            Properties ctx, int AD_Client_ID, SvrProcess sp) {
+            int AD_Client_ID, SvrProcess sp) {
         if (s_log.isLoggable(Level.INFO)) s_log.info("AD_Client_ID=" + AD_Client_ID);
         String sql =
                 "SELECT rl.Value, rl.Name "
@@ -69,7 +68,7 @@ public class DocumentTypeVerify extends SvrProcess {
                 String name = rs.getString(2);
                 String value = rs.getString(1);
                 if (s_log.isLoggable(Level.CONFIG)) s_log.config(name + "=" + value);
-                MDocType dt = new MDocType(ctx, value, name);
+                MDocType dt = new MDocType(value, name);
                 if (dt.save()) {
                     if (sp != null) sp.addLog(0, null, null, name);
                     else s_log.fine(name);
@@ -96,7 +95,7 @@ public class DocumentTypeVerify extends SvrProcess {
      * @param trxName      transaction
      */
     public static void createPeriodControls(
-            Properties ctx, int AD_Client_ID, SvrProcess sp) {
+            int AD_Client_ID, SvrProcess sp) {
         if (s_log.isLoggable(Level.INFO)) s_log.info("AD_Client_ID=" + AD_Client_ID);
 
         //	Delete Duplicates
@@ -143,7 +142,7 @@ public class DocumentTypeVerify extends SvrProcess {
                                     + ", DocBaseType="
                                     + DocBaseType);
                 //
-                MPeriodControl pc = new MPeriodControl(ctx, Client_ID, C_Period_ID, DocBaseType);
+                MPeriodControl pc = new MPeriodControl(Client_ID, C_Period_ID, DocBaseType);
                 if (pc.save()) {
                     counter++;
                     if (s_log.isLoggable(Level.FINE)) s_log.fine(pc.toString());
@@ -173,8 +172,8 @@ public class DocumentTypeVerify extends SvrProcess {
      * @throws Exception
      */
     protected String doIt() throws Exception {
-        createDocumentTypes(getCtx(), getClientId(), this);
-        createPeriodControls(getCtx(), getClientId(), this);
+        createDocumentTypes(getClientId(), this);
+        createPeriodControls(getClientId(), this);
         return "OK";
     } //	doIt
 } //	DocumentTypeVerify

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_POSTenderType;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_POSTenderType
  *
@@ -22,15 +20,15 @@ public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderT
     /**
      * Standard Constructor
      */
-    public X_C_POSTenderType(Properties ctx, int C_POSTenderType_ID) {
-        super(ctx, C_POSTenderType_ID);
+    public X_C_POSTenderType(int C_POSTenderType_ID) {
+        super(C_POSTenderType_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_POSTenderType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_POSTenderType(Row row) {
+        super(row);
     }
 
     /**

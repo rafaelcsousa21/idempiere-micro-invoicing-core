@@ -184,10 +184,10 @@ public class Doc_AllocationHdr extends Doc {
             //
             MPayment payment = null;
             if (line.getPaymentId() != 0)
-                payment = new MPayment(getCtx(), line.getPaymentId());
+                payment = new MPayment(line.getPaymentId());
             MInvoice invoice = null;
             if (line.getInvoiceId() != 0)
-                invoice = new MInvoice(getCtx(), line.getInvoiceId());
+                invoice = new MInvoice(line.getInvoiceId());
 
             //	No Invoice
             if (invoice == null) {
@@ -264,7 +264,7 @@ public class Doc_AllocationHdr extends Doc {
                                         getCurrencyId(),
                                         line.getAmtSource(),
                                         null);
-                        MCashLine cashLine = new MCashLine(getCtx(), line.getCashLineId());
+                        MCashLine cashLine = new MCashLine(line.getCashLineId());
                         if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                     }
                 }
@@ -414,7 +414,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getCurrencyId(),
                                     null,
                                     line.getAmtSource().negate());
-                    MCashLine cashLine = new MCashLine(getCtx(), line.getCashLineId());
+                    MCashLine cashLine = new MCashLine(line.getCashLineId());
                     if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                 }
             }
@@ -512,25 +512,25 @@ public class Doc_AllocationHdr extends Doc {
             int orgpayment = startorg;
             MPayment payment = null;
             if (line.getPaymentId() != 0) {
-                payment = new MPayment(getCtx(), line.getPaymentId());
+                payment = new MPayment(line.getPaymentId());
                 orgpayment = payment.getOrgId();
             }
             int orginvoice = startorg;
             MInvoice invoice = null;
             if (line.getInvoiceId() != 0) {
-                invoice = new MInvoice(getCtx(), line.getInvoiceId());
+                invoice = new MInvoice(line.getInvoiceId());
                 orginvoice = invoice.getOrgId();
             }
             int orgcashline = startorg;
             MCashLine cashline = null;
             if (line.getCashLineId() != 0) {
-                cashline = new MCashLine(getCtx(), line.getCashLineId());
+                cashline = new MCashLine(line.getCashLineId());
                 orgcashline = cashline.getOrgId();
             }
             int orgorder = startorg;
             MOrder order = null;
             if (line.getOrderId() != 0) {
-                order = new MOrder(getCtx(), line.getOrderId());
+                order = new MOrder(line.getOrderId());
                 orgorder = order.getOrgId();
             }
 
@@ -777,7 +777,6 @@ public class Doc_AllocationHdr extends Doc {
         if (getCurrencyId() != invoice.getCurrencyId()) {
             BigDecimal allocationSourceNew =
                     MConversionRate.convert(
-                            getCtx(),
                             allocationSource,
                             getCurrencyId(),
                             invoice.getCurrencyId(),
@@ -835,8 +834,8 @@ public class Doc_AllocationHdr extends Doc {
             return null;
         }
 
-        MAccount gain = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedGainAccount());
-        MAccount loss = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedLossAccount());
+        MAccount gain = MAccount.get(as.getAcctSchemaDefault().getRealizedGainAccount());
+        MAccount loss = MAccount.get(as.getAcctSchemaDefault().getRealizedLossAccount());
         //
         if (invoice.isSOTrx()) {
             FactLine fl = fact.createLine(line, loss, gain, as.getCurrencyId(), acctDifference);
@@ -884,7 +883,7 @@ public class Doc_AllocationHdr extends Doc {
         Doc_AllocationTax tax = new Doc_AllocationTax(
                 DiscountAccount, discount, WriteOffAccoint, writeOff, isSOTrx);
 
-        return BasePostAllocationDocumentsKt.createTaxCorrection(getCtx(), as,
+        return BasePostAllocationDocumentsKt.createTaxCorrection(as,
                 fact,
                 line,
                 tax);

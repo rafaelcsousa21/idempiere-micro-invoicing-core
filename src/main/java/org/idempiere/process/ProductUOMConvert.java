@@ -90,8 +90,8 @@ public class ProductUOMConvert extends SvrProcess {
                 || p_Qty == null
                 || Env.ZERO.compareTo(p_Qty) == 0) throw new AdempiereUserError("Invalid Parameter");
         //
-        MProduct product = MProduct.get(getCtx(), p_M_Product_ID);
-        MProduct productTo = MProduct.get(getCtx(), p_M_Product_To_ID);
+        MProduct product = MProduct.get(p_M_Product_ID);
+        MProduct productTo = MProduct.get(p_M_Product_To_ID);
         if (log.isLoggable(Level.INFO))
             log.info(
                     "Product="
@@ -104,14 +104,14 @@ public class ProductUOMConvert extends SvrProcess {
                             + p_Qty);
 
         MUOMConversion[] conversions =
-                MUOMConversion.getProductConversions(getCtx(), product.getProductId());
+                MUOMConversion.getProductConversions(product.getProductId());
         MUOMConversion conversion = null;
         for (int i = 0; i < conversions.length; i++) {
             if (conversions[i].getTargetUOMId() == productTo.getUOMId()) conversion = conversions[i];
         }
         if (conversion == null) throw new AdempiereUserError("@NotFound@: @C_UOM_Conversion_ID@");
 
-        MUOM uomTo = MUOM.get(getCtx(), productTo.getUOMId());
+        MUOM uomTo = MUOM.get(productTo.getUOMId());
         BigDecimal qtyTo =
                 p_Qty.divide(conversion.getDivideRate(), uomTo.getStdPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal qtyTo6 = p_Qty.divide(conversion.getDivideRate(), 6, BigDecimal.ROUND_HALF_UP);

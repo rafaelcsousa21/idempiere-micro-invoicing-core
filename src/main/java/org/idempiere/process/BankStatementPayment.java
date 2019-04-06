@@ -5,7 +5,6 @@ import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.MPayment;
 import org.compiere.accounting.X_I_BankStatement;
 import org.compiere.invoicing.MInvoice;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
@@ -41,9 +40,9 @@ public class BankStatementPayment extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("Table_ID=" + Table_ID + ", Record_ID=" + Record_ID);
 
         if (Table_ID == X_I_BankStatement.Table_ID)
-            return createPayment(new X_I_BankStatement(getCtx(), Record_ID));
+            return createPayment(new X_I_BankStatement(Record_ID));
         else if (Table_ID == MBankStatementLine.Table_ID)
-            return createPayment(new MBankStatementLine(getCtx(), Record_ID));
+            return createPayment(new MBankStatementLine(Record_ID));
 
         throw new AdempiereSystemError("??");
     } //	doIt
@@ -104,7 +103,7 @@ public class BankStatementPayment extends SvrProcess {
         if (bsl.getInvoiceId() == 0 && bsl.getBusinessPartnerId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
         //
-        MBankStatement bs = new MBankStatement(getCtx(), bsl.getBankStatementId());
+        MBankStatement bs = new MBankStatement(bsl.getBankStatementId());
         //
         MPayment payment =
                 createPayment(
@@ -163,7 +162,7 @@ public class BankStatementPayment extends SvrProcess {
             throw new IllegalStateException("@PayAmt@ = 0");
         if (PayAmt == null) PayAmt = Env.ZERO;
         //
-        MPayment payment = new MPayment(getCtx(), 0);
+        MPayment payment = new MPayment(0);
         payment.setOrgId(AD_Org_ID);
         payment.setBankAccountId(C_BankAccount_ID);
         payment.setTenderType(MPayment.TENDERTYPE_Check);
@@ -174,7 +173,7 @@ public class BankStatementPayment extends SvrProcess {
         payment.setDescription(Description);
         //
         if (C_Invoice_ID != 0) {
-            MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID);
+            MInvoice invoice = new MInvoice(C_Invoice_ID);
             payment.setDocumentTypeId(invoice.isSOTrx()); // 	Receipt
             payment.setInvoiceId(invoice.getInvoiceId());
             payment.setBusinessPartnerId(invoice.getBusinessPartnerId());

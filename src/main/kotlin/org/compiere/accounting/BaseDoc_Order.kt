@@ -1,13 +1,12 @@
 package org.compiere.accounting
 
-import org.compiere.bo.MCurrency
+import org.compiere.bo.getCurrencyStdPrecision
 import org.compiere.tax.MTax
 import org.idempiere.common.exceptions.AdempiereException
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.asResource
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
-import java.util.Properties
 import java.util.logging.Level
 import kotlin.collections.HashMap
 import kotlin.collections.indices
@@ -27,8 +26,8 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
     var precision = -1
     var maxQty = maxQuantity
 
-    return "/sql/getBPLocation.sql".asResource {sql ->
-        val query = queryOf(sql, listOf(M_InOutLine_ID)).map { row -> MOrderLine(doc.ctx, row) }.asList
+    return "/sql/getBPLocation.sql".asResource { sql ->
+        val query = queryOf(sql, listOf(M_InOutLine_ID)).map { row -> MOrderLine(row) }.asList
         val items = DB.current.run(query)
 
         items.map { line ->
@@ -37,7 +36,7 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
             // 	Currency
             if (precision == -1) {
                 doc.currencyId = docLine.currencyId
-                precision = MCurrency.getStdPrecision(doc.ctx, docLine.currencyId)
+                precision = getCurrencyStdPrecision(docLine.currencyId)
             }
             // 	Qty
             val qty = line.qtyOrdered.max(maxQty)
@@ -59,7 +58,7 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
             val taxId = docLine.taxId
             // 	Correct included Tax
             if (taxId != 0 && line.parent.isTaxIncluded) {
-                val tax = MTax.get(doc.ctx, taxId)
+                val tax = MTax.get(taxId)
                 if (!tax.isZeroTax) {
                     val lineNetAmtTax = tax.calculateTax(lineNetAmt, true, precision)
                     if (Doc.s_log.isLoggable(Level.FINE))
@@ -81,7 +80,7 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
  *
  * @return requisition lines of Order
  */
-fun loadRequisitions(ctx: Properties, order: MOrder, docOrder: Doc_Order): Array<DocLine> {
+fun loadRequisitions(order: MOrder, docOrder: Doc_Order): Array<DocLine> {
     val oLines = order.lines
     val quantities = HashMap<Int, BigDecimal>()
     for (i in oLines.indices) {
@@ -91,7 +90,7 @@ fun loadRequisitions(ctx: Properties, order: MOrder, docOrder: Doc_Order): Array
 
     return "/sql/loadRequisitions.sql".asResource { sql ->
 
-        val query = queryOf(sql, listOf(order.orderId)).map { row -> MRequisitionLine(ctx, row) }.asList
+        val query = queryOf(sql, listOf(order.orderId)).map { row -> MRequisitionLine(row) }.asList
         val items = DB.current.run(query)
         items.mapNotNull { line ->
             val docLine = DocLine(line, docOrder)
@@ -128,7 +127,7 @@ fun getCommitments(doc: Doc, QtyInvoicedOrMatched: BigDecimal, C_InvoiceLine_ID:
     //
     return "/sql/getBPLocation.sql".asResource { sql ->
         val query =
-            queryOf(sql, listOf(C_InvoiceLine_ID, C_InvoiceLine_ID)).map { row -> MOrderLine(doc.ctx, row) }
+            queryOf(sql, listOf(C_InvoiceLine_ID, C_InvoiceLine_ID)).map { row -> MOrderLine(row) }
                 .asList
         val items = DB.current.run(query)
         items.map { line ->
@@ -136,7 +135,7 @@ fun getCommitments(doc: Doc, QtyInvoicedOrMatched: BigDecimal, C_InvoiceLine_ID:
             // 	Currency
             if (precision == -1) {
                 doc.currencyId = docLine.currencyId
-                precision = MCurrency.getStdPrecision(doc.ctx, docLine.currencyId)
+                precision = getCurrencyStdPrecision(docLine.currencyId)
             }
             // 	Qty
             val qty = line.qtyOrdered.max(maxQty)
@@ -158,7 +157,7 @@ fun getCommitments(doc: Doc, QtyInvoicedOrMatched: BigDecimal, C_InvoiceLine_ID:
             val taxId = docLine.taxId
             // 	Correct included Tax
             if (taxId != 0 && line.parent.isTaxIncluded) {
-                val tax = MTax.get(doc.ctx, taxId)
+                val tax = MTax.get(taxId)
                 if (!tax.isZeroTax) {
                     val lineNetAmtTax = tax.calculateTax(lineNetAmt, true, precision)
                     if (Doc.s_log.isLoggable(Level.FINE))

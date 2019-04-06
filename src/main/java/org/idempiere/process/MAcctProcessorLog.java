@@ -3,8 +3,6 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.util.Properties;
-
 public class MAcctProcessorLog extends X_C_AcctProcessorLog implements AdempiereProcessorLog {
 
     /**
@@ -18,8 +16,8 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
      * @param ctx                   context
      * @param C_AcctProcessorLog_ID id
      */
-    public MAcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
-        super(ctx, C_AcctProcessorLog_ID);
+    public MAcctProcessorLog(int C_AcctProcessorLog_ID) {
+        super(C_AcctProcessorLog_ID);
     } //	MAcctProcessorLog
 
     /**
@@ -27,8 +25,8 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
      *
      * @param ctx context
      */
-    public MAcctProcessorLog(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAcctProcessorLog(Row row) {
+        super(row);
     } //	MAcctProcessorLog
 
     /**
@@ -38,7 +36,7 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
      * @param summary summary
      */
     public MAcctProcessorLog(MAcctProcessor parent, String summary) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setAccountingProcessorId(parent.getAccountingProcessorId());
         setSummary(summary);

@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.crm.MUser;
+import org.compiere.crm.MUserKt;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -59,16 +58,11 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
     /**
      * Standard Constructor
      *
-     * @param ctx              context
      * @param M_Requisition_ID id
      */
-    public MRequisition(Properties ctx, int M_Requisition_ID) {
-        super(ctx, M_Requisition_ID);
+    public MRequisition(int M_Requisition_ID) {
+        super(M_Requisition_ID);
         if (M_Requisition_ID == 0) {
-            //	setDocumentNo (null);
-            //	setUserId (0);
-            //	setPriceListId (0);
-            //	setWarehouseId(0);
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             setDateRequired(new Timestamp(System.currentTimeMillis()));
             setDocAction(DocAction.Companion.getACTION_Complete()); // CO
@@ -83,11 +77,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MRequisition(Properties ctx, Row row) {
-        super(ctx, row);
+    public MRequisition(Row row) {
+        super(row);
     } //	MRequisition
 
     /**
@@ -103,7 +95,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         // red1 - FR: [ 2214883 ] Remove SQL code and Replace for Query
         final String whereClause = I_M_RequisitionLine.COLUMNNAME_M_Requisition_ID + "=?";
         List<MRequisitionLine> list =
-                new Query(getCtx(), I_M_RequisitionLine.Table_Name, whereClause)
+                new Query(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy(I_M_RequisitionLine.COLUMNNAME_Line)
                         .list();
@@ -139,15 +131,15 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement(getCtx(), "M_Requisition_ID") + " " + getDocumentNo();
+        return Msg.getElement("M_Requisition_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
      * Set default PriceList
      */
     public void setPriceListId() {
-        MPriceList defaultPL = MPriceList.getDefault(getCtx(), false);
-        if (defaultPL == null) defaultPL = MPriceList.getDefault(getCtx(), true);
+        MPriceList defaultPL = MPriceList.getDefault(false);
+        if (defaultPL == null) defaultPL = MPriceList.getDefault(true);
         if (defaultPL != null) setPriceListId(defaultPL.getPriceListId());
     } //	setPriceListId()
 
@@ -227,10 +219,10 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
 
         //	Std Period open?
         MPeriod.testPeriodOpen(
-                getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
+                getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
 
         //	Add up Amounts
-        int precision = MPriceList.getStandardPrecision(getCtx(), getPriceListId());
+        int precision = MPriceList.getStandardPrecision(getPriceListId());
         BigDecimal totalLines = Env.ZERO;
         for (int i = 0; i < lines.length; i++) {
             MRequisitionLine line = lines[i];
@@ -322,11 +314,11 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(
-                    getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
+                    getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
             String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
@@ -374,7 +366,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
             BigDecimal finalQty = line.getQty();
             if (line.getOrderLineId() == 0) finalQty = Env.ZERO;
             else {
-                MOrderLine ol = new MOrderLine(getCtx(), line.getOrderLineId());
+                MOrderLine ol = new MOrderLine(line.getOrderLineId());
                 finalQty = ol.getQtyOrdered();
             }
             //	final qty is not line qty
@@ -477,7 +469,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         sb.append(" - ").append(getUserName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "TotalLines"))
+                .append(Msg.translate("TotalLines"))
                 .append("=")
                 .append(getTotalLines())
                 .append(" (#")
@@ -514,7 +506,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return C_Currency_ID
      */
     public int getCurrencyId() {
-        MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+        MPriceList pl = MPriceList.get(getPriceListId());
         return pl.getCurrencyId();
     }
 
@@ -534,7 +526,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return user name
      */
     public String getUserName() {
-        return MUser.get(getCtx(), getUserId()).getName();
+        return MUserKt.getUser(getUserId()).getName();
     } //	getUserName
 
     /**

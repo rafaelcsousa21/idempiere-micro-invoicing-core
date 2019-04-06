@@ -16,7 +16,6 @@ import org.idempiere.icommon.model.IPO;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 import java.util.TreeSet;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -49,8 +48,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @param AD_Scheduler_ID id
      * @param trxName         transaction
      */
-    public MScheduler(Properties ctx, int AD_Scheduler_ID) {
-        super(ctx, AD_Scheduler_ID);
+    public MScheduler(int AD_Scheduler_ID) {
+        super(AD_Scheduler_ID);
         if (AD_Scheduler_ID == 0) {
             setKeepLogDays(7);
         }
@@ -63,8 +62,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @param rs      result set
      * @param trxName transaction
      */
-    public MScheduler(Properties ctx, Row row) {
-        super(ctx, row);
+    public MScheduler(Row row) {
+        super(row);
     } //	MScheduler
 
     /**
@@ -74,7 +73,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @return date next run
      */
     public Timestamp getDateNextRun(boolean requery) {
-        if (requery) load((HashMap) null);
+        if (requery) loadFromMap(null);
         return getDateNextRun();
     } //	getDateNextRun
 
@@ -107,7 +106,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         //
         final String whereClause = MSchedulerPara.COLUMNNAME_AD_Scheduler_ID + "=?";
         List<MSchedulerPara> list =
-                new Query(getCtx(), I_AD_Scheduler_Para.Table_Name, whereClause)
+                new Query(I_AD_Scheduler_Para.Table_Name, whereClause)
                         .setParameters(getSchedulerId())
                         .setOnlyActiveRecords(true)
                         .list();
@@ -127,7 +126,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         //
         final String whereClause = MSchedulerRecipient.COLUMNNAME_AD_Scheduler_ID + "=?";
         List<MSchedulerRecipient> list =
-                new Query(getCtx(), I_AD_SchedulerRecipient.Table_Name, whereClause)
+                new Query(I_AD_SchedulerRecipient.Table_Name, whereClause)
                         .setParameters(getSchedulerId())
                         .setOnlyActiveRecords(true)
                         .list();
@@ -151,7 +150,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
                 list.add(recipient.getUserId());
             }
             if (recipient.getRoleId() != 0) {
-                MUserRoles[] urs = MUserRoles.getOfRole(getCtx(), recipient.getRoleId());
+                MUserRoles[] urs = MUserRoles.getOfRole(recipient.getRoleId());
                 for (int j = 0; j < urs.length; j++) {
                     MUserRoles ur = urs[j];
                     if (!ur.isActive()) continue;
@@ -177,7 +176,6 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
             // Validate the table has any button referencing the process
             int colid =
                     new Query(
-                            getCtx(),
                             MColumn.Table_Name,
                             "AD_Table_ID=? AND AD_Reference_ID=? AND AD_Process_ID=?"
                     )
@@ -185,7 +183,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
                             .setParameters(getDBTableId(), DisplayType.Button, getProcessId())
                             .firstId();
             if (colid <= 0) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "TableMustHaveProcessButton"));
+                log.saveError("Error", Msg.getMsg("TableMustHaveProcessButton"));
                 return false;
             }
         } else {
@@ -195,14 +193,14 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         if (getRecordId() != 0) {
             // Validate AD_Table_ID must be set
             if (getDBTableId() <= 0) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "MustFillTable"));
+                log.saveError("Error", Msg.getMsg("MustFillTable"));
                 return false;
             }
             // Validate the record must exists on the same client of the scheduler
-            MTable table = MTable.get(getCtx(), getDBTableId());
+            MTable table = MTable.get(getDBTableId());
             IPO po = table.getPO(getRecordId());
             if (po == null || po.getId() <= 0 || po.getClientId() != getClientId()) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "NoRecordID"));
+                log.saveError("Error", Msg.getMsg("NoRecordID"));
                 return false;
             }
         }
@@ -234,27 +232,27 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
 
     @Override
     public String getFrequencyType() {
-        return MSchedule.get(getCtx(), getScheduleId()).getFrequencyType();
+        return MSchedule.get(getScheduleId()).getFrequencyType();
     }
 
     @Override
     public int getFrequency() {
-        return MSchedule.get(getCtx(), getScheduleId()).getFrequency();
+        return MSchedule.get(getScheduleId()).getFrequency();
     }
 
     @Override
     public boolean isIgnoreProcessingTime() {
-        return MSchedule.get(getCtx(), getScheduleId()).isIgnoreProcessingTime();
+        return MSchedule.get(getScheduleId()).isIgnoreProcessingTime();
     }
 
     @Override
     public String getScheduleType() {
-        return MSchedule.get(getCtx(), getScheduleId()).getScheduleType();
+        return MSchedule.get(getScheduleId()).getScheduleType();
     }
 
     @Override
     public String getCronPattern() {
-        return MSchedule.get(getCtx(), getScheduleId()).getCronPattern();
+        return MSchedule.get(getScheduleId()).getCronPattern();
     }
 
     /**

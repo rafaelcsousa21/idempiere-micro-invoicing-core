@@ -5,7 +5,6 @@ import org.compiere.model.I_A_Depreciation_Entry;
 import org.compiere.orm.PO;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for A_Depreciation_Entry
@@ -43,15 +42,15 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     /**
      * Standard Constructor
      */
-    public X_A_Depreciation_Entry(Properties ctx, int A_Depreciation_Entry_ID) {
-        super(ctx, A_Depreciation_Entry_ID);
+    public X_A_Depreciation_Entry(int A_Depreciation_Entry_ID) {
+        super(A_Depreciation_Entry_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_A_Depreciation_Entry(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_A_Depreciation_Entry(Row row) {
+        super(row);
     }
 
     /**

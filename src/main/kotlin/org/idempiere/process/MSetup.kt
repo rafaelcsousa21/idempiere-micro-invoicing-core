@@ -20,6 +20,7 @@ import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair
+import software.hsharp.core.util.Environment
 import software.hsharp.core.util.convertString
 import software.hsharp.core.util.executeUpdateEx
 import software.hsharp.core.util.prepareStatement
@@ -27,7 +28,6 @@ import java.io.File
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
-import java.util.Properties
 import java.util.logging.Level
 import java.util.UUID
 
@@ -37,12 +37,11 @@ class MSetup
  * @param ctx context
  * @param WindowNo window
  */
-    (ctx: Properties, private val m_WindowNo: Int) {
+    (private val m_WindowNo: Int) {
 
     /**	Logger			 */
     protected var log : CLogger = CLogger.getCLogger(javaClass)
 
-    private val m_ctx: Properties = Properties(ctx)
     private val m_lang: String
     private var m_info: StringBuffer = StringBuffer()
     //
@@ -54,8 +53,9 @@ class MSetup
     private var m_stdValuesOrg: String? = null
     //
     private var m_nap: NaturalAccountMap<String, MElementValue>? = null
+
     //
-    private var m_client: MClient = MClient(m_ctx, 0, true)
+    private var m_client: MClient = MClient(0, true)
     private var m_org: MOrg? = null
     private var m_as: MAcctSchema? = null
     //
@@ -98,7 +98,7 @@ class MSetup
 
     init {
         //	copy
-        m_lang = Env.getADLanguage(m_ctx)
+        m_lang = Env.getADLanguage()
     }   //  MSetup
 
     /**
@@ -133,7 +133,7 @@ class MSetup
         if (name.isEmpty())
             name = "newClient"
         m_clientName = name
-        m_client = MClient(m_ctx, 0, true)
+        m_client = MClient(0, true)
         m_client.searchKey = m_clientName!!
         m_client.name = m_clientName!!
         if (!m_client.save()) {
@@ -143,8 +143,7 @@ class MSetup
             throw Error(err)
         }
         val AD_Client_ID = m_client.clientId
-        Env.setContext(m_ctx, m_WindowNo, "AD_Client_ID", AD_Client_ID)
-        Env.setContext(m_ctx, "#AD_Client_ID", AD_Client_ID)
+        Environment.current.login(AD_Client_ID, 0, 0)
 
         //	Standard Values
         m_stdValues = AD_Client_ID.toString() + ",0,'Y',SysDate,0,SysDate,0"
@@ -152,7 +151,7 @@ class MSetup
         m_info.append(Msg.translate(m_lang, "AD_Client_ID")).append("=").append(name).append("\n")
 
         //	Setup Sequences
-        if (!checkClientSequences(m_ctx, AD_Client_ID)) {
+        if (!checkClientSequences(AD_Client_ID)) {
             val err = "Sequences NOT created"
             log.log(Level.SEVERE, err)
             m_info.append(err)
@@ -183,14 +182,14 @@ class MSetup
             m_info.append(err)
             throw Error(err)
         }
-        Env.setContext(m_ctx, m_WindowNo, "AD_Org_ID", aD_Org_ID)
-        Env.setContext(m_ctx, "#AD_Org_ID", aD_Org_ID)
+        Environment.current.login(AD_Client_ID, aD_Org_ID, 0)
+
         m_stdValuesOrg = AD_Client_ID.toString() + "," + aD_Org_ID + ",'Y',SysDate,0,SysDate,0"
         //  Info
         m_info.append(Msg.translate(m_lang, "AD_Org_ID")).append("=").append(name).append("\n")
 
         // Set Organization Phone, Phone2, Fax, EMail
-        val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID)
+        val orgInfo = MOrgInfo.get(aD_Org_ID)
         orgInfo!!.setPhone(phone)
         orgInfo.setPhone2(phone2)
         orgInfo.setFax(fax)
@@ -211,7 +210,7 @@ class MSetup
          * - User
          */
         name = m_clientName!! + " Admin"
-        val admin = MRole(m_ctx, 0)
+        val admin = MRole(0)
         admin.setClientOrg(m_client)
         admin.name = name
         admin.userLevel = MRole.USERLEVEL_ClientPlusOrganization
@@ -238,7 +237,7 @@ class MSetup
 
         //
         name = m_clientName!! + " User"
-        val user = MRole(m_ctx, 0)
+        val user = MRole(0)
         user.setClientOrg(m_client)
         user.name = name
         user.setIsAccessAdvanced(false)
@@ -261,7 +260,7 @@ class MSetup
          * - Client
          * - Org
          */
-        val clientAdminUser = MUser(m_ctx, 0)
+        val clientAdminUser = MUser(0)
 
         name = userClient
         if (name.isEmpty())
@@ -292,7 +291,7 @@ class MSetup
         m_info.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_Name).append("/")
             .append(AD_User_Name).append("\n")
 
-        val clientUser = MUser(m_ctx, 0)
+        val clientUser = MUser(0)
 
         name = userOrg
         if (name.isEmpty())
@@ -427,7 +426,7 @@ class MSetup
         m_info.append(Msg.translate(m_lang, "C_Element_ID")).append("=").append(name).append("\n")
 
         //	Create Account Values
-        m_nap = NaturalAccountMap(m_ctx)
+        m_nap = NaturalAccountMap()
         val errMsg = m_nap!!.parseFile(AccountingFile)
         if (errMsg.length != 0) {
             log.log(Level.SEVERE, errMsg)
@@ -605,7 +604,7 @@ class MSetup
 
         //	Base DocumentTypes
         val ii = createDocType(
-            "GL Journal", Msg.getElement(m_ctx, "GL_Journal_ID"),
+            "GL Journal", Msg.getElement("GL_Journal_ID"),
             MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 1000, GL_GL, false
         )
         if (ii == 0) {
@@ -614,44 +613,44 @@ class MSetup
             throw Error(err)
         }
         createDocType(
-            "GL Journal Batch", Msg.getElement(m_ctx, "GL_JournalBatch_ID"),
+            "GL Journal Batch", Msg.getElement("GL_JournalBatch_ID"),
             MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 100, GL_GL, false
         )
         //	MDocType.DOCBASETYPE_GLDocument
         //
         val DT_I = createDocType(
-            "AR Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", true),
+            "AR Invoice", Msg.getElement("C_Invoice_ID", true),
             MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 100000, GL_ARI, false
         )
         val DT_II = createDocType(
-            "AR Invoice Indirect", Msg.getElement(m_ctx, "C_Invoice_ID", true),
+            "AR Invoice Indirect", Msg.getElement("C_Invoice_ID", true),
             MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 150000, GL_ARI, false
         )
         val DT_IC = createDocType(
-            "AR Credit Memo", Msg.getMsg(m_ctx, "CreditMemo"),
+            "AR Credit Memo", Msg.getMsg("CreditMemo"),
             MDocType.DOCBASETYPE_ARCreditMemo, null, 0, 0, 170000, GL_ARI, false
         )
         //	MDocType.DOCBASETYPE_ARProFormaInvoice
 
         createDocType(
-            "AP Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", false),
+            "AP Invoice", Msg.getElement("C_Invoice_ID", false),
             MDocType.DOCBASETYPE_APInvoice, null, 0, 0, 0, GL_API, false
         )
         val DT_IPC = createDocType(
-            "AP CreditMemo", Msg.getMsg(m_ctx, "CreditMemo"),
+            "AP CreditMemo", Msg.getMsg("CreditMemo"),
             MDocType.DOCBASETYPE_APCreditMemo, null, 0, 0, 0, GL_API, false
         )
         createDocType(
-            "Match Invoice", Msg.getElement(m_ctx, "M_MatchInv_ID", false),
+            "Match Invoice", Msg.getElement("M_MatchInv_ID", false),
             MDocType.DOCBASETYPE_MatchInvoice, null, 0, 0, 390000, GL_API, false
         )
 
         createDocType(
-            "AR Receipt", Msg.getElement(m_ctx, "C_Payment_ID", true),
+            "AR Receipt", Msg.getElement("C_Payment_ID", true),
             MDocType.DOCBASETYPE_ARReceipt, null, 0, 0, 0, GL_ARR, false
         )
         createDocType(
-            "AP Payment", Msg.getElement(m_ctx, "C_Payment_ID", false),
+            "AP Payment", Msg.getElement("C_Payment_ID", false),
             MDocType.DOCBASETYPE_APPayment, null, 0, 0, 0, GL_APP, false
         )
         createDocType(
@@ -682,15 +681,15 @@ class MSetup
         )
 
         createDocType(
-            "Purchase Order", Msg.getElement(m_ctx, "C_Order_ID", false),
+            "Purchase Order", Msg.getElement("C_Order_ID", false),
             MDocType.DOCBASETYPE_PurchaseOrder, null, 0, 0, 800000, GL_None, false
         )
         createDocType(
-            "Match PO", Msg.getElement(m_ctx, "M_MatchPO_ID", false),
+            "Match PO", Msg.getElement("M_MatchPO_ID", false),
             MDocType.DOCBASETYPE_MatchPO, null, 0, 0, 890000, GL_None, false
         )
         createDocType(
-            "Purchase Requisition", Msg.getElement(m_ctx, "M_Requisition_ID", false),
+            "Purchase Requisition", Msg.getElement("M_Requisition_ID", false),
             MDocType.DOCBASETYPE_PurchaseRequisition, null, 0, 0, 900000, GL_None, false
         )
         createDocType(
@@ -700,21 +699,21 @@ class MSetup
         )
 
         createDocType(
-            "Bank Statement", Msg.getElement(m_ctx, "C_BankStatemet_ID", true),
+            "Bank Statement", Msg.getElement("C_BankStatemet_ID", true),
             MDocType.DOCBASETYPE_BankStatement, null, 0, 0, 700000, GL_CASH, false
         )
         createDocType(
-            "Cash Journal", Msg.getElement(m_ctx, "C_Cash_ID", true),
+            "Cash Journal", Msg.getElement("C_Cash_ID", true),
             MDocType.DOCBASETYPE_CashJournal, null, 0, 0, 750000, GL_CASH, false
         )
 
         createDocType(
-            "Material Movement", Msg.getElement(m_ctx, "M_Movement_ID", false),
+            "Material Movement", Msg.getElement("M_Movement_ID", false),
             MDocType.DOCBASETYPE_MaterialMovement, null, 0, 0, 610000, GL_MM, false
         )
         createDocType(
             "Physical Inventory",
-            Msg.getElement(m_ctx, "M_Inventory_ID", false),
+            Msg.getElement("M_Inventory_ID", false),
             MDocType.DOCBASETYPE_MaterialPhysicalInventory,
             MDocType.DOCSUBTYPEINV_PhysicalInventory,
             0,
@@ -724,11 +723,11 @@ class MSetup
             false
         )
         createDocType(
-            "Material Production", Msg.getElement(m_ctx, "M_Production_ID", false),
+            "Material Production", Msg.getElement("M_Production_ID", false),
             MDocType.DOCBASETYPE_MaterialProduction, null, 0, 0, 630000, GL_MM, false
         )
         createDocType(
-            "Project Issue", Msg.getElement(m_ctx, "C_ProjectIssue_ID", false),
+            "Project Issue", Msg.getElement("C_ProjectIssue_ID", false),
             MDocType.DOCBASETYPE_ProjectIssue, null, 0, 0, 640000, GL_MM, false
         )
         createDocType(
@@ -850,7 +849,7 @@ class MSetup
         processInfo.setADClientID(aD_Client_ID)
         processInfo.userId = aD_User_ID
         processInfo.parameter = arrayOfNulls<ProcessInfoParameter>(0)
-        if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, null, DocumentTypeVerify())) {
+        if (!ProcessUtil.startJavaProcess(processInfo, null, DocumentTypeVerify())) {
             val err = "Document type verification failed. Message=" + processInfo.summary!!
             log.log(Level.SEVERE, err)
             m_info.append(err)
@@ -863,7 +862,7 @@ class MSetup
 
     @Throws(Exception::class)
     private fun createAccountingRecord(tableName: String) {
-        val table = MTable.get(m_ctx, tableName)
+        val table = MTable.get(tableName)
         val acct = table.getPO(-1) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
 
         val cols = table.getColumns(false)
@@ -925,7 +924,7 @@ class MSetup
      * @return GL_Category_ID
      */
     private fun createGLCategory(Name: String, CategoryType: String, isDefault: Boolean): Int {
-        val cat = MGLCategory(m_ctx, 0)
+        val cat = MGLCategory(0)
         cat.name = Name
         cat.categoryType = CategoryType
         cat.setIsDefault(isDefault)
@@ -958,14 +957,14 @@ class MSetup
     ): Int {
         var sequence: MSequence? = null
         if (StartNo != 0) {
-            sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo)
+            sequence = MSequence(aD_Client_ID, Name, StartNo)
             if (!sequence.save()) {
                 log.log(Level.SEVERE, "Sequence NOT created - $Name")
                 return 0
             }
         }
 
-        val dt = MDocType(m_ctx, DocBaseType, Name)
+        val dt = MDocType(DocBaseType, Name)
         if (PrintName != null && PrintName.length > 0)
             dt.printName = PrintName    //	Defaults to Name
         if (DocSubTypeSO != null) {
@@ -1151,7 +1150,7 @@ class MSetup
          * Business Partner
          */
         //  Create BP Group
-        val bpg = MBPGroup(m_ctx, 0)
+        val bpg = MBPGroup(0)
         bpg.setValue(defaultName)
         bpg.name = defaultName
         bpg.setIsDefault(true)
@@ -1161,7 +1160,7 @@ class MSetup
             log.log(Level.SEVERE, "BP Group NOT inserted")
 
         //	Create BPartner
-        val bp = MBPartner(m_ctx, 0)
+        val bp = MBPartner(0)
         bp.searchKey = defaultName
         bp.name = defaultName
         bp.setBPGroup(bpg)
@@ -1170,7 +1169,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "BPartner NOT inserted")
         //  Location for Standard BP
-        val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
+        val bpLoc = MLocation(C_Country_ID, C_Region_ID, City)
         bpLoc.saveEx()
         val bpl = MBPartnerLocation(bp)
         bpl.locationId = bpLoc.locationId
@@ -1190,7 +1189,7 @@ class MSetup
          * Product
          */
         //  Create Product Category
-        val pc = MProductCategory(m_ctx, 0)
+        val pc = MProductCategory(0)
         pc.setSearchKey(defaultName)
         pc.name = defaultName
         pc.setIsDefault(true)
@@ -1230,7 +1229,7 @@ class MSetup
             log.log(Level.SEVERE, "TaxCategory Translation NOT inserted")
 
         //  Tax - Zero Rate
-        val tax = MTax(m_ctx, "Standard", Env.ZERO, C_TaxCategory_ID)
+        val tax = MTax("Standard", Env.ZERO, C_TaxCategory_ID)
         tax.setIsDefault(true)
         if (tax.save())
             m_info.append(Msg.translate(m_lang, "C_Tax_ID"))
@@ -1239,7 +1238,7 @@ class MSetup
             log.log(Level.SEVERE, "Tax NOT inserted")
 
         //	Create Product
-        val product = MProduct(m_ctx, 0)
+        val product = MProduct(0)
         product.searchKey = defaultName
         product.name = defaultName
         product.uomId = C_UOM_ID
@@ -1262,7 +1261,7 @@ class MSetup
          * Location, Warehouse, Locator
          */
         //  Location (Company)
-        val loc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
+        val loc = MLocation(C_Country_ID, C_Region_ID, City)
         loc.address1 = address1
         loc.postal = postal
         loc.saveEx()
@@ -1274,11 +1273,11 @@ class MSetup
         createPreference("C_Country_ID", C_Country_ID.toString(), 0)
 
         //  Default Warehouse
-        val locwh = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
+        val locwh = MLocation(C_Country_ID, C_Region_ID, City)
         locwh.address1 = address1
         locwh.postal = postal
         locwh.saveEx()
-        val wh = MWarehouse(m_ctx, 0)
+        val wh = MWarehouse(0)
         wh.setSearchKey(defaultName)
         wh.name = defaultName
         wh.setLocationId(locwh.locationId)
@@ -1308,14 +1307,14 @@ class MSetup
          * Other
          */
         //  PriceList
-        val pl = MPriceList(m_ctx, 0)
+        val pl = MPriceList(0)
         pl.name = defaultName
         pl.currencyId = C_Currency_ID
         pl.setIsDefault(true)
         if (!pl.save())
             log.log(Level.SEVERE, "PriceList NOT inserted")
         //  Price List
-        val ds = MDiscountSchema(m_ctx, 0)
+        val ds = MDiscountSchema(0)
         ds.name = defaultName
         ds.discountType = MDiscountSchema.DISCOUNTTYPE_Pricelist
         if (!ds.save())
@@ -1336,7 +1335,7 @@ class MSetup
 
 
         //	Create Sales Rep for Client-User
-        val bpCU = MBPartner(m_ctx, 0)
+        val bpCU = MBPartner(0)
         bpCU.searchKey = AD_User_U_Name!!
         bpCU.name = AD_User_U_Name!!
         bpCU.setBPGroup(bpg)
@@ -1347,7 +1346,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (User) NOT inserted")
         //  Location for Client-User
-        val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
+        val bpLocCU = MLocation(C_Country_ID, C_Region_ID, City)
         bpLocCU.saveEx()
         val bplCU = MBPartnerLocation(bpCU)
         bplCU.locationId = bpLocCU.locationId
@@ -1362,7 +1361,7 @@ class MSetup
 
 
         //	Create Sales Rep for Client-Admin
-        val bpCA = MBPartner(m_ctx, 0)
+        val bpCA = MBPartner(0)
         bpCA.searchKey = AD_User_Name!!
         bpCA.name = AD_User_Name!!
         bpCA.setBPGroup(bpg)
@@ -1373,7 +1372,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (Admin) NOT inserted")
         //  Location for Client-Admin
-        val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
+        val bpLocCA = MLocation(C_Country_ID, C_Region_ID, City)
         bpLocCA.saveEx()
         val bplCA = MBPartnerLocation(bpCA)
         bplCA.locationId = bpLocCA.locationId
@@ -1450,7 +1449,7 @@ class MSetup
         }
 
         //  CashBook
-        val cb = MCashBook(m_ctx, 0)
+        val cb = MCashBook(0)
         cb.name = defaultName
         cb.currencyId = C_Currency_ID
         if (cb.save())

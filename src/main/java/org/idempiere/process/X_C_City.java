@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_City;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 public class X_C_City extends BasePOName implements I_C_City {
 
     /**
@@ -16,15 +14,15 @@ public class X_C_City extends BasePOName implements I_C_City {
     /**
      * Standard Constructor
      */
-    public X_C_City(Properties ctx, int C_City_ID) {
-        super(ctx, C_City_ID);
+    public X_C_City(int C_City_ID) {
+        super(C_City_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_City(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_City(Row row) {
+        super(row);
     }
 
     /**

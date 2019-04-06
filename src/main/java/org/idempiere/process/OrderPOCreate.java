@@ -127,7 +127,7 @@ public class OrderPOCreate extends SvrProcess {
         }
         int counter = 0;
 
-        MOrder[] orders = BaseOrderPOCreateKt.getOrdersForPO(getCtx(), sql.toString(),
+        MOrder[] orders = BaseOrderPOCreateKt.getOrdersForPO(sql.toString(),
                 p_C_Order_ID, p_C_BPartner_ID, p_Vendor_ID,
                 p_DateOrdered_From, p_DateOrdered_To
         );
@@ -179,7 +179,7 @@ public class OrderPOCreate extends SvrProcess {
                 int C_BPartner_ID = rs.getInt(1);
                 if (po == null || po.getBill_BPartnerId() != C_BPartner_ID) {
                     po = createPOForVendor(rs.getInt(1), so);
-                    String message = Msg.parseTranslation(getCtx(), "@OrderCreated@ " + po.getDocumentNo());
+                    String message = Msg.parseTranslation("@OrderCreated@ " + po.getDocumentNo());
                     addBufferLog(0, null, null, message, po.getTableId(), po.getOrderId());
                     counter++;
                 }
@@ -229,7 +229,7 @@ public class OrderPOCreate extends SvrProcess {
      * @param so            sales order
      */
     public MOrder createPOForVendor(int C_BPartner_ID, MOrder so) {
-        MOrder po = new MOrder(getCtx(), 0);
+        MOrder po = new MOrder(0);
         po.setClientOrg(so.getClientId(), so.getOrgId());
         po.setLink_OrderId(so.getOrderId());
         po.setIsSOTrx(false);
@@ -241,7 +241,7 @@ public class OrderPOCreate extends SvrProcess {
         po.setSalesRepresentativeId(so.getSalesRepresentativeId());
         po.setWarehouseId(so.getWarehouseId());
         //	Set Vendor
-        MBPartner vendor = new MBPartner(getCtx(), C_BPartner_ID);
+        MBPartner vendor = new MBPartner(C_BPartner_ID);
         po.setBPartner(vendor);
         //	Drop Ship
         if (p_IsDropShip) {
@@ -259,7 +259,7 @@ public class OrderPOCreate extends SvrProcess {
                 po.setDropShipUserId(so.getUserId());
             }
             // get default drop ship warehouse
-            MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId());
+            MOrgInfo orginfo = MOrgInfo.get(po.getOrgId());
             if (orginfo.getDropShipWarehouseId() != 0)
                 po.setWarehouseId(orginfo.getDropShipWarehouseId());
             else log.log(Level.SEVERE, "Must specify drop ship warehouse in org info.");

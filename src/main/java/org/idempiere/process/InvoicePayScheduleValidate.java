@@ -16,7 +16,6 @@ package org.idempiere.process;
 
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoicePaySchedule;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
@@ -46,11 +45,11 @@ public class InvoicePayScheduleValidate extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("C_InvoicePaySchedule_ID=" + getRecordId());
         MInvoicePaySchedule[] schedule =
-                MInvoicePaySchedule.getInvoicePaySchedule(getCtx(), 0, getRecordId());
+                MInvoicePaySchedule.getInvoicePaySchedule(0, getRecordId());
         if (schedule.length == 0)
             throw new IllegalArgumentException("InvoicePayScheduleValidate - No Schedule");
         //	Get Invoice
-        MInvoice invoice = new MInvoice(getCtx(), schedule[0].getInvoiceId());
+        MInvoice invoice = new MInvoice(schedule[0].getInvoiceId());
         if (invoice.getId() == 0)
             throw new IllegalArgumentException("InvoicePayScheduleValidate - No Invoice");
         //
@@ -78,6 +77,6 @@ public class InvoicePayScheduleValidate extends SvrProcess {
                             .append(total)
                             .append("  - @Difference@ = ")
                             .append(invoice.getGrandTotal().subtract(total));
-        return Msg.parseTranslation(getCtx(), msg.toString());
+        return Msg.parseTranslation(msg.toString());
     } //	doIt
 } //	InvoicePayScheduleValidate

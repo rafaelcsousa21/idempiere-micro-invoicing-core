@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for C_Conversion_Rate
@@ -25,15 +24,15 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
     /**
      * Standard Constructor
      */
-    public X_C_Conversion_Rate(Properties ctx, int C_Conversion_Rate_ID) {
-        super(ctx, C_Conversion_Rate_ID);
+    public X_C_Conversion_Rate(int C_Conversion_Rate_ID) {
+        super(C_Conversion_Rate_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Conversion_Rate(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Conversion_Rate(Row row) {
+        super(row);
     }
 
     /**

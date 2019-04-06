@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -34,8 +33,8 @@ public class MFactAcct extends X_Fact_Acct {
      * @param ctx          context
      * @param Fact_Acct_ID id
      */
-    public MFactAcct(Properties ctx, int Fact_Acct_ID) {
-        super(ctx, Fact_Acct_ID);
+    public MFactAcct(int Fact_Acct_ID) {
+        super(Fact_Acct_ID);
     } //	MFactAcct
 
     /**
@@ -43,8 +42,8 @@ public class MFactAcct extends X_Fact_Acct {
      *
      * @param ctx context
      */
-    public MFactAcct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MFactAcct(Row row) {
+        super(row);
     } //	MFactAcct
 
     /**
@@ -111,7 +110,6 @@ public class MFactAcct extends X_Fact_Acct {
     public MAccount getMAccount() {
         MAccount acct =
                 MAccount.get(
-                        getCtx(),
                         getClientId(),
                         getOrgId(),
                         getAccountingSchemaId(),

@@ -5,8 +5,6 @@ import org.compiere.invoicing.MBPBankAccount;
 import org.compiere.order.X_C_Order;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 /**
  * Payment Print/Export model.
  *
@@ -33,8 +31,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param ctx                    context
      * @param C_PaySelectionCheck_ID C_PaySelectionCheck_ID
      */
-    public MPaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
-        super(ctx, C_PaySelectionCheck_ID);
+    public MPaySelectionCheck(int C_PaySelectionCheck_ID) {
+        super(C_PaySelectionCheck_ID);
         if (C_PaySelectionCheck_ID == 0) {
             //	setPaySelectionId (0);
             //	setBusinessPartnerId (0);
@@ -53,8 +51,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      *
      * @param ctx context
      */
-    public MPaySelectionCheck(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaySelectionCheck(Row row) {
+        super(row);
     } //  MPaySelectionCheck
 
     /**
@@ -64,14 +62,14 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param PaymentRule payment rule
      */
     public MPaySelectionCheck(MPaySelectionLine line, String PaymentRule) {
-        this(line.getCtx(), 0);
+        this(0);
         setClientOrg(line);
         setPaySelectionId(line.getPaySelectionId());
         int C_BPartner_ID = line.getInvoice().getBusinessPartnerId();
         setBusinessPartnerId(C_BPartner_ID);
         //
         if (X_C_Order.PAYMENTRULE_DirectDebit.equals(PaymentRule)) {
-            MBPBankAccount[] bas = MBPBankAccount.getOfBPartner(line.getCtx(), C_BPartner_ID);
+            MBPBankAccount[] bas = MBPBankAccount.getOfBPartner(C_BPartner_ID);
             for (int i = 0; i < bas.length; i++) {
                 MBPBankAccount account = bas[i];
                 if (account.isDirectDebit()) {
@@ -80,7 +78,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                 }
             }
         } else if (X_C_Order.PAYMENTRULE_DirectDeposit.equals(PaymentRule)) {
-            MBPBankAccount[] bas = MBPBankAccount.getOfBPartner(line.getCtx(), C_BPartner_ID);
+            MBPBankAccount[] bas = MBPBankAccount.getOfBPartner(C_BPartner_ID);
             for (int i = 0; i < bas.length; i++) {
                 MBPBankAccount account = bas[i];
                 if (account.isDirectDeposit()) {
@@ -105,7 +103,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param PaymentRule payment rule
      */
     public MPaySelectionCheck(MPaySelection ps, String PaymentRule) {
-        this(ps.getCtx(), 0);
+        this(0);
         setClientOrg(ps);
         setPaySelectionId(ps.getPaySelectionId());
         setPaymentRule(PaymentRule);
@@ -118,8 +116,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param C_Payment_ID id
      * @return pay selection check for payment or null
      */
-    public static MPaySelectionCheck getOfPayment(Properties ctx, int C_Payment_ID) {
-        return MBasePaySelectionCheckKt.getCheckforPayment(ctx, C_Payment_ID);
+    public static MPaySelectionCheck getOfPayment(int C_Payment_ID) {
+        return MBasePaySelectionCheckKt.getCheckforPayment(C_Payment_ID);
     } //	getOfPayment
 
     /**
@@ -129,12 +127,12 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param C_Payment_ID id
      * @return
      */
-    public static boolean deleteGeneratedDraft(Properties ctx, int C_Payment_ID) {
+    public static boolean deleteGeneratedDraft(int C_Payment_ID) {
 
-        MPaySelectionCheck mpsc = MPaySelectionCheck.getOfPayment(ctx, C_Payment_ID);
+        MPaySelectionCheck mpsc = MPaySelectionCheck.getOfPayment(C_Payment_ID);
 
         if (mpsc != null && mpsc.isGeneratedDraft()) {
-            MPaySelection mps = new MPaySelection(ctx, mpsc.getPaySelectionId());
+            MPaySelection mps = new MPaySelection(mpsc.getPaySelectionId());
             MPaySelectionLine[] mpsl = mps.getLines(true);
 
             // Delete Pay Selection lines
@@ -178,7 +176,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      */
     public MPaySelection getParent() {
         if (m_parent == null)
-            m_parent = new MPaySelection(getCtx(), getPaySelectionId());
+            m_parent = new MPaySelection(getPaySelectionId());
         return m_parent;
     } //	getParent
 
@@ -231,7 +229,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        m_lines = MBasePaySelectionCheckKt.getPaySelectionLines(getCtx(), getPaySelectionCheckId());
+        m_lines = MBasePaySelectionCheckKt.getPaySelectionLines(getPaySelectionCheckId());
         return m_lines;
     } //	getPaySelectionLines
 } //  MPaySelectionCheck

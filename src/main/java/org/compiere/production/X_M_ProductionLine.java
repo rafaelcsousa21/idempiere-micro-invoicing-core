@@ -8,7 +8,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_ProductionLine
@@ -26,8 +25,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     /**
      * Standard Constructor
      */
-    public X_M_ProductionLine(Properties ctx, int M_ProductionLine_ID) {
-        super(ctx, M_ProductionLine_ID);
+    public X_M_ProductionLine(int M_ProductionLine_ID) {
+        super(M_ProductionLine_ID);
         /*
          * if (M_ProductionLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
          * DefaultValue FROM M_ProductionLine WHERE M_Production_ID=@M_Production_ID@
@@ -39,8 +38,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     /**
      * Load Constructor
      */
-    public X_M_ProductionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_ProductionLine(Row row) {
+        super(row);
     }
 
     /**
@@ -176,7 +175,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
+                MTable.get(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -203,7 +202,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_Production getProduction() throws RuntimeException {
         return (org.compiere.model.I_M_Production)
-                MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
+                MTable.get(org.compiere.model.I_M_Production.Table_Name)
                         .getPO(getProductionId());
     }
 
@@ -256,7 +255,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_ProductionPlan getProductionPlan() throws RuntimeException {
         return (org.compiere.model.I_M_ProductionPlan)
-                MTable.get(getCtx(), org.compiere.model.I_M_ProductionPlan.Table_Name)
+                MTable.get(org.compiere.model.I_M_ProductionPlan.Table_Name)
                         .getPO(getProductionPlanId());
     }
 

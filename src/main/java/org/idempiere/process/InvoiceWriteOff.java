@@ -260,7 +260,7 @@ public class InvoiceWriteOff extends SvrProcess {
         }
 
         //	Invoice
-        MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID);
+        MInvoice invoice = new MInvoice(C_Invoice_ID);
         if (!invoice.isSOTrx()) OpenAmt = OpenAmt.negate();
 
         //	Allocation
@@ -268,12 +268,11 @@ public class InvoiceWriteOff extends SvrProcess {
             processAllocation();
             m_alloc =
                     new MAllocationHdr(
-                            getCtx(),
                             true,
                             p_DateAcct,
                             C_Currency_ID,
-                            getProcessInfo().getTitle() + " #" + getProcessInstanceId(),
-                            null);
+                            getProcessInfo().getTitle() + " #" + getProcessInstanceId()
+                    );
             m_alloc.setOrgId(invoice.getOrgId());
             if (!m_alloc.save()) {
                 log.log(Level.SEVERE, "Cannot create allocation header");
@@ -286,7 +285,7 @@ public class InvoiceWriteOff extends SvrProcess {
                 || invoice.getBusinessPartnerId() != m_payment.getBusinessPartnerId()
                 || C_Currency_ID != m_payment.getCurrencyId())) {
             processPayment();
-            m_payment = new MPayment(getCtx(), 0);
+            m_payment = new MPayment(0);
             m_payment.setOrgId(invoice.getOrgId());
             m_payment.setBankAccountId(p_C_BankAccount_ID);
             m_payment.setTenderType(MPayment.TENDERTYPE_Check);

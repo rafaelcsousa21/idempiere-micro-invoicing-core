@@ -16,7 +16,6 @@ import org.compiere.process.DocAction
 import org.compiere.process.ProcessInfo
 import org.compiere.production.MLocator
 import org.compiere.production.MProduction
-import org.idempiere.common.util.Env
 import org.idempiere.process.ProductionCreate
 import org.junit.Before
 import org.junit.Test
@@ -28,10 +27,9 @@ import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant
 import org.compiere.crm.MBPartner
-import org.compiere.crm.MCountry
-import org.compiere.crm.MRegion
 import org.compiere.crm.MLocation
 import org.compiere.crm.MBPartnerLocation
+import org.compiere.crm.getDefaultCountry
 import org.compiere.model.I_M_PriceList
 import org.compiere.model.I_M_Product
 import org.compiere.model.I_M_PriceList_Version
@@ -52,6 +50,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
 import org.idempiere.common.util.AdempiereSystemError
+import software.hsharp.core.util.Environment
+import org.compiere.crm.defaultRegion
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -79,98 +79,100 @@ class InvoiceTest : BaseComponentTest() {
     private var _testProduct: I_M_Product? = null
     private val testProduct get() = _testProduct ?: throw AdempiereSystemError("test product is null")
     private var _salesPriceList: I_M_PriceList? = null
-    private val salesPriceList get() = _salesPriceList  ?: throw AdempiereSystemError("sales price list")
+    private val salesPriceList get() = _salesPriceList ?: throw AdempiereSystemError("sales price list")
     private var _now: Timestamp? = null
     private val now get() = _now ?: throw AdempiereSystemError("time does not exist")
 
     @Before
     fun createProdAndReceipt() {
-        DB.run {
-            _now = Timestamp(System.currentTimeMillis())
-            val always = Timestamp(0)
+        Environment.run(baseModule) {
+            DB.run {
+                _now = Timestamp(System.currentTimeMillis())
+                val always = Timestamp(0)
 
-            fun createSalesPriceList(): MPriceList {
-                val salesPriceList = MPriceList(ctx, 0)
-                salesPriceList.setIsDefault(true)
-                salesPriceList.setIsSOPriceList(true)
-                salesPriceList.name = "S-" + randomString(10)
-                salesPriceList.currencyId = EUR
-                salesPriceList.save()
-                val check1: MPriceList = getById(salesPriceList.id, I_M_PriceList.Table_Name)
-                assertNotNull(check1)
+                fun createSalesPriceList(): MPriceList {
+                    val salesPriceList = MPriceList(0)
+                    salesPriceList.setIsDefault(true)
+                    salesPriceList.setIsSOPriceList(true)
+                    salesPriceList.name = "S-" + randomString(10)
+                    salesPriceList.currencyId = EUR
+                    salesPriceList.save()
+                    val check1: MPriceList = getById(salesPriceList.id, I_M_PriceList.Table_Name)
+                    assertNotNull(check1)
 
-                return salesPriceList
+                    return salesPriceList
+                }
+
+                // make sure the price list is there
+                _salesPriceList = MPriceList.getDefault(true) ?: createSalesPriceList()
+
+                fun createSalesPriceListVersion(): MPriceListVersion {
+                    val priceListVersion = MPriceListVersion(salesPriceList)
+                    priceListVersion.name = salesPriceList.name
+                    priceListVersion.validFrom = always
+                    priceListVersion.setDiscountSchemaId(MDiscountSchema(1000000).id)
+                    priceListVersion.save()
+
+                    val check2: MPriceListVersion = getById(priceListVersion.id, I_M_PriceList_Version.Table_Name)
+                    assertNotNull(check2)
+
+                    return priceListVersion
+                }
+
+                // get the product on hand
+                val product: MProduct = createAProduct(MAT + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
+                _testProduct = product
+
+                // put the product on the price list
+                val currentPriceListVersion = salesPriceList.getPriceListVersion(now) ?: createSalesPriceListVersion()
+                val price = 1.toBigDecimal()
+                val productPrice = MProductPrice(currentPriceListVersion, product.id, price, price, price)
+                productPrice.save()
+
+                val vendor = createBPartner()
+
+                val vendorShipment = MInOut(0)
+                vendorShipment.setOrgId(org.orgId)
+                vendorShipment.setIsSOTrx(false)
+                vendorShipment.movementType = X_M_InOut.MOVEMENTTYPE_VendorReceipts
+                vendorShipment.setDocumentTypeId()
+                vendorShipment.businessPartnerId = vendor.id
+                vendorShipment.businessPartnerLocationId = vendor.locations.first().businessPartnerLocationId
+                vendorShipment.warehouseId = warehouse.warehouseId
+                vendorShipment.save()
+                val receipt = getById<MInOut>(vendorShipment.id, I_M_InOut.Table_Name)
+                assertNotNull(receipt)
+                val receiptLine = MInOutLine(receipt)
+                receiptLine.setOrgId(org.orgId)
+                receiptLine.product = product
+                receiptLine.movementQty = 1000000.toBigDecimal()
+                receiptLine.locatorId = MLocator(MLocator(1000000).id).id
+                receiptLine.save()
+                val line = getById<MInOutLine>(receiptLine.id, I_M_InOutLine.Table_Name)
+                assertNotNull(line)
+                (vendorShipment as X_M_InOut).docStatus = X_M_InOut.DOCSTATUS_Completed
+                vendorShipment.save()
+                vendorShipment.setDocAction(DocAction.STATUS_Completed)
+                vendorShipment.completeIt()
+                val storageOnHand = MStorageOnHand.getOfProduct(product.id).first()
+                assertEquals(0.0.toBigDecimal(), receiptLine.movementQty - storageOnHand.qtyOnHand)
+                val productStorage = MProduct(product.id)
+                val productStorageOnHand =
+                    productStorage.storageOnHand.map { it.qtyOnHand }.sumByDouble { it.toDouble() }
+                assertEquals(0.0, storageOnHand.qtyOnHand.toDouble() - productStorageOnHand)
             }
-
-            // make sure the price list is there
-            _salesPriceList = MPriceList.getDefault(ctx, true) ?: createSalesPriceList()
-
-            fun createSalesPriceListVersion(): MPriceListVersion {
-                val priceListVersion = MPriceListVersion(salesPriceList)
-                priceListVersion.name = salesPriceList.name
-                priceListVersion.validFrom = always
-                priceListVersion.setDiscountSchemaId(MDiscountSchema(ctx, 1000000).id)
-                priceListVersion.save()
-
-                val check2: MPriceListVersion = getById(priceListVersion.id, I_M_PriceList_Version.Table_Name)
-                assertNotNull(check2)
-
-                return priceListVersion
-            }
-
-            // get the product on hand
-            val product: MProduct = createAProduct(MAT + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
-            _testProduct = product
-
-            // put the product on the price list
-            val currentPriceListVersion = salesPriceList.getPriceListVersion(now) ?: createSalesPriceListVersion()
-            val price = 1.toBigDecimal()
-            val productPrice = MProductPrice(currentPriceListVersion, product.id, price, price, price)
-            productPrice.save()
-
-            val vendor = createBPartner()
-
-            val vendorShipment = MInOut(ctx, 0)
-            vendorShipment.setOrgId(org.orgId)
-            vendorShipment.setIsSOTrx(false)
-            vendorShipment.movementType = X_M_InOut.MOVEMENTTYPE_VendorReceipts
-            vendorShipment.setDocumentTypeId()
-            vendorShipment.businessPartnerId = vendor.id
-            vendorShipment.businessPartnerLocationId = vendor.locations.first().businessPartnerLocationId
-            vendorShipment.warehouseId = warehouse.warehouseId
-            vendorShipment.save()
-            val receipt = getById<MInOut>(vendorShipment.id, I_M_InOut.Table_Name)
-            assertNotNull(receipt)
-            val receiptLine = MInOutLine(receipt)
-            receiptLine.setOrgId(org.orgId)
-            receiptLine.product = product
-            receiptLine.movementQty = 1000000.toBigDecimal()
-            receiptLine.locatorId = MLocator(ctx, MLocator(ctx, 1000000).id).id
-            receiptLine.save()
-            val line = getById<MInOutLine>(receiptLine.id, I_M_InOutLine.Table_Name)
-            assertNotNull(line)
-            (vendorShipment as X_M_InOut).docStatus = X_M_InOut.DOCSTATUS_Completed
-            vendorShipment.save()
-            vendorShipment.setDocAction(DocAction.STATUS_Completed)
-            vendorShipment.completeIt()
-            val storageOnHand = MStorageOnHand.getOfProduct(ctx, product.id).first()
-            assertEquals(0.0.toBigDecimal(), receiptLine.movementQty - storageOnHand.qtyOnHand)
-            val productStorage = MProduct(ctx, product.id)
-            val productStorageOnHand = productStorage.storageOnHand.map { it.qtyOnHand }.sumByDouble { it.toDouble() }
-            assertEquals(0.0, storageOnHand.qtyOnHand.toDouble() - productStorageOnHand)
         }
     }
 
     private fun createBPartner(): I_C_BPartner {
-        val newPartner = MBPartner.getTemplate(ctx, AD_CLIENT_ID)
+        val newPartner = MBPartner.getTemplate(Environment.current.clientId)
         val name = "Test " + randomString(10)
         newPartner.name = name
         val value = "t-" + randomString(5)
         newPartner.searchKey = value
         newPartner.save()
 
-        val defaultCountry = MCountry.getDefault(ctx)
-        val defaultRegion = MRegion.getDefault(ctx)
+        val defaultCountry = getDefaultCountry()
         val location = MLocation(defaultCountry, defaultRegion)
         location.save()
         val partnerLocation = MBPartnerLocation(newPartner)
@@ -182,35 +184,37 @@ class InvoiceTest : BaseComponentTest() {
 
     @Test
     fun `get invoice by id`() {
-        DB.run {
-            loginClient(11)
-            val invoiceId = 106
+        Environment.run(baseModule) {
+            environmentService.login(11, 0, 0)
+            DB.run {
+                val invoiceId = 106
 
-            val invoice: MInvoice = getById(invoiceId, I_C_Invoice.Table_Name)
-            assertNotNull(invoice)
-            assertEquals(invoiceId, invoice.id)
-            val lines = invoice.lines
-            assertNotNull(lines)
-            assertEquals(6, lines.count())
+                val invoice: MInvoice = getById(invoiceId, I_C_Invoice.Table_Name)
+                assertNotNull(invoice)
+                assertEquals(invoiceId, invoice.id)
+                val lines = invoice.lines
+                assertNotNull(lines)
+                assertEquals(6, lines.count())
+            }
         }
     }
 
     private fun createOrder(c_DocType_ID: Int, product_id: Int): Triple<MOrder, Int, Int> {
-        val order = MOrder(Env.getCtx(), 0)
+        val order = MOrder(0)
         order.setOrgId(1000000)
         order.warehouseId = 1000000
         order.setIsSOTrx(true)
         order.documentTypeId =
             c_DocType_ID // 133 on credit order (generates invoice), 130 prepay order, 132 standard order
         order.targetDocumentTypeId = c_DocType_ID
-        order.priceListId = MPriceList.getDefault(ctx, true).id
+        order.priceListId = MPriceList.getDefault(true).id
         order.setCurrencyId(EUR) // EUR
         order.paymentTermId = paymentTerm.id
         order.salesRepresentativeId = 1000000
 
         val partner = createBPartner()
 
-        val product = MProduct.get(Env.getCtx(), product_id)
+        val product = MProduct.get(product_id)
 
         order.setBPartner(partner)
         order.save()
@@ -229,7 +233,7 @@ class InvoiceTest : BaseComponentTest() {
     fun `create invoice from prepay order after receiving the payment`() {
         DB.run {
             createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
-                val payment = MPayment(ctx, 0)
+                val payment = MPayment(0)
                 payment.businessPartnerId = it.businessPartnerId
                 payment.setOrgId(org.orgId)
                 payment.bankAccountId = bankAccount.id
@@ -272,19 +276,17 @@ class InvoiceTest : BaseComponentTest() {
         assertEquals(QTY.toBigDecimal(), line.qtyInvoiced)
 
         val modelFactory: IModelFactory = DefaultModelFactory()
-        val result = modelFactory.getPO(I_C_Invoice.Table_Name, invoice.id)
+        val result: MInvoice = modelFactory.getPO(I_C_Invoice.Table_Name, invoice.id)
         println(result)
         assertNotNull(result)
-        val invoice1 = result as MInvoice
-        assertNotNull(invoice1)
-        assertEquals(invoice.id, invoice1.id)
-        assertEquals(expectedPrice, invoice1.getGrandTotal(false))
-        val lines1 = invoice1.lines
+        assertEquals(invoice.id, result.id)
+        assertEquals(expectedPrice, result.getGrandTotal(false))
+        val lines1 = result.lines
         assertNotNull(lines1)
         assertEquals(1, lines1.count())
 
         "/sql/invoice_details.sql".asResource {
-            val sql = it.replace("\$P{RECORD_ID}", invoice1.id.toString())
+            val sql = it.replace("\$P{RECORD_ID}", result.id.toString())
             val loadQuery =
                 queryOf(sql, listOf())
                     .map { row ->
@@ -311,7 +313,7 @@ class InvoiceTest : BaseComponentTest() {
     @Test
     fun `create invoice from order (on credit)`() {
         DB.run {
-            val salesOrderTypes = MDocType.getOfDocBaseType(ctx, MDocType.DOCBASETYPE_SalesOrder)
+            val salesOrderTypes = MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_SalesOrder)
             val onCreditOrder = salesOrderTypes.first { it.name == "Credit Order" }
             createInvoiceFromOrder(onCreditOrder.id, testProduct.id, BigDecimal("1.10")) {}
         }
@@ -323,7 +325,7 @@ class InvoiceTest : BaseComponentTest() {
             val bomProduct = createAProduct(BOM + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
             bomProduct.setIsBOM(true)
             bomProduct.save()
-            val innerProduct = MProductBOM(ctx, 0)
+            val innerProduct = MProductBOM(0)
             innerProduct.bomQty = 10.toBigDecimal()
             innerProduct.bomProductId = testProduct.id
             innerProduct.productId = bomProduct.id
@@ -349,7 +351,7 @@ class InvoiceTest : BaseComponentTest() {
 
                 val productionCreate = ProductionCreate(m_production = production)
                 val pi = ProcessInfo("", 0)
-                productionCreate.startProcess(ctx, pi)
+                productionCreate.startProcess(pi)
 
                 val prod: MProduction = getById(production.id, I_M_Production.Table_Name)
                 prod.docStatus = MProduction.DOCSTATUS_Completed
@@ -379,10 +381,10 @@ class InvoiceTest : BaseComponentTest() {
     fun `create invoice from order (on credit) without amount on hand should fail`() {
         DB.run {
             val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
-            val pl = MPriceList(ctx, 1000000)
+            val pl = MPriceList(1000000)
             val plv = pl.getPriceListVersion(Timestamp.from(Instant.now())) ?: throw AdempiereSystemError("current price list does not exist")
             val price = 10.toBigDecimal()
-            val pp = MProductPrice(ctx, plv.id, product.id, price, price, price, null)
+            val pp = MProductPrice(plv.id, product.id, price, price, price, null)
             pp.save()
             try {
                 createInvoiceFromOrder(1000033, product.id, BigDecimal("11.00")) {}

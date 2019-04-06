@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Group;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Request Group Model
  *
@@ -30,8 +28,8 @@ public class MGroup extends X_R_Group {
      * @param R_Group_ID group
      * @param trxName    trx
      */
-    public MGroup(Properties ctx, int R_Group_ID) {
-        super(ctx, R_Group_ID);
+    public MGroup(int R_Group_ID) {
+        super(R_Group_ID);
     } //	MGroup
 
     /**
@@ -41,8 +39,8 @@ public class MGroup extends X_R_Group {
      * @param rs      result set
      * @param trxName trx
      */
-    public MGroup(Properties ctx, Row row) {
-        super(ctx, row);
+    public MGroup(Row row) {
+        super(row);
     } //	MGroup
 
     /**
@@ -52,11 +50,11 @@ public class MGroup extends X_R_Group {
      * @param R_Group_ID id
      * @return MGroup
      */
-    public static MGroup get(Properties ctx, int R_Group_ID) {
+    public static MGroup get(int R_Group_ID) {
         Integer key = R_Group_ID;
         MGroup retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MGroup(ctx, R_Group_ID);
+        retValue = new MGroup(R_Group_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

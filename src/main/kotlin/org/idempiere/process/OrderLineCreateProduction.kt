@@ -46,7 +46,7 @@ class OrderLineCreateProduction(
         }
 
         if (p_MovementDate == null)
-            p_MovementDate = Env.getContextAsDate(ctx, "#Date")
+            p_MovementDate = Env.getContextAsDate()
         if (p_MovementDate == null)
             p_MovementDate = Timestamp(System.currentTimeMillis())
 
@@ -64,14 +64,14 @@ class OrderLineCreateProduction(
         if (p_C_OrderLine_ID == 0)
             throw IllegalArgumentException("No OrderLine")
         //
-        val line = MOrderLine(ctx, p_C_OrderLine_ID)
+        val line = MOrderLine(p_C_OrderLine_ID)
         if (line.id == 0)
             throw IllegalArgumentException("Order line not found")
-        val order: I_C_Order = MOrder(ctx, line.orderId)
+        val order: I_C_Order = MOrder(line.orderId)
         if (MOrder.DOCSTATUS_Completed != order.docStatus)
             throw IllegalArgumentException("Order not completed")
 
-        val doc = MDocType(ctx, order.documentTypeId)
+        val doc = MDocType(order.documentTypeId)
 
         if (line.qtyOrdered.subtract(line.qtyDelivered).compareTo(Env.ZERO) <= 0) {
             if (doc.docSubTypeSO != "ON")
@@ -94,7 +94,7 @@ class OrderLineCreateProduction(
         }
 
         val production: I_M_Production = MProduction(line)
-        val product = MProduct(ctx, line.productId)
+        val product = MProduct(line.productId)
 
         production.productId = line.productId
         production.setProductionQty(line.qtyOrdered.subtract(line.qtyDelivered))
@@ -105,7 +105,7 @@ class OrderLineCreateProduction(
 
         var locator = product.locatorId
         if (locator == 0)
-            locator = MWarehouse.get(ctx, line.warehouseId).defaultLocator.id
+            locator = MWarehouse.get(line.warehouseId).defaultLocator.id
         production.setLocatorId(locator)
 
         if (line.businessPartnerId > 0) {
@@ -154,7 +154,7 @@ class OrderLineCreateProduction(
         production.isCreated = "Y"
         production.saveEx()
 
-        val msg = Msg.parseTranslation(ctx, "@M_Production_ID@ @Created@ " + production.getDocumentNo())
+        val msg = Msg.parseTranslation("@M_Production_ID@ @Created@ " + production.getDocumentNo())
         addLog(production.productionId, null, null, msg, MProduction.Table_ID, production.productionId)
         return "@OK@"
     } // 	OrderLineCreateShipment

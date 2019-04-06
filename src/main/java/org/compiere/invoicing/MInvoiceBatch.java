@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -32,8 +31,8 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
      * @param ctx               context
      * @param C_InvoiceBatch_ID id
      */
-    public MInvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
-        super(ctx, C_InvoiceBatch_ID);
+    public MInvoiceBatch(int C_InvoiceBatch_ID) {
+        super(C_InvoiceBatch_ID);
         if (C_InvoiceBatch_ID == 0) {
             //	setDocumentNo (null);
             //	setCurrencyId (0);	// @$C_Currency_ID@
@@ -51,8 +50,8 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
      *
      * @param ctx context
      */
-    public MInvoiceBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInvoiceBatch(Row row) {
+        super(row);
     } //	MInvoiceBatch
 
     /**
@@ -65,7 +64,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
         if (m_lines != null && !reload) {
             return m_lines;
         }
-        m_lines = MBaseInvoiceBatchKt.getLines(getCtx(), getInvoiceBatchId());
+        m_lines = MBaseInvoiceBatchKt.getLines(getInvoiceBatchId());
         return m_lines;
     } //	getLines
 

@@ -14,11 +14,8 @@
  */
 package org.idempiere.process;
 
-import org.compiere.accounting.MOrder;
-import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.util.logging.Level;
@@ -133,13 +130,13 @@ public class DistributionCreate extends SvrProcess {
         throw new NotImplementedException();
 
     /*
-    m_dl = new MDistributionList(getCtx(), p_M_DistributionList_ID, null);
+    m_dl = new MDistributionList(p_M_DistributionList_ID, null);
     if (m_dl.getId() == 0)
     	throw new Exception ("Distribution List not found -  M_DistributionList_ID=" +  p_M_DistributionList_ID);
     //
     if (p_M_Product_ID == 0)
     	throw new IllegalArgumentException ("No Product");
-    m_product = MProduct.get (getCtx(), p_M_Product_ID);
+    m_product = MProduct.get (p_M_Product_ID);
     if (m_product.getId() == 0)
     	throw new Exception ("Product not found -  M_Product_ID=" +  p_M_Product_ID);
     if (p_Qty == null || p_Qty.signum() != 1)
@@ -150,11 +147,11 @@ public class DistributionCreate extends SvrProcess {
     //	Create Single Order
     if (!p_IsTest && p_IsCreateSingleOrder)
     {
-    	MBPartner bp = new MBPartner (getCtx(), p_Bill_BPartner_ID, null);
+    	MBPartner bp = new MBPartner (p_Bill_BPartner_ID, null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("Single Business Partner not found - C_BPartner_ID=" + p_Bill_BPartner_ID);
     	//
-    	m_singleOrder = new MOrder (getCtx(), 0, null);
+    	m_singleOrder = new MOrder (0, null);
     	m_singleOrder.setIsSOTrx(true);
     	m_singleOrder.setTargetDocumentTypeId(MOrder.DocSubTypeSO_Standard);
     	m_singleOrder.setBPartner(bp);
@@ -194,7 +191,7 @@ public class DistributionCreate extends SvrProcess {
   /*
   private boolean createOrder (MDistributionListLine dll)
   {
-  	MBPartner bp = new MBPartner (getCtx(), dll.getBusinessPartnerId(), null);
+  	MBPartner bp = new MBPartner (dll.getBusinessPartnerId(), null);
   	if (bp.getId() == 0)
   		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + dll.getBusinessPartnerId());
 
@@ -202,7 +199,7 @@ public class DistributionCreate extends SvrProcess {
   	MOrder order = m_singleOrder;
   	if (!p_IsTest && order == null)
   	{
-  		order = new MOrder (getCtx(), 0, null);
+  		order = new MOrder (0, null);
   		order.setIsSOTrx(true);
   		order.setTargetDocumentTypeId(MOrder.DocSubTypeSO_Standard);
   		order.setBPartner(bp);

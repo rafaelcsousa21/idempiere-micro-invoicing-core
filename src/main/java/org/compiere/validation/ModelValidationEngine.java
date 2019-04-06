@@ -1,9 +1,10 @@
 package org.compiere.validation;
 
+import org.compiere.accounting.MClientKt;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IFact;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_AcctSchema;
-import org.compiere.orm.MClient;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
@@ -11,7 +12,6 @@ import org.compiere.process.ImportProcess;
 import org.compiere.process.ImportValidator;
 import org.compiere.rule.MRule;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 
 import javax.script.ScriptEngine;
@@ -87,7 +87,7 @@ public class ModelValidationEngine {
         super();
         // Load global validators
 
-        MTable table = MTable.get(Env.getCtx(), X_AD_ModelValidator.Table_ID);
+        MTable table = MTable.get(X_AD_ModelValidator.Table_ID);
         Query query = table.createQuery("IsActive='Y'");
         query.setOrderBy("SeqNo");
         try {
@@ -105,11 +105,11 @@ public class ModelValidationEngine {
         }
 
         // Go through all Clients and start Validators
-        MClient[] clients = MClient.getAll(Env.getCtx());
-        for (int i = 0; i < clients.length; i++) {
-            String classNames = clients[i].getModelValidationClasses();
+        List<ClientWithAccounting> clients = MClientKt.getAllClientsWithAccounting();
+        for (ClientWithAccounting client : clients) {
+            String classNames = client.getModelValidationClasses();
             if (classNames == null || classNames.length() == 0) continue;
-            loadValidatorClasses(clients[i], classNames);
+            loadValidatorClasses(client, classNames);
         }
     } //	ModelValidatorEngine
 
@@ -131,7 +131,7 @@ public class ModelValidationEngine {
         return null;
     }
 
-    private void loadValidatorClasses(MClient client, String classNames) {
+    private void loadValidatorClasses(ClientWithAccounting client, String classNames) {
         StringTokenizer st = new StringTokenizer(classNames, ";");
         while (st.hasMoreTokens()) {
             String className = null;
@@ -151,7 +151,7 @@ public class ModelValidationEngine {
         }
     }
 
-    private void loadValidatorClass(MClient client, String className) {
+    private void loadValidatorClass(ClientWithAccounting client, String className) {
         try {
             //
             ModelValidator validator = null;
@@ -184,7 +184,7 @@ public class ModelValidationEngine {
      * @param validator
      * @param client
      */
-    private void initialize(ModelValidator validator, MClient client) {
+    private void initialize(ModelValidator validator, ClientWithAccounting client) {
         if (client == null) m_globalValidators.add(validator);
         m_validators.add(validator);
         validator.initialize(this, client);
@@ -193,8 +193,7 @@ public class ModelValidationEngine {
     /**
      * Fire Document Validation. Call docValidate method of added validators
      *
-     * @param po     persistent objects
-     * @param timing see ModelValidator.TIMING_ constants
+     * @param po persistent objects
      * @return error message or null
      */
     public String fireDocValidate(IPODoc po, int docTiming) {
@@ -219,10 +218,10 @@ public class ModelValidationEngine {
         // now process the script model validator for this event
         List<MTableScriptValidator> scriptValidators =
                 MTableScriptValidator.getModelValidatorRules(
-                        po.getCtx(), po.getTableId(), ModelValidator.documentEventValidators[docTiming]);
+                        po.getTableId(), ModelValidator.documentEventValidators[docTiming]);
         if (scriptValidators != null) {
             for (MTableScriptValidator scriptValidator : scriptValidators) {
-                MRule rule = MRule.get(po.getCtx(), scriptValidator.getRuleId());
+                MRule rule = MRule.get(scriptValidator.getRuleId());
                 // currently just JSR 223 supported
                 if (rule != null
                         && rule.isActive()
@@ -232,9 +231,8 @@ public class ModelValidationEngine {
                     try {
                         ScriptEngine engine = rule.getScriptEngine();
 
-                        MRule.setContext(engine, po.getCtx(), 0); // no window
+                        MRule.setContext(engine, 0); // no window
                         // now add the method arguments to the engine
-                        engine.put(MRule.ARGUMENTS_PREFIX + "Ctx", po.getCtx());
                         engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
                         engine.put(MRule.ARGUMENTS_PREFIX + "Type", docTiming);
                         engine.put(
@@ -266,10 +264,10 @@ public class ModelValidationEngine {
     } //	fireDocValidate
 
     private String fireDocValidate(IPODoc po, int docTiming, ArrayList<ModelValidator> list) {
-        for (int i = 0; i < list.size(); i++) {
-            ModelValidator validator = null;
+        for (ModelValidator modelValidator : list) {
+            ModelValidator validator;
             try {
-                validator = list.get(i);
+                validator = modelValidator;
                 if (validator.getClientId() == po.getClientId()
                         || m_globalValidators.contains(validator)) {
                     String error = validator.docValidate(po, docTiming);
@@ -297,7 +295,6 @@ public class ModelValidationEngine {
      *
      * @param schema
      * @param facts
-     * @param doc
      * @param po
      * @return error message or null
      */

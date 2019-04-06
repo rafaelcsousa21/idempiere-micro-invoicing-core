@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Calendar
  *
@@ -22,15 +20,15 @@ public class X_C_Calendar extends BasePOName implements I_C_Calendar {
     /**
      * Standard Constructor
      */
-    public X_C_Calendar(Properties ctx, int C_Calendar_ID) {
-        super(ctx, C_Calendar_ID);
+    public X_C_Calendar(int C_Calendar_ID) {
+        super(C_Calendar_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Calendar(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Calendar(Row row) {
+        super(row);
     }
 
     /**

@@ -3,7 +3,9 @@ package org.idempiere.process;
 import org.compiere.accounting.DocManager;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MCost;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -40,7 +42,7 @@ public class ClientAcctProcessor extends SvrProcess {
     /**
      * Client info
      */
-    private MClient m_client = null;
+    private ClientWithAccounting m_client = null;
     /**
      * Accounting Schema
      */
@@ -74,14 +76,14 @@ public class ClientAcctProcessor extends SvrProcess {
                         .append(p_AD_Table_ID);
         if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
 
-        if (!MClient.isClientAccounting())
-            throw new AdempiereUserError(Msg.getMsg(getCtx(), "ClientAccountingNotEnabled"));
+        if (!MClient.Companion.isClientAccounting())
+            throw new AdempiereUserError(Msg.getMsg("ClientAccountingNotEnabled"));
 
-        m_client = MClient.get(getCtx(), getClientId());
+        m_client = MClientKt.getClientWithAccounting(getClientId());
 
-        if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
+        if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getClientId());
         else //	only specific accounting schema
-            m_ass = new MAcctSchema[]{new MAcctSchema(getCtx(), p_C_AcctSchema_ID)};
+            m_ass = new MAcctSchema[]{new MAcctSchema(p_C_AcctSchema_ID)};
 
         postSession();
         MCost.create(m_client);

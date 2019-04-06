@@ -2,13 +2,11 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -31,8 +29,8 @@ public class ProjectGenOrder extends SvrProcess {
      * @param trxName      transaction
      * @return valid project
      */
-    protected static MProject getProject(Properties ctx, int C_Project_ID) {
-        MProject fromProject = new MProject(ctx, C_Project_ID);
+    protected static MProject getProject(int C_Project_ID) {
+        MProject fromProject = new MProject(C_Project_ID);
         if (fromProject.getProjectId() == 0)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
         if (fromProject.getPriceListVersionId() == 0)
@@ -60,8 +58,8 @@ public class ProjectGenOrder extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("C_Project_ID=" + m_C_Project_ID);
         if (m_C_Project_ID == 0) throw new IllegalArgumentException("C_Project_ID == 0");
-        MProject fromProject = getProject(getCtx(), m_C_Project_ID);
-        Env.setSOTrx(getCtx(), true); // 	Set SO context
+        MProject fromProject = getProject(m_C_Project_ID);
+        Env.setSOTrx(true); // 	Set SO context
 
         /** @todo duplicate invoice prevention */
         MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);

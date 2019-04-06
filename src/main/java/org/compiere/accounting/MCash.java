@@ -10,6 +10,7 @@ import org.compiere.model.I_C_CashLine;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
@@ -25,7 +26,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -75,11 +75,10 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx       context
      * @param C_Cash_ID id
      */
-    public MCash(Properties ctx, int C_Cash_ID) {
-        super(ctx, C_Cash_ID);
+    public MCash(int C_Cash_ID) {
+        super(C_Cash_ID);
         if (C_Cash_ID == 0) {
             //	setCashBookId (0);		//	FK
             setBeginningBalance(Env.ZERO);
@@ -92,7 +91,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             setStatementDate(today); // @#Date@
             setDateAcct(today); // @#Date@
 
-            MOrg org = MOrg.get(ctx, getOrgId());
+            MOrg org = MOrgKt.getOrg(getOrgId());
             String orgSearchKey = org.isSearchKeyNotNull() ? org.getSearchKey() : "unknown";
 
             String name = DisplayType.getDateFormat(DisplayType.Date).format(today) +
@@ -106,11 +105,9 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
      */
-    public MCash(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCash(Row row) {
+        super(row);
     } //	MCash
 
     /**
@@ -120,7 +117,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param today date - if null today
      */
     public MCash(MCashBook cb, Timestamp today) {
-        this(cb.getCtx(), 0);
+        this(0);
         setClientOrg(cb);
         setCashBookId(cb.getCashBookId());
         if (today != null) {
@@ -137,15 +134,13 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     /**
      * Get Cash Journal for currency, org and date
      *
-     * @param ctx           context
      * @param C_Currency_ID currency
      * @param AD_Org_ID     org
      * @param dateAcct      date
-     * @param trxName       transaction
      * @return cash
      */
     public static MCash get(
-            Properties ctx, int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID) {
+            int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID) {
         //	Existing Journal
         final String whereClause =
                 "C_Cash.AD_Org_ID=?" //	#1
@@ -155,14 +150,14 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                         + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.AD_Org_ID=C_Cash.orgId"
                         + " AND cb.C_Currency_ID=?)"; //	#3
         MCash retValue =
-                new Query(ctx, I_C_Cash.Table_Name, whereClause)
+                new Query(I_C_Cash.Table_Name, whereClause)
                         .setParameters(AD_Org_ID, TimeUtil.getDay(dateAcct), C_Currency_ID)
                         .first();
 
         if (retValue != null) return retValue;
 
         //	Get CashBook
-        MCashBook cb = MCashBook.get(ctx, AD_Org_ID, C_Currency_ID);
+        MCashBook cb = MCashBook.get(AD_Org_ID, C_Currency_ID);
         if (cb == null) {
             s_log.warning("No CashBook for AD_Org_ID=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
             return null;
@@ -187,7 +182,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
         final String whereClause = MCashLine.COLUMNNAME_C_Cash_ID + "=?";
         List<MCashLine> list =
-                new Query(getCtx(), I_C_CashLine.Table_Name, whereClause)
+                new Query(I_C_CashLine.Table_Name, whereClause)
                         .setParameters(getCashId())
                         .setOrderBy(I_C_CashLine.COLUMNNAME_Line)
                         .setOnlyActiveRecords(true)
@@ -203,7 +198,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @return cash book
      */
     public MCashBook getCashBook() {
-        if (m_book == null) m_book = MCashBook.get(getCtx(), getCashBookId());
+        if (m_book == null) m_book = MCashBook.get(getCashBookId());
         return m_book;
     } //	getCashBook
 
@@ -226,7 +221,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder()
-                        .append(Msg.getElement(getCtx(), "C_Cash_ID"))
+                        .append(Msg.getElement("C_Cash_ID"))
                         .append(" ")
                         .append(getDocumentNo());
         return msgreturn.toString();
@@ -241,7 +236,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     protected boolean beforeSave(boolean newRecord) {
         setOrgId(getCashBook().getOrgId());
         if (getOrgId() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@orgId@"));
+            log.saveError("Error", Msg.parseTranslation("@orgId@"));
             return false;
         }
         //	Calculate End Balance
@@ -297,7 +292,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
         //	Std Period open?
         if (!MPeriod.isOpen(
-                getCtx(), getDateAcct(), MDocType.DOCBASETYPE_CashJournal, getOrgId())) {
+                getDateAcct(), MDocType.DOCBASETYPE_CashJournal, getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
@@ -316,7 +311,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             else {
                 BigDecimal amt =
                         MConversionRate.convert(
-                                getCtx(),
                                 line.getAmount(),
                                 line.getCurrencyId(),
                                 C_Currency_ID,
@@ -407,21 +401,20 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 //
                 StringBuilder name =
                         new StringBuilder()
-                                .append(Msg.translate(getCtx(), "C_Cash_ID"))
+                                .append(Msg.translate("C_Cash_ID"))
                                 .append(": ")
                                 .append(getName())
                                 .append(" - ")
-                                .append(Msg.translate(getCtx(), "Line"))
+                                .append(Msg.translate("Line"))
                                 .append(" ")
                                 .append(line.getLine());
                 MAllocationHdr hdr =
                         new MAllocationHdr(
-                                getCtx(),
                                 false,
                                 getDateAcct(),
                                 line.getCurrencyId(),
-                                name.toString(),
-                                null);
+                                name.toString()
+                        );
                 hdr.setOrgId(getOrgId());
                 if (!hdr.save()) {
                     m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Hdr");
@@ -448,7 +441,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 }
             } else if (MCashLine.CASHTYPE_BankAccountTransfer.equals(line.getCashType())) {
                 //	Payment just as intermediate info
-                MPayment pay = new MPayment(getCtx(), 0);
+                MPayment pay = new MPayment(0);
                 pay.setOrgId(getOrgId());
                 String documentNo = getName();
                 pay.setDocumentNo(documentNo);
@@ -542,12 +535,12 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
         //	Can we delete posting
         if (!MPeriod.isOpen(
-                getCtx(), this.getDateAcct(), MPeriodControl.DOCBASETYPE_CashJournal, getOrgId()))
+                this.getDateAcct(), MPeriodControl.DOCBASETYPE_CashJournal, getOrgId()))
             throw new IllegalStateException("@PeriodClosed@");
 
         //	Reverse Allocations
         MAllocationHdr[] allocations =
-                MAllocationHdr.getOfCash(getCtx(), getCashId());
+                MAllocationHdr.getOfCash(getCashId());
         for (MAllocationHdr allocation : allocations) {
             allocation.reverseCorrectIt();
             if (!allocation.save()) throw new IllegalStateException("Cannot reverse allocations");
@@ -563,7 +556,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             cashline.setWriteOffAmt(Env.ZERO);
             StringBuilder msgadd =
                     new StringBuilder()
-                            .append(Msg.getMsg(getCtx(), "Voided"))
+                            .append(Msg.getMsg("Voided"))
                             .append(" (Amount=")
                             .append(oldAmount)
                             .append(", Discount=")
@@ -576,7 +569,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 if (cashline.getPaymentId() == 0)
                     throw new IllegalStateException("Cannot reverse payment");
 
-                MPayment payment = new MPayment(getCtx(), cashline.getPaymentId());
+                MPayment payment = new MPayment(cashline.getPaymentId());
                 payment.reverseCorrectIt();
                 payment.saveEx();
             }
@@ -584,7 +577,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         }
 
         setName(getName() + "^");
-        addDescription(Msg.getMsg(getCtx(), "Voided"));
+        addDescription(Msg.getMsg("Voided"));
         setDocStatus(X_C_Cash.DOCSTATUS_Reversed); // 	for direct calls
         setProcessed(true);
         setPosted(true);
@@ -745,11 +738,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         sb.append(getName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "BeginningBalance"))
+                .append(Msg.translate("BeginningBalance"))
                 .append("=")
                 .append(getBeginningBalance())
                 .append(",")
-                .append(Msg.translate(getCtx(), "EndingBalance"))
+                .append(Msg.translate("EndingBalance"))
                 .append("=")
                 .append(getEndingBalance())
                 .append(" (#")

@@ -15,7 +15,6 @@ import org.idempiere.common.util.CLogger;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValueBD;
 import static software.hsharp.core.util.DBKt.getSQLValueTS;
@@ -50,19 +49,12 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx           context
      * @param M_MatchInv_ID id
-     * @param trxName       transaction
      */
-    public MMatchInv(Properties ctx, int M_MatchInv_ID) {
-        super(ctx, M_MatchInv_ID);
+    public MMatchInv(int M_MatchInv_ID) {
+        super(M_MatchInv_ID);
         if (M_MatchInv_ID == 0) {
-            //	setDateTrx (new Timestamp(System.currentTimeMillis()));
-            //	setInvoiceLineId (0);
-            //	setInOutLineId (0);
-            //	setProductId (0);
             setAttributeSetInstanceId(0);
-            //	setQty (Env.ZERO);
             setPosted(false);
             setProcessed(false);
             setProcessing(false);
@@ -72,11 +64,9 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MMatchInv(Properties ctx, Row row) {
-        super(ctx, row);
+    public MMatchInv(Row row) {
+        super(row);
     } //	MMatchInv
 
     /**
@@ -87,7 +77,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param qty     matched quantity
      */
     public MMatchInv(I_C_InvoiceLine iLine, Timestamp dateTrx, BigDecimal qty) {
-        this(iLine.getCtx(), 0);
+        this(0);
         setClientOrg(iLine);
         setInvoiceLineId(iLine.getInvoiceLineId());
         setInOutLineId(iLine.getInOutLineId());
@@ -101,19 +91,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Get InOut-Invoice Matches
      *
-     * @param ctx              context
      * @param M_InOutLine_ID   shipment
      * @param C_InvoiceLine_ID invoice
-     * @param trxName          transaction
      * @return array of matches
      */
     public static MMatchInv[] get(
-            Properties ctx, int M_InOutLine_ID, int C_InvoiceLine_ID) {
+            int M_InOutLine_ID, int C_InvoiceLine_ID) {
         if (M_InOutLine_ID <= 0 || C_InvoiceLine_ID <= 0) return new MMatchInv[]{};
         //
         final String whereClause = "M_InOutLine_ID=? AND C_InvoiceLine_ID=?";
         List<MMatchInv> list =
-                new Query(ctx, I_M_MatchInv.Table_Name, whereClause)
+                new Query(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOutLine_ID, C_InvoiceLine_ID)
                         .list();
         return list.toArray(new MMatchInv[list.size()]);
@@ -122,17 +110,15 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Get Inv Matches for InvoiceLine
      *
-     * @param ctx              context
      * @param C_InvoiceLine_ID invoice
-     * @param trxName          transaction
      * @return array of matches
      */
-    public static MMatchInv[] getInvoiceLine(Properties ctx, int C_InvoiceLine_ID) {
+    public static MMatchInv[] getInvoiceLine(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID <= 0) return new MMatchInv[]{};
         //
         String whereClause = "C_InvoiceLine_ID=?";
         List<MMatchInv> list =
-                new Query(ctx, I_M_MatchInv.Table_Name, whereClause)
+                new Query(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(C_InvoiceLine_ID)
                         .list();
         return list.toArray(new MMatchInv[list.size()]);
@@ -141,19 +127,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Get Inv Matches for InOut
      *
-     * @param ctx        context
      * @param M_InOut_ID shipment
-     * @param trxName    transaction
      * @return array of matches
      */
-    public static MMatchInv[] getInOut(Properties ctx, int M_InOut_ID) {
+    public static MMatchInv[] getInOut(int M_InOut_ID) {
         if (M_InOut_ID <= 0) return new MMatchInv[]{};
         //
         final String whereClause =
                 "EXISTS (SELECT 1 FROM M_InOutLine l"
                         + " WHERE M_MatchInv.M_InOutLine_ID=l.M_InOutLine_ID AND l.M_InOut_ID=?)";
         List<MMatchInv> list =
-                new Query(ctx, I_M_MatchInv.Table_Name, whereClause)
+                new Query(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOut_ID)
                         .list();
         return list.toArray(new MMatchInv[list.size()]);
@@ -162,19 +146,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Get Inv Matches for Invoice
      *
-     * @param ctx          context
      * @param C_Invoice_ID invoice
-     * @param trxName      transaction
      * @return array of matches
      */
-    public static MMatchInv[] getInvoice(Properties ctx, int C_Invoice_ID) {
+    public static MMatchInv[] getInvoice(int C_Invoice_ID) {
         if (C_Invoice_ID == 0) return new MMatchInv[]{};
         //
         final String whereClause =
                 " EXISTS (SELECT 1 FROM C_InvoiceLine il"
                         + " WHERE M_MatchInv.C_InvoiceLine_ID=il.C_InvoiceLine_ID AND il.C_Invoice_ID=?)";
         List<MMatchInv> list =
-                new Query(ctx, I_M_MatchInv.Table_Name, whereClause)
+                new Query(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(C_Invoice_ID)
                         .list();
         return list.toArray(new MMatchInv[list.size()]);
@@ -183,19 +165,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Get Inv Matches for InOutLine
      *
-     * @param ctx            context
      * @param M_InOutLine_ID shipment
-     * @param trxName        transaction
      * @return array of matches
      */
-    public static MMatchInv[] getInOutLine(Properties ctx, int M_InOutLine_ID) {
+    public static MMatchInv[] getInOutLine(int M_InOutLine_ID) {
         if (M_InOutLine_ID <= 0) {
             return new MMatchInv[]{};
         }
         //
         final String whereClause = MMatchInv.COLUMNNAME_M_InOutLine_ID + "=?";
         List<MMatchInv> list =
-                new Query(ctx, I_M_MatchInv.Table_Name, whereClause)
+                new Query(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOutLine_ID)
                         .list();
         return list.toArray(new MMatchInv[list.size()]);
@@ -217,7 +197,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             setDateAcct(ts);
         }
         if (getAttributeSetInstanceId() == 0 && getInOutLineId() != 0) {
-            MInOutLine iol = new MInOutLine(getCtx(), getInOutLineId());
+            MInOutLine iol = new MInOutLine(getInOutLineId());
             setAttributeSetInstanceId(iol.getAttributeSetInstanceId());
         }
         return true;
@@ -228,7 +208,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
         if (!success) return false;
 
         if (getInOutLineId() > 0) {
-            MInOutLine line = new MInOutLine(getCtx(), getInOutLineId());
+            MInOutLine line = new MInOutLine(getInOutLineId());
             BigDecimal matchedQty =
                     getSQLValueBD(
                             "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE M_InOutLine_ID=?",
@@ -245,7 +225,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
         }
 
         if (getInvoiceLineId() > 0) {
-            MInvoiceLine line = new MInvoiceLine(getCtx(), getInvoiceLineId());
+            MInvoiceLine line = new MInvoiceLine(getInvoiceLineId());
             BigDecimal matchedQty =
                     getSQLValueBD(
                             "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE C_InvoiceLine_ID=?",
@@ -297,7 +277,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     protected boolean beforeDelete() {
         if (isPosted()) {
             MPeriod.testPeriodOpen(
-                    getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchInvoice, getOrgId());
+                    getDateTrx(), MDocType.DOCBASETYPE_MatchInvoice, getOrgId());
             setPosted(false);
             MFactAcct.deleteEx(I_M_MatchInv.Table_ID, getId());
         }
@@ -325,13 +305,12 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     // AZ Goodwill
     private String deleteMatchInvCostDetail() {
         // Get Account Schemas to delete MCostDetail
-        MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
+        MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
         for (int asn = 0; asn < acctschemas.length; asn++) {
             MAcctSchema as = acctschemas[asn];
 
             MCostDetail cd =
                     MCostDetail.get(
-                            getCtx(),
                             "M_MatchInv_ID=?",
                             getMatchInvoiceId(),
                             getAttributeSetInstanceId(),
@@ -354,7 +333,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      */
     public boolean reverse(Timestamp reversalDate) {
         if (this.isProcessed() && this.getReversalId() == 0) {
-            MMatchInv reversal = new MMatchInv(getCtx(), 0);
+            MMatchInv reversal = new MMatchInv(0);
             PO.copyValues(this, reversal);
             reversal.setOrgId(this.getOrgId());
             reversal.setDescription("(->" + this.getDocumentNo() + ")");

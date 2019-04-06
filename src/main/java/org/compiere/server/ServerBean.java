@@ -3,9 +3,6 @@ package org.compiere.server;
 import org.compiere.model.IProcessInfo;
 import org.compiere.model.Server;
 import org.compiere.process.ProcessUtil;
-import org.idempiere.common.util.CLogger;
-
-import java.util.Properties;
 
 /**
  * Adempiere Server Bean.
@@ -27,9 +24,9 @@ public class ServerBean implements Server {
      *  @param pi Process Info
      *  @return resulting Process Info
      */
-    public IProcessInfo process(Properties ctx, IProcessInfo pi) {
+    public IProcessInfo process(IProcessInfo pi) {
         //	Start Process
-        ProcessUtil.startJavaProcess(ctx, pi);
+        ProcessUtil.startJavaProcess(pi);
         return pi;
     }    //	process
 

@@ -8,7 +8,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -43,12 +42,10 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      *
      * @param ctx                 context
      * @param C_AllocationLine_ID id
-     * @param trxName             name
      */
-    public MAllocationLine(Properties ctx, int C_AllocationLine_ID) {
-        super(ctx, C_AllocationLine_ID);
+    public MAllocationLine(int C_AllocationLine_ID) {
+        super(C_AllocationLine_ID);
         if (C_AllocationLine_ID == 0) {
-            //	setPaymentAllocationHeaderId (0);
             setAmount(Env.ZERO);
             setDiscountAmt(Env.ZERO);
             setWriteOffAmt(Env.ZERO);
@@ -59,12 +56,10 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     /**
      * Load Constructor
      *
-     * @param ctx     ctx
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx ctx
      */
-    public MAllocationLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAllocationLine(Row row) {
+        super(row);
     } //	MAllocationLine
 
     /**
@@ -73,7 +68,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      * @param parent parent
      */
     public MAllocationLine(MAllocationHdr parent) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setPaymentAllocationHeaderId(parent.getPaymentAllocationHeaderId());
         m_parent = parent;
@@ -108,7 +103,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     public MAllocationHdr getParent() {
         if (m_parent == null)
-            m_parent = new MAllocationHdr(getCtx(), getPaymentAllocationHeaderId());
+            m_parent = new MAllocationHdr(getPaymentAllocationHeaderId());
         return m_parent;
     } //	getParent
 
@@ -152,7 +147,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     public MInvoice getInvoice() {
         if (m_invoice == null && getInvoiceId() != 0)
-            m_invoice = new MInvoice(getCtx(), getInvoiceId());
+            m_invoice = new MInvoice(getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -164,7 +159,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "C_AllocationLine"));
+            log.saveError("ParentComplete", Msg.translate("C_AllocationLine"));
             return false;
         }
         if (!newRecord && (isValueChanged("C_BPartner_ID") || isValueChanged("C_Invoice_ID"))) {
@@ -234,7 +229,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
 
         //	Update Payment
         if (C_Payment_ID != 0) {
-            MPayment payment = new MPayment(getCtx(), C_Payment_ID);
+            MPayment payment = new MPayment(C_Payment_ID);
             if (getBusinessPartnerId() != payment.getBusinessPartnerId())
                 log.warning(
                         "C_BPartner_ID different - Invoice="

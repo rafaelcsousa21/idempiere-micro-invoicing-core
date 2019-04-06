@@ -8,7 +8,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.util.List;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -34,8 +33,8 @@ public class MBOMProduct extends X_M_BOMProduct {
      * @param M_BOMProduct_ID id
      * @param trxName         trx
      */
-    public MBOMProduct(Properties ctx, int M_BOMProduct_ID) {
-        super(ctx, M_BOMProduct_ID);
+    public MBOMProduct(int M_BOMProduct_ID) {
+        super(M_BOMProduct_ID);
         if (M_BOMProduct_ID == 0) {
             //	setBOM_ID (0);
             setBOMProductType(BOMPRODUCTTYPE_StandardProduct); // S
@@ -53,17 +52,15 @@ public class MBOMProduct extends X_M_BOMProduct {
      * @param bom product
      */
     public MBOMProduct(MBOM bom) {
-        this(bom.getCtx(), 0);
+        this(0);
         m_bom = bom;
     } //	MBOMProduct
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
-    public MBOMProduct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MBOMProduct(Row row) {
+        super(row);
     } //	MBOMProduct
 
     /**
@@ -76,7 +73,7 @@ public class MBOMProduct extends X_M_BOMProduct {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         String whereClause = "M_BOM_ID=?";
         List<MBOMProduct> list =
-                new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause)
+                new Query(I_M_BOMProduct.Table_Name, whereClause)
                         .setParameters(bom.getBOMId())
                         .setOrderBy("SeqNo")
                         .list();
@@ -92,7 +89,7 @@ public class MBOMProduct extends X_M_BOMProduct {
      * @return parent
      */
     private MBOM getBOM() {
-        if (m_bom == null && getBOMId() != 0) m_bom = MBOM.get(getCtx(), getBOMId());
+        if (m_bom == null && getBOMId() != 0) m_bom = MBOM.get(getBOMId());
         return m_bom;
     } //	getBOM
 
@@ -107,14 +104,14 @@ public class MBOMProduct extends X_M_BOMProduct {
         if (getBOMProductType().equals(BOMPRODUCTTYPE_OutsideProcessing)) {
             if (getProductBOMId() != 0) setProductBOMId(0);
         } else if (getProductBOMId() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @M_ProductBOM_ID@"));
+            log.saveError("Error", Msg.parseTranslation("@NotFound@ @M_ProductBOM_ID@"));
             return false;
         }
         //	Operation
         if (getProductOperationId() == 0) {
             if (getSeqNo() != 0) setSeqNo(0);
         } else if (getSeqNo() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @SeqNo@"));
+            log.saveError("Error", Msg.parseTranslation("@NotFound@ @SeqNo@"));
             return false;
         }
         //	Product Attribute Instance
@@ -123,7 +120,7 @@ public class MBOMProduct extends X_M_BOMProduct {
             if (m_bom == null || !MBOM.BOMTYPE_Make_To_Order.equals(m_bom.getBOMType())) {
                 log.saveError(
                         "Error",
-                        Msg.parseTranslation(getCtx(), "Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));
+                        Msg.parseTranslation("Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));
                 setAttributeSetInstanceId(0);
                 return false;
             }
@@ -132,13 +129,13 @@ public class MBOMProduct extends X_M_BOMProduct {
         if ((getBOMProductType().equals(BOMPRODUCTTYPE_Alternative)
                 || getBOMProductType().equals(BOMPRODUCTTYPE_AlternativeDefault))
                 && getBOMAlternativeGroupId() == 0) {
-            log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @M_BOMAlternative_ID@"));
+            log.saveError("Error", Msg.parseTranslation("@NotFound@ @M_BOMAlternative_ID@"));
             return false;
         }
         //	Operation
         if (getProductOperationId() != 0) {
             if (getSeqNo() == 0) {
-                log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @SeqNo@"));
+                log.saveError("Error", Msg.parseTranslation("@NotFound@ @SeqNo@"));
                 return false;
             }
         } else //	no op

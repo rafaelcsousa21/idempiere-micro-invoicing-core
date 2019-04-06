@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_BankAccount_Processor;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_BankAccount_Processor
  *
@@ -23,8 +21,8 @@ public class X_C_BankAccount_Processor extends PO
     /**
      * Standard Constructor
      */
-    public X_C_BankAccount_Processor(Properties ctx, int C_BankAccount_Processor_ID) {
-        super(ctx, C_BankAccount_Processor_ID);
+    public X_C_BankAccount_Processor(int C_BankAccount_Processor_ID) {
+        super(C_BankAccount_Processor_ID);
         /**
          * if (C_BankAccount_Processor_ID == 0) { setAcceptAMEX (false); // N setAcceptATM (false); // N
          * setAcceptCheck (false); // N setAcceptCorporate (false); // N setAcceptDiners (false); // N
@@ -38,8 +36,8 @@ public class X_C_BankAccount_Processor extends PO
     /**
      * Load Constructor
      */
-    public X_C_BankAccount_Processor(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BankAccount_Processor(Row row) {
+        super(row);
     }
 
     /**

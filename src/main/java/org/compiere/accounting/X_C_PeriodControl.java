@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_PeriodControl;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_PeriodControl
  *
@@ -166,8 +164,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
     /**
      * Standard Constructor
      */
-    public X_C_PeriodControl(Properties ctx, int C_PeriodControl_ID) {
-        super(ctx, C_PeriodControl_ID);
+    public X_C_PeriodControl(int C_PeriodControl_ID) {
+        super(C_PeriodControl_ID);
         /**
          * if (C_PeriodControl_ID == 0) { setPeriodControl_ID (0); setPeriodId (0); setDocBaseType
          * (null); setPeriodAction (null); // N }
@@ -177,8 +175,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
     /**
      * Load Constructor
      */
-    public X_C_PeriodControl(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_PeriodControl(Row row) {
+        super(row);
     }
 
     /**

@@ -1,21 +1,19 @@
 package org.compiere.invoicing;
 
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class MConversionRate extends org.compiere.conversionrate.MConversionRate {
 
-    public MConversionRate(Properties ctx, int C_Conversion_Rate_ID) {
-        super(ctx, C_Conversion_Rate_ID);
+    public MConversionRate(int C_Conversion_Rate_ID) {
+        super(C_Conversion_Rate_ID);
     }
 
     /**
      * Convert an amount to base Currency
      *
-     * @param ctx                 context
      * @param CurFrom_ID          The C_Currency_ID FROM
      * @param ConvDate            conversion date - if null - use current date
      * @param C_ConversionType_ID conversion rate type - if 0 - use Default
@@ -25,7 +23,7 @@ public class MConversionRate extends org.compiere.conversionrate.MConversionRate
      * @return converted amount
      */
     public static BigDecimal convertBase(
-            Properties ctx,
+
             BigDecimal Amt,
             int CurFrom_ID,
             Timestamp ConvDate,
@@ -33,10 +31,10 @@ public class MConversionRate extends org.compiere.conversionrate.MConversionRate
             int AD_Client_ID,
             int AD_Org_ID) {
         return convert(
-                ctx,
+
                 Amt,
                 CurFrom_ID,
-                MClient.get(ctx).getCurrencyId(),
+                MClientKt.getClientWithAccounting().getCurrencyId(),
                 ConvDate,
                 C_ConversionType_ID,
                 AD_Client_ID,

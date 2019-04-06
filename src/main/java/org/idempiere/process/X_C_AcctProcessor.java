@@ -5,7 +5,6 @@ import org.compiere.model.I_C_AcctProcessor;
 import org.compiere.orm.BasePOName;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
 
@@ -17,15 +16,15 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
     /**
      * Standard Constructor
      */
-    public X_C_AcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
-        super(ctx, C_AcctProcessor_ID);
+    public X_C_AcctProcessor(int C_AcctProcessor_ID) {
+        super(C_AcctProcessor_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_AcctProcessor(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AcctProcessor(Row row) {
+        super(row);
     }
 
     /**

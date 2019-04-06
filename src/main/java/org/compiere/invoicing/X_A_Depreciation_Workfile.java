@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for A_Depreciation_Workfile
@@ -43,8 +42,8 @@ public class X_A_Depreciation_Workfile extends PO
     /**
      * Standard Constructor
      */
-    public X_A_Depreciation_Workfile(Properties ctx, int A_Depreciation_Workfile_ID) {
-        super(ctx, A_Depreciation_Workfile_ID);
+    public X_A_Depreciation_Workfile(int A_Depreciation_Workfile_ID) {
+        super(A_Depreciation_Workfile_ID);
         /*
          * if (A_Depreciation_Workfile_ID == 0) { setA_Accumulated_Depr (Env.ZERO); // 0
          * setA_Accumulated_Depr_F (Env.ZERO); // 0 setA_Asset_Cost (Env.ZERO); // 0 setA_Asset_ID (0);
@@ -60,8 +59,8 @@ public class X_A_Depreciation_Workfile extends PO
     /**
      * Load Constructor
      */
-    public X_A_Depreciation_Workfile(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_A_Depreciation_Workfile(Row row) {
+        super(row);
     }
 
     /**
@@ -139,7 +138,7 @@ public class X_A_Depreciation_Workfile extends PO
 
     public org.compiere.model.I_A_Asset getAAsset() throws RuntimeException {
         return (org.compiere.model.I_A_Asset)
-                MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
+                MTable.get(org.compiere.model.I_A_Asset.Table_Name)
                         .getPO(getAssetId());
     }
 

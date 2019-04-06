@@ -3,7 +3,6 @@ package org.compiere.accounting
 import org.compiere.model.I_M_Movement
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 /**
  * ************************************************************************ Update Line with
@@ -22,8 +21,7 @@ fun updateReverseLineGetData(
     Line_ID: Int,
     C_AcctSchema_ID: Int,
     Account_ID: Int,
-    M_Locator_ID: Int,
-    ctx: Properties
+    M_Locator_ID: Int
 ): MFactAcct? {
     val sql = StringBuilder("SELECT * ")
         .append("FROM Fact_Acct ")
@@ -53,6 +51,6 @@ fun updateReverseLineGetData(
 
     // end MZ
 
-    val query = queryOf(sql.toString(), parameters).map { row -> MFactAcct(ctx, row) }.asSingle
+    val query = queryOf(sql.toString(), parameters).map { row -> MFactAcct(row) }.asSingle
     return DB.current.run(query)
 }

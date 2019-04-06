@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_AD_ModelValidator;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for AD_ModelValidator
  *
@@ -22,15 +20,15 @@ public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidat
     /**
      * Standard Constructor
      */
-    public X_AD_ModelValidator(Properties ctx, int AD_ModelValidator_ID) {
-        super(ctx, AD_ModelValidator_ID);
+    public X_AD_ModelValidator(int AD_ModelValidator_ID) {
+        super(AD_ModelValidator_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_ModelValidator(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_ModelValidator(Row row) {
+        super(row);
     }
 
     /**

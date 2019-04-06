@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -33,22 +32,22 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     /**
      * Standard Constructor
      */
-    public MDepreciationExp(Properties ctx, int A_Depreciation_Exp_ID) {
-        super(ctx, A_Depreciation_Exp_ID);
+    public MDepreciationExp(int A_Depreciation_Exp_ID) {
+        super(A_Depreciation_Exp_ID);
     }
 
     /**
      * Load Constructor
      */
-    public MDepreciationExp(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepreciationExp(Row row) {
+        super(row);
     }
 
     /**
      * Create entry
      */
     public static MDepreciationExp createEntry(
-            Properties ctx,
+
             String entryType,
             int A_Asset_ID,
             int A_Period,
@@ -59,7 +58,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             BigDecimal expense,
             String description,
             MDepreciationWorkfile assetwk) {
-        MDepreciationExp depexp = new MDepreciationExp(ctx, 0);
+        MDepreciationExp depexp = new MDepreciationExp(0);
         depexp.setEntryType(entryType);
         depexp.setAssetId(A_Asset_ID);
         depexp.setDRAccountId(drAcct);
@@ -67,7 +66,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         depexp.setAccountNumberAcct(drAcct); // TODO: DELETEME
         depexp.setPostingType(postingType);
         depexp.setExpense(expense);
-        depexp.setDescription(Msg.parseTranslation(ctx, description));
+        depexp.setDescription(Msg.parseTranslation(description));
         depexp.setPeriod(A_Period);
         depexp.setIsDepreciated(true);
         depexp.setDateAcct(DateAcct);
@@ -96,13 +95,12 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             String help,
             String trxName) {
         ArrayList<MDepreciationExp> list = new ArrayList<MDepreciationExp>();
-        Properties ctx = assetwk.getCtx();
         MAssetAcct assetAcct = assetwk.getAssetAccounting(dateAcct);
         MDepreciationExp depexp = null;
 
         depexp =
                 createEntry(
-                        ctx,
+
                         X_A_Depreciation_Exp.A_ENTRY_TYPE_Depreciation,
                         assetwk.getAssetId(),
                         PeriodNo,
@@ -128,7 +126,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     }
 
     public static void checkExistsNotProcessedEntries(
-            Properties ctx, int A_Asset_ID, Timestamp dateAcct, String postingType) {
+            int A_Asset_ID, Timestamp dateAcct, String postingType) {
         final String whereClause =
                 MDepreciationExp.COLUMNNAME_A_Asset_ID
                         + "=?"
@@ -142,7 +140,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
                         + MDepreciationExp.COLUMNNAME_Processed
                         + "=?";
         boolean match =
-                new Query(ctx, MDepreciationExp.Table_Name, whereClause)
+                new Query(MDepreciationExp.Table_Name, whereClause)
                         .setParameters(
                                 A_Asset_ID, TimeUtil.getMonthFirstDay(dateAcct), postingType, false)
                         .match();
@@ -167,7 +165,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     }
 
     private MDepreciationWorkfile getA_Depreciation_Workfile() {
-        return MDepreciationWorkfile.get(getCtx(), getAssetId(), getPostingType());
+        return MDepreciationWorkfile.get(getAssetId(), getPostingType());
     }
 
     /**
@@ -188,7 +186,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         String entryType = getEntryType();
         if (MDepreciationExp.A_ENTRY_TYPE_Depreciation.equals(entryType)) {
             checkExistsNotProcessedEntries(
-                    getCtx(), getAssetId(), getDateAcct(), getPostingType());
+                    getAssetId(), getDateAcct(), getPostingType());
             //
             // Check if the asset is Active:
             if (!assetwk.getAsset().getAssetStatus().equals(MAsset.A_ASSET_STATUS_Activated)) {
@@ -221,7 +219,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         // Try to delete postings
         if (isPosted()) {
             MPeriod.testPeriodOpen(
-                    getCtx(), getDateAcct(), MDocType.DOCBASETYPE_GLDocument, getOrgId());
+                    getDateAcct(), MDocType.DOCBASETYPE_GLDocument, getOrgId());
             MDepreciationEntry.deleteFacts(this);
         }
         return true;

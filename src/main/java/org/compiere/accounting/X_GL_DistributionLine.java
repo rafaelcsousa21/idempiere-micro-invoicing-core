@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for GL_DistributionLine
@@ -24,8 +23,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
     /**
      * Standard Constructor
      */
-    public X_GL_DistributionLine(Properties ctx, int GL_DistributionLine_ID) {
-        super(ctx, GL_DistributionLine_ID);
+    public X_GL_DistributionLine(int GL_DistributionLine_ID) {
+        super(GL_DistributionLine_ID);
         /**
          * if (GL_DistributionLine_ID == 0) { setGLDistributionId (0); setGLDistributionLine_ID (0);
          * setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM GL_DistributionLine
@@ -40,8 +39,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
     /**
      * Load Constructor
      */
-    public X_GL_DistributionLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_DistributionLine(Row row) {
+        super(row);
     }
 
     /**

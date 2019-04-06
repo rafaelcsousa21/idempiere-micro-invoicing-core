@@ -3,7 +3,6 @@ package org.compiere.accounting
 import kotliquery.Row
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 /**
  * Get Allocations of Payment
@@ -12,12 +11,12 @@ import java.util.Properties
  * @param C_Payment_ID payment
  * @return allocations of payment
  */
-fun getAllocationsOfPayment(ctx: Properties, C_Payment_ID: Int): Array<MAllocationHdr> {
+fun getAllocationsOfPayment(C_Payment_ID: Int): Array<MAllocationHdr> {
     val sql = ("SELECT * FROM C_AllocationHdr h " +
             "WHERE IsActive='Y'" +
             " AND EXISTS (SELECT * FROM C_AllocationLine l " +
             "WHERE h.C_AllocationHdr_ID=l.C_AllocationHdr_ID AND l.C_Payment_ID=?)")
-    val query = queryOf(sql, listOf(C_Payment_ID)).map { row -> MAllocationHdr(ctx, row) }.asList
+    val query = queryOf(sql, listOf(C_Payment_ID)).map { row -> MAllocationHdr(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getOfPayment
 
@@ -28,12 +27,12 @@ fun getAllocationsOfPayment(ctx: Properties, C_Payment_ID: Int): Array<MAllocati
  * @param C_Invoice_ID payment
  * @return allocations of payment
  */
-fun getAllocationsOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MAllocationHdr> {
+fun getAllocationsOfInvoice(C_Invoice_ID: Int): Array<MAllocationHdr> {
     val sql = ("SELECT * FROM C_AllocationHdr h " +
             "WHERE IsActive='Y'" +
             " AND EXISTS (SELECT * FROM C_AllocationLine l " +
             "WHERE h.C_AllocationHdr_ID=l.C_AllocationHdr_ID AND l.C_Invoice_ID=?)")
-    val query = queryOf(sql, listOf(C_Invoice_ID)).map { row -> MAllocationHdr(ctx, row) }.asList
+    val query = queryOf(sql, listOf(C_Invoice_ID)).map { row -> MAllocationHdr(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getOfInvoice
 
@@ -43,11 +42,11 @@ fun getAllocationsOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MAllocati
  * @param requery if true requery
  * @return lines
  */
-fun getAllocationLines(ctx: Properties, allocationHeaderId: Int, parent: MAllocationHdr): Array<MAllocationLine> {
+fun getAllocationLines(allocationHeaderId: Int, parent: MAllocationHdr): Array<MAllocationLine> {
     //
     val sql = "SELECT * FROM C_AllocationLine WHERE C_AllocationHdr_ID=?"
     fun load(row: Row): MAllocationLine {
-        val line = MAllocationLine(ctx, row)
+        val line = MAllocationLine(row)
         line.parent = parent
         return line
     }

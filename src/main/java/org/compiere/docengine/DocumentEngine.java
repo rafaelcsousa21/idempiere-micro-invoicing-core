@@ -2,11 +2,11 @@ package org.compiere.docengine;
 
 import org.compiere.accounting.Doc;
 import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MClientKt;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.I_M_InOut;
-import org.compiere.orm.MClient;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.compiere.process.CompleteActionResult;
@@ -14,13 +14,11 @@ import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.MBaseColumnKt.getColumnId;
@@ -93,17 +91,17 @@ public class DocumentEngine implements DocAction {
      * @return null, if success or error message
      */
     public static String postImmediate(
-            Properties ctx,
+
             int AD_Client_ID,
             int AD_Table_ID,
             int Record_ID,
             boolean force) {
         // Ensure the table has Posted column / i.e. GL_JournalBatch can be completed but not posted
-        if (getColumnId(MTable.getDbTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
+        if (getColumnId(MTable.getDbTableName(AD_Table_ID), "Posted") <= 0) return null;
 
         String error = null;
         if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);
-        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(ctx, AD_Client_ID);
+        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(AD_Client_ID);
         error = Doc.postImmediate(ass, AD_Table_ID, Record_ID, force);
         return error;
     } //	postImmediate
@@ -262,7 +260,7 @@ public class DocumentEngine implements DocAction {
                     currentStatus = getSQLValueString(statusSql, docPO.getId());
                     if (!docStatusOriginal.equals(currentStatus)) {
                         throw new IllegalStateException(
-                                Msg.getMsg(docPO.getCtx(), "DocStatusChanged") + " " + docPO.toString());
+                                Msg.getMsg("DocStatusChanged") + " " + docPO.toString());
                     }
                 }
             }
@@ -359,7 +357,7 @@ public class DocumentEngine implements DocAction {
                 }
 
                 if (DocAction.Companion.getSTATUS_Completed().equals(status)
-                        && MClient.get(Env.getCtx()).isClientAccountingImmediate()) {
+                        && MClientKt.getClientWithAccounting().isClientAccountingImmediate()) {
                     m_document.saveEx();
                     postIt();
 
@@ -368,7 +366,6 @@ public class DocumentEngine implements DocAction {
                             @SuppressWarnings("unused")
                             String ignoreError =
                                     DocumentEngine.postImmediate(
-                                            docafter.getCtx(),
                                             docafter.getClientId(),
                                             docafter.getTableId(),
                                             docafter.getId(),
@@ -513,7 +510,7 @@ public class DocumentEngine implements DocAction {
 
         String error =
                 DocumentEngine.postImmediate(
-                        Env.getCtx(),
+
                         m_document.getClientId(),
                         m_document.getTableId(),
                         m_document.getId(),
@@ -830,17 +827,6 @@ public class DocumentEngine implements DocAction {
     public void saveEx() throws AdempiereException {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
-
-    /**
-     * Get Context
-     *
-     * @return context
-     */
-    @NotNull
-    public Properties getCtx() {
-        if (m_document != null) return m_document.getCtx();
-        throw new IllegalStateException(EXCEPTION_MSG);
-    } //	getCtx
 
     /**
      * Get ID of record

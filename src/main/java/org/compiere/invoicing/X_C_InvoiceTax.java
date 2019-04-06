@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_InvoiceTax
@@ -24,8 +23,8 @@ public class X_C_InvoiceTax extends PO {
     /**
      * Standard Constructor
      */
-    public X_C_InvoiceTax(Properties ctx, int C_InvoiceTax_ID) {
-        super(ctx, C_InvoiceTax_ID);
+    public X_C_InvoiceTax(int C_InvoiceTax_ID) {
+        super(C_InvoiceTax_ID);
         /**
          * if (C_InvoiceTax_ID == 0) { setInvoiceId (0); setTaxId (0); setIsTaxIncluded (false);
          * setProcessed (false); setTaxAmt (Env.ZERO); setTaxBaseAmt (Env.ZERO); }
@@ -35,8 +34,8 @@ public class X_C_InvoiceTax extends PO {
     /**
      * Load Constructor
      */
-    public X_C_InvoiceTax(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_InvoiceTax(Row row) {
+        super(row);
     }
 
     /**

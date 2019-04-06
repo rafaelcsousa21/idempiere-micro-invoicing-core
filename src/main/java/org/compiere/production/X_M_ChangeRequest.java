@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_ChangeRequest;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for M_ChangeRequest
  *
@@ -22,15 +20,15 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
     /**
      * Standard Constructor
      */
-    public X_M_ChangeRequest(Properties ctx, int M_ChangeRequest_ID) {
-        super(ctx, M_ChangeRequest_ID);
+    public X_M_ChangeRequest(int M_ChangeRequest_ID) {
+        super(M_ChangeRequest_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_ChangeRequest(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_ChangeRequest(Row row) {
+        super(row);
     }
 
     /**

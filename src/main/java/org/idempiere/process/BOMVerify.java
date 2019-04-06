@@ -86,7 +86,7 @@ public class BOMVerify extends SvrProcess {
     protected String doIt() throws Exception {
         if (p_M_Product_ID != 0) {
             if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-            checkProduct(new MProduct(getCtx(), p_M_Product_ID));
+            checkProduct(new MProduct(p_M_Product_ID));
             return "Product Checked";
         }
         if (log.isLoggable(Level.INFO))
@@ -101,7 +101,7 @@ public class BOMVerify extends SvrProcess {
         else sql += "M_Product_Category_ID=? ";
         if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
         sql += "ORDER BY Name";
-        int AD_Client_ID = Env.getClientId(getCtx());
+        int AD_Client_ID = Env.getClientId();
         try {
             pstmt = prepareStatement(sql);
             if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
@@ -109,7 +109,7 @@ public class BOMVerify extends SvrProcess {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 p_M_Product_ID = rs.getInt(1); // ADAXA - validate the product retrieved from database
-                checkProduct(new MProduct(getCtx(), p_M_Product_ID));
+                checkProduct(new MProduct(p_M_Product_ID));
 
                 counter++;
             }
@@ -149,7 +149,7 @@ public class BOMVerify extends SvrProcess {
         for (MProductBOM productsBOM : productsBOMs) {
             if (!productsBOM.isActive()) continue;
             lines++;
-            MProduct pp = new MProduct(getCtx(), productsBOM.getBOMProductId());
+            MProduct pp = new MProduct(productsBOM.getBOMProductId());
             if (!pp.isBOM()) {
                 if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
             } else {

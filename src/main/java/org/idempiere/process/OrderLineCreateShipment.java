@@ -39,7 +39,7 @@ public class OrderLineCreateShipment extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
-        if (p_MovementDate == null) p_MovementDate = Env.getContextAsDate(getCtx(), "#Date");
+        if (p_MovementDate == null) p_MovementDate = Env.getContextAsDate();
         if (p_MovementDate == null) p_MovementDate = new Timestamp(System.currentTimeMillis());
 
         p_C_OrderLine_ID = getRecordId();
@@ -55,9 +55,9 @@ public class OrderLineCreateShipment extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("C_OrderLine_ID=" + p_C_OrderLine_ID);
         if (p_C_OrderLine_ID == 0) throw new IllegalArgumentException("No OrderLine");
         //
-        MOrderLine line = new MOrderLine(getCtx(), p_C_OrderLine_ID);
+        MOrderLine line = new MOrderLine(p_C_OrderLine_ID);
         if (line.getId() == 0) throw new IllegalArgumentException("Order line not found");
-        MOrder order = new MOrder(getCtx(), line.getOrderId());
+        MOrder order = new MOrder(line.getOrderId());
         if (!MOrder.DOCSTATUS_Completed.equals(order.getDocStatus()))
             throw new IllegalArgumentException("Order not completed");
 

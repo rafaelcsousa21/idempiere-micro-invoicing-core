@@ -2,18 +2,19 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.bo.MCurrency;
+import org.compiere.bo.MCurrencyKt;
 import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.KeyNamePair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -75,10 +76,9 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @param ctx             context
      * @param C_AcctSchema_ID id
-     * @param trxName         transaction
      */
-    public MAcctSchema(Properties ctx, int C_AcctSchema_ID) {
-        super(ctx, C_AcctSchema_ID);
+    public MAcctSchema(int C_AcctSchema_ID) {
+        super(C_AcctSchema_ID);
         if (C_AcctSchema_ID == 0) {
             //	setCurrencyId (0);
             //	setName (null);
@@ -105,12 +105,10 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MAcctSchema(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAcctSchema(Row row) {
+        super(row);
     } //	MAcctSchema
 
     /**
@@ -120,7 +118,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @param currency currency
      */
     public MAcctSchema(MClient client, KeyNamePair currency) {
-        this(client.getCtx(), 0);
+        this(0);
         setClientOrg(client);
         setCurrencyId(currency.getKey());
         StringBuilder msgset =
@@ -140,15 +138,14 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @param ctx             context
      * @param C_AcctSchema_ID schema id
-     * @param trxName         optional trx
      * @return Accounting schema
      */
-    public static MAcctSchema get(Properties ctx, int C_AcctSchema_ID) {
+    public static MAcctSchema get(int C_AcctSchema_ID) {
         //  Check Cache
         Integer key = C_AcctSchema_ID;
         MAcctSchema retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MAcctSchema(ctx, C_AcctSchema_ID);
+        retValue = new MAcctSchema(C_AcctSchema_ID);
         s_cache.put(key, retValue);
         return retValue;
     } //	get
@@ -158,19 +155,18 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @param ctx          context
      * @param AD_Client_ID client or 0 for all
-     * @param trxName      optional trx
      * @return Array of AcctSchema of Client
      */
     public static synchronized MAcctSchema[] getClientAcctSchema(
-            Properties ctx, int AD_Client_ID) {
+            int AD_Client_ID) {
         //  Check Cache
         Integer key = AD_Client_ID;
         if (s_schema.containsKey(key)) return s_schema.get(key);
 
         //  Create New
         ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
-        MClientInfo info = MClientInfo.get(ctx, AD_Client_ID);
-        MAcctSchema as = MAcctSchema.get(ctx, info.getAcctSchema1Id());
+        MClientInfo info = MClientInfo.get(AD_Client_ID);
+        MAcctSchema as = MAcctSchema.get(info.getAcctSchema1Id());
         if (as.getId() != 0) list.add(as);
 
         ArrayList<Object> params = new ArrayList<Object>();
@@ -187,7 +183,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         }
 
         List<MAcctSchema> ass =
-                new Query(ctx, I_C_AcctSchema.Table_Name, whereClause.toString())
+                new Query(I_C_AcctSchema.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(MAcctSchema.COLUMNNAME_C_AcctSchema_ID)
                         .list();
@@ -234,7 +230,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @return GL info
      */
     public MAcctSchemaGL getAcctSchemaGL() {
-        if (m_gl == null) m_gl = MAcctSchemaGL.get(getCtx(), getAccountingSchemaId());
+        if (m_gl == null) m_gl = MAcctSchemaGL.get(getAccountingSchemaId());
         if (m_gl == null)
             throw new IllegalStateException(
                     "No GL Definition for C_AcctSchema_ID=" + getAccountingSchemaId());
@@ -247,7 +243,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @return defaults
      */
     public MAcctSchemaDefault getAcctSchemaDefault() {
-        if (m_default == null) m_default = MAcctSchemaDefault.get(getCtx(), getAccountingSchemaId());
+        if (m_default == null) m_default = MAcctSchemaDefault.get(getAccountingSchemaId());
         if (m_default == null)
             throw new IllegalStateException(
                     "No Default Definition for C_AcctSchema_ID=" + getAccountingSchemaId());
@@ -284,7 +280,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (m_SuspenseError_Acct != null) return m_SuspenseError_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getSuspenseBalancingAccount();
-        m_SuspenseError_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
+        m_SuspenseError_Acct = MAccount.get(C_ValidCombination_ID);
         return m_SuspenseError_Acct;
     } //	getSuspenseBalancing_Acct
 
@@ -307,7 +303,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (m_CurrencyBalancing_Acct != null) return m_CurrencyBalancing_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getCurrencyBalancingAccount();
-        m_CurrencyBalancing_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
+        m_CurrencyBalancing_Acct = MAccount.get(C_ValidCombination_ID);
         return m_CurrencyBalancing_Acct;
     } //	getCurrencyBalancingAccount
 
@@ -321,7 +317,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (m_DueTo_Acct != null) return m_DueTo_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getIntercompanyDueToAccount();
-        m_DueTo_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
+        m_DueTo_Acct = MAccount.get(C_ValidCombination_ID);
         return m_DueTo_Acct;
     } //	getDueTo_Acct
 
@@ -335,7 +331,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (m_DueFrom_Acct != null) return m_DueFrom_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getIntercompanyDueFromAccount();
-        m_DueFrom_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
+        m_DueFrom_Acct = MAccount.get(C_ValidCombination_ID);
         return m_DueFrom_Acct;
     } //	getDueFrom_Acct
 
@@ -346,7 +342,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      */
     public int getStdPrecision() {
         if (m_stdPrecision < 0) {
-            MCurrency cur = MCurrency.get(getCtx(), getCurrencyId());
+            MCurrency cur = MCurrencyKt.getCurrency(getCurrencyId());
             m_stdPrecision = cur.getStdPrecision();
             m_costPrecision = cur.getCostingPrecision();
         }
@@ -370,7 +366,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         //	Create Cost Type
         if (getCostTypeId() == 0) {
-            MCostType ct = new MCostType(getCtx(), 0);
+            MCostType ct = new MCostType(0);
             ct.setClientOrg(getClientId(), 0);
             ct.setName(getName());
             ct.saveEx();
@@ -484,7 +480,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         checkCosting();
         //	Check Primary
         if (getOrganizationOnlyId() != 0) {
-            MClientInfo info = MClientInfo.get(getCtx(), getClientId());
+            MClientInfo info = MClientInfo.get(getClientId());
             if (info.getAcctSchema1Id() == getAccountingSchemaId()) setOrganizationOnlyId(0);
         }
         return true;
@@ -498,7 +494,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     public synchronized Integer[] getOnlyOrgs() {
         if (m_onlyOrgs == null) {
             MReportTree tree =
-                    new MReportTree(getCtx(), 0, true, MAcctSchemaElement.ELEMENTTYPE_Organization);
+                    new MReportTree(0, true, MAcctSchemaElement.ELEMENTTYPE_Organization);
             m_onlyOrgs = tree.getChildIDs(getOrganizationOnlyId());
         }
         return m_onlyOrgs;
@@ -526,7 +522,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (getOrganizationOnlyId() == 0) return false;
         //	Only Organization
         if (getOrganizationOnlyId() == AD_Org_ID) return false;
-        if (m_onlyOrg == null) m_onlyOrg = MOrg.get(getCtx(), getOrganizationOnlyId());
+        if (m_onlyOrg == null) m_onlyOrg = MOrgKt.getOrg(getOrganizationOnlyId());
         //	Not Summary Only - i.e. skip it
         if (!m_onlyOrg.isSummary()) return true;
         final Integer[] onlyOrgs = getOnlyOrgs();

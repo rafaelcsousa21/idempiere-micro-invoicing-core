@@ -114,7 +114,6 @@ public final class Fact implements IFact {
         //
         FactLine line =
                 new FactLine(
-                        m_doc.getCtx(),
                         m_doc.getTableId(),
                         m_doc.getId(),
                         docLine == null ? 0 : docLine.getId());
@@ -258,7 +257,7 @@ public final class Fact implements IFact {
 
         //  new line
         FactLine line =
-                new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
+                new FactLine(m_doc.getTableId(), m_doc.getId(), 0);
         line.setDocumentInfo(m_doc, null);
         line.setPostingType(m_postingType);
 
@@ -396,7 +395,7 @@ public final class Fact implements IFact {
                 if (!difference.isZeroBalance()) {
                     //  Create Balancing Entry
                     FactLine line =
-                            new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
+                            new FactLine(m_doc.getTableId(), m_doc.getId(), 0);
                     line.setDocumentInfo(m_doc, null);
                     line.setPostingType(m_postingType);
                     //  Amount & Account
@@ -502,7 +501,7 @@ public final class Fact implements IFact {
 
         //  Create Currency Balancing Entry
         if (m_acctSchema.isCurrencyBalancing()) {
-            line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
+            line = new FactLine(m_doc.getTableId(), m_doc.getId(), 0);
             line.setDocumentInfo(m_doc, null);
             line.setPostingType(m_postingType);
             line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancingAccount());
@@ -609,7 +608,6 @@ public final class Fact implements IFact {
             if (distributions == null || distributions.length == 0) {
                 distributions =
                         MDistribution.get(
-                                dLine.getCtx(),
                                 dLine.getAccountingSchemaId(),
                                 m_postingType,
                                 m_doc.getDocumentTypeId(),
@@ -655,7 +653,6 @@ public final class Fact implements IFact {
                 if (!dl.isActive() || dl.getAmt().signum() == 0) continue;
                 FactLine factLine =
                         new FactLine(
-                                m_doc.getCtx(),
                                 m_doc.getTableId(),
                                 m_doc.getId(),
                                 dLine.getLineId());
@@ -730,13 +727,11 @@ public final class Fact implements IFact {
     /**
      * Save Fact
      *
-     * @param trxName transaction
      * @return true if all lines were saved
      */
     public boolean save() {
         //  save Lines
-        for (int i = 0; i < m_lines.size(); i++) {
-            FactLine fl = m_lines.get(i);
+        for (FactLine fl : m_lines) {
             //	log.fine("save - " + fl);
             if (!fl.save()) //  abort on first error
                 return false;

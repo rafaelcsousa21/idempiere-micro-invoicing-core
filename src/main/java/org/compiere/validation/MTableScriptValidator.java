@@ -6,7 +6,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 
 import java.util.List;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
@@ -44,8 +43,8 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
      * @param ctx                         context
      * @param AD_Table_ScriptValidator_ID id
      */
-    public MTableScriptValidator(Properties ctx, int AD_Table_ScriptValidator_ID) {
-        super(ctx, AD_Table_ScriptValidator_ID);
+    public MTableScriptValidator(int AD_Table_ScriptValidator_ID) {
+        super(AD_Table_ScriptValidator_ID);
     } //	MTableScriptValidator
 
     /**
@@ -53,8 +52,8 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
      *
      * @param ctx context
      */
-    public MTableScriptValidator(Properties ctx, Row row) {
-        super(ctx, row);
+    public MTableScriptValidator(Row row) {
+        super(row);
     } //	MTableScriptValidator
 
     /**
@@ -65,7 +64,7 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
      * @return array of MTableScriptValidator or null if error or no validators found
      */
     public static List<MTableScriptValidator> getModelValidatorRules(
-            Properties ctx, int ad_table_id, String event) {
+            int ad_table_id, String event) {
         // Try cache
         final MultiKey key = new MultiKey(ad_table_id, event);
         List<MTableScriptValidator> mvrs = s_cacheTableEvent.get(key);
@@ -77,7 +76,7 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
         // Fetch now
         final String whereClause = "AD_Table_ID=? AND EventModelValidator=?";
         mvrs =
-                new Query(ctx, Table_Name, whereClause)
+                new Query(Table_Name, whereClause)
                         .setParameters(ad_table_id, event)
                         .setOnlyActiveRecords(true)
                         .setOrderBy(COLUMNNAME_SeqNo)

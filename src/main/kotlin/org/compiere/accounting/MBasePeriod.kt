@@ -3,11 +3,10 @@ package org.compiere.accounting
 import org.compiere.model.I_C_Period
 import org.compiere.orm.TimeUtil
 import org.idempiere.common.util.CCache
-import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
+import software.hsharp.core.util.Environment
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
-import java.util.Properties
 
 /**
  * Cache
@@ -17,8 +16,8 @@ val periodCache = CCache<Int, MPeriod>(I_C_Period.Table_Name, 10)
 /**
  * Find a period by calendar
  */
-fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeriod? {
-    val AD_Client_ID = Env.getClientId(ctx)
+fun findByCalendar(DateAcct: Timestamp, calendarId: Int): MPeriod? {
+    val AD_Client_ID = Environment.current.clientId
     // 	Search in Cache first
     val it = periodCache.values.iterator()
     while (it.hasNext()) {
@@ -41,7 +40,7 @@ fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeri
             " AND IsActive=? AND PeriodType=?")
 
     val query =
-        queryOf(sql, listOf(calendarId, TimeUtil.getDay(DateAcct), "Y", "S")).map { row -> MPeriod(ctx, row) }.asList
+        queryOf(sql, listOf(calendarId, TimeUtil.getDay(DateAcct), "Y", "S")).map { row -> MPeriod(row) }.asList
 
     val items = DB.current.run(query)
 
@@ -64,8 +63,8 @@ fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeri
  * @param AD_Org_ID TODO
  * @return active first Period
  */
-fun getFirstPeriodInYear(ctx: Properties, DateAcct: Timestamp, AD_Org_ID: Int): MPeriod? {
-    val C_Calendar_ID = MPeriod.get(ctx, DateAcct, AD_Org_ID).calendarId
+fun getFirstPeriodInYear(DateAcct: Timestamp, AD_Org_ID: Int): MPeriod? {
+    val C_Calendar_ID = MPeriod.get(DateAcct, AD_Org_ID).calendarId
 
     val sql = ("SELECT * " +
             "FROM C_Period " +
@@ -78,7 +77,7 @@ fun getFirstPeriodInYear(ctx: Properties, DateAcct: Timestamp, AD_Org_ID: Int): 
             " AND IsActive=? AND PeriodType=? " +
             "ORDER BY StartDate")
 
-    val query = queryOf(sql, listOf(C_Calendar_ID, DateAcct, "Y", "S")).map { row -> MPeriod(ctx, row) }.asSingle
+    val query = queryOf(sql, listOf(C_Calendar_ID, DateAcct, "Y", "S")).map { row -> MPeriod(row) }.asSingle
     return DB.current.run(query)
 } // 	getFirstInYear
 
@@ -88,9 +87,9 @@ fun getFirstPeriodInYear(ctx: Properties, DateAcct: Timestamp, AD_Org_ID: Int): 
  * @param requery requery
  * @return period controls
  */
-fun getPeriodControls(ctx: Properties, C_Period_ID: Int): Array<MPeriodControl> {
+fun getPeriodControls(C_Period_ID: Int): Array<MPeriodControl> {
     val sql = "SELECT * FROM C_PeriodControl " + "WHERE C_Period_ID=?"
 
-    val query = queryOf(sql, listOf(C_Period_ID)).map { row -> MPeriodControl(ctx, row) }.asList
+    val query = queryOf(sql, listOf(C_Period_ID)).map { row -> MPeriodControl(row) }.asList
     return DB.current.run(query).toTypedArray()
 } // 	getPeriodControls

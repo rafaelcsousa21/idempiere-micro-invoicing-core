@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_M_Movement extends PO implements I_M_Movement {
 
@@ -75,8 +74,8 @@ public class X_M_Movement extends PO implements I_M_Movement {
     /**
      * Standard Constructor
      */
-    public X_M_Movement(Properties ctx, int M_Movement_ID) {
-        super(ctx, M_Movement_ID);
+    public X_M_Movement(int M_Movement_ID) {
+        super(M_Movement_ID);
         /*
          * if (M_Movement_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsInTransit (false);
@@ -88,8 +87,8 @@ public class X_M_Movement extends PO implements I_M_Movement {
     /**
      * Load Constructor
      */
-    public X_M_Movement(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Movement(Row row) {
+        super(row);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_ProjectLine
@@ -25,8 +24,8 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
     /**
      * Standard Constructor
      */
-    public X_C_ProjectLine(Properties ctx, int C_ProjectLine_ID) {
-        super(ctx, C_ProjectLine_ID);
+    public X_C_ProjectLine(int C_ProjectLine_ID) {
+        super(C_ProjectLine_ID);
         /**
          * if (C_ProjectLine_ID == 0) { setProjectId (0); setProjectLineId (0); setInvoicedAmt
          * (Env.ZERO); setInvoicedQty (Env.ZERO); // 0 setIsPrinted (true); // Y setLine (0);
@@ -39,8 +38,8 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
     /**
      * Load Constructor
      */
-    public X_C_ProjectLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ProjectLine(Row row) {
+        super(row);
     }
 
     /**
@@ -99,7 +98,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
+                MTable.get(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 

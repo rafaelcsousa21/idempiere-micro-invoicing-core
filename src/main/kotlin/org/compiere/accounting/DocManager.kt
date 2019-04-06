@@ -7,7 +7,6 @@ import org.compiere.orm.MTable
 import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.CLogger
-import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.executeUpdate
 import software.hsharp.core.util.prepareStatement
@@ -36,12 +35,12 @@ object DocManager {
 	 */
     fun getDocumentsTableID(): IntArray {
         fillDocumentsTableArrays()
-        return documentsTableID ?: throw AdempiereException( "loading documents failed" )
+        return documentsTableID ?: throw AdempiereException("loading documents failed")
     }
 
     fun getDocumentsTableName(): Array<String> {
         fillDocumentsTableArrays()
-        return documentsTableName ?: throw AdempiereException( "loading documents failed" )
+        return documentsTableName ?: throw AdempiereException("loading documents failed")
     }
 
     @Synchronized
@@ -196,7 +195,7 @@ object DocManager {
             }
         }
 
-        val table = MTable.get(Env.getCtx(), AD_Table_ID)
+        val table = MTable.get(AD_Table_ID)
         val recordId = rs.int(table.tableKeyColumns[0])
         //  Commit Doc
         if (!save(AD_Table_ID, recordId, status)) {
@@ -215,7 +214,7 @@ object DocManager {
      * @return true if saved
      */
     private fun save(AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {
-        val table = MTable.get(Env.getCtx(), AD_Table_ID)
+        val table = MTable.get(AD_Table_ID)
         val sql = StringBuilder("UPDATE ")
         sql.append(table.dbTableName).append(" SET Posted='").append(status)
             .append("',Processing='N' ")

@@ -3,7 +3,6 @@ package org.compiere.accounting
 import org.compiere.model.I_C_AcctSchema
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 /**************************************************************************
  * Create Tax Correction.
@@ -20,7 +19,6 @@ import java.util.Properties
  * @return true if created
  */
 fun createTaxCorrection(
-    ctx: Properties,
     `as`: I_C_AcctSchema,
     fact: Fact,
     line: DocLine_Allocation,
@@ -35,12 +33,7 @@ fun createTaxCorrection(
             " AND Line_ID IS NULL") // 	header lines like tax or total
 
     val query = queryOf(sql, listOf(line.invoiceId, `as`.accountingSchemaId)).map {
-        tax.addInvoiceFact(
-            MFactAcct(
-                ctx,
-                it
-            )
-        )
+        tax.addInvoiceFact(MFactAcct(it))
     }.asList
     DB.current.run(query)
 

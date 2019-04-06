@@ -9,7 +9,6 @@ import org.idempiere.common.util.CCache;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
@@ -32,19 +31,19 @@ public class MSchedule extends X_AD_Schedule {
     private static CCache<Integer, MSchedule> s_cache =
             new CCache<Integer, MSchedule>(I_AD_Schedule.Table_Name, 10);
 
-    public MSchedule(Properties ctx, int AD_Schedule_ID) {
-        super(ctx, AD_Schedule_ID);
+    public MSchedule(int AD_Schedule_ID) {
+        super(AD_Schedule_ID);
     }
 
-    public MSchedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public MSchedule(Row row) {
+        super(row);
     }
 
-    public static MSchedule get(Properties ctx, int AD_Schedule_ID) {
+    public static MSchedule get(int AD_Schedule_ID) {
         Integer key = AD_Schedule_ID;
         MSchedule retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MSchedule(ctx, AD_Schedule_ID);
+        retValue = new MSchedule(AD_Schedule_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     }

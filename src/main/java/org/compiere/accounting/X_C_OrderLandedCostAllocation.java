@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_OrderLandedCostAllocation
@@ -27,15 +26,15 @@ public class X_C_OrderLandedCostAllocation extends PO
      * Standard Constructor
      */
     public X_C_OrderLandedCostAllocation(
-            Properties ctx, int C_OrderLandedCostAllocation_ID) {
-        super(ctx, C_OrderLandedCostAllocation_ID);
+            int C_OrderLandedCostAllocation_ID) {
+        super(C_OrderLandedCostAllocation_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_OrderLandedCostAllocation(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_OrderLandedCostAllocation(Row row) {
+        super(row);
     }
 
     /**
@@ -93,7 +92,7 @@ public class X_C_OrderLandedCostAllocation extends PO
 
     public org.compiere.model.I_C_OrderLandedCost getOrderLandedCost() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLandedCost)
-                MTable.get(getCtx(), org.compiere.model.I_C_OrderLandedCost.Table_Name)
+                MTable.get(org.compiere.model.I_C_OrderLandedCost.Table_Name)
                         .getPO(getOrderLandedCostId());
     }
 
@@ -120,7 +119,7 @@ public class X_C_OrderLandedCostAllocation extends PO
 
     public org.compiere.model.I_C_OrderLine getOrderLine() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLine)
-                MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
+                MTable.get(org.compiere.model.I_C_OrderLine.Table_Name)
                         .getPO(getOrderLineId());
     }
 

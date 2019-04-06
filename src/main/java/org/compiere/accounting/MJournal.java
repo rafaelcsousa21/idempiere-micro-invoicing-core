@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -62,8 +61,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param ctx           context
      * @param GL_Journal_ID id
      */
-    public MJournal(Properties ctx, int GL_Journal_ID) {
-        super(ctx, GL_Journal_ID);
+    public MJournal(int GL_Journal_ID) {
+        super(GL_Journal_ID);
         if (GL_Journal_ID == 0) {
             //	setGLJournal_ID (0);		//	PK
             //	setAccountingSchemaId (0);
@@ -95,8 +94,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @param ctx context
      */
-    public MJournal(Properties ctx, Row row) {
-        super(ctx, row);
+    public MJournal(Row row) {
+        super(row);
     } //	MJournal
 
     /**
@@ -105,7 +104,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param parent batch
      */
     public MJournal(MJournalBatch parent) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setGLJournalBatchId(parent.getGLJournalBatchId());
         setDocumentTypeId(parent.getDocumentTypeId());
@@ -123,7 +122,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param original original
      */
     public MJournal(MJournal original) {
-        this(original.getCtx(), 0);
+        this(0);
         setClientOrg(original);
         setGLJournalBatchId(original.getGLJournalBatchId());
         //
@@ -163,7 +162,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         super.setDateAcct(DateAcct);
         if (DateAcct == null) return;
         if (getPeriodId() != 0) return;
-        int C_Period_ID = MPeriod.getPeriodId(getCtx(), DateAcct, getOrgId());
+        int C_Period_ID = MPeriod.getPeriodId(DateAcct, getOrgId());
         if (C_Period_ID == 0) log.warning("setDateAcct - Period not found");
         else setPeriodId(C_Period_ID);
     } //	setDateAcct
@@ -207,7 +206,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "GL_Journal_ID=?";
         List<MJournalLine> list =
-                new Query(getCtx(), I_GL_JournalLine.Table_Name, whereClause)
+                new Query(I_GL_JournalLine.Table_Name, whereClause)
                         .setParameters(getGLJournalId())
                         .setOrderBy("Line")
                         .list();
@@ -230,7 +229,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         int count = 0;
         MJournalLine[] fromLines = fromJournal.getLines(false);
         for (int i = 0; i < fromLines.length; i++) {
-            MJournalLine toLine = new MJournalLine(getCtx(), 0);
+            MJournalLine toLine = new MJournalLine(0);
             PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
             toLine.setGLJournalId(getGLJournalId());
             //
@@ -296,14 +295,14 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         BigDecimal previousProcessedOn = (BigDecimal) getValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
             int previousDocTypeID = (int) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
-            MDocType previousdt = MDocType.get(getCtx(), previousDocTypeID);
+            MDocType previousdt = MDocType.get(previousDocTypeID);
             if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID) && previousdt.isOverwriteSeqOnComplete()) {
-                log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
+                log.saveError("Error", Msg.getMsg("CannotChangeProcessedDocType"));
                 return false;
             }
             if (isValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
-                    log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDate"));
+                    log.saveError("Error", Msg.getMsg("CannotChangeProcessedDate"));
                     return false;
                 }
             }
@@ -412,12 +411,12 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
 
         // Get Period
         MPeriod period = (MPeriod) getPeriod();
         if (!period.isInPeriod(getDateAcct())) {
-            period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
+            period = MPeriod.get(getDateAcct(), getOrgId());
             if (period == null) {
                 log.warning("No Period for " + getDateAcct());
                 m_processMsg = "@PeriodNotFound@";
@@ -519,7 +518,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
         //	Unbalanced Jornal & Not Suspense
         if (AmtSourceDr.compareTo(AmtSourceCr) != 0) {
-            MAcctSchemaGL gl = MAcctSchemaGL.get(getCtx(), getAccountingSchemaId());
+            MAcctSchemaGL gl = MAcctSchemaGL.get(getAccountingSchemaId());
             if (gl == null || !gl.isUseSuspenseBalancing()) {
                 m_processMsg = "@UnbalancedJornal@";
                 return DocAction.Companion.getSTATUS_Invalid();
@@ -603,13 +602,13 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             if (this.getProcessedOn().signum() == 0) {
                 setDateDoc(new Timestamp(System.currentTimeMillis()));
                 if (getDateAcct().before(getDateDoc())) {
                     setDateAcct(getDateDoc());
-                    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
+                    MPeriod.testPeriodOpen(getDateAcct(), getDocumentTypeId(), getOrgId());
                 }
             }
         }
@@ -801,7 +800,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         //	Journal
         MJournal reverse = new MJournal(this);
         reverse.setGLJournalBatchId(GL_JournalBatch_ID);
-        Timestamp reversalDate = Env.getContextAsDate(getCtx(), "#Date");
+        Timestamp reversalDate = Env.getContextAsDate();
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
@@ -849,7 +848,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (m_processMsg != null) return false;
 
         // teo_sarca - FR [ 1776045 ] Add ReActivate action to GL Journal
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
+        MPeriod.testPeriodOpen(getDateAcct(), getDocumentTypeId(), getOrgId());
         MFactAcct.deleteEx(MJournal.Table_ID, getId());
         setPosted(false);
         setProcessed(false);
@@ -872,11 +871,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate(getCtx(), "TotalDr"))
+                .append(Msg.translate("TotalDr"))
                 .append("=")
                 .append(getTotalDr())
                 .append(" ")
-                .append(Msg.translate(getCtx(), "TotalCR"))
+                .append(Msg.translate("TotalCR"))
                 .append("=")
                 .append(getTotalCr())
                 .append(" (#")
@@ -913,7 +912,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();

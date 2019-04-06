@@ -1,15 +1,15 @@
 package org.idempiere.process;
 
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
+import org.compiere.model.ClientWithAccounting;
 import org.compiere.orm.MSequence;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Properties;
+import java.util.List;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.MBaseSequenceKt.doCheckClientSequences;
@@ -32,10 +32,9 @@ public class SequenceCheck extends SvrProcess {
      * ************************************************************************ Check existence of
      * Table Sequences.
      *
-     * @param ctx context
-     * @param sp  server process or null
+     * @param sp server process or null
      */
-    private static void checkTableSequences(Properties ctx, SvrProcess sp) {
+    private static void checkTableSequences(SvrProcess sp) {
 
         String sql =
                 "SELECT TableName "
@@ -50,7 +49,7 @@ public class SequenceCheck extends SvrProcess {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 String tableName = rs.getString(1);
-                if (MSequence.createTableSequence(ctx, tableName)) {
+                if (MSequence.createTableSequence(tableName)) {
                     if (sp != null) sp.addLog(0, null, null, tableName);
                     else s_log.fine(tableName);
                 } else {
@@ -108,24 +107,20 @@ public class SequenceCheck extends SvrProcess {
 
     /**
      * Check Table Sequence ID values
-     *  @param ctx context
-     *
      */
-    private static void checkTableID(Properties ctx) {
-        MBaseSequenceCheckKt.checkTableID(ctx);
+    private static void checkTableID() {
+        MBaseSequenceCheckKt.checkTableID();
     } //	checkTableID
 
     /**
      * Check/Initialize DocumentNo/Value Sequences for all Clients
-     *  @param ctx context
-     *
      */
-    private static void checkClientSequences(Properties ctx) {
+    private static void checkClientSequences() {
         //	Sequence for DocumentNo/Value
-        MClient[] clients = MClient.getAll(ctx);
-        for (MClient client : clients) {
+        List<ClientWithAccounting> clients = MClientKt.getAllClientsWithAccounting();
+        for (ClientWithAccounting client : clients) {
             if (!client.isActive()) continue;
-            doCheckClientSequences(ctx, client.getClientId());
+            doCheckClientSequences(client.getClientId());
         } //	for all clients
     } //	checkClientSequences
 
@@ -144,9 +139,9 @@ public class SequenceCheck extends SvrProcess {
     protected String doIt() throws java.lang.Exception {
         log.info("");
         //
-        checkTableSequences(Env.getCtx(), this);
-        checkTableID(Env.getCtx());
-        checkClientSequences(Env.getCtx());
+        checkTableSequences(this);
+        checkTableID();
+        checkClientSequences();
         return "Sequence Check";
     } //	doIt
 } //	SequenceCheck

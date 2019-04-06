@@ -4,7 +4,6 @@ import org.compiere.model.IDoc
 import org.compiere.model.IDocFactory
 import org.compiere.model.I_C_AcctSchema
 import org.compiere.orm.MTable
-import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 
@@ -13,7 +12,7 @@ import software.hsharp.core.util.queryOf
  */
 abstract class BaseDefaultDocumentFactory : IDocFactory {
     override fun getDocument(accountingSchema: I_C_AcctSchema?, tableId: Int, recordId: Int): IDoc? {
-        val tableName = MTable.getDbTableName(Env.getCtx(), tableId)
+        val tableName = MTable.getDbTableName(tableId)
         //
         val sql = StringBuffer("SELECT * FROM ")
             .append(tableName)

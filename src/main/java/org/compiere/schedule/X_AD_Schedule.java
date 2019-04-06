@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_AD_Schedule;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for AD_Schedule
  *
@@ -42,15 +40,15 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
     /**
      * Standard Constructor
      */
-    public X_AD_Schedule(Properties ctx, int AD_Schedule_ID) {
-        super(ctx, AD_Schedule_ID);
+    public X_AD_Schedule(int AD_Schedule_ID) {
+        super(AD_Schedule_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Schedule(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_AD_Schedule(Row row) {
+        super(row);
     }
 
     /**

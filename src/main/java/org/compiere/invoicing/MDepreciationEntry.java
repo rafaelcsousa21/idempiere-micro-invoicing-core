@@ -1,13 +1,13 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MPeriod;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_A_Depreciation_Entry;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -49,10 +48,10 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     /**
      * Standard Constructor
      */
-    public MDepreciationEntry(Properties ctx, int A_Depreciation_Entry_ID) {
-        super(ctx, A_Depreciation_Entry_ID);
+    public MDepreciationEntry(int A_Depreciation_Entry_ID) {
+        super(A_Depreciation_Entry_ID);
         if (A_Depreciation_Entry_ID == 0) {
-            MAcctSchema acctSchema = MClient.get(getCtx()).getAcctSchema();
+            I_C_AcctSchema acctSchema = MClientKt.getClientWithAccounting().getAcctSchema();
             setAcctSchemaId(acctSchema.getId());
             setCurrencyId(acctSchema.getCurrencyId());
             setEntryType(X_A_Depreciation_Entry.A_ENTRY_TYPE_Depreciation); // TODO: workaround
@@ -66,8 +65,8 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     /**
      * Load Constructor
      */
-    public MDepreciationEntry(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepreciationEntry(Row row) {
+        super(row);
     }
 
     public static void deleteFacts(MDepreciationExp depexp) {
@@ -105,7 +104,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     }
 
     public void setPeriodId() {
-        MPeriod period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
+        MPeriod period = MPeriod.get(getDateAcct(), getOrgId());
         if (period == null) {
             throw new AdempiereException("@NotFound@ @C_Period_ID@");
         }
@@ -178,7 +177,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
                         + ","
                         + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
-        return new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
+        return new Query(MDepreciationExp.Table_Name, whereClause)
                 .setOrderBy(orderBy)
                 .setParameters(params)
                 .list();
@@ -209,7 +208,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             return DocAction.Companion.getSTATUS_Invalid();
         }
 
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocTypeId(), getOrgId());
+        MPeriod.testPeriodOpen(getDateAcct(), getDocTypeId(), getOrgId());
 
         m_justPrepared = true;
 
@@ -249,7 +248,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             approveIt();
         }
 
-        final MPeriod period = MPeriod.get(getCtx(), getPeriodId());
+        final MPeriod period = MPeriod.get(getPeriodId());
 
         final ArrayList<Exception> errors = new ArrayList<>();
         final List<MDepreciationExp> it = getLinesIterator(true);

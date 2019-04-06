@@ -10,7 +10,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,8 +49,8 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Standard Constructor
      */
-    public MDepreciation(Properties ctx, int A_Depreciation_ID) {
-        super(ctx, A_Depreciation_ID);
+    public MDepreciation(int A_Depreciation_ID) {
+        super(A_Depreciation_ID);
     } //	MDepreciation
 
     /**
@@ -60,8 +59,8 @@ public class MDepreciation extends X_A_Depreciation {
      * @param ctx context
      * @param rs  result set record
      */
-    public MDepreciation(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepreciation(Row row) {
+        super(row);
     } //	MDepreciation
 
     private static void addToCache(MDepreciation depr) {
@@ -80,12 +79,12 @@ public class MDepreciation extends X_A_Depreciation {
      * @param ctx
      * @param A_Depreciation_ID depreciation id
      */
-    public static MDepreciation get(Properties ctx, int A_Depreciation_ID) {
+    public static MDepreciation get(int A_Depreciation_ID) {
         MDepreciation depr = s_cache.get(A_Depreciation_ID);
         if (depr != null) {
             return depr;
         }
-        depr = new MDepreciation(ctx, A_Depreciation_ID);
+        depr = new MDepreciation(A_Depreciation_ID);
         if (depr.getId() > 0) {
             addToCache(depr);
         } else {
@@ -100,8 +99,8 @@ public class MDepreciation extends X_A_Depreciation {
      * @param ctx
      * @param depreciationType depreciation type (e.g. SL)
      */
-    public static MDepreciation get(Properties ctx, String depreciationType) {
-        int AD_Client_ID = Env.getClientId(ctx);
+    public static MDepreciation get(String depreciationType) {
+        int AD_Client_ID = Env.getClientId();
         String key = "" + AD_Client_ID + "_" + depreciationType;
         MDepreciation depr = s_cache_forType.get(key);
         if (depr != null) {
@@ -111,7 +110,7 @@ public class MDepreciation extends X_A_Depreciation {
         final String whereClause =
                 I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
         depr =
-                new Query(ctx, I_A_Depreciation.Table_Name, whereClause)
+                new Query(I_A_Depreciation.Table_Name, whereClause)
                         .setOrderBy("AD_Client_ID DESC")
                         .setParameters(depreciationType, AD_Client_ID)
                         .firstOnly();
@@ -209,7 +208,7 @@ public class MDepreciation extends X_A_Depreciation {
             MAssetAcct assetAcct,
             int A_Current_Period,
             BigDecimal Accum_Dep) {
-        // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(getCtx(), A_Asset_ID, PostingType);
+        // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(A_Asset_ID, PostingType);
         if (assetwk == null) {
             log.warning("@NotFound@ @A_Depreciation_Workfile_ID@");
             return false;
@@ -334,7 +333,7 @@ public class MDepreciation extends X_A_Depreciation {
     private BigDecimal apply_ARH_AD1(
             MDepreciationWorkfile wk, MAssetAcct assetAcct, int A_Current_Period, BigDecimal Accum_Dep) {
         // ~ /** Current Worksheet */
-        // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(getCtx(), A_Asset_ID, PostingType);
+        // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(A_Asset_ID, PostingType);
 
         /** FAs' value = acquisition value - the amount recovered */
         BigDecimal assetAmt = wk.getActualCost();

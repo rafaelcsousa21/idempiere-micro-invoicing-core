@@ -20,8 +20,6 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.idempiere.common.util.Env;
 
-import java.util.Properties;
-
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 /**
@@ -43,8 +41,8 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
      * @param C_DepositBatch_ID The unique ID of the object
      * @param trxName           transaction name
      */
-    public MDepositBatch(Properties ctx, int C_DepositBatch_ID) {
-        super(ctx, C_DepositBatch_ID);
+    public MDepositBatch(int C_DepositBatch_ID) {
+        super(C_DepositBatch_ID);
         if (C_DepositBatch_ID == 0) {
             setDocStatus(X_C_DepositBatch.DOCSTATUS_Drafted);
             setProcessed(false);
@@ -58,8 +56,8 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
      *
      * @param ctx context
      */
-    public MDepositBatch(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDepositBatch(Row row) {
+        super(row);
     } //	MDepositBatch
 
     /**
@@ -68,7 +66,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
      * @param original original
      */
     public MDepositBatch(MDepositBatch original) {
-        this(original.getCtx(), 0);
+        this(0);
         setClientOrg(original);
         setDepositBatchId(original.getDepositBatchId());
 

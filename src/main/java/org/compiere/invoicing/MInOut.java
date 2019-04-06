@@ -23,6 +23,7 @@ import org.compiere.order.MRMALine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.PeriodClosedException;
@@ -43,7 +44,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
@@ -60,8 +60,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     protected boolean m_justPrepared = false;
     protected MInOutConfirm[] m_confirms = null;
 
-    public MInOut(Properties ctx, int M_InOut_ID) {
-        super(ctx, M_InOut_ID);
+    public MInOut(int M_InOut_ID) {
+        super(M_InOut_ID);
     }
 
     public MInOut(MOrder order, int C_DocTypeShipment_ID, Timestamp movementDate) {
@@ -80,12 +80,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set record
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInOut(Properties ctx, Row row) {
-        super(ctx, row);
+    public MInOut(Row row) {
+        super(row);
     }
 
     /**
@@ -96,7 +94,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param C_DocType_ID doc type
      * @param isSOTrx      sales order
      * @param counter      create counter links
-     * @param trxName      trx
      * @param setOrder     set the order link
      * @return Shipment
      */
@@ -107,9 +104,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             int C_DocType_ID,
             boolean isSOTrx,
             boolean counter,
-            String trxName,
             boolean setOrder) {
-        MInOut to = new MInOut(from.getCtx(), 0);
+        MInOut to = new MInOut(0);
         copyValues(from, to, from.getClientId(), from.getOrgId());
         to.setValueNoCheck("M_InOut_ID", I_ZERO);
         to.setValueNoCheck("DocumentNo", null);
@@ -120,7 +116,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         to.setDocumentTypeId(C_DocType_ID);
         to.setIsSOTrx(isSOTrx);
         if (counter) {
-            MDocType docType = MDocType.get(from.getCtx(), C_DocType_ID);
+            MDocType docType = MDocType.get(C_DocType_ID);
             if (MDocType.DOCBASETYPE_MaterialDelivery.equals(docType.getDocBaseType())) {
                 to.setMovementType(isSOTrx ? MOVEMENTTYPE_CustomerShipment : MOVEMENTTYPE_VendorReturns);
             } else if (MDocType.DOCBASETYPE_MaterialReceipt.equals(docType.getDocBaseType())) {
@@ -156,16 +152,16 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             to.setReferencedInOutId(from.getInOutId());
             //	Try to find Order/Invoice link
             if (from.getOrderId() != 0) {
-                MOrder peer = new MOrder(from.getCtx(), from.getOrderId());
+                MOrder peer = new MOrder(from.getOrderId());
                 if (peer.getRef_OrderId() != 0) to.setOrderId(peer.getRef_OrderId());
             }
             if (from.getInvoiceId() != 0) {
-                MInvoice peer = new MInvoice(from.getCtx(), from.getInvoiceId());
+                MInvoice peer = new MInvoice(from.getInvoiceId());
                 if (peer.getRef_InvoiceId() != 0) to.setInvoiceId(peer.getRef_InvoiceId());
             }
             // find RMA link
             if (from.getRMAId() != 0) {
-                MRMA peer = new MRMA(from.getCtx(), from.getRMAId());
+                MRMA peer = new MRMA(from.getRMAId());
                 if (peer.getRef_RMAId() > 0) to.setRMAId(peer.getRef_RMAId());
             }
         } else {
@@ -191,7 +187,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param C_DocType_ID doc type
      * @param isSOTrx      sales order
      * @param counter      create counter links
-     * @param trxName      trx
      * @param setOrder     set the order link
      * @return Shipment
      * @deprecated Create new Shipment by copying
@@ -202,10 +197,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             int C_DocType_ID,
             boolean isSOTrx,
             boolean counter,
-            String trxName,
             boolean setOrder) {
-        MInOut to = copyFrom(from, dateDoc, dateDoc, C_DocType_ID, isSOTrx, counter, trxName, setOrder);
-        return to;
+        return copyFrom(from, dateDoc, dateDoc, C_DocType_ID, isSOTrx, counter, setOrder);
     }
 
     /**
@@ -219,7 +212,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             return m_lines;
         }
         List<MInOutLine> list =
-                new Query(getCtx(), I_M_InOutLine.Table_Name, "M_InOut_ID=?")
+                new Query(I_M_InOutLine.Table_Name, "M_InOut_ID=?")
                         .setParameters(getInOutId())
                         .setOrderBy(MInOutLine.COLUMNNAME_Line)
                         .list();
@@ -284,7 +277,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
 
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
 
         //  Order OR RMA can be processed on a shipment/receipt
         if (getOrderId() != 0 && getRMAId() != 0) {
@@ -292,7 +285,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             return DocAction.Companion.getSTATUS_Invalid();
         }
         //	Std Period open?
-        if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getOrgId())) {
+        if (!MPeriod.isOpen(getDateAcct(), dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
@@ -304,38 +297,38 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                     || !MDocType.DOCSUBTYPESO_PrepayOrder.equals(order.getDocumentType().getDocSubTypeSO())
                     || MSysConfig.getBooleanValue(
                     MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true, getClientId(), getOrgId())) {
-                        MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
-                        if (MBPartner.SOCREDITSTATUS_CreditStop.equals(bp.getSOCreditStatus())) {
-                            m_processMsg =
-                                    "@BPartnerCreditStop@ - @TotalOpenBalance@="
-                                            + bp.getTotalOpenBalance()
-                                            + ", @SO_CreditLimit@="
-                                            + bp.getSalesOrderCreditLimit();
-                            return DocAction.Companion.getSTATUS_Invalid();
-                        }
-                        if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus())) {
-                            m_processMsg =
-                                    "@BPartnerCreditHold@ - @TotalOpenBalance@="
-                                            + bp.getTotalOpenBalance()
-                                            + ", @SO_CreditLimit@="
-                                            + bp.getSalesOrderCreditLimit();
-                            return DocAction.Companion.getSTATUS_Invalid();
-                        }
-                        if (!MBPartner.SOCREDITSTATUS_NoCreditCheck.equals(bp.getSOCreditStatus())
-                                && Env.ZERO.compareTo(bp.getSalesOrderCreditLimit()) != 0) {
-                            BigDecimal notInvoicedAmt = MBPartner.getNotInvoicedAmt(getBusinessPartnerId());
-                            if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus(notInvoicedAmt))) {
-                                m_processMsg =
-                                        "@BPartnerOverSCreditHold@ - @TotalOpenBalance@="
-                                                + bp.getTotalOpenBalance()
-                                                + ", @NotInvoicedAmt@="
-                                                + notInvoicedAmt
-                                                + ", @SO_CreditLimit@="
-                                                + bp.getSalesOrderCreditLimit();
-                                return DocAction.Companion.getSTATUS_Invalid();
-                            }
-                        }
+                MBPartner bp = new MBPartner(getBusinessPartnerId());
+                if (MBPartner.SOCREDITSTATUS_CreditStop.equals(bp.getSOCreditStatus())) {
+                    m_processMsg =
+                            "@BPartnerCreditStop@ - @TotalOpenBalance@="
+                                    + bp.getTotalOpenBalance()
+                                    + ", @SO_CreditLimit@="
+                                    + bp.getSalesOrderCreditLimit();
+                    return DocAction.Companion.getSTATUS_Invalid();
+                }
+                if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus())) {
+                    m_processMsg =
+                            "@BPartnerCreditHold@ - @TotalOpenBalance@="
+                                    + bp.getTotalOpenBalance()
+                                    + ", @SO_CreditLimit@="
+                                    + bp.getSalesOrderCreditLimit();
+                    return DocAction.Companion.getSTATUS_Invalid();
+                }
+                if (!MBPartner.SOCREDITSTATUS_NoCreditCheck.equals(bp.getSOCreditStatus())
+                        && Env.ZERO.compareTo(bp.getSalesOrderCreditLimit()) != 0) {
+                    BigDecimal notInvoicedAmt = MBPartner.getNotInvoicedAmt(getBusinessPartnerId());
+                    if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus(notInvoicedAmt))) {
+                        m_processMsg =
+                                "@BPartnerOverSCreditHold@ - @TotalOpenBalance@="
+                                        + bp.getTotalOpenBalance()
+                                        + ", @NotInvoicedAmt@="
+                                        + notInvoicedAmt
+                                        + ", @SO_CreditLimit@="
+                                        + bp.getSalesOrderCreditLimit();
+                        return DocAction.Companion.getSTATUS_Invalid();
                     }
+                }
+            }
         }
 
         //	Lines
@@ -348,8 +341,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         BigDecimal Weight = Env.ZERO;
 
         //	Mandatory Attributes
-        for (int i = 0; i < lines.length; i++) {
-            MInOutLine line = lines[i];
+        for (MInOutLine line : lines) {
             MProduct product = line.getProduct();
             if (product != null) {
                 Volume = Volume.add(product.getVolume().multiply(line.getMovementQty()));
@@ -362,7 +354,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         && !product.getAttributeSet().excludeTableEntry(MInOutLine.Table_ID, isSOTrx())) {
                     m_processMsg =
                             "@M_AttributeSet_ID@ @IsMandatory@ (@Line@ #"
-                                    + lines[i].getLine()
+                                    + line.getLine()
                                     + ", @M_Product_ID@="
                                     + product.getSearchKey()
                                     + ")";
@@ -420,7 +412,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             return m_confirms;
         }
         List<MInOutConfirm> list =
-                new Query(getCtx(), I_M_InOutConfirm.Table_Name, "M_InOut_ID=?")
+                new Query(I_M_InOutConfirm.Table_Name, "M_InOut_ID=?")
                         .setParameters(getInOutId())
                         .list();
         m_confirms = new MInOutConfirm[list.size()];
@@ -453,8 +445,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Outstanding (not processed) Incoming Confirmations ?
         MInOutConfirm[] confirmations = getConfirmations(true);
-        for (int i = 0; i < confirmations.length; i++) {
-            MInOutConfirm confirm = confirmations[i];
+        for (MInOutConfirm confirm : confirmations) {
             if (!confirm.isProcessed()) {
                 if (MInOutConfirm.CONFIRMTYPE_CustomerConfirmation.equals(confirm.getConfirmType()))
                     continue;
@@ -476,8 +467,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         StringBuilder errors = new StringBuilder();
         //	For all lines
         MInOutLine[] lines = getLines(false);
-        for (int lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-            MInOutLine sLine = lines[lineIndex];
+        for (MInOutLine sLine : lines) {
             MProduct product = sLine.getProduct();
 
             try {
@@ -490,7 +480,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 //	Update Order Line
                 MOrderLine oLine = null;
                 if (sLine.getOrderLineId() != 0) {
-                    oLine = new MOrderLine(getCtx(), sLine.getOrderLineId());
+                    oLine = new MOrderLine(sLine.getOrderLineId());
                     if (log.isLoggable(Level.FINE))
                         log.fine(
                                 "OrderLine - Reserved="
@@ -503,7 +493,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 MRMALine rmaLine = null;
 
                 if (sLine.getRMALineId() != 0) {
-                    rmaLine = new MRMALine(getCtx(), sLine.getRMALineId());
+                    rmaLine = new MRMALine(sLine.getRMALineId());
                 }
 
                 if (log.isLoggable(Level.INFO))
@@ -554,16 +544,15 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                     //
                     if (sLine.getAttributeSetInstanceId() == 0) {
                         MInOutLineMA[] mas =
-                                MInOutLineMA.get(getCtx(), sLine.getInOutLineId());
-                        for (int j = 0; j < mas.length; j++) {
-                            MInOutLineMA ma = mas[j];
+                                MInOutLineMA.get(sLine.getInOutLineId());
+                        for (MInOutLineMA ma : mas) {
                             BigDecimal QtyMA = ma.getMovementQty();
                             if (MovementType.charAt(1) == '-') // 	C- Customer Shipment - V- Vendor Return
                                 QtyMA = QtyMA.negate();
 
                             //	Update Storage - see also VMatch.createMatchRecord
                             if (!MStorageOnHand.add(
-                                    getCtx(),
+
                                     getWarehouseId(),
                                     sLine.getLocatorId(),
                                     sLine.getProductId(),
@@ -583,7 +572,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                             //	Create Transaction
                             mtrx =
                                     new MTransaction(
-                                            getCtx(),
+
                                             sLine.getOrgId(),
                                             MovementType,
                                             sLine.getLocatorId(),
@@ -603,7 +592,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         if (oLine != null && mtrx != null && oLine.getQtyOrdered().signum() > 0) {
                             if (sLine.getOrderLineId() != 0) {
                                 if (!MStorageReservation.add(
-                                        getCtx(),
+
                                         oLine.getWarehouseId(),
                                         sLine.getProductId(),
                                         oLine.getAttributeSetInstanceId(),
@@ -628,7 +617,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         Timestamp dateMPolicy = null;
                         MStorageOnHand[] storages =
                                 MStorageOnHand.getWarehouse(
-                                        getCtx(),
+
                                         0,
                                         sLine.getProductId(),
                                         sLine.getAttributeSetInstanceId(),
@@ -651,7 +640,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
                         //	Fallback: Update Storage - see also VMatch.createMatchRecord
                         if (!MStorageOnHand.add(
-                                getCtx(),
+
                                 getWarehouseId(),
                                 sLine.getLocatorId(),
                                 sLine.getProductId(),
@@ -666,7 +655,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         }
                         if (oLine != null && oLine.getQtyOrdered().signum() > 0) {
                             if (!MStorageReservation.add(
-                                    getCtx(),
+
                                     oLine.getWarehouseId(),
                                     sLine.getProductId(),
                                     oLine.getAttributeSetInstanceId(),
@@ -685,7 +674,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         //	FallBack: Create Transaction
                         mtrx =
                                 new MTransaction(
-                                        getCtx(),
+
                                         sLine.getOrgId(),
                                         MovementType,
                                         sLine.getLocatorId(),
@@ -758,8 +747,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                     if (!product.isOneAssetPerUOM()) noAssets = 1;
                     for (int i = 0; i < noAssets; i++) {
                         if (i > 0) info.append(" - ");
-                        int deliveryCount = i + 1;
-                        if (!product.isOneAssetPerUOM()) deliveryCount = 0;
+                        product.isOneAssetPerUOM();
                         MAsset asset = new MAsset(this, sLine);
                         if (!asset.save()) {
                             m_processMsg = "Could not create Asset";
@@ -779,10 +767,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
                         MMatchInv[] matches =
                                 MMatchInv.get(
-                                        getCtx(),
+
                                         sLine.getInOutLineId(),
                                         iLine.getInvoiceLineId());
-                        if (matches == null || matches.length == 0) {
+                        if (matches.length == 0) {
                             MMatchInv inv = new MMatchInv(iLine, getMovementDate(), matchQty);
                             if (sLine.getAttributeSetInstanceId() != iLine.getAttributeSetInstanceId()) {
                                 iLine.setAttributeSetInstanceId(sLine.getAttributeSetInstanceId());
@@ -839,11 +827,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                             }
 
                             //	Update PO with ASI
-                            oLine = new MOrderLine(getCtx(), iLine.getOrderLineId());
-                            if (oLine != null
-                                    && oLine.getAttributeSetInstanceId() == 0
-                                    && sLine.getMovementQty().compareTo(oLine.getQtyOrdered())
-                                    == 0) //  just if full match [ 1876965 ]
+                            oLine = new MOrderLine(iLine.getOrderLineId());
+                            if (oLine.getAttributeSetInstanceId() == 0 && sLine.getMovementQty().compareTo(oLine.getQtyOrdered()) == 0) //  just if full match [ 1876965 ]
                             {
                                 oLine.setAttributeSetInstanceId(sLine.getAttributeSetInstanceId());
                                 oLine.saveEx();
@@ -854,7 +839,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             } catch (NegativeInventoryDisallowedException e) {
                 log.severe(e.getMessage());
                 errors
-                        .append(Msg.getElement(getCtx(), "Line"))
+                        .append(Msg.getElement("Line"))
                         .append(" ")
                         .append(sLine.getLine())
                         .append(": ");
@@ -918,13 +903,11 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
             //	Set lines to 0
             MInOutLine[] lines = getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                MInOutLine line = lines[i];
+            for (MInOutLine line : lines) {
                 BigDecimal old = line.getMovementQty();
                 if (old.signum() != 0) {
                     line.setQty(Env.ZERO);
-                    StringBuilder msgadd = new StringBuilder("Void (").append(old).append(")");
-                    line.addDescription(msgadd.toString());
+                    line.addDescription("Void (" + old + ")");
                     line.saveEx();
                 }
             }
@@ -937,7 +920,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         } else {
             boolean accrual = false;
             try {
-                MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
+                MPeriod.testPeriodOpen(getDateAcct(), getDocumentTypeId(), getOrgId());
             } catch (PeriodClosedException e) {
                 accrual = true;
             }
@@ -1007,13 +990,13 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     } //	reverseCorrectionIt
 
     protected MInOut reverse(boolean accrual) {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
-        Timestamp reversalDate = accrual ? Env.getContextAsDate(getCtx(), "#Date") : getDateAcct();
+        MDocType dt = MDocType.get(getDocumentTypeId());
+        Timestamp reversalDate = accrual ? Env.getContextAsDate() : getDateAcct();
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
         Timestamp reversalMovementDate = accrual ? reversalDate : getMovementDate();
-        if (!MPeriod.isOpen(getCtx(), reversalDate, dt.getDocBaseType(), getOrgId())) {
+        if (!MPeriod.isOpen(reversalDate, dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return null;
         }
@@ -1032,7 +1015,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         getDocumentTypeId(),
                         isSOTrx(),
                         false,
-                        null,
                         true);
         if (reversal == null) {
             m_processMsg = "Could not create Ship Reversal";
@@ -1058,14 +1040,14 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             //	We need to copy MA
             if (rLine.getAttributeSetInstanceId() == 0) {
                 MInOutLineMA[] mas =
-                        MInOutLineMA.get(getCtx(), sLines[i].getInOutLineId());
-                for (int j = 0; j < mas.length; j++) {
+                        MInOutLineMA.get(sLines[i].getInOutLineId());
+                for (MInOutLineMA ma1 : mas) {
                     MInOutLineMA ma =
                             new MInOutLineMA(
                                     rLine,
-                                    mas[j].getAttributeSetInstanceId(),
-                                    mas[j].getMovementQty().negate(),
-                                    mas[j].getDateMaterialPolicy(),
+                                    ma1.getAttributeSetInstanceId(),
+                                    ma1.getMovementQty().negate(),
+                                    ma1.getDateMaterialPolicy(),
                                     true);
                     ma.saveEx();
                 }
@@ -1081,7 +1063,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         reversal.saveEx();
         //
         reversal.docsPostProcess = this.docsPostProcess;
-        this.docsPostProcess = new ArrayList<IPODoc>();
+        this.docsPostProcess = new ArrayList<>();
         //
         if (!reversal.processIt(DocAction.Companion.getACTION_Complete())
                 || !reversal.getDocStatus().equals(DocAction.Companion.getSTATUS_Completed())) {
@@ -1109,7 +1091,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     }
 
     protected boolean reverseMatching(Timestamp reversalDate) {
-        MMatchInv[] mInv = MMatchInv.getInOut(getCtx(), getInOutId());
+        MMatchInv[] mInv = MMatchInv.getInOut(getInOutId());
         for (MMatchInv mMatchInv : mInv) {
             if (mMatchInv.getReversalId() > 0) continue;
 
@@ -1121,10 +1103,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                             "Failed to create reversal for match invoice " + mMatchInv.getDocumentNo());
                     return false;
                 }
-                addDocsPostProcess(new MMatchInv(Env.getCtx(), mMatchInv.getReversalId()));
+                addDocsPostProcess(new MMatchInv(mMatchInv.getReversalId()));
             }
         }
-        MMatchPO[] mMatchPOList = MMatchPO.getInOut(getCtx(), getInOutId());
+        MMatchPO[] mMatchPOList = MMatchPO.getInOut(getInOutId());
         for (MMatchPO mMatchPO : mMatchPOList) {
             if (mMatchPO.getReversalId() > 0) continue;
 
@@ -1136,7 +1118,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                             "Failed to create reversal for match purchase order " + mMatchPO.getDocumentNo());
                     return false;
                 }
-                addDocsPostProcess(new MMatchPO(Env.getCtx(), mMatchPO.getReversalId()));
+                addDocsPostProcess(new MMatchPO(mMatchPO.getReversalId()));
             }
         }
         return true;
@@ -1203,7 +1185,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * Create the missing next Confirmation
      */
     public void createConfirmation() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         boolean pick = dt.isPickQAConfirm();
         boolean ship = dt.isShipConfirm();
         //	Nothing to do
@@ -1217,8 +1199,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             boolean havePick = false;
             boolean haveShip = false;
             MInOutConfirm[] confirmations = getConfirmations(false);
-            for (int i = 0; i < confirmations.length; i++) {
-                MInOutConfirm confirm = confirmations[i];
+            for (MInOutConfirm confirm : confirmations) {
                 if (MInOutConfirm.CONFIRMTYPE_PickQAConfirm.equals(confirm.getConfirmType())) {
                     if (!confirm.isProcessed()) // 	wait intil done
                     {
@@ -1243,7 +1224,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         }
         //	Create just one
         if (pick) MInOutConfirm.create(this, MInOutConfirm.CONFIRMTYPE_PickQAConfirm, true);
-        else if (ship) MInOutConfirm.create(this, MInOutConfirm.CONFIRMTYPE_ShipReceiptConfirm, true);
+        else MInOutConfirm.create(this, MInOutConfirm.CONFIRMTYPE_ShipReceiptConfirm, true);
     } //	createConfirmation
 
     protected void voidConfirmations() {
@@ -1260,12 +1241,12 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * Set the definite document number after completed
      */
     protected void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
+        MDocType dt = MDocType.get(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(TimeUtil.getDay(0));
             if (getDateAcct().before(getMovementDate())) {
                 setDateAcct(getMovementDate());
-                MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
+                MPeriod.testPeriodOpen(getDateAcct(), getDocumentTypeId(), getOrgId());
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
@@ -1294,7 +1275,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Need to have Location
         if (product != null && line.getLocatorId() == 0) {
-            // MWarehouse w = MWarehouse.get(getCtx(), getWarehouseId());
+            // MWarehouse w = MWarehouse.get(getWarehouseId());
             line.setWarehouseId(getWarehouseId());
             line.setLocatorId(inTrx ? Env.ZERO : line.getMovementQty()); // 	default Locator
             needSave = true;
@@ -1320,11 +1301,11 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
                 if (line.getRMALineId() != 0 && qtyToReturn.compareTo(Env.ZERO) > 0) {
                     // Linking to shipment line
-                    MRMALine rmaLine = new MRMALine(getCtx(), line.getRMALineId());
+                    MRMALine rmaLine = new MRMALine(line.getRMALineId());
                     if (rmaLine.getInOutLineId() > 0) {
                         // retrieving ASI which is not already returned
                         MInOutLineMA[] shipmentMAS =
-                                MInOutLineMA.getNonReturned(getCtx(), rmaLine.getInOutLineId());
+                                MInOutLineMA.getNonReturned(rmaLine.getInOutLineId());
 
                         for (MInOutLineMA sMA : shipmentMAS) {
                             BigDecimal lineMAQty = sMA.getMovementQty();
@@ -1359,7 +1340,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 Timestamp minGuaranteeDate = getMovementDate();
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouse(
-                                getCtx(),
+
                                 getWarehouseId(),
                                 line.getProductId(),
                                 line.getAttributeSetInstanceId(),
@@ -1424,28 +1405,28 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         if (getReferencedInOutId() != 0) return null;
 
         //	Org Must be linked to BPartner
-        MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
+        MOrg org = MOrgKt.getOrg(getOrgId());
+        int counterC_BPartner_ID = org.getLinkedBusinessPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
-        MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
+        MBPartner bp = new MBPartner(getBusinessPartnerId());
         int counterAD_Org_ID = bp.getLinkedOrganizationId();
         if (counterAD_Org_ID == 0) return null;
 
-        MBPartner counterBP = new MBPartner(getCtx(), counterC_BPartner_ID);
-        MOrgInfo counterOrgInfo = MOrgInfo.get(getCtx(), counterAD_Org_ID);
+        MBPartner counterBP = new MBPartner(counterC_BPartner_ID);
+        MOrgInfo counterOrgInfo = MOrgInfo.get(counterAD_Org_ID);
         if (log.isLoggable(Level.INFO)) log.info("Counter BP=" + counterBP.getName());
 
         //	Document Type
-        int C_DocTypeTarget_ID = 0;
-        MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getDocumentTypeId());
+        int C_DocTypeTarget_ID;
+        MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getDocumentTypeId());
         if (counterDT != null) {
             if (log.isLoggable(Level.FINE)) log.fine(counterDT.toString());
             if (!counterDT.isCreateCounter() || !counterDT.isValid()) return null;
             C_DocTypeTarget_ID = counterDT.getCounterDocTypeId();
         } else //	indirect
         {
-            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocTypeId(getCtx(), getDocumentTypeId());
+            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocTypeId(getDocumentTypeId());
             if (log.isLoggable(Level.FINE)) log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
             if (C_DocTypeTarget_ID <= 0) return null;
         }
@@ -1459,7 +1440,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         C_DocTypeTarget_ID,
                         !isSOTrx(),
                         true,
-                        null,
                         true);
 
         //
@@ -1484,8 +1464,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Update copied lines
         MInOutLine[] counterLines = counter.getLines(true);
-        for (int i = 0; i < counterLines.length; i++) {
-            MInOutLine counterLine = counterLines[i];
+        for (MInOutLine counterLine : counterLines) {
             counterLine.setClientOrg(counter);
             counterLine.setWarehouseId(counter.getWarehouseId());
             counterLine.setLocatorId(0);
@@ -1521,17 +1500,17 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         if (isSOTrx() || !isDropShip() || getOrderId() == 0) return null;
 
-        int linkedOrderID = new MOrder(getCtx(), getOrderId()).getLink_OrderId();
+        int linkedOrderID = new MOrder(getOrderId()).getLink_OrderId();
         if (linkedOrderID <= 0) return null;
 
         //	Document Type
         int C_DocTypeTarget_ID = 0;
         MDocType[] shipmentTypes =
-                MDocType.getOfDocBaseType(getCtx(), MDocType.DOCBASETYPE_MaterialDelivery);
+                MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_MaterialDelivery);
 
-        for (int i = 0; i < shipmentTypes.length; i++) {
-            if (shipmentTypes[i].isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentTypes[i].isDefault()))
-                C_DocTypeTarget_ID = shipmentTypes[i].getDocTypeId();
+        for (MDocType shipmentType : shipmentTypes) {
+            if (shipmentType.isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentType.isDefault()))
+                C_DocTypeTarget_ID = shipmentType.getDocTypeId();
         }
 
         //	Deep Copy
@@ -1543,13 +1522,12 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         C_DocTypeTarget_ID,
                         !isSOTrx(),
                         false,
-                        null,
                         true);
 
         dropShipment.setOrderId(linkedOrderID);
 
         // get invoice id from linked order
-        int invID = new MOrder(getCtx(), linkedOrderID).getInvoiceId();
+        int invID = new MOrder(linkedOrderID).getInvoiceId();
         if (invID != 0) dropShipment.setInvoiceId(invID);
 
         dropShipment.setBusinessPartnerId(getDropShipBPartnerId());
@@ -1567,9 +1545,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //		Update line order references to linked sales order lines
         MInOutLine[] lines = dropShipment.getLines(true);
-        for (int i = 0; i < lines.length; i++) {
-            MInOutLine dropLine = lines[i];
-            MOrderLine ol = new MOrderLine(getCtx(), dropLine.getOrderLineId());
+        for (MInOutLine dropLine : lines) {
+            MOrderLine ol = new MOrderLine(dropLine.getOrderLineId());
             if (ol.getOrderLineId() != 0) {
                 dropLine.setOrderLineId(ol.getLink_OrderLineId());
                 dropLine.saveEx();
@@ -1593,7 +1570,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             org.compiere.order.MInOutLine line, MProduct product, BigDecimal qtyToReceive) {
         MStorageOnHand[] storages =
                 MStorageOnHand.getWarehouseNegative(
-                        getCtx(),
+
                         getWarehouseId(),
                         line.getProductId(),
                         0,
@@ -1602,7 +1579,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         line.getLocatorId(),
                         false);
 
-        Timestamp dateMPolicy = null;
+        Timestamp dateMPolicy;
 
         for (MStorageOnHand storage : storages) {
             if (storage.getQtyOnHand().signum() < 0 && qtyToReceive.compareTo(Env.ZERO) > 0) {
@@ -1644,7 +1621,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(":")
-                //	.append(Msg.translate(getCtx(),"TotalLines")).append("=").append(getTotalLines())
+                //	.append(Msg.translate("TotalLines")).append("=").append(getTotalLines())
                 .append(" (#")
                 .append(getLines(false).length)
                 .append(")");
@@ -1661,10 +1638,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
-        StringBuilder msgreturn =
-                new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
-        return msgreturn.toString();
+        MDocType dt = MDocType.get(getDocumentTypeId());
+        return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -1682,6 +1657,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @return Accounting Currency
      */
     public int getCurrencyId() {
-        return Env.getContextAsInt(getCtx(), "$C_Currency_ID");
+        return Env.getContextAsInt("$C_Currency_ID");
     } //	getCurrencyId
 }

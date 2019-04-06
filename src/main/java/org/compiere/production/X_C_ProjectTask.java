@@ -7,7 +7,6 @@ import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_ProjectTask
@@ -25,15 +24,15 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
     /**
      * Standard Constructor
      */
-    public X_C_ProjectTask(Properties ctx, int C_ProjectTask_ID) {
-        super(ctx, C_ProjectTask_ID);
+    public X_C_ProjectTask(int C_ProjectTask_ID) {
+        super(C_ProjectTask_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_ProjectTask(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ProjectTask(Row row) {
+        super(row);
     }
 
     /**
@@ -52,7 +51,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
 
     public org.compiere.model.I_C_ProjectPhase getProjectPhase() throws RuntimeException {
         return (org.compiere.model.I_C_ProjectPhase)
-                MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
+                MTable.get(org.compiere.model.I_C_ProjectPhase.Table_Name)
                         .getPO(getProjectPhaseId());
     }
 

@@ -5,7 +5,6 @@ import org.compiere.accounting.MPayment
 import org.compiere.invoicing.MInvoice
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.Properties
 
 private const val ONLY_AP = "P"
 private const val ONLY_AR = "R"
@@ -16,7 +15,7 @@ private const val ONLY_AR = "R"
  * @param C_BPartner_ID id
  * @return unallocated payments
  */
-fun getBusinessPartnerAllocationPayments(ctx: Properties, C_BPartner_ID: Int, p_APAR: String): Array<MPayment> {
+fun getBusinessPartnerAllocationPayments(C_BPartner_ID: Int, p_APAR: String): Array<MPayment> {
     val sql = StringBuilder("SELECT * FROM C_Payment ")
         .append("WHERE IsAllocated='N' AND Processed='Y' AND C_BPartner_ID=?")
         .append(" AND IsPrepayment='N' AND C_Charge_ID IS NULL ")
@@ -26,7 +25,7 @@ fun getBusinessPartnerAllocationPayments(ctx: Properties, C_BPartner_ID: Int, p_
     sql.append("ORDER BY DateTrx")
 
     fun load(row: Row): MPayment? {
-        val payment = MPayment(ctx, row)
+        val payment = MPayment(row)
         val allocated = payment.getAllocatedAmt()
         if (allocated != null && allocated.compareTo(payment.getPayAmt()) == 0) {
             payment.setIsAllocated(true)
@@ -40,7 +39,7 @@ fun getBusinessPartnerAllocationPayments(ctx: Properties, C_BPartner_ID: Int, p_
     return DB.current.run(query).toTypedArray()
 } // 	getPayments
 
-fun getBusinessPartnerAllocationInvoices(ctx: Properties, C_BPartner_ID: Int, p_APAR: String): Array<MInvoice> {
+fun getBusinessPartnerAllocationInvoices(C_BPartner_ID: Int, p_APAR: String): Array<MInvoice> {
     val sql = StringBuilder("SELECT * FROM C_Invoice ")
         .append("WHERE IsPaid='N' AND Processed='Y' AND C_BPartner_ID=? ")
     if (ONLY_AP.equals(p_APAR))
@@ -49,7 +48,7 @@ fun getBusinessPartnerAllocationInvoices(ctx: Properties, C_BPartner_ID: Int, p_
     sql.append("ORDER BY DateInvoiced")
 
     fun load(row: Row): MInvoice? {
-        val invoice = MInvoice(ctx, row)
+        val invoice = MInvoice(row)
         if (invoice.getOpenAmt(false, null).signum() == 0) {
             invoice.setIsPaid(true)
             invoice.saveEx()

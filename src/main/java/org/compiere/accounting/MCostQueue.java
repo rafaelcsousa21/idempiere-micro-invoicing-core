@@ -6,7 +6,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -31,8 +30,8 @@ public class MCostQueue extends X_M_CostQueue {
      * @param ctx     context
      * @param ignored multi-key
      */
-    public MCostQueue(Properties ctx, int ignored) {
-        super(ctx, ignored);
+    public MCostQueue(int ignored) {
+        super(ignored);
         if (ignored == 0) {
             //	setAccountingSchemaId (0);
             //	setAttributeSetInstanceId (0);
@@ -49,8 +48,8 @@ public class MCostQueue extends X_M_CostQueue {
      *
      * @param ctx context
      */
-    public MCostQueue(Properties ctx, Row row) {
-        super(ctx, row);
+    public MCostQueue(Row row) {
+        super(row);
     } //	MCostQueue
 
     /**
@@ -68,7 +67,7 @@ public class MCostQueue extends X_M_CostQueue {
             MAcctSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
-        this(product.getCtx(), 0);
+        this(0);
         setClientOrg(product.getClientId(), AD_Org_ID);
         setAccountingSchemaId(as.getAccountingSchemaId());
         setCostTypeId(as.getCostTypeId());

@@ -3,8 +3,6 @@ package org.compiere.schedule;
 import kotliquery.Row;
 import org.compiere.process.MProcessPara;
 
-import java.util.Properties;
-
 /**
  * Scheduler Parameter Model
  *
@@ -27,8 +25,8 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      * @param ctx                  context
      * @param AD_Scheduler_Para_ID id
      */
-    public MSchedulerPara(Properties ctx, int AD_Scheduler_Para_ID) {
-        super(ctx, AD_Scheduler_Para_ID);
+    public MSchedulerPara(int AD_Scheduler_Para_ID) {
+        super(AD_Scheduler_Para_ID);
     } //	MSchedulerPara
 
     /**
@@ -36,8 +34,8 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      *
      * @param ctx context
      */
-    public MSchedulerPara(Properties ctx, Row row) {
-        super(ctx, row);
+    public MSchedulerPara(Row row) {
+        super(row);
     } //	MSchedulerPara
 
     /**
@@ -46,7 +44,7 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      * @return column name
      */
     public String getColumnName() {
-        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getProcessParameterId());
+        if (m_parameter == null) m_parameter = MProcessPara.get(getProcessParameterId());
         return m_parameter.getColumnName();
     } //	getColumnName
 
@@ -56,7 +54,7 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      * @return display type
      */
     public int getDisplayType() {
-        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getProcessParameterId());
+        if (m_parameter == null) m_parameter = MProcessPara.get(getProcessParameterId());
         return m_parameter.getReferenceId();
     } //	getDisplayType
 

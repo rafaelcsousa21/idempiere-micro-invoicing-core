@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Bank;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Bank
  *
@@ -22,15 +20,15 @@ public class X_C_Bank extends BasePOName implements I_C_Bank {
     /**
      * Standard Constructor
      */
-    public X_C_Bank(Properties ctx, int C_Bank_ID) {
-        super(ctx, C_Bank_ID);
+    public X_C_Bank(int C_Bank_ID) {
+        super(C_Bank_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Bank(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Bank(Row row) {
+        super(row);
     }
 
     /**

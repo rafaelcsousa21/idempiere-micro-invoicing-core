@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for PA_Achievement
@@ -25,15 +24,15 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
     /**
      * Standard Constructor
      */
-    public X_PA_Achievement(Properties ctx, int PA_Achievement_ID) {
-        super(ctx, PA_Achievement_ID);
+    public X_PA_Achievement(int PA_Achievement_ID) {
+        super(PA_Achievement_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_Achievement(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_PA_Achievement(Row row) {
+        super(row);
     }
 
     /**

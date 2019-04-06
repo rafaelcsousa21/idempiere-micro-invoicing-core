@@ -1,10 +1,11 @@
 package org.idempiere.process;
 
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
+import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MCost;
 import org.compiere.accounting.MProduct;
 import org.compiere.invoicing.MInventoryLine;
+import org.compiere.model.ClientWithAccounting;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.process.SvrProcess;
 
 import java.math.BigDecimal;
@@ -26,10 +27,10 @@ public class CostAdjustmentLineRefreshCost extends SvrProcess {
      */
     @Override
     protected String doIt() throws Exception {
-        MInventoryLine line = new MInventoryLine(getCtx(), getRecordId());
+        MInventoryLine line = new MInventoryLine(getRecordId());
         MProduct product = line.getProduct();
-        MClient client = MClient.get(getCtx(), line.getClientId());
-        MAcctSchema as = client.getAcctSchema();
+        ClientWithAccounting client = MClientKt.getClientWithAccounting(line.getClientId());
+        I_C_AcctSchema as = client.getAcctSchema();
         MCost cost =
                 product.getCostingRecord(
                         as,

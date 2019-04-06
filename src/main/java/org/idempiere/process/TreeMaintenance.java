@@ -15,7 +15,6 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MTree;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MTree_Base;
 import org.compiere.orm.MTree_Node;
@@ -63,7 +62,7 @@ public class TreeMaintenance extends SvrProcess {
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("AD_Tree_ID=" + m_AD_Tree_ID);
         if (m_AD_Tree_ID == 0) throw new IllegalArgumentException("Tree_ID = 0");
-        MTree tree = new MTree(getCtx(), m_AD_Tree_ID);
+        MTree tree = new MTree(m_AD_Tree_ID);
         if (tree == null || tree.getTreeId() == 0)
             throw new IllegalArgumentException("No Tree -" + tree);
         //
@@ -173,7 +172,7 @@ public class TreeMaintenance extends SvrProcess {
             if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
             if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
             //
-            MTable table = MTable.get(getCtx(), sourceTableName);
+            MTable table = MTable.get(sourceTableName);
             try {
                 pstmt = prepareStatement(sql.toString());
                 rs = pstmt.executeQuery();

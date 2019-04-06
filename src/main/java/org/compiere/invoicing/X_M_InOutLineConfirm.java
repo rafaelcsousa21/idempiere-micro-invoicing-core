@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for M_InOutLineConfirm
@@ -24,8 +23,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
     /**
      * Standard Constructor
      */
-    public X_M_InOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID) {
-        super(ctx, M_InOutLineConfirm_ID);
+    public X_M_InOutLineConfirm(int M_InOutLineConfirm_ID) {
+        super(M_InOutLineConfirm_ID);
         /**
          * if (M_InOutLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setInOutConfirmId (0);
          * setInOutLineConfirm_ID (0); setInOutLineId (0); setProcessed (false); setTargetQty
@@ -36,8 +35,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
     /**
      * Load Constructor
      */
-    public X_M_InOutLineConfirm(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_InOutLineConfirm(Row row) {
+        super(row);
     }
 
     /**

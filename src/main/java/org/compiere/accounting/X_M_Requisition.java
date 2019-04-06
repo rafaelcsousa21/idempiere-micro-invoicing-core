@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_Requisition
@@ -42,15 +41,15 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
     /**
      * Standard Constructor
      */
-    public X_M_Requisition(Properties ctx, int M_Requisition_ID) {
-        super(ctx, M_Requisition_ID);
+    public X_M_Requisition(int M_Requisition_ID) {
+        super(M_Requisition_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Requisition(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_Requisition(Row row) {
+        super(row);
     }
 
     /**
@@ -89,7 +88,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
 
     public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
-                MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 

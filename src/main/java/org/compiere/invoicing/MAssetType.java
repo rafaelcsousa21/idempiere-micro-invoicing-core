@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Type;
 import org.idempiere.common.util.CCache;
 
-import java.util.Properties;
-
 /**
  * Asset Type
  *
@@ -29,15 +27,15 @@ public class MAssetType extends X_A_Asset_Type {
     /**
      * Standard Constructor
      */
-    public MAssetType(Properties ctx, int A_Asset_Type_ID) {
-        super(ctx, A_Asset_Type_ID);
+    public MAssetType(int A_Asset_Type_ID) {
+        super(A_Asset_Type_ID);
     }
 
     /**
      * Load Constructor
      */
-    public MAssetType(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAssetType(Row row) {
+        super(row);
     }
 
     /**
@@ -47,11 +45,11 @@ public class MAssetType extends X_A_Asset_Type {
      * @param A_Asset_Type_ID
      * @return asset type object
      */
-    public static MAssetType get(Properties ctx, int A_Asset_Type_ID) {
+    public static MAssetType get(int A_Asset_Type_ID) {
         if (A_Asset_Type_ID <= 0) return null;
         MAssetType o = s_cache.get(A_Asset_Type_ID);
         if (o != null) return o;
-        o = new MAssetType(ctx, A_Asset_Type_ID);
+        o = new MAssetType(A_Asset_Type_ID);
         if (o.getId() > 0) {
             s_cache.put(A_Asset_Type_ID, o);
             return o;
@@ -86,7 +84,7 @@ public class MAssetType extends X_A_Asset_Type {
         /**
          * Get Context
          */
-        Properties getCtx();
+
 
         /**
          * Get Asset Type

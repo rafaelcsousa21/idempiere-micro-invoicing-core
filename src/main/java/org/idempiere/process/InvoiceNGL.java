@@ -10,6 +10,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -251,7 +252,7 @@ public class InvoiceNGL extends SvrProcess {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query
         final String whereClause = "AD_PInstance_ID=?";
         List<X_T_InvoiceGL> list =
-                new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause)
+                new Query(X_T_InvoiceGL.Table_Name, whereClause)
                         .setParameters(getProcessInstanceId())
                         .setOrderBy("AD_Org_ID")
                         .list();
@@ -260,15 +261,15 @@ public class InvoiceNGL extends SvrProcess {
         if (list.size() == 0) return " - No Records found";
 
         //
-        MAcctSchema as = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
-        MAcctSchemaDefault asDefaultAccts = MAcctSchemaDefault.get(getCtx(), p_C_AcctSchema_ID);
-        MGLCategory cat = MGLCategory.getDefaultSystem(getCtx());
+        MAcctSchema as = MAcctSchema.get(p_C_AcctSchema_ID);
+        MAcctSchemaDefault asDefaultAccts = MAcctSchemaDefault.get(p_C_AcctSchema_ID);
+        MGLCategory cat = MGLCategory.getDefaultSystem();
         if (cat == null) {
-            MDocType docType = MDocType.get(getCtx(), p_C_DocTypeReval_ID);
-            cat = MGLCategory.get(getCtx(), docType.getGLCategoryId());
+            MDocType docType = MDocType.get(p_C_DocTypeReval_ID);
+            cat = MGLCategory.get(docType.getGLCategoryId());
         }
         //
-        MJournal journal = new MJournal(getCtx(), 0);
+        MJournal journal = new MJournal(0);
         journal.setDocumentTypeId(p_C_DocTypeReval_ID);
         journal.setPostingType(MJournal.POSTINGTYPE_Actual);
         journal.setDateDoc(p_DateReval);
@@ -287,7 +288,7 @@ public class InvoiceNGL extends SvrProcess {
         for (int i = 0; i < list.size(); i++) {
             X_T_InvoiceGL gl = list.get(i);
             if (gl.getAmtRevalDrDiff().signum() == 0 && gl.getAmtRevalCrDiff().signum() == 0) continue;
-            MInvoice invoice = new MInvoice(getCtx(), gl.getInvoiceId());
+            MInvoice invoice = new MInvoice(gl.getInvoiceId());
             if (invoice.getCurrencyId() == as.getCurrencyId()) continue;
             //
             if (AD_Org_ID == 0) // 	invoice org id
@@ -303,7 +304,7 @@ public class InvoiceNGL extends SvrProcess {
             }
             //
             if (org == null) {
-                org = MOrg.get(getCtx(), gl.getOrgId());
+                org = MOrgKt.getOrg(gl.getOrgId());
                 journal.setDescription(getName() + " - " + org.getName());
                 if (!journal.save()) return " - Could not set Description for Journal";
             }
@@ -312,7 +313,7 @@ public class InvoiceNGL extends SvrProcess {
             line.setLine((i + 1) * 10);
             line.setDescription(invoice.getSummary());
             //
-            MFactAcct fa = new MFactAcct(getCtx(), gl.getFactAcctId());
+            MFactAcct fa = new MFactAcct(gl.getFactAcctId());
             MAccount acct = MAccount.get(fa);
             line.setValidCombinationId(acct);
             BigDecimal dr = gl.getAmtRevalDrDiff();
@@ -389,10 +390,9 @@ public class InvoiceNGL extends SvrProcess {
         if (gainTotal.signum() != 0) {
             MJournalLine line = new MJournalLine(journal);
             line.setLine(lineNo + 1);
-            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedGainAccount());
+            MAccount base = MAccount.get(asDefaultAccts.getUnrealizedGainAccount());
             MAccount acct =
                     MAccount.get(
-                            getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
                             asDefaultAccts.getAccountingSchemaId(),
@@ -412,7 +412,7 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUserElement1Id(),
                             base.getUserElement2Id()
                     );
-            line.setDescription(Msg.getElement(getCtx(), "UnrealizedGain_Acct"));
+            line.setDescription(Msg.getElement("UnrealizedGain_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceCr(gainTotal);
             line.setAmtAcctCr(gainTotal);
@@ -422,10 +422,9 @@ public class InvoiceNGL extends SvrProcess {
         if (lossTotal.signum() != 0) {
             MJournalLine line = new MJournalLine(journal);
             line.setLine(lineNo + 2);
-            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedLossAccount());
+            MAccount base = MAccount.get(asDefaultAccts.getUnrealizedLossAccount());
             MAccount acct =
                     MAccount.get(
-                            getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
                             asDefaultAccts.getAccountingSchemaId(),
@@ -445,7 +444,7 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUserElement1Id(),
                             base.getUserElement2Id()
                     );
-            line.setDescription(Msg.getElement(getCtx(), "UnrealizedLoss_Acct"));
+            line.setDescription(Msg.getElement("UnrealizedLoss_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceDr(lossTotal);
             line.setAmtAcctDr(lossTotal);

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_I_ElementValue;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for I_ElementValue
  *
@@ -22,16 +20,16 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
     /**
      * Standard Constructor
      */
-    public X_I_ElementValue(Properties ctx, int I_ElementValue_ID) {
-        super(ctx, I_ElementValue_ID);
+    public X_I_ElementValue(int I_ElementValue_ID) {
+        super(I_ElementValue_ID);
         /** if (I_ElementValue_ID == 0) { setI_ElementValue_ID (0); setIsImported (false); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_ElementValue(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_ElementValue(Row row) {
+        super(row);
     }
 
     /**

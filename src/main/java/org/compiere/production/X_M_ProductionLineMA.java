@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_ProductionLineMA
@@ -25,15 +24,15 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
     /**
      * Standard Constructor
      */
-    public X_M_ProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
-        super(ctx, M_ProductionLineMA_ID);
+    public X_M_ProductionLineMA(int M_ProductionLineMA_ID) {
+        super(M_ProductionLineMA_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_M_ProductionLineMA(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_ProductionLineMA(Row row) {
+        super(row);
     }
 
     /**

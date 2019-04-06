@@ -6,7 +6,6 @@ import org.compiere.orm.BasePONameValue;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_BankAccount
@@ -28,15 +27,15 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
     /**
      * Standard Constructor
      */
-    public X_C_BankAccount(Properties ctx, int C_BankAccount_ID) {
-        super(ctx, C_BankAccount_ID);
+    public X_C_BankAccount(int C_BankAccount_ID) {
+        super(C_BankAccount_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BankAccount(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_BankAccount(Row row) {
+        super(row);
     }
 
     /**

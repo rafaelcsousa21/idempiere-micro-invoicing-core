@@ -5,15 +5,13 @@ import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_ValidCombination
  *
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ValidCombination extends PO  {
+public class X_C_ValidCombination extends PO {
 
     /**
      *
@@ -23,8 +21,8 @@ public class X_C_ValidCombination extends PO  {
     /**
      * Standard Constructor
      */
-    public X_C_ValidCombination(Properties ctx, int C_ValidCombination_ID) {
-        super(ctx, C_ValidCombination_ID);
+    public X_C_ValidCombination(int C_ValidCombination_ID) {
+        super(C_ValidCombination_ID);
         /**
          * if (C_ValidCombination_ID == 0) { setAccountId (0); setAccountingSchemaId (0);
          * setValidCombination_ID (0); setIsFullyQualified (false); }
@@ -34,8 +32,8 @@ public class X_C_ValidCombination extends PO  {
     /**
      * Load Constructor
      */
-    public X_C_ValidCombination(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ValidCombination(Row row) {
+        super(row);
     }
 
     /**
@@ -54,7 +52,7 @@ public class X_C_ValidCombination extends PO  {
 
     public org.compiere.model.I_C_ElementValue getAccount() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
-                MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
+                MTable.get(org.compiere.model.I_C_ElementValue.Table_Name)
                         .getPO(getAccountId());
     }
 

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for GL_JournalLine
@@ -25,15 +24,15 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
     /**
      * Standard Constructor
      */
-    public X_GL_JournalLine(Properties ctx, int GL_JournalLine_ID) {
-        super(ctx, GL_JournalLine_ID);
+    public X_GL_JournalLine(int GL_JournalLine_ID) {
+        super(GL_JournalLine_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_GL_JournalLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_GL_JournalLine(Row row) {
+        super(row);
     }
 
     /**

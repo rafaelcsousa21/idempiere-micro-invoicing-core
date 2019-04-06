@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
 
@@ -19,15 +18,15 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
     /**
      * Standard Constructor
      */
-    public X_I_BankStatement(Properties ctx, int I_BankStatement_ID) {
-        super(ctx, I_BankStatement_ID);
+    public X_I_BankStatement(int I_BankStatement_ID) {
+        super(I_BankStatement_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_I_BankStatement(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_I_BankStatement(Row row) {
+        super(row);
     }
 
     /**

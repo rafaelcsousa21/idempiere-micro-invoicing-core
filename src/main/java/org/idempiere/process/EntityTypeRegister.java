@@ -48,7 +48,7 @@ public class EntityTypeRegister extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO)) log.info("AD_EntityType_ID=" + p_AD_EntityType_ID);
-        MEntityType et = new MEntityType(getCtx(), p_AD_EntityType_ID);
+        MEntityType et = new MEntityType(p_AD_EntityType_ID);
         if (et.isSystemMaintained())
             throw new AdempiereUserError("You cannot register a System maintained entity");
 

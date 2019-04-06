@@ -1,11 +1,9 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Landed Cost Allocation Model
@@ -25,8 +23,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      * @param ctx                       context
      * @param C_LandedCostAllocation_ID id
      */
-    public MLandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID) {
-        super(ctx, C_LandedCostAllocation_ID);
+    public MLandedCostAllocation(int C_LandedCostAllocation_ID) {
+        super(C_LandedCostAllocation_ID);
         if (C_LandedCostAllocation_ID == 0) {
             //	setCostElementId(0);
             setAmt(Env.ZERO);
@@ -40,8 +38,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      *
      * @param ctx context
      */
-    public MLandedCostAllocation(Properties ctx, Row row) {
-        super(ctx, row);
+    public MLandedCostAllocation(Row row) {
+        super(row);
     } //	MLandedCostAllocation
 
     /**
@@ -51,7 +49,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      * @param M_CostElement_ID cost element
      */
     public MLandedCostAllocation(MInvoiceLine parent, int M_CostElement_ID) {
-        this(parent.getCtx(), 0);
+        this(0);
         setClientOrg(parent);
         setInvoiceLineId(parent.getInvoiceLineId());
         setCostElementId(M_CostElement_ID);
@@ -65,8 +63,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      * @return landed cost alloc
      */
     public static MLandedCostAllocation[] getOfInvoiceLine(
-            Properties ctx, int C_InvoiceLine_ID) {
-        return MBaseLandedCostAllocationKt.getCostAllocationsforInvoiceLine(ctx, C_InvoiceLine_ID);
+            int C_InvoiceLine_ID) {
+        return MBaseLandedCostAllocationKt.getCostAllocationsforInvoiceLine(C_InvoiceLine_ID);
     } //	getOfInvliceLine
 
     /**

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_Activity;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_Activity
  *
@@ -22,15 +20,15 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity {
     /**
      * Standard Constructor
      */
-    public X_C_Activity(Properties ctx, int C_Activity_ID) {
-        super(ctx, C_Activity_ID);
+    public X_C_Activity(int C_Activity_ID) {
+        super(C_Activity_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Activity(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_Activity(Row row) {
+        super(row);
     }
 
     /**

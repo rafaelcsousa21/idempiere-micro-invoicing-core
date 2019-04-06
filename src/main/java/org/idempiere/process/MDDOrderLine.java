@@ -12,7 +12,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
 
@@ -46,8 +45,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @param C_OrderLine_ID order line to load
      * @param trxName        trx name
      */
-    public MDDOrderLine(Properties ctx, int C_OrderLine_ID) {
-        super(ctx, C_OrderLine_ID);
+    public MDDOrderLine(int C_OrderLine_ID) {
+        super(C_OrderLine_ID);
         if (C_OrderLine_ID == 0) {
             //	setOrderId (0);
             //	setLine (0);
@@ -91,7 +90,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @param order parent order
      */
     public MDDOrderLine(MDDOrder order) {
-        this(order.getCtx(), 0);
+        this(0);
         if (order.getId() == 0) throw new IllegalArgumentException("Header not saved");
         setDistributionOrderId(order.getDistributionOrderId()); // 	parent
         setOrder(order);
@@ -102,8 +101,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
      *
      * @param ctx context
      */
-    public MDDOrderLine(Properties ctx, Row row) {
-        super(ctx, row);
+    public MDDOrderLine(Row row) {
+        super(row);
     } //	MDDOrderLine
 
     /**
@@ -136,7 +135,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @return parent
      */
     public MDDOrder getParent() {
-        if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDistributionOrderId());
+        if (m_parent == null) m_parent = new MDDOrder(getDistributionOrderId());
         return m_parent;
     } //	getParent
 
@@ -147,7 +146,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public I_M_Product getProduct() {
         if (m_product == null && getProductId() != 0)
-            m_product = MProduct.get(getCtx(), getProductId());
+            m_product = MProduct.get(getProductId());
         return m_product;
     } //	getProduct
 
@@ -185,12 +184,12 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public boolean canChangeWarehouse() {
         if (getQtyDelivered().signum() != 0) {
-            log.saveError("Error", Msg.translate(getCtx(), "QtyDelivered") + "=" + getQtyDelivered());
+            log.saveError("Error", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
 
         if (getQtyReserved().signum() != 0) {
-            log.saveError("Error", Msg.translate(getCtx(), "QtyReserved") + "=" + getQtyReserved());
+            log.saveError("Error", Msg.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
         //	We can change
@@ -322,7 +321,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public void setQtyEntered(BigDecimal QtyEntered) {
         if (QtyEntered != null && getUOMId() != 0) {
-            int precision = MUOM.getPrecision(getCtx(), getUOMId());
+            int precision = MUOM.getPrecision(getUOMId());
             QtyEntered = QtyEntered.setScale(precision, BigDecimal.ROUND_HALF_UP);
         }
         super.setQtyEntered(QtyEntered);
@@ -350,7 +349,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate(getCtx(), "DD_OrderLine"));
+            log.saveError("ParentComplete", Msg.translate("DD_OrderLine"));
             return false;
         }
         //	Get Defaults from Parent
@@ -375,7 +374,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
 
         //	UOM
         if (getUOMId() == 0 && (getProductId() != 0 || getChargeId() != 0)) {
-            int C_UOM_ID = MUOM.getDefault_UOMId(getCtx());
+            int C_UOM_ID = MUOM.getDefault_UOMId();
             if (C_UOM_ID > 0) setUOMId(C_UOM_ID);
         }
         //	Qty Precision
@@ -394,15 +393,14 @@ public class MDDOrderLine extends X_DD_OrderLine {
                 int M_AttributeSet_ID = product.getAttributeSetId();
                 boolean isInstance = M_AttributeSet_ID != 0;
                 if (isInstance) {
-                    MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
+                    MAttributeSet mas = MAttributeSet.get(M_AttributeSet_ID);
                     isInstance = mas.isInstanceAttribute();
                 }
                 //	Max
                 if (isInstance) {
-                    MLocator locator_from = MLocator.get(getCtx(), getLocatorId());
+                    MLocator locator_from = MLocator.get(getLocatorId());
                     MStorageOnHand[] storages =
                             MStorageOnHand.getWarehouse(
-                                    getCtx(),
                                     locator_from.getWarehouseId(),
                                     getProductId(),
                                     getAttributeSetInstanceId(),
@@ -447,12 +445,12 @@ public class MDDOrderLine extends X_DD_OrderLine {
         //	R/O Check - Something delivered. etc.
         if (Env.ZERO.compareTo(getQtyDelivered()) != 0) {
             log.saveError(
-                    "DeleteError", Msg.translate(getCtx(), "QtyDelivered") + "=" + getQtyDelivered());
+                    "DeleteError", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyReserved()) != 0) {
             //	For PO should be On Order
-            log.saveError("DeleteError", Msg.translate(getCtx(), "QtyReserved") + "=" + getQtyReserved());
+            log.saveError("DeleteError", Msg.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
         return true;

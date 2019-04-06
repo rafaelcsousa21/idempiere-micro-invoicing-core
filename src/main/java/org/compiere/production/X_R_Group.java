@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Group;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for R_Group
  *
@@ -22,15 +20,15 @@ public class X_R_Group extends BasePOName implements I_R_Group {
     /**
      * Standard Constructor
      */
-    public X_R_Group(Properties ctx, int R_Group_ID) {
-        super(ctx, R_Group_ID);
+    public X_R_Group(int R_Group_ID) {
+        super(R_Group_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Group(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_R_Group(Row row) {
+        super(row);
     }
 
     /**

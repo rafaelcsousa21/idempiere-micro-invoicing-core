@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Resource Assignment Model
@@ -24,8 +23,8 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
      * @param ctx
      * @param S_ResourceAssignment_ID
      */
-    public MResourceAssignment(Properties ctx, int S_ResourceAssignment_ID) {
-        super(ctx, S_ResourceAssignment_ID);
+    public MResourceAssignment(int S_ResourceAssignment_ID) {
+        super(S_ResourceAssignment_ID);
         getP_info().setUpdateable(true); // 	default table is not updateable
         //	Default values
         if (S_ResourceAssignment_ID == 0) {
@@ -42,8 +41,8 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
      * @param ctx context
      * @param rs  result set
      */
-    public MResourceAssignment(Properties ctx, Row row) {
-        super(ctx, row);
+    public MResourceAssignment(Row row) {
+        super(row);
     } //	MResourceAssignment
 
     /**

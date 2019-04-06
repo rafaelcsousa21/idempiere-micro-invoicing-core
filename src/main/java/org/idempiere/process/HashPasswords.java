@@ -33,7 +33,7 @@ public class HashPasswords extends SvrProcess {
         String where = " Password IS NOT NULL AND Salt IS NULL ";
 
         // update the sysconfig key to Y out of trx and reset the cache
-        MSysConfig conf = new MSysConfig(getCtx(), SystemIDs.SYSCONFIG_USER_HASH_PASSWORD);
+        MSysConfig conf = new MSysConfig(SystemIDs.SYSCONFIG_USER_HASH_PASSWORD);
         conf.setSearchKey("Y");
         conf.saveEx();
         CacheMgt.get().reset(MSysConfig.Table_Name);
@@ -41,7 +41,7 @@ public class HashPasswords extends SvrProcess {
         int count = 0;
         try {
             List<MUser> users =
-                    MTable.get(getCtx(), MUser.Table_ID).createQuery(where).list();
+                    MTable.get(MUser.Table_ID).createQuery(where).list();
             for (MUser user : users) {
                 user.setPassword(user.getPassword());
                 count++;

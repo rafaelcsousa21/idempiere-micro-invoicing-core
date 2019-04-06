@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MWarehouse;
@@ -21,6 +7,7 @@ import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgKt;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MRoleOrgAccess;
 import org.compiere.process.SvrProcess;
@@ -62,10 +49,20 @@ public class BPartnerOrgLink extends SvrProcess {
         for (IProcessInfoParameter iProcessInfoParameter : para) {
             String name = iProcessInfoParameter.getParameterName();
 
-            if (name.equals("AD_Org_ID")) p_AD_Org_ID = iProcessInfoParameter.getParameterAsInt();
-            else if (name.equals("AD_OrgType_ID")) p_AD_OrgType_ID = iProcessInfoParameter.getParameterAsInt();
-            else if (name.equals("AD_Role_ID")) p_AD_Role_ID = iProcessInfoParameter.getParameterAsInt();
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+            switch (name) {
+                case "AD_Org_ID":
+                    p_AD_Org_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "AD_OrgType_ID":
+                    p_AD_OrgType_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "AD_Role_ID":
+                    p_AD_Role_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+                    break;
+            }
         }
         p_C_BPartner_ID = getRecordId();
     } //	prepare
@@ -88,12 +85,12 @@ public class BPartnerOrgLink extends SvrProcess {
                             + ", AD_Role_ID="
                             + p_AD_Role_ID);
         if (p_C_BPartner_ID == 0) throw new AdempiereUserError("No Business Partner ID");
-        MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID);
+        MBPartner bp = new MBPartner(p_C_BPartner_ID);
         if (bp.getId() == 0)
             throw new AdempiereUserError("Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
         //	BP Location
         List<I_C_BPartner_Location> locs = bp.getLocations(false);
-        if (locs == null || locs.size() == 0)
+        if (locs.size() == 0)
             throw new IllegalArgumentException("Business Partner has no Location");
         //	Location
         int C_Location_ID = locs.get(0).getLocationId();
@@ -102,7 +99,7 @@ public class BPartnerOrgLink extends SvrProcess {
 
         //	Create Org
         boolean newOrg = p_AD_Org_ID == 0;
-        MOrg org = new MOrg(getCtx(), p_AD_Org_ID);
+        MOrg org = MOrgKt.getOrg(p_AD_Org_ID);
         if (newOrg) {
             org.setSearchKey(bp.getSearchKey());
             org.setName(bp.getName());
@@ -110,7 +107,7 @@ public class BPartnerOrgLink extends SvrProcess {
             if (!org.save()) throw new Exception("Organization not saved");
         } else //	check if linked to already
         {
-            int C_BPartner_ID = org.getLinkedC_BPartnerId();
+            int C_BPartner_ID = org.getLinkedBusinessPartnerId();
             if (C_BPartner_ID > 0)
                 throw new IllegalArgumentException(
                         "Organization '"
@@ -129,8 +126,8 @@ public class BPartnerOrgLink extends SvrProcess {
         //	Create Warehouse
         MWarehouse wh = null;
         if (!newOrg) {
-            MWarehouse[] whs = MWarehouse.getForOrg(getCtx(), p_AD_Org_ID);
-            if (whs != null && whs.length > 0) wh = whs[0]; // 	pick first
+            MWarehouse[] whs = MWarehouse.getForOrg(p_AD_Org_ID);
+            if (whs.length > 0) wh = whs[0]; // 	pick first
         }
         //	New Warehouse
         if (wh == null) {
@@ -159,11 +156,11 @@ public class BPartnerOrgLink extends SvrProcess {
         //	Limit to specific Role
         if (p_AD_Role_ID != 0) {
             boolean found = false;
-            MRoleOrgAccess[] orgAccesses = MRoleOrgAccess.getOfOrg(getCtx(), p_AD_Org_ID);
+            MRoleOrgAccess[] orgAccesses = MRoleOrgAccess.getOfOrg(p_AD_Org_ID);
             //	delete all accesses except the specific
-            for (int i = 0; i < orgAccesses.length; i++) {
-                if (orgAccesses[i].getRoleId() == p_AD_Role_ID) found = true;
-                else orgAccesses[i].delete(true);
+            for (MRoleOrgAccess orgAccess1 : orgAccesses) {
+                if (orgAccess1.getRoleId() == p_AD_Role_ID) found = true;
+                else orgAccess1.delete(true);
             }
             //	create access
             if (!found) {
@@ -173,7 +170,7 @@ public class BPartnerOrgLink extends SvrProcess {
         }
 
         //	Reset Client Role
-        MRole.getDefault(getCtx(), true);
+        MRole.getDefault(true);
 
         return "Business Partner - Organization Link created";
     } //	doIt

@@ -42,8 +42,8 @@ public class CopyFromProject extends SvrProcess {
             log.info("doIt - From C_Project_ID=" + m_C_Project_ID + " to " + To_C_Project_ID);
         if (To_C_Project_ID == 0) throw new IllegalArgumentException("Target C_Project_ID == 0");
         if (m_C_Project_ID == 0) throw new IllegalArgumentException("Source C_Project_ID == 0");
-        MProject from = new MProject(getCtx(), m_C_Project_ID);
-        MProject to = new MProject(getCtx(), To_C_Project_ID);
+        MProject from = new MProject(m_C_Project_ID);
+        MProject to = new MProject(To_C_Project_ID);
         //
         int no = to.copyDetailsFrom(from);
 

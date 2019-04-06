@@ -11,7 +11,6 @@ import org.idempiere.common.util.Env;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Properties;
 
 /**
  * Asset Acct Model
@@ -32,15 +31,15 @@ public class MAssetAcct extends X_A_Asset_Acct {
     /**
      * DO NOT USE DIRECTLY
      */
-    public MAssetAcct(Properties ctx, int X_A_Asset_Acct_ID) {
-        super(ctx, X_A_Asset_Acct_ID);
+    public MAssetAcct(int X_A_Asset_Acct_ID) {
+        super(X_A_Asset_Acct_ID);
         if (X_A_Asset_Acct_ID == 0) {
             setSalvageValue(Env.ZERO);
         }
     }
 
-    public MAssetAcct(Properties ctx, Row row) {
-        super(ctx, row);
+    public MAssetAcct(Row row) {
+        super(row);
     }
 
     /**
@@ -50,7 +49,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
      * @param assetgrpacct asset group accounting
      */
     public MAssetAcct(MAsset asset, MAssetGroupAcct assetgrpacct) {
-        this(assetgrpacct.getCtx(), 0);
+        this(0);
 
         SetGetUtil.copyValues(this, assetgrpacct, null, null);
         setAssetId(asset.getAssetId());
@@ -76,7 +75,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
      * @return asset accounting for the given asset
      */
     public static MAssetAcct forA_AssetId(
-            Properties ctx, int A_Asset_ID, String postingType, Timestamp dateAcct) {
+            int A_Asset_ID, String postingType, Timestamp dateAcct) {
         //
         ArrayList<Object> params = new ArrayList<Object>();
         StringBuilder whereClause =
@@ -92,7 +91,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
             params.add(dateAcct);
         }
         MAssetAcct acct =
-                new Query(ctx, I_A_Asset_Acct.Table_Name, whereClause.toString())
+                new Query(I_A_Asset_Acct.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(I_A_Asset_Acct.COLUMNNAME_ValidFrom + " DESC NULLS LAST")
                         .first();

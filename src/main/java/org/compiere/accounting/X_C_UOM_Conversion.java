@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Properties;
 
 /**
  * Generated Model for C_UOM_Conversion
@@ -24,15 +23,15 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
     /**
      * Standard Constructor
      */
-    public X_C_UOM_Conversion(Properties ctx, int C_UOM_Conversion_ID) {
-        super(ctx, C_UOM_Conversion_ID);
+    public X_C_UOM_Conversion(int C_UOM_Conversion_ID) {
+        super(C_UOM_Conversion_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_UOM_Conversion(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_UOM_Conversion(Row row) {
+        super(row);
     }
 
     /**

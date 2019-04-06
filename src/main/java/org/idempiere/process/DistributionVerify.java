@@ -41,7 +41,7 @@ public class DistributionVerify extends SvrProcess {
 
     /*
     if (log.isLoggable(Level.INFO)) log.info("doIt - GL_Distribution_ID=" + getRecordId());
-    MDistribution distribution = new MDistribution (getCtx(), getRecordId(), null);
+    MDistribution distribution = new MDistribution (getRecordId(), null);
     if (distribution.getId() == 0)
     	throw new AdempiereUserError("Not found GL_Distribution_ID=" + getRecordId());
 

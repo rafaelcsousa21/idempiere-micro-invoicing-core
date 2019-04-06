@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_LandedCost;
 import org.compiere.orm.PO;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_LandedCost
  *
@@ -42,8 +40,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
     /**
      * Standard Constructor
      */
-    public X_C_LandedCost(Properties ctx, int C_LandedCost_ID) {
-        super(ctx, C_LandedCost_ID);
+    public X_C_LandedCost(int C_LandedCost_ID) {
+        super(C_LandedCost_ID);
         /**
          * if (C_LandedCost_ID == 0) { setInvoiceLineId (0); setLandedCost_ID (0);
          * setLandedCostDistribution (null); // Q setCostElementId (0); }
@@ -53,8 +51,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
     /**
      * Load Constructor
      */
-    public X_C_LandedCost(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_LandedCost(Row row) {
+        super(row);
     }
 
     /**

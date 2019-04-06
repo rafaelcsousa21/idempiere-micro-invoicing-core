@@ -33,7 +33,7 @@ public class UniversalSubstitution extends SvrProcess {
             throw new AdempiereException("Product and replacement product required");
 
         List<MProductBOM> boms =
-                new Query(getCtx(), MProductBOM.Table_Name, "M_ProductBOM_ID=?")
+                new Query(MProductBOM.Table_Name, "M_ProductBOM_ID=?")
                         .setParameters(productId)
                         .list();
 

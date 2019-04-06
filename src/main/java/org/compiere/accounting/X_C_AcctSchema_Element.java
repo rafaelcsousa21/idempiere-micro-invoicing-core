@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_AcctSchema_Element
  *
@@ -86,15 +84,15 @@ public class X_C_AcctSchema_Element extends BasePOName {
     /**
      * Standard Constructor
      */
-    public X_C_AcctSchema_Element(Properties ctx, int C_AcctSchema_Element_ID) {
-        super(ctx, C_AcctSchema_Element_ID);
+    public X_C_AcctSchema_Element(int C_AcctSchema_Element_ID) {
+        super(C_AcctSchema_Element_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_Element(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_AcctSchema_Element(Row row) {
+        super(row);
     }
 
     /**

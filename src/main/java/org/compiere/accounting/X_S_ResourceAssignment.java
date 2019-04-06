@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for S_ResourceAssignment
@@ -26,15 +25,15 @@ public class X_S_ResourceAssignment extends BasePOName
     /**
      * Standard Constructor
      */
-    public X_S_ResourceAssignment(Properties ctx, int S_ResourceAssignment_ID) {
-        super(ctx, S_ResourceAssignment_ID);
+    public X_S_ResourceAssignment(int S_ResourceAssignment_ID) {
+        super(S_ResourceAssignment_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_S_ResourceAssignment(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_S_ResourceAssignment(Row row) {
+        super(row);
     }
 
     /**

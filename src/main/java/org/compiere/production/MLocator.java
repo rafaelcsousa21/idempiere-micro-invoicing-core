@@ -6,9 +6,6 @@ import org.compiere.accounting.X_M_Locator;
 import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Warehouse;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
-
-import java.util.Properties;
 
 
 /**
@@ -34,11 +31,10 @@ public class MLocator extends X_M_Locator {
      * ************************************************************************ Standard Locator
      * Constructor
      *
-     * @param ctx          Context
      * @param M_Locator_ID id
      */
-    public MLocator(Properties ctx, int M_Locator_ID) {
-        super(ctx, M_Locator_ID);
+    public MLocator(int M_Locator_ID) {
+        super(M_Locator_ID);
         if (M_Locator_ID == 0) {
             //	setLocatorId (0);		//	PK
             //	setWarehouseId (0);		//	Parent
@@ -58,7 +54,7 @@ public class MLocator extends X_M_Locator {
      * @param Value     value
      */
     public MLocator(MWarehouse warehouse, String Value) {
-        this(warehouse.getCtx(), 0);
+        this(0);
         setClientOrg(warehouse);
         setWarehouseId(warehouse.getWarehouseId()); // 	Parent
         setValue(Value);
@@ -70,8 +66,8 @@ public class MLocator extends X_M_Locator {
      *
      * @param ctx context
      */
-    public MLocator(Properties ctx, Row row) {
-        super(ctx, row);
+    public MLocator(Row row) {
+        super(row);
     } //	MLocator
 
     /**
@@ -90,12 +86,12 @@ public class MLocator extends X_M_Locator {
      * @param M_Locator_ID id
      * @return MLocator
      */
-    public static MLocator get(Properties ctx, int M_Locator_ID) {
+    public static MLocator get(int M_Locator_ID) {
         if (s_cache == null) s_cache = new CCache<Integer, MLocator>(I_M_Locator.Table_Name, 20);
         Integer key = M_Locator_ID;
         MLocator retValue = s_cache.get(key);
         if (retValue != null) return retValue;
-        retValue = new MLocator(ctx, M_Locator_ID);
+        retValue = new MLocator(M_Locator_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
         return retValue;
     } //	get

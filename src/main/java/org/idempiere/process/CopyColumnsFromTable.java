@@ -8,7 +8,6 @@ import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.Env;
 
 import java.util.logging.Level;
 
@@ -65,12 +64,12 @@ public class CopyColumnsFromTable extends SvrProcess {
                             + ", Target AD_Table_ID="
                             + p_target_AD_Table_ID);
 
-        MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID);
+        MTable targetTable = new MTable(p_target_AD_Table_ID);
         MColumn[] targetColumns = targetTable.getColumns(true);
         if (targetColumns.length > 0)
-            throw new AdempiereSystemError(Msg.getMsg(Env.getCtx(), "ErrorCopyColumns"));
+            throw new AdempiereSystemError(Msg.getMsg("ErrorCopyColumns"));
 
-        MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID);
+        MTable sourceTable = new MTable(p_source_AD_Table_ID);
         MColumn[] sourceColumns = sourceTable.getColumns(true);
 
         for (int i = 0; i < sourceColumns.length; i++) {
@@ -83,10 +82,10 @@ public class CopyColumnsFromTable extends SvrProcess {
                 String targetColumnName = targetTable.getDbTableName() + "_ID";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                M_Element element = M_Element.get(getCtx(), targetColumnName);
+                M_Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
-                            new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
+                            new M_Element(targetColumnName, targetTable.getEntityType());
                     if (targetColumnName.equalsIgnoreCase(targetTable.getDbTableName() + "_ID")) {
                         element.setColumnName(targetTable.getDbTableName() + "_ID");
                         element.setName(targetTable.getName());
@@ -104,10 +103,10 @@ public class CopyColumnsFromTable extends SvrProcess {
                 String targetColumnName = targetTable.getDbTableName() + "_UU";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                M_Element element = M_Element.get(getCtx(), targetColumnName);
+                M_Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
-                            new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
+                            new M_Element(targetColumnName, targetTable.getEntityType());
                     if (targetColumnName.equalsIgnoreCase(targetTable.getDbTableName() + "_UU")) {
                         element.setColumnName(targetTable.getDbTableName() + "_UU");
                         element.setName(targetTable.getDbTableName() + "_UU");

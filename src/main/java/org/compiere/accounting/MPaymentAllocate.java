@@ -10,7 +10,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Payment Allocate Model
@@ -35,8 +34,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @param C_PaymentAllocate_ID id
      * @param trxName              trx
      */
-    public MPaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
-        super(ctx, C_PaymentAllocate_ID);
+    public MPaymentAllocate(int C_PaymentAllocate_ID) {
+        super(C_PaymentAllocate_ID);
         if (C_PaymentAllocate_ID == 0) {
             //	setPaymentId (0);	//	Parent
             //	setInvoiceId (0);
@@ -55,8 +54,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @param rs      result set
      * @param trxName trx
      */
-    public MPaymentAllocate(Properties ctx, Row row) {
-        super(ctx, row);
+    public MPaymentAllocate(Row row) {
+        super(row);
     } //	MPaymentAllocate
 
     /**
@@ -68,7 +67,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     public static MPaymentAllocate[] get(MPayment parent) {
         final String whereClause = "C_Payment_ID=?";
         Query query =
-                MTable.get(parent.getCtx(), I_C_PaymentAllocate.Table_ID)
+                MTable.get(I_C_PaymentAllocate.Table_ID)
                         .createQuery(whereClause);
         query.setParameters(parent.getPaymentId()).setOnlyActiveRecords(true);
         List<MPaymentAllocate> list = query.list();
@@ -92,7 +91,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      */
     public MInvoice getInvoice() {
         if (m_invoice == null && getInvoiceId() != 0)
-            m_invoice = new MInvoice(getCtx(), getInvoiceId());
+            m_invoice = new MInvoice(getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -114,7 +113,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        MPayment payment = new MPayment(getCtx(), getPaymentId());
+        MPayment payment = new MPayment(getPaymentId());
         if ((newRecord || isValueChanged("C_Invoice_ID"))
                 && (payment.getChargeId() != 0
                 || payment.getInvoiceId() != 0
@@ -129,7 +128,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
             log.saveError(
                     "Error",
                     Msg.parseTranslation(
-                            getCtx(), "@InvoiceAmt@(" + getInvoiceAmt() + ") <> @Totals@(" + check + ")"));
+                            "@InvoiceAmt@(" + getInvoiceAmt() + ") <> @Totals@(" + check + ")"));
             return false;
         }
 

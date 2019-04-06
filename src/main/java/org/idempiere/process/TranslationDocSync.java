@@ -1,21 +1,7 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
-import org.compiere.accounting.MClient;
-import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_AD_Client;
+import org.compiere.orm.MClientKt;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
@@ -52,7 +38,7 @@ public class TranslationDocSync extends SvrProcess {
      * @throws Exception
      */
     protected String doIt() throws Exception {
-        MClient client = MClient.get(getCtx());
+        I_AD_Client client = MClientKt.getClient();
         String baselang = Language.getBaseAD_Language();
         if (client.isMultiLingualDocument() && client.getADLanguage().equals(baselang)) {
             throw new AdempiereUserError("@clientId@: @IsMultiLingualDocument@");
@@ -60,7 +46,6 @@ public class TranslationDocSync extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("" + client);
         List<MTable> tables =
                 new Query(
-                        getCtx(),
                         "AD_Table",
                         "TableName LIKE '%_Trl' AND TableName NOT LIKE 'AD%'"
                 )
@@ -78,11 +63,10 @@ public class TranslationDocSync extends SvrProcess {
      *
      * @param table table
      */
-    private void processTable(MTable table, MClient client) {
+    private void processTable(MTable table, I_AD_Client client) {
         StringBuilder columnNames = new StringBuilder();
         MColumn[] columns = table.getColumns(false);
-        for (int i = 0; i < columns.length; i++) {
-            MColumn column = columns[i];
+        for (MColumn column : columns) {
             if ((!column.getColumnName().equals(PO.getUUIDColumnName(table.getDbTableName())))
                     && (column.getReferenceId() == DisplayType.String
                     || column.getReferenceId() == DisplayType.Text)) {
@@ -98,56 +82,53 @@ public class TranslationDocSync extends SvrProcess {
 
         if (client.isMultiLingualDocument()) {
             String baselang = Language.getBaseAD_Language();
-            if (client.getADLanguage().equals(baselang)) {
-                // tenant language = base language
-                // nothing to do
-            } else {
+            if (!client.getADLanguage().equals(baselang)) {
                 // tenant language <> base language
                 // auto update translation for tenant language
-                StringBuilder sql =
-                        new StringBuilder("UPDATE ")
-                                .append(trlTable)
-                                .append(" SET (")
-                                .append(columnNames)
-                                .append(",IsTranslated) = (SELECT ")
-                                .append(columnNames)
-                                .append(",'Y' FROM ")
-                                .append(baseTable)
-                                .append(" b WHERE ")
-                                .append(trlTable)
-                                .append(".")
-                                .append(baseTable)
-                                .append("_ID=b.")
-                                .append(baseTable)
-                                .append("_ID) WHERE AD_Client_ID=")
-                                .append(getClientId())
-                                .append(" AND AD_Language=")
-                                .append(convertString(client.getADLanguage()));
 
-                int no = executeUpdate(sql.toString());
+                String sql = "UPDATE " +
+                        trlTable +
+                        " SET (" +
+                        columnNames +
+                        ",IsTranslated) = (SELECT " +
+                        columnNames +
+                        ",'Y' FROM " +
+                        baseTable +
+                        " b WHERE " +
+                        trlTable +
+                        "." +
+                        baseTable +
+                        "_ID=b." +
+                        baseTable +
+                        "_ID) WHERE AD_Client_ID=" +
+                        getClientId() +
+                        " AND AD_Language=" +
+                        convertString(client.getADLanguage());
+                int no = executeUpdate(sql);
                 addLog(0, null, new BigDecimal(no), baseTable);
-            }
+            }  // tenant language = base language
+            // nothing to do
+
         } else {
             // auto update all translations
-            StringBuilder sql =
-                    new StringBuilder("UPDATE ")
-                            .append(trlTable)
-                            .append(" SET (")
-                            .append(columnNames)
-                            .append(",IsTranslated) = (SELECT ")
-                            .append(columnNames)
-                            .append(",'Y' FROM ")
-                            .append(baseTable)
-                            .append(" b WHERE ")
-                            .append(trlTable)
-                            .append(".")
-                            .append(baseTable)
-                            .append("_ID=b.")
-                            .append(baseTable)
-                            .append("_ID) WHERE AD_Client_ID=")
-                            .append(getClientId());
 
-            int no = executeUpdate(sql.toString());
+            String sql = "UPDATE " +
+                    trlTable +
+                    " SET (" +
+                    columnNames +
+                    ",IsTranslated) = (SELECT " +
+                    columnNames +
+                    ",'Y' FROM " +
+                    baseTable +
+                    " b WHERE " +
+                    trlTable +
+                    "." +
+                    baseTable +
+                    "_ID=b." +
+                    baseTable +
+                    "_ID) WHERE AD_Client_ID=" +
+                    getClientId();
+            int no = executeUpdate(sql);
             addLog(0, null, new BigDecimal(no), baseTable);
         }
     } //	processTable

@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_SubAcct;
 import org.compiere.orm.BasePONameValue;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_SubAcct
  *
@@ -22,15 +20,15 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct {
     /**
      * Standard Constructor
      */
-    public X_C_SubAcct(Properties ctx, int C_SubAcct_ID) {
-        super(ctx, C_SubAcct_ID);
+    public X_C_SubAcct(int C_SubAcct_ID) {
+        super(C_SubAcct_ID);
     }
 
     /**
      * Load Constructor
      */
-    public X_C_SubAcct(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_SubAcct(Row row) {
+        super(row);
     }
 
     /**

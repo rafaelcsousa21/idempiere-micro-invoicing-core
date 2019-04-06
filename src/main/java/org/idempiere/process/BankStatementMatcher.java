@@ -17,7 +17,6 @@ package org.idempiere.process;
 import org.compiere.accounting.MBankStatement;
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.X_I_BankStatement;
-import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 
 import java.util.logging.Level;
@@ -38,7 +37,7 @@ public class BankStatementMatcher extends SvrProcess {
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
-        m_matchers = MBankStatementMatcher.getMatchers(getCtx());
+        m_matchers = MBankStatementMatcher.getMatchers();
     } //	prepare
 
     /**
@@ -63,11 +62,11 @@ public class BankStatementMatcher extends SvrProcess {
                             + m_matchers.length);
 
         if (Table_ID == X_I_BankStatement.Table_ID)
-            return match(new X_I_BankStatement(getCtx(), Record_ID));
+            return match(new X_I_BankStatement(Record_ID));
         else if (Table_ID == MBankStatement.Table_ID)
-            return match(new MBankStatement(getCtx(), Record_ID));
+            return match(new MBankStatement(Record_ID));
         else if (Table_ID == MBankStatementLine.Table_ID)
-            return match(new MBankStatementLine(getCtx(), Record_ID));
+            return match(new MBankStatementLine(Record_ID));
 
         return "??";
     } //	doIt
@@ -82,10 +81,10 @@ public class BankStatementMatcher extends SvrProcess {
         if (m_matchers == null || ibs == null || ibs.getPaymentId() != 0) return "--";
 
         if (log.isLoggable(Level.FINE)) log.fine("" + ibs);
-        BankStatementMatchInfo info = null;
-        for (int i = 0; i < m_matchers.length; i++) {
-            if (m_matchers[i].isMatcherValid()) {
-                info = m_matchers[i].getMatcher().findMatch(ibs);
+        BankStatementMatchInfo info;
+        for (MBankStatementMatcher m_matcher : m_matchers) {
+            if (m_matcher.isMatcherValid()) {
+                info = m_matcher.getMatcher().findMatch(ibs);
                 if (info != null && info.isMatched()) {
                     if (info.getPaymentId() > 0) ibs.setPaymentId(info.getPaymentId());
                     if (info.getInvoiceId() > 0) ibs.setInvoiceId(info.getInvoiceId());
@@ -108,10 +107,10 @@ public class BankStatementMatcher extends SvrProcess {
         if (m_matchers == null || bsl == null || bsl.getPaymentId() != 0) return "--";
 
         if (log.isLoggable(Level.FINE)) log.fine("match - " + bsl);
-        BankStatementMatchInfo info = null;
-        for (int i = 0; i < m_matchers.length; i++) {
-            if (m_matchers[i].isMatcherValid()) {
-                info = m_matchers[i].getMatcher().findMatch(bsl);
+        BankStatementMatchInfo info;
+        for (MBankStatementMatcher m_matcher : m_matchers) {
+            if (m_matcher.isMatcherValid()) {
+                info = m_matcher.getMatcher().findMatch(bsl);
                 if (info != null && info.isMatched()) {
                     if (info.getPaymentId() > 0) bsl.setPaymentId(info.getPaymentId());
                     if (info.getInvoiceId() > 0) bsl.setInvoiceId(info.getInvoiceId());
@@ -135,9 +134,9 @@ public class BankStatementMatcher extends SvrProcess {
         if (log.isLoggable(Level.FINE)) log.fine("match - " + bs);
         int count = 0;
         MBankStatementLine[] lines = bs.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            if (lines[i].getPaymentId() == 0) {
-                match(lines[i]);
+        for (MBankStatementLine line : lines) {
+            if (line.getPaymentId() == 0) {
+                match(line);
                 count++;
             }
         }

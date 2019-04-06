@@ -4,8 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_ProjectType;
 import org.compiere.orm.BasePOName;
 
-import java.util.Properties;
-
 /**
  * Generated Model for C_ProjectType
  *
@@ -22,8 +20,8 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType {
     /**
      * Standard Constructor
      */
-    public X_C_ProjectType(Properties ctx, int C_ProjectType_ID) {
-        super(ctx, C_ProjectType_ID);
+    public X_C_ProjectType(int C_ProjectType_ID) {
+        super(C_ProjectType_ID);
         /**
          * if (C_ProjectType_ID == 0) { setProjectTypeId (0); setName (null); setProjectCategory
          * (null); // N }
@@ -33,8 +31,8 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType {
     /**
      * Load Constructor
      */
-    public X_C_ProjectType(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_C_ProjectType(Row row) {
+        super(row);
     }
 
     /**

@@ -7,7 +7,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Properties;
 
 /**
  * Generated Model for M_MatchPO
@@ -25,8 +24,8 @@ public class X_M_MatchPO extends PO implements I_M_MatchPO {
     /**
      * Standard Constructor
      */
-    public X_M_MatchPO(Properties ctx, int M_MatchPO_ID) {
-        super(ctx, M_MatchPO_ID);
+    public X_M_MatchPO(int M_MatchPO_ID) {
+        super(M_MatchPO_ID);
         /*
          * if (M_MatchPO_ID == 0) { setOrderLineId (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -38,8 +37,8 @@ public class X_M_MatchPO extends PO implements I_M_MatchPO {
     /**
      * Load Constructor
      */
-    public X_M_MatchPO(Properties ctx, Row row) {
-        super(ctx, row);
+    public X_M_MatchPO(Row row) {
+        super(row);
     }
 
     /**
