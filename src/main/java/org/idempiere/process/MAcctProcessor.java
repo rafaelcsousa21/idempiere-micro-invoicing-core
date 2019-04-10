@@ -5,10 +5,9 @@ import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.schedule.MSchedule;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 
 
 public class MAcctProcessor extends X_C_AcctProcessor
@@ -58,7 +57,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
                 new StringBuilder()
                         .append(client.getName())
                         .append(" - ")
-                        .append(Msg.translate("C_AcctProcessor_ID"));
+                        .append(MsgKt.translate("C_AcctProcessor_ID"));
         setName(msgset.toString());
         setSupervisorId(Supervisor_ID);
     } //	MAcctProcessor

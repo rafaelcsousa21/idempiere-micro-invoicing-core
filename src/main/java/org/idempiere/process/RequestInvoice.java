@@ -9,7 +9,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.production.MRequest;
 import org.compiere.production.MRequestType;
 import org.compiere.production.MRequestUpdate;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 
 import java.math.BigDecimal;
@@ -158,7 +158,7 @@ public class RequestInvoice extends SvrProcess {
                 }
                 m_invoice.saveEx();
                 String message =
-                        Msg.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+                        MsgKt.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
                 addBufferLog(
                         0,
                         null,

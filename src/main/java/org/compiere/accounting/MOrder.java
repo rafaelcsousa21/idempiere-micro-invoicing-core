@@ -20,7 +20,9 @@ import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.order.MOrderTax;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.MSysConfig;
@@ -31,7 +33,7 @@ import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
 import org.compiere.product.MPriceListVersion;
 import org.compiere.production.MProject;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -60,7 +62,6 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     /**
      * ************************************************************************ Default Constructor
      *
-     * @param ctx        context
      * @param C_Order_ID order to load, (0 create new order)
      */
     public MOrder(int C_Order_ID) {
@@ -69,8 +70,6 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MOrder(Row row) {
         super(row);
@@ -344,17 +343,17 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         BigDecimal previousProcessedOn = (BigDecimal) getValueOld(COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
             int previousDocTypeID = (Integer) getValueOld(COLUMNNAME_C_DocTypeTarget_ID);
-            MDocType previousdt = MDocType.get(previousDocTypeID);
+            MDocType previousdt = MDocTypeKt.getDocumentType(previousDocTypeID);
             if (isValueChanged(COLUMNNAME_C_DocType_ID)
                     || isValueChanged(COLUMNNAME_C_DocTypeTarget_ID)) {
                 if (previousdt.isOverwriteSeqOnComplete()) {
-                    log.saveError("Error", Msg.getMsg("CannotChangeProcessedDocType"));
+                    log.saveError("Error", MsgKt.getMsg("CannotChangeProcessedDocType"));
                     return false;
                 }
             }
             if (isValueChanged(COLUMNNAME_DateOrdered)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
-                    log.saveError("Error", Msg.getMsg("CannotChangeProcessedDate"));
+                    log.saveError("Error", MsgKt.getMsg("CannotChangeProcessedDate"));
                     return false;
                 }
             }
@@ -370,7 +369,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                             getOrderId());
             if (cnt > 0) {
                 if (isValueChanged(COLUMNNAME_M_PriceList_ID)) {
-                    log.saveError("Error", Msg.getMsg("CannotChangePl"));
+                    log.saveError("Error", MsgKt.getMsg("CannotChangePl"));
                     return false;
                 }
                 if (isValueChanged(COLUMNNAME_DateOrdered)) {
@@ -380,7 +379,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                     MPriceListVersion plNew =
                             pList.getPriceListVersion((Timestamp) getValue(COLUMNNAME_DateOrdered));
                     if (plNew == null || !plNew.equals(plOld)) {
-                        log.saveError("Error", Msg.getMsg("CannotChangeDateOrdered"));
+                        log.saveError("Error", MsgKt.getMsg("CannotChangeDateOrdered"));
                         return false;
                     }
                 }
@@ -477,7 +476,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getTargetDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getTargetDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getDateAcct(), dt.getDocBaseType(), getOrgId())) {
@@ -487,7 +486,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         if (isSOTrx() && getDeliveryViaRule().equals(DELIVERYVIARULE_Shipper)) {
             if (getShipperId() == 0) {
-                m_processMsg = "@FillMandatory@" + Msg.getElement(COLUMNNAME_M_Shipper_ID);
+                m_processMsg = "@FillMandatory@" + MsgKt.getElementTranslation(COLUMNNAME_M_Shipper_ID);
                 return DocAction.Companion.getSTATUS_Invalid();
             }
 
@@ -516,7 +515,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (getDocumentTypeId() != getTargetDocumentTypeId()) {
             //	Cannot change Std to anything else if different warehouses
             if (getDocumentTypeId() != 0) {
-                MDocType dtOld = MDocType.get(getDocumentTypeId());
+                MDocType dtOld = MDocTypeKt.getDocumentType(getDocumentTypeId());
                 if (MDocType.DOCSUBTYPESO_StandardOrder.equals(dtOld.getDocSubTypeSO()) // 	From SO
                         && !MDocType.DOCSUBTYPESO_StandardOrder.equals(dt.getDocSubTypeSO())) // 	To !SO
                 {
@@ -670,7 +669,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @return true if (un) reserved
      */
     protected boolean reserveStock(MDocType dt, MOrderLine[] lines) {
-        if (dt == null) dt = MDocType.get(getDocumentTypeId());
+        if (dt == null) dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Binding
         boolean binding = !dt.isProposal();
@@ -768,7 +767,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      */
     @NotNull
     public CompleteActionResult completeIt() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         String DocSubTypeSO = dt.getDocSubTypeSO();
 
         //	Just prepare
@@ -941,7 +940,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                         .first();
         if (ba == null) return "@NoAccountOrgCurrency@";
 
-        MDocType[] doctypes = MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
+        MDocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
         if (doctypes.length == 0) return "No document type for AR Receipt";
         MDocType doctype = null;
         for (MDocType doc : doctypes) {
@@ -1018,7 +1017,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * Set the definite document number after completed
      */
     protected void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             /* a42niem - BF IDEMPIERE-63 - check if document has been completed before */
             if (this.getProcessedOn().signum() == 0) {
@@ -1116,7 +1115,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (counterAD_Org_ID == 0) return null;
 
         MBPartner counterBP = new MBPartner(counterC_BPartner_ID);
-        MOrgInfo counterOrgInfo = MOrgInfo.get(counterAD_Org_ID);
+        MOrgInfo counterOrgInfo = MOrgInfoKt.getOrganizationInfo(counterAD_Org_ID);
         if (log.isLoggable(Level.INFO)) log.info("Counter BP=" + counterBP.getName());
 
         //	Document Type
@@ -1196,7 +1195,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         for (MOrderLine line : lines) {
             BigDecimal old = line.getQtyOrdered();
             if (old.signum() != 0) {
-                line.addDescription(Msg.getMsg("Voided") + " (" + old + ")");
+                line.addDescription(MsgKt.getMsg("Voided") + " (" + old + ")");
                 line.setQty(Env.ZERO);
                 line.setLineNetAmt(Env.ZERO);
                 line.saveEx();
@@ -1218,7 +1217,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             if (!(tax.calculateTaxFromLines() && tax.save())) return false;
         }
 
-        addDescription(Msg.getMsg("Voided"));
+        addDescription(MsgKt.getMsg("Voided"));
         //	Clear Reservations
         if (!reserveStock(null, lines)) {
             m_processMsg = "Cannot unreserve Stock (void)";
@@ -1463,13 +1462,13 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_REACTIVATE);
         if (m_processMsg != null) return false;
 
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         String DocSubTypeSO = dt.getDocSubTypeSO();
 
         //	Replace Prepay with POS to revert all doc
         if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(DocSubTypeSO)) {
             MDocType newDT = null;
-            MDocType[] dts = MDocType.getOfClient();
+            MDocType[] dts = MDocTypeKt.getGetClientDocumentTypes();
             for (MDocType type : dts) {
                 if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(type.getDocSubTypeSO())) {
                     if (type.isDefault() || newDT == null) newDT = type;
@@ -1556,7 +1555,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         sb.append(getDocumentNo());
         //	: Grand Total = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("GrandTotal"))
+                .append(MsgKt.translate("GrandTotal"))
                 .append("=")
                 .append(getGrandTotal());
         if (m_lines != null) sb.append(" (#").append(m_lines.length).append(")");

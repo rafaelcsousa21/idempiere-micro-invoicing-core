@@ -15,7 +15,7 @@ import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -323,16 +323,16 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
             MRMALine[] lines = getLines(true);
             // Set Qty and Amt on all lines to be Zero
             for (MRMALine rmaLine : lines) {
-                rmaLine.addDescription(Msg.getMsg("Voided") + " (" + rmaLine.getQty() + ")");
+                rmaLine.addDescription(MsgKt.getMsg("Voided") + " (" + rmaLine.getQty() + ")");
                 rmaLine.setQty(Env.ZERO);
                 rmaLine.setAmt(Env.ZERO);
                 rmaLine.saveEx();
             }
 
-            addDescription(Msg.getMsg("Voided"));
+            addDescription(MsgKt.getMsg("Voided"));
             setAmt(Env.ZERO);
         } else {
-            m_processMsg = Msg.getMsg("RMACannotBeVoided");
+            m_processMsg = MsgKt.getMsg("RMACannotBeVoided");
             return false;
         }
 
@@ -444,7 +444,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("Amt"))
+                .append(MsgKt.translate("Amt"))
                 .append("=")
                 .append(getAmt())
                 .append(" (#")

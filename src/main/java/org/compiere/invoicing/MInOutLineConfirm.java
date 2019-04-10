@@ -2,7 +2,7 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.order.MInOutConfirm;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -142,7 +142,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @return false
      */
     protected boolean beforeDelete() {
-        log.saveError("Error", Msg.getMsg("CannotDelete"));
+        log.saveError("Error", MsgKt.getMsg("CannotDelete"));
         return false;
     } //	beforeDelete
 

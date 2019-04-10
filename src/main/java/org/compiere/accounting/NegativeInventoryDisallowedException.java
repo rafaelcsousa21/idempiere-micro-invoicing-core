@@ -4,7 +4,7 @@ import org.compiere.orm.MSysConfig;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
@@ -28,7 +28,7 @@ public class NegativeInventoryDisallowedException extends AdempiereException {
             BigDecimal QtyOnHand,
             BigDecimal MovementQty) {
         super(
-                Msg.getMsg(
+                MsgKt.getMsg(
                         "NegativeInventoryDisallowedInfo",
                         new Object[]{
                                 MWarehouse.get(M_Warehouse_ID).getName(),

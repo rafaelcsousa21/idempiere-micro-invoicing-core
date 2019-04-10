@@ -3,7 +3,9 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
@@ -278,7 +280,7 @@ public class MPeriod extends X_C_Period {
      */
     public static void testPeriodOpen(Timestamp dateAcct, int C_DocType_ID)
             throws PeriodClosedException {
-        MDocType dt = MDocType.get(C_DocType_ID);
+        MDocType dt = MDocTypeKt.getDocumentType(C_DocType_ID);
         testPeriodOpen(dateAcct, dt.getDocBaseType());
     }
 
@@ -294,7 +296,7 @@ public class MPeriod extends X_C_Period {
     public static void testPeriodOpen(
             Timestamp dateAcct, int C_DocType_ID, int AD_Org_ID)
             throws PeriodClosedException {
-        MDocType dt = MDocType.get(C_DocType_ID);
+        MDocType dt = MDocTypeKt.getDocumentType(C_DocType_ID);
         testPeriodOpen(dateAcct, dt.getDocBaseType(), AD_Org_ID);
     }
 
@@ -307,7 +309,7 @@ public class MPeriod extends X_C_Period {
     public static int getCalendarId(int AD_Org_ID) {
         int C_Calendar_ID = 0;
         if (AD_Org_ID != 0) {
-            MOrgInfo info = MOrgInfo.get(AD_Org_ID);
+            MOrgInfo info = MOrgInfoKt.getOrganizationInfo(AD_Org_ID);
             C_Calendar_ID = info.getCalendarId();
         }
 
@@ -501,7 +503,7 @@ public class MPeriod extends X_C_Period {
         if (!success) return success;
         if (newRecord) {
             //	SELECT Value FROM AD_Ref_List WHERE AD_Reference_ID=183
-            MDocType[] types = MDocType.getOfClient();
+            MDocType[] types = MDocTypeKt.getGetClientDocumentTypes();
             int count = 0;
             ArrayList<String> baseTypes = new ArrayList<String>();
             for (int i = 0; i < types.length; i++) {

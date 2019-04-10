@@ -10,7 +10,7 @@ import org.compiere.orm.MDocType;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
@@ -150,7 +150,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement("S_TimeExpense_ID") + " " + getDocumentNo();
+        return MsgKt.getElementTranslation("S_TimeExpense_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -412,7 +412,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")

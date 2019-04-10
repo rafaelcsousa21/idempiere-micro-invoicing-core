@@ -19,7 +19,7 @@ import org.compiere.product.IProductPricing;
 import org.compiere.product.MProduct;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 import java.util.logging.Level;
 
@@ -73,13 +73,13 @@ public class ProjectLinePricing extends SvrProcess {
         //
         StringBuilder retValue =
                 new StringBuilder()
-                        .append(Msg.getElement("PriceList"))
+                        .append(MsgKt.getElementTranslation("PriceList"))
                         .append(pp.getPriceList())
                         .append(" - ")
-                        .append(Msg.getElement("PriceStd"))
+                        .append(MsgKt.getElementTranslation("PriceStd"))
                         .append(pp.getPriceStd())
                         .append(" - ")
-                        .append(Msg.getElement("PriceLimit"))
+                        .append(MsgKt.getElementTranslation("PriceLimit"))
                         .append(pp.getPriceLimit());
         return retValue.toString();
     } //	doIt

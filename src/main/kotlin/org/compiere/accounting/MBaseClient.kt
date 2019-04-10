@@ -2,7 +2,20 @@ package org.compiere.accounting
 
 import kotliquery.Row
 import org.compiere.orm.MTree_Base
-import org.compiere.orm.X_AD_Tree
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Activity
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_BPartner
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Campaign
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_CustomTable
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_ElementValue
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Menu
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Organization
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Product
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_Project
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_SalesRegion
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_User1
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_User2
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_User3
+import org.compiere.orm.MTree_Base.Companion.TREETYPE_User4
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.convertString
@@ -38,55 +51,55 @@ open class MBaseClient : org.compiere.orm.MClient {
             val name = StringBuilder().append(name).append(" ").append(row.string(2))
             val success =
             //
-                if (value == X_AD_Tree.TREETYPE_Organization) {
+                if (value == TREETYPE_Organization) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_Org_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_BPartner) {
+                } else if (value == TREETYPE_BPartner) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_BPartner_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Project) {
+                } else if (value == TREETYPE_Project) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_Project_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_SalesRegion) {
+                } else if (value == TREETYPE_SalesRegion) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_SalesRegion_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Product) {
+                } else if (value == TREETYPE_Product) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_Product_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_ElementValue) {
+                } else if (value == TREETYPE_ElementValue) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     m_AD_Tree_Account_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Campaign) {
+                } else if (value == TREETYPE_Campaign) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_Campaign_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Activity) {
+                } else if (value == TREETYPE_Activity) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
                     AD_Tree_Activity_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Menu || // 	No Menu
+                } else if (value == TREETYPE_Menu || // 	No Menu
 
-                    value == X_AD_Tree.TREETYPE_CustomTable || // 	No Custom Table
+                    value == TREETYPE_CustomTable || // 	No Custom Table
 
-                    value == X_AD_Tree.TREETYPE_User1 || // 	No custom user trees
+                    value == TREETYPE_User1 || // 	No custom user trees
 
-                    value == X_AD_Tree.TREETYPE_User2 ||
-                    value == X_AD_Tree.TREETYPE_User3 ||
-                    value == X_AD_Tree.TREETYPE_User4
+                    value == TREETYPE_User2 ||
+                    value == TREETYPE_User3 ||
+                    value == TREETYPE_User4
                 )
                     true
                 else

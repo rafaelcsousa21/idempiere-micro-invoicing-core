@@ -15,7 +15,7 @@ import org.compiere.orm.PO;
 import org.compiere.process.DocAction;
 import org.compiere.process.IProcessUI;
 import org.compiere.process.ProcessCall;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
@@ -301,21 +301,21 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             if (isVoided()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already voided - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyVoided"));
+                setErrorMessage(MsgKt.getMsg("PaymentTransactionAlreadyVoided"));
                 return true;
             }
         } else if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_DelayedCapture)) {
             if (isDelayedCapture()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already delayed capture - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyDelayedCapture"));
+                setErrorMessage(MsgKt.getMsg("PaymentTransactionAlreadyDelayedCapture"));
                 return true;
             }
         } else {
             if (isApproved()) {
                 if (log.isLoggable(Level.INFO))
                     log.info("Already processed - " + getTransmissionResult() + " - " + getResponseMessage());
-                setErrorMessage(Msg.getMsg("PaymentTransactionAlreadyProcessed"));
+                setErrorMessage(MsgKt.getMsg("PaymentTransactionAlreadyProcessed"));
                 return true;
             }
         }
@@ -326,10 +326,10 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 MPaymentProcessor pp =
                         new MPaymentProcessor(getPaymentProcessorId());
                 log.log(Level.WARNING, "No Payment Processor Model " + pp.toString());
-                setErrorMessage(Msg.getMsg("PaymentNoProcessorModel") + ": " + pp.toString());
+                setErrorMessage(MsgKt.getMsg("PaymentNoProcessorModel") + ": " + pp.toString());
             } else {
                 log.log(Level.WARNING, "No Payment Processor Model");
-                setErrorMessage(Msg.getMsg("PaymentNoProcessorModel"));
+                setErrorMessage(MsgKt.getMsg("PaymentNoProcessorModel"));
             }
             return false;
         }
@@ -339,12 +339,12 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
 
         try {
             IPaymentProcessor pp = createPaymentProcessor(m_mBankAccountProcessor, this);
-            if (pp == null) setErrorMessage(Msg.getMsg("PaymentNoProcessor"));
+            if (pp == null) setErrorMessage(MsgKt.getMsg("PaymentNoProcessor"));
             else {
                 // Validate before trying to process
                 //				String msg = pp.validate();
                 //				if (msg!=null && msg.trim().length()>0) {
-                //					setErrorMessage(Msg.getMsg( msg));
+                //					setErrorMessage(MsgKt.getMsg( msg));
                 //				} else {
                 // Process if validation succeeds
                 approved = pp.processCC();
@@ -368,7 +368,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                         m_mPayment.saveEx();
                         setPaymentId(m_mPayment.getPaymentId());
                         processed = m_mPayment.processIt(DocAction.Companion.getACTION_Complete());
-                        if (!processed) setErrorMessage(Msg.getMsg("PaymentNotProcessed"));
+                        if (!processed) setErrorMessage(MsgKt.getMsg("PaymentNotProcessed"));
                         else m_mPayment.saveEx();
                     } else processed = true;
                 } else {
@@ -381,7 +381,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, "processOnline", e);
-            setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
+            setErrorMessage(MsgKt.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
         }
 
         setIsApproved(approved);
@@ -447,7 +447,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "voidOnlineAuthorizationPaymentTransaction", e);
-                setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
+                setErrorMessage(MsgKt.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
             }
 
             return ok;
@@ -488,7 +488,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "delayCaptureOnlineAuthorizationPaymentTransaction", e);
-                setErrorMessage(Msg.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
+                setErrorMessage(MsgKt.getMsg("PaymentNotProcessed") + ": " + e.getMessage());
             }
 
             return ok;

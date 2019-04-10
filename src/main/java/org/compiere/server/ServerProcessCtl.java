@@ -10,7 +10,7 @@ import org.compiere.process.MPInstance;
 import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessUtil;
 import org.compiere.rule.MRule;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -77,7 +77,7 @@ public class ServerProcessCtl implements Runnable {
                 return null;
             }
             if (!instance.save()) {
-                pi.setSummary(Msg.getMsg("ProcessNoInstance"));
+                pi.setSummary(MsgKt.getMsg("ProcessNoInstance"));
                 pi.setError(true);
                 return null;
             }
@@ -203,7 +203,7 @@ public class ServerProcessCtl implements Runnable {
             } else log.log(Level.SEVERE, "No AD_PInstance_ID=" + m_pi.getPInstanceId());
         } catch (Throwable e) {
             m_pi.setSummary(
-                    Msg.getMsg("ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);
+                    MsgKt.getMsg("ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);
             log.log(Level.SEVERE, "run", e);
             return;
         } finally {

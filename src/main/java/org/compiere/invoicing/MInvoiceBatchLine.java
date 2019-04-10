@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
@@ -60,7 +60,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
     protected boolean beforeSave(boolean newRecord) {
         // Amount
         if (getPriceEntered().signum() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("PriceEntered"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("PriceEntered"));
             return false;
         }
         return true;

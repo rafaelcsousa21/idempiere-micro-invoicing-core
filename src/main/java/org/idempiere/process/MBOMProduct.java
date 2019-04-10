@@ -3,7 +3,7 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -104,14 +104,14 @@ public class MBOMProduct extends X_M_BOMProduct {
         if (getBOMProductType().equals(BOMPRODUCTTYPE_OutsideProcessing)) {
             if (getProductBOMId() != 0) setProductBOMId(0);
         } else if (getProductBOMId() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@NotFound@ @M_ProductBOM_ID@"));
+            log.saveError("Error", MsgKt.parseTranslation("@NotFound@ @M_ProductBOM_ID@"));
             return false;
         }
         //	Operation
         if (getProductOperationId() == 0) {
             if (getSeqNo() != 0) setSeqNo(0);
         } else if (getSeqNo() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@NotFound@ @SeqNo@"));
+            log.saveError("Error", MsgKt.parseTranslation("@NotFound@ @SeqNo@"));
             return false;
         }
         //	Product Attribute Instance
@@ -120,7 +120,7 @@ public class MBOMProduct extends X_M_BOMProduct {
             if (m_bom == null || !MBOM.BOMTYPE_Make_To_Order.equals(m_bom.getBOMType())) {
                 log.saveError(
                         "Error",
-                        Msg.parseTranslation("Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));
+                        MsgKt.parseTranslation("Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));
                 setAttributeSetInstanceId(0);
                 return false;
             }
@@ -129,13 +129,13 @@ public class MBOMProduct extends X_M_BOMProduct {
         if ((getBOMProductType().equals(BOMPRODUCTTYPE_Alternative)
                 || getBOMProductType().equals(BOMPRODUCTTYPE_AlternativeDefault))
                 && getBOMAlternativeGroupId() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@NotFound@ @M_BOMAlternative_ID@"));
+            log.saveError("Error", MsgKt.parseTranslation("@NotFound@ @M_BOMAlternative_ID@"));
             return false;
         }
         //	Operation
         if (getProductOperationId() != 0) {
             if (getSeqNo() == 0) {
-                log.saveError("Error", Msg.parseTranslation("@NotFound@ @SeqNo@"));
+                log.saveError("Error", MsgKt.parseTranslation("@NotFound@ @SeqNo@"));
                 return false;
             }
         } else //	no op

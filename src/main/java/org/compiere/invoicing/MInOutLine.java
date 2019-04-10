@@ -13,7 +13,7 @@ import org.compiere.orm.Query;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
@@ -33,9 +33,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx            context
      * @param M_InOutLine_ID id
-     * @param trxName        trx name
      */
     public MInOutLine(int M_InOutLine_ID) {
         super(M_InOutLine_ID);
@@ -52,8 +50,6 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MInOutLine(Row row) {
         super(row);
@@ -62,7 +58,6 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     /**
      * Get Ship lines Of Order Line
      *
-     * @param ctx            context
      * @param C_OrderLine_ID line
      * @param where          optional addition where clause
      * @return array of receipt lines
@@ -74,7 +69,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
                 new Query(I_M_InOutLine.Table_Name, whereClause)
                         .setParameters(C_OrderLine_ID)
                         .list();
-        return list.toArray(new MInOutLine[list.size()]);
+        return list.toArray(new MInOutLine[0]);
     } //	getOfOrderLine
 
     /**
@@ -154,7 +149,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     protected boolean beforeSave(boolean newRecord) {
         log.fine("");
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("M_InOutLine"));
+            log.saveError("ParentComplete", MsgKt.translate("M_InOutLine"));
             return false;
         }
         // Locator is mandatory if no charge is defined - teo_sarca BF [ 2757978 ]
@@ -183,7 +178,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         //	Order/RMA Line
         if (getOrderLineId() == 0 && getRMALineId() == 0) {
             if (getParent().isSOTrx()) {
-                log.saveError("FillMandatory", Msg.translate("C_Order_ID"));
+                log.saveError("FillMandatory", MsgKt.translate("C_Order_ID"));
                 return false;
             }
         }
@@ -202,7 +197,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
                 if (locator.getLocatorTypeId() > 0) {
                     MLocatorType lt = MLocatorType.get(locator.getLocatorTypeId());
                     if (!lt.isAvailableForShipping()) {
-                        log.saveError("Error", Msg.translate("LocatorNotAvailableForShipping"));
+                        log.saveError("Error", MsgKt.translate("LocatorNotAvailableForShipping"));
                         return false;
                     }
                 }
@@ -220,27 +215,12 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
                     MAttributeSetInstance.generateLot(getProduct());
             setAttributeSetInstanceId(asi.getAttributeSetInstanceId());
         }
-        //	if (getChargeId() == 0 && getProductId() == 0)
-        //		;
-
-        /**
-         * Qty on instance ASI if (getAttributeSetInstanceId() != 0) { MProduct product =
-         * getProduct(); int M_AttributeSet_ID = product.getAttributeSetId(); boolean isInstance =
-         * M_AttributeSet_ID != 0; if (isInstance) { MAttributeSet mas = MAttributeSet.get(
-         * M_AttributeSet_ID); isInstance = mas.isInstanceAttribute(); } // Max if (isInstance) {
-         * MStorage storage = MStorage.get(getLocatorId(), getProductId(),
-         * getAttributeSetInstanceId(), null); if (storage != null) { BigDecimal qty =
-         * storage.getQtyOnHand(); if (getMovementQty().compareTo(qty) > 0) { log.warning("Qty - Stock="
-         * + qty + ", Movement=" + getMovementQty()); log.saveError("QtyInsufficient", "=" + qty);
-         * return false; } } } } /*
-         */
-
         /* Carlos Ruiz - globalqss
          * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
          */
         if (getParent().getDocumentType().isChargeOrProductMandatory()) {
             if (getChargeId() == 0 && getProductId() == 0) {
-                log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
+                log.saveError("FillMandatory", MsgKt.translate("ChargeOrProductMandatory"));
                 return false;
             }
         }

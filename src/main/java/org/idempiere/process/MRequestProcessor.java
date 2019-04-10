@@ -5,10 +5,9 @@ import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.schedule.MSchedule;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 
 
 public class MRequestProcessor extends X_R_RequestProcessor
@@ -56,7 +55,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
     public MRequestProcessor(MClient parent, int Supervisor_ID) {
         this(0);
         setClientOrg(parent);
-        setName(parent.getName() + " - " + Msg.translate("R_RequestProcessor_ID"));
+        setName(parent.getName() + " - " + MsgKt.translate("R_RequestProcessor_ID"));
         setSupervisorId(Supervisor_ID);
     } //	MRequestProcessor
 

@@ -12,6 +12,7 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
@@ -19,7 +20,7 @@ import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MLocator;
 import org.compiere.production.MTransaction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
@@ -148,7 +149,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
@@ -160,11 +161,11 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (getDocumentTypeId() == 0) {
-            MDocType[] types = MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
+            MDocType[] types = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
             if (types.length > 0) // 	get first
                 setDocumentTypeId(types[0].getDocTypeId());
             else {
-                log.saveError("Error", Msg.parseTranslation("@NotFound@ @C_DocType_ID@"));
+                log.saveError("Error", MsgKt.parseTranslation("@NotFound@ @C_DocType_ID@"));
                 return false;
             }
         }
@@ -231,7 +232,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getMovementDate(), dt.getDocBaseType(), getOrgId())) {
@@ -593,7 +594,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             } catch (NegativeInventoryDisallowedException e) {
                 log.severe(e.getMessage());
                 errors
-                        .append(Msg.getElement("Line"))
+                        .append(MsgKt.getElementTranslation("Line"))
                         .append(" ")
                         .append(line.getLine())
                         .append(": ");
@@ -624,7 +625,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(getMovementDate(), getDocumentTypeId(), getOrgId());
@@ -815,7 +816,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
 
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (!MPeriod.isOpen(reversalDate, dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return null;
@@ -954,7 +955,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")

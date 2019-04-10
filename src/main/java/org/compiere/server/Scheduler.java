@@ -5,6 +5,7 @@ import org.compiere.crm.MUser;
 import org.compiere.crm.MUserKt;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.MRole;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.MPInstance;
@@ -60,7 +61,7 @@ public class Scheduler extends AdempiereServer {
         Env.setContext("#AD_Language", schedclient.getADLanguage());
         Env.setContext("#orgId", m_model.getOrgId());
         if (m_model.getOrgId() != 0) {
-            MOrgInfo schedorg = MOrgInfo.get(m_model.getOrgId());
+            MOrgInfo schedorg = MOrgInfoKt.getOrganizationInfo(m_model.getOrgId());
             if (schedorg.getWarehouseId() > 0)
                 Env.setContext("#M_Warehouse_ID", schedorg.getWarehouseId());
         }

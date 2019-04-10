@@ -17,11 +17,12 @@ import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.PO;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
@@ -209,7 +210,7 @@ public class InvoiceGenerate extends SvrProcess {
 
         for (MOrder order : orders) {
             p_MinimumAmtInvSched = null;
-            String msgsup = Msg.getMsg("Processing") +
+            String msgsup = MsgKt.getMsg("Processing") +
                     " " +
                     order.getDocumentInfo();
             statusUpdate(msgsup);
@@ -371,7 +372,7 @@ public class InvoiceGenerate extends SvrProcess {
         }
         //	Create Shipment Comment Line
         if (m_ship == null || m_ship.getInOutId() != ship.getInOutId()) {
-            MDocType dt = MDocType.get(ship.getDocumentTypeId());
+            MDocType dt = MDocTypeKt.getDocumentType(ship.getDocumentTypeId());
             if (m_bp == null || m_bp.getBusinessPartnerId() != ship.getBusinessPartnerId())
                 m_bp = new MBPartner(ship.getBusinessPartnerId());
 
@@ -476,7 +477,7 @@ public class InvoiceGenerate extends SvrProcess {
                 DecimalFormat format = DisplayType.getNumberFormat(DisplayType.Amount);
                 String amt = format.format(m_invoice.getGrandTotal().doubleValue());
                 String message =
-                        Msg.parseTranslation(
+                        MsgKt.parseTranslation(
                                 "@NotInvoicedAmt@ " + amt + " - " + m_invoice.getBPartner().getName());
                 addLog(message);
                 throw new AdempiereException("No savepoint");
@@ -498,7 +499,7 @@ public class InvoiceGenerate extends SvrProcess {
                 m_invoice.saveEx();
 
                 String message =
-                        Msg.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+                        MsgKt.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
                 addBufferLog(
                         m_invoice.getInvoiceId(),
                         m_invoice.getDateInvoiced(),

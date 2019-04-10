@@ -16,7 +16,7 @@ package org.idempiere.process;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.MProcess;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 
 import java.util.logging.Level;
@@ -37,7 +37,7 @@ public class CopyReportProcess extends SvrProcess {
         MProcess target = new MProcess(targetId);
 
         if (sourceId <= 0 || targetId <= 0 || source == null || target == null)
-            throw new AdempiereException(Msg.getMsg("CopyProcessRequired"));
+            throw new AdempiereException(MsgKt.getMsg("CopyProcessRequired"));
 
         target.copyFrom(source); // saves automatically
 

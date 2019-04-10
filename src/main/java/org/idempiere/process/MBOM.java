@@ -3,7 +3,7 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.compiere.model.I_M_BOM;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
@@ -110,7 +110,7 @@ public class MBOM extends X_M_BOM {
                         && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
                     log.saveError(
                             "Error",
-                            Msg.parseTranslation(
+                            MsgKt.parseTranslation(
                                     "Can only have one Current Active BOM for Product BOM Use ("
                                             + getBOMType()
                                             + ")"));
@@ -124,7 +124,7 @@ public class MBOM extends X_M_BOM {
                         && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
                     log.saveError(
                             "Error",
-                            Msg.parseTranslation("Can only have single Make-to-Order BOM for Product"));
+                            MsgKt.parseTranslation("Can only have single Make-to-Order BOM for Product"));
                     return false;
                 }
             }

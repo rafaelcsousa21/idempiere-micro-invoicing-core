@@ -5,7 +5,7 @@ import org.compiere.crm.MUser;
 import org.compiere.crm.MUserKt;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -197,7 +197,7 @@ public class MGoal extends X_PA_Goal {
 
         //	Measure required if nor Summary
         if (!isSummary() && getMeasureId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("PA_Measure_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("PA_Measure_ID"));
             return false;
         }
         if (isSummary() && getMeasureId() != 0) setMeasureId(0);

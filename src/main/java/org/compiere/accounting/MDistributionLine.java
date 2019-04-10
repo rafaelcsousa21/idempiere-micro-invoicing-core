@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_ValidCombination;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -228,12 +228,12 @@ public class MDistributionLine extends X_GL_DistributionLine {
 
         //	Account Overwrite cannot be 0
         if (isOverwriteAcct() && getAccountId() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@Account_ID@ = 0"));
+            log.saveError("Error", MsgKt.parseTranslation("@Account_ID@ = 0"));
             return false;
         }
         //	Org Overwrite cannot be 0
         if (isOverwriteOrg() && getOrgId() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@Org_ID@ = 0"));
+            log.saveError("Error", MsgKt.parseTranslation("@Org_ID@ = 0"));
             return false;
         }
         return true;

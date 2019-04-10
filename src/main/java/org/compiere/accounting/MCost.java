@@ -9,7 +9,7 @@ import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -1058,7 +1058,7 @@ public class MCost extends X_M_Cost {
                 }
             } else if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(CostingLevel)) {
                 if (getAttributeSetInstanceId() == 0 && ce.isCostingMethod()) {
-                    log.saveError("FillMandatory", Msg.getElement("M_AttributeSetInstance_ID"));
+                    log.saveError("FillMandatory", MsgKt.getElementTranslation("M_AttributeSetInstance_ID"));
                     return false;
                 }
                 if (getOrgId() != 0) setOrgId(0);
@@ -1067,7 +1067,7 @@ public class MCost extends X_M_Cost {
 
         //	Cannot enter calculated
         if (m_manual && ce != null && ce.isCalculated()) {
-            log.saveError("Error", Msg.getElement("IsCalculated"));
+            log.saveError("Error", MsgKt.getElementTranslation("IsCalculated"));
             return false;
         }
         //	Percentage

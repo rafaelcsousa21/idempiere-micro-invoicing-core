@@ -7,12 +7,13 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_GL_Journal;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
@@ -58,7 +59,6 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     /**
      * Standard Constructor
      *
-     * @param ctx           context
      * @param GL_Journal_ID id
      */
     public MJournal(int GL_Journal_ID) {
@@ -91,8 +91,6 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MJournal(Row row) {
         super(row);
@@ -295,14 +293,14 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         BigDecimal previousProcessedOn = (BigDecimal) getValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
             int previousDocTypeID = (int) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
-            MDocType previousdt = MDocType.get(previousDocTypeID);
+            MDocType previousdt = MDocTypeKt.getDocumentType(previousDocTypeID);
             if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID) && previousdt.isOverwriteSeqOnComplete()) {
-                log.saveError("Error", Msg.getMsg("CannotChangeProcessedDocType"));
+                log.saveError("Error", MsgKt.getMsg("CannotChangeProcessedDocType"));
                 return false;
             }
             if (isValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
-                    log.saveError("Error", Msg.getMsg("CannotChangeProcessedDate"));
+                    log.saveError("Error", MsgKt.getMsg("CannotChangeProcessedDate"));
                     return false;
                 }
             }
@@ -411,7 +409,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         // Get Period
         MPeriod period = (MPeriod) getPeriod();
@@ -602,7 +600,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             if (this.getProcessedOn().signum() == 0) {
                 setDateDoc(new Timestamp(System.currentTimeMillis()));
@@ -871,11 +869,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("TotalDr"))
+                .append(MsgKt.translate("TotalDr"))
                 .append("=")
                 .append(getTotalDr())
                 .append(" ")
-                .append(Msg.translate("TotalCR"))
+                .append(MsgKt.translate("TotalCR"))
                 .append("=")
                 .append(getTotalCr())
                 .append(" (#")
@@ -912,7 +910,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();

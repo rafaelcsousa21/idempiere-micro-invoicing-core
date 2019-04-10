@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 import org.compiere.accounting.MProduct;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -126,7 +126,7 @@ public class MMovementLine extends X_M_MovementLine {
     @Override
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("M_MovementLine"));
+            log.saveError("ParentComplete", MsgKt.translate("M_MovementLine"));
             return false;
         }
         //	Set Line No
@@ -142,7 +142,7 @@ public class MMovementLine extends X_M_MovementLine {
                 && getAttributeSetInstanceId() == getMAttributeSetInstanceToId()) {
             log.saveError(
                     "Error",
-                    Msg.parseTranslation(
+                    MsgKt.parseTranslation(
                             "@M_Locator_ID@ == @M_LocatorTo_ID@ and @M_AttributeSetInstance_ID@ == @M_AttributeSetInstanceTo_ID@"));
             return false;
         }
@@ -157,7 +157,7 @@ public class MMovementLine extends X_M_MovementLine {
                 // [ 2092198 ] Error voiding an Inventory Move - globalqss
                 // zero allowed in this case (action Void and status Draft)
             } else {
-                log.saveError("FillMandatory", Msg.getElement("MovementQty"));
+                log.saveError("FillMandatory", MsgKt.getElementTranslation("MovementQty"));
                 return false;
             }
         }
@@ -175,7 +175,7 @@ public class MMovementLine extends X_M_MovementLine {
     			return false;
     		}
     		if (! product.getAttributeSet().excludeTableEntry(MMovementLine.Table_ID, true)) {  // outgoing
-    			log.saveError("FillMandatory", Msg.getElement(COLUMNNAME_M_AttributeSetInstance_ID));
+    			log.saveError("FillMandatory", MsgKt.getElementTranslation(COLUMNNAME_M_AttributeSetInstance_ID));
     			return false;
     		}
     	}
@@ -196,7 +196,7 @@ public class MMovementLine extends X_M_MovementLine {
       		return false;
       	}
       	if (! product.getAttributeSet().excludeTableEntry(MMovementLine.Table_ID, false)) { // incoming
-      		log.saveError("FillMandatory", Msg.getElement(COLUMNNAME_M_AttributeSetInstanceTo_ID));
+      		log.saveError("FillMandatory", MsgKt.getElementTranslation(COLUMNNAME_M_AttributeSetInstanceTo_ID));
       		return false;
       	}
       }

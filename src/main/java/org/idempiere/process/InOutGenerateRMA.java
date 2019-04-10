@@ -24,7 +24,7 @@ import org.compiere.order.MRMALine;
 import org.compiere.orm.Query;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
@@ -223,7 +223,7 @@ public class InOutGenerateRMA extends SvrProcess {
 
     private void generateShipment(int M_RMA_ID) {
         MRMA rma = new MRMA(M_RMA_ID);
-        statusUpdate(Msg.getMsg("Processing") + " " + rma.getDocumentInfo());
+        statusUpdate(MsgKt.getMsg("Processing") + " " + rma.getDocumentInfo());
 
         MInOut shipment = createShipment(rma);
         MInOutLine[] shipmentLines = createShipmentLines(rma, shipment);

@@ -4,7 +4,7 @@ import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -134,7 +134,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("C_BankStatementLine"));
+            log.saveError("ParentComplete", MsgKt.translate("C_BankStatementLine"));
             return false;
         }
         //	Calculate Charge = Statement - trx - Interest
@@ -144,7 +144,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         if (amt.compareTo(getChargeAmt()) != 0) setChargeAmt(amt);
         //
         if (getChargeAmt().signum() != 0 && getChargeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("C_Charge_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("C_Charge_ID"));
             return false;
         }
         // Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ]

@@ -7,7 +7,7 @@ import org.compiere.model.I_A_Depreciation_Exp;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CLogger;
 
 import java.math.BigDecimal;
@@ -66,7 +66,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         depexp.setAccountNumberAcct(drAcct); // TODO: DELETEME
         depexp.setPostingType(postingType);
         depexp.setExpense(expense);
-        depexp.setDescription(Msg.parseTranslation(description));
+        depexp.setDescription(MsgKt.parseTranslation(description));
         depexp.setPeriod(A_Period);
         depexp.setIsDepreciated(true);
         depexp.setDateAcct(DateAcct);

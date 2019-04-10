@@ -6,7 +6,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.production.MProduction;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -150,7 +150,7 @@ public class ProjectGenProduction extends SvrProcess {
                 production.getProductionId(),
                 production.getMovementDate(),
                 new BigDecimal(0),
-                Msg.getElement(Env.getADLanguage(), "M_Production_ID", false)
+                MsgKt.getElementTranslation(Env.getADLanguage(), "M_Production_ID", false)
                         + ":"
                         + production.getDocumentNo(),
                 production.getTableId(),

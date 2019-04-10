@@ -44,7 +44,6 @@ public class MBankAccount extends X_C_BankAccount {
 
     /**
      * Bank Account Model
-     *
      */
     public MBankAccount(Row row) {
         super(row);

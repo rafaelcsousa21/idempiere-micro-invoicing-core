@@ -11,8 +11,9 @@ import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -218,7 +219,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("M_InventoryLine"));
+            log.saveError("ParentComplete", MsgKt.translate("M_InventoryLine"));
             return false;
         }
 
@@ -234,7 +235,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         if (newRecord || isValueChanged("QtyCount")) setQtyCount(getQtyCount());
         if (newRecord || isValueChanged("QtyInternalUse")) setQtyInternalUse(getQtyInternalUse());
 
-        MDocType dt = MDocType.get(getParent().getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getParent().getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
 
         if (MDocType.DOCSUBTYPEINV_InternalUseInventory.equals(docSubTypeInv)) {
@@ -250,17 +251,17 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
             // error if book or count are filled on an internal use inventory
             // i.e. coming from import or web services
             if (getQtyBook().signum() != 0) {
-                log.saveError("Quantity", Msg.getElement(I_M_InventoryLine.COLUMNNAME_QtyBook));
+                log.saveError("Quantity", MsgKt.getElementTranslation(I_M_InventoryLine.COLUMNNAME_QtyBook));
                 return false;
             }
             if (getQtyCount().signum() != 0) {
-                log.saveError("Quantity", Msg.getElement(I_M_InventoryLine.COLUMNNAME_QtyCount));
+                log.saveError("Quantity", MsgKt.getElementTranslation(I_M_InventoryLine.COLUMNNAME_QtyCount));
                 return false;
             }
             if (getQtyInternalUse().signum() == 0
                     && !getParent().getDocAction().equals(DocAction.Companion.getACTION_Void())) {
                 log.saveError(
-                        "FillMandatory", Msg.getElement(I_M_InventoryLine.COLUMNNAME_QtyInternalUse));
+                        "FillMandatory", MsgKt.getElementTranslation(I_M_InventoryLine.COLUMNNAME_QtyInternalUse));
                 return false;
             }
 
@@ -269,7 +270,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
             // Physical Inventory validations
             if (X_M_InventoryLine.INVENTORYTYPE_ChargeAccount.equals(getInventoryType())) {
                 if (getChargeId() == 0) {
-                    log.saveError("FillMandatory", Msg.getElement("C_Charge_ID"));
+                    log.saveError("FillMandatory", MsgKt.getElementTranslation("C_Charge_ID"));
                     return false;
                 }
             } else if (getChargeId() != 0) {
@@ -277,7 +278,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
             }
             if (getQtyInternalUse().signum() != 0) {
                 log.saveError(
-                        "Quantity", Msg.getElement(I_M_InventoryLine.COLUMNNAME_QtyInternalUse));
+                        "Quantity", MsgKt.getElementTranslation(I_M_InventoryLine.COLUMNNAME_QtyInternalUse));
                 return false;
             }
         } else if (MDocType.DOCSUBTYPEINV_CostAdjustment.equals(docSubTypeInv)) {
@@ -290,7 +291,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
                 if (M_ASI_ID == 0) {
                     log.saveError(
                             "FillMandatory",
-                            Msg.getElement(I_M_InventoryLine.COLUMNNAME_M_AttributeSetInstance_ID));
+                            MsgKt.getElementTranslation(I_M_InventoryLine.COLUMNNAME_M_AttributeSetInstance_ID));
                     return false;
                 }
             }
@@ -323,7 +324,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      */
     public boolean isInternalUseInventory() {
         //  IDEMPIERE-675
-        MDocType dt = MDocType.get(getParent().getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getParent().getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
         return (MDocType.DOCSUBTYPEINV_InternalUseInventory.equals(docSubTypeInv));
     }

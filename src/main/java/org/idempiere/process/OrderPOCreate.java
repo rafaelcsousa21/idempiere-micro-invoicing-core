@@ -5,8 +5,9 @@ import org.compiere.accounting.MOrderLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.math.BigDecimal;
@@ -56,21 +57,31 @@ public class OrderPOCreate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
-            else if (name.equals("DateOrdered")) {
-                p_DateOrdered_From = (Timestamp) para[i].getParameter();
-                p_DateOrdered_To = (Timestamp) para[i].getParameterTo();
-            } else if (name.equals("C_BPartner_ID"))
-                p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("Vendor_ID"))
-                p_Vendor_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_Order_ID"))
-                p_C_Order_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("IsDropShip"))
-                p_IsDropShip = para[i].getParameter().equals("Y");
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
+                switch (name) {
+                    case "DateOrdered":
+                        p_DateOrdered_From = (Timestamp) iProcessInfoParameter.getParameter();
+                        p_DateOrdered_To = (Timestamp) iProcessInfoParameter.getParameterTo();
+                        break;
+                    case "C_BPartner_ID":
+                        p_C_BPartner_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                        break;
+                    case "Vendor_ID":
+                        p_Vendor_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                        break;
+                    case "C_Order_ID":
+                        p_C_Order_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                        break;
+                    case "IsDropShip":
+                        p_IsDropShip = iProcessInfoParameter.getParameter().equals("Y");
+                        break;
+                    default:
+                        log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                        break;
+                }
+            }
         }
 
         // called from order window w/o parameters
@@ -120,9 +131,9 @@ public class OrderPOCreate extends SvrProcess {
                         .append("WHERE o.C_Order_ID=ol.C_Order_ID AND po.C_BPartner_ID=?)");
             if (p_DateOrdered_From != null && p_DateOrdered_To != null)
                 sql.append("AND TRUNC(o.DateOrdered) BETWEEN ? AND ?");
-            else if (p_DateOrdered_From != null && p_DateOrdered_To == null)
+            else if (p_DateOrdered_From != null)
                 sql.append("AND TRUNC(o.DateOrdered) >= ?");
-            else if (p_DateOrdered_From == null && p_DateOrdered_To != null)
+            else if (p_DateOrdered_To != null)
                 sql.append("AND TRUNC(o.DateOrdered) <= ?");
         }
         int counter = 0;
@@ -136,8 +147,7 @@ public class OrderPOCreate extends SvrProcess {
         }
 
         if (counter == 0) if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
-        StringBuilder msgreturn = new StringBuilder("@Created@ ").append(counter);
-        return msgreturn.toString();
+        return "@Created@ " + counter;
     } //	doIt
 
     /**
@@ -166,8 +176,8 @@ public class OrderPOCreate extends SvrProcess {
                         + ((p_Vendor_ID > 0) ? " AND po.C_BPartner_ID=? " : "")
                         + "GROUP BY po.M_Product_ID "
                         + "ORDER BY 1";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         MOrder po = null;
         try {
             pstmt = prepareStatement(sql);
@@ -179,7 +189,7 @@ public class OrderPOCreate extends SvrProcess {
                 int C_BPartner_ID = rs.getInt(1);
                 if (po == null || po.getBill_BPartnerId() != C_BPartner_ID) {
                     po = createPOForVendor(rs.getInt(1), so);
-                    String message = Msg.parseTranslation("@OrderCreated@ " + po.getDocumentNo());
+                    String message = MsgKt.parseTranslation("@OrderCreated@ " + po.getDocumentNo());
                     addBufferLog(0, null, null, message, po.getTableId(), po.getOrderId());
                     counter++;
                 }
@@ -209,13 +219,9 @@ public class OrderPOCreate extends SvrProcess {
         } catch (Exception e) {
             log.log(Level.SEVERE, sql, e);
             throw e;
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         //	Set Reference to PO
-        if (counter == 1 && po != null) {
+        if (counter == 1) {
             so.setLink_OrderId(po.getOrderId());
             so.saveEx();
         }
@@ -259,7 +265,7 @@ public class OrderPOCreate extends SvrProcess {
                 po.setDropShipUserId(so.getUserId());
             }
             // get default drop ship warehouse
-            MOrgInfo orginfo = MOrgInfo.get(po.getOrgId());
+            MOrgInfo orginfo = MOrgInfoKt.getOrganizationInfo(po.getOrgId());
             if (orginfo.getDropShipWarehouseId() != 0)
                 po.setWarehouseId(orginfo.getDropShipWarehouseId());
             else log.log(Level.SEVERE, "Must specify drop ship warehouse in org info.");

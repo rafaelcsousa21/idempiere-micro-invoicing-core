@@ -9,11 +9,12 @@ import org.compiere.accounting.MJournalLine;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 import software.hsharp.core.util.DBKt;
 
@@ -239,8 +240,7 @@ public class InvoiceNGL extends SvrProcess {
             if (p_C_Currency_ID != 0) log.warning("Can create Journal only for all currencies");
             else info = createGLJournal();
         }
-        StringBuilder msgreturn = new StringBuilder("#").append(noT).append(info);
-        return msgreturn.toString();
+        return "#" + noT + info;
     } //	doIt
 
     /**
@@ -265,7 +265,7 @@ public class InvoiceNGL extends SvrProcess {
         MAcctSchemaDefault asDefaultAccts = MAcctSchemaDefault.get(p_C_AcctSchema_ID);
         MGLCategory cat = MGLCategory.getDefaultSystem();
         if (cat == null) {
-            MDocType docType = MDocType.get(p_C_DocTypeReval_ID);
+            MDocType docType = MDocTypeKt.getDocumentType(p_C_DocTypeReval_ID);
             cat = MGLCategory.get(docType.getGLCategoryId());
         }
         //
@@ -356,13 +356,11 @@ public class InvoiceNGL extends SvrProcess {
         createBalancing(
                 asDefaultAccts, journal, gainTotal, lossTotal, AD_Org_ID, (list.size() + 1) * 10);
 
-        StringBuilder msgreturn =
-                new StringBuilder(" - ").append(journal.getDocumentNo()).append(" #").append(list.size());
         addLog(
                 journal.getGLJournalId(),
                 null,
                 null,
-                msgreturn.toString(),
+                " - " + journal.getDocumentNo() + " #" + list.size(),
                 MJournal.Table_ID,
                 journal.getGLJournalId());
         return "OK";
@@ -412,7 +410,7 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUserElement1Id(),
                             base.getUserElement2Id()
                     );
-            line.setDescription(Msg.getElement("UnrealizedGain_Acct"));
+            line.setDescription(MsgKt.getElementTranslation("UnrealizedGain_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceCr(gainTotal);
             line.setAmtAcctCr(gainTotal);
@@ -444,7 +442,7 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUserElement1Id(),
                             base.getUserElement2Id()
                     );
-            line.setDescription(Msg.getElement("UnrealizedLoss_Acct"));
+            line.setDescription(MsgKt.getElementTranslation("UnrealizedLoss_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceDr(lossTotal);
             line.setAmtAcctDr(lossTotal);

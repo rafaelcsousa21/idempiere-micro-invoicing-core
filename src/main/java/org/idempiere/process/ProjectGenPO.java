@@ -9,7 +9,7 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -202,7 +202,7 @@ public class ProjectGenPO extends SvrProcess {
                 order.getOrderId(),
                 order.getDateOrdered(),
                 new BigDecimal(orderLine.getLine()),
-                Msg.getElement(Env.getADLanguage(), "C_Order_ID", false)
+                MsgKt.getElementTranslation(Env.getADLanguage(), "C_Order_ID", false)
                         + ":"
                         + order.getDocumentNo(),
                 order.getTableId(),

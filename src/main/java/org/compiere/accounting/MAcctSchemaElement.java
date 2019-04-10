@@ -3,9 +3,9 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_ValidCombination;
-import org.compiere.orm.MColumn;
+import org.compiere.orm.MColumnKt;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
@@ -225,7 +225,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element implements I_C_Ac
         String et = getElementType();
         if (X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1.equals(et)
                 || X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2.equals(et)) {
-            if (m_ColumnName == null) m_ColumnName = MColumn.getColumnName(getTableColumnId());
+            if (m_ColumnName == null) m_ColumnName = MColumnKt.getColumnName(getTableColumnId());
             return m_ColumnName;
         }
         return getColumnName(et);
@@ -299,7 +299,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element implements I_C_Ac
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_SalesRegion_ID;
             if (errorField != null) {
                 log.saveError(
-                        "Error", Msg.parseTranslation("@IsMandatory@: @" + errorField + "@"));
+                        "Error", MsgKt.parseTranslation("@IsMandatory@: @" + errorField + "@"));
                 return false;
             }
         }
@@ -307,7 +307,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element implements I_C_Ac
         if (getTableColumnId() == 0
                 && (X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1.equals(et)
                 || X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2.equals(et))) {
-            log.saveError("Error", Msg.parseTranslation("@IsMandatory@: @AD_Column_ID@"));
+            log.saveError("Error", MsgKt.parseTranslation("@IsMandatory@: @AD_Column_ID@"));
             return false;
         }
         return true;
@@ -387,7 +387,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element implements I_C_Ac
         // Acct Schema Elements "Account" and "Org" should be mandatory - teo_sarca BF [ 1795817 ]
         if (X_C_AcctSchema_Element.ELEMENTTYPE_Account.equals(et)
                 || X_C_AcctSchema_Element.ELEMENTTYPE_Organization.equals(et)) {
-            log.saveError("Error", Msg.parseTranslation("@DeleteError@ @IsMandatory@"));
+            log.saveError("Error", MsgKt.parseTranslation("@DeleteError@ @IsMandatory@"));
             return false;
         }
         return true;

@@ -21,7 +21,7 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MRMALine;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
@@ -174,7 +174,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
 
     private void generateInvoice(int M_RMA_ID) {
         MRMA rma = new MRMA(M_RMA_ID);
-        statusUpdate(Msg.getMsg("Processing") + " " + rma.getDocumentInfo());
+        statusUpdate(MsgKt.getMsg("Processing") + " " + rma.getDocumentInfo());
 
         MInvoice invoice = createInvoice(rma);
         MInvoiceLine[] invoiceLines = createInvoiceLines(rma, invoice);
@@ -206,7 +206,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         }
 
         // Add processing information to process log
-        String message = Msg.parseTranslation("@InvoiceProcessed@ " + processMsg.toString());
+        String message = MsgKt.parseTranslation("@InvoiceProcessed@ " + processMsg.toString());
         addBufferLog(
                 invoice.getInvoiceId(),
                 invoice.getDateInvoiced(),

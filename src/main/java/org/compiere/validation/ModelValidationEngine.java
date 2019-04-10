@@ -231,7 +231,6 @@ public class ModelValidationEngine {
                     try {
                         ScriptEngine engine = rule.getScriptEngine();
 
-                        MRule.setContext(engine, 0); // no window
                         // now add the method arguments to the engine
                         engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
                         engine.put(MRule.ARGUMENTS_PREFIX + "Type", docTiming);

@@ -9,7 +9,7 @@ import org.compiere.invoicing.MLocatorType;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 import org.jetbrains.annotations.NotNull;
 
@@ -287,7 +287,7 @@ public class InOutGenerate extends BaseInOutGenerate {
             }
             m_shipment.saveEx();
             String message =
-                    Msg.parseTranslation("@ShipmentProcessed@ " + m_shipment.getDocumentNo());
+                    MsgKt.parseTranslation("@ShipmentProcessed@ " + m_shipment.getDocumentNo());
             addBufferLog(
                     m_shipment.getInOutId(),
                     m_shipment.getMovementDate(),

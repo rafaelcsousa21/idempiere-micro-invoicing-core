@@ -3,6 +3,7 @@ package org.idempiere.process;
 import org.compiere.accounting.MOrder;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.process.SvrProcess;
 
 import java.math.BigDecimal;
@@ -41,14 +42,23 @@ public class CopyOrder extends SvrProcess {
         for (IProcessInfoParameter iProcessInfoParameter : para) {
             String name = iProcessInfoParameter.getParameterName();
 
-            if (name.equals("C_Order_ID"))
-                p_C_Order_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
-            else if (name.equals("C_DocType_ID"))
-                p_C_DocType_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
-            else if (name.equals("DateDoc")) p_DateDoc = (Timestamp) iProcessInfoParameter.getParameter();
-            else if (name.equals("IsCloseDocument"))
-                p_IsCloseDocument = "Y".equals(iProcessInfoParameter.getParameter());
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            switch (name) {
+                case "C_Order_ID":
+                    p_C_Order_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_DocType_ID":
+                    p_C_DocType_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "DateDoc":
+                    p_DateDoc = (Timestamp) iProcessInfoParameter.getParameter();
+                    break;
+                case "IsCloseDocument":
+                    p_IsCloseDocument = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 
@@ -68,7 +78,7 @@ public class CopyOrder extends SvrProcess {
                             + ", CloseDocument="
                             + p_IsCloseDocument);
         if (p_C_Order_ID == 0) throw new IllegalArgumentException("No Order");
-        MDocType dt = MDocType.get(p_C_DocType_ID);
+        MDocType dt = MDocTypeKt.getDocumentType(p_C_DocType_ID);
         if (dt.getId() == 0) throw new IllegalArgumentException("No DocType");
         if (p_DateDoc == null) p_DateDoc = new Timestamp(System.currentTimeMillis());
         //
@@ -110,9 +120,7 @@ public class CopyOrder extends SvrProcess {
         //
         //	Env.setSOTrx(newOrder.isSOTrx());
         //	return "@C_Order_ID@ " + newOrder.getDocumentNo();
-        StringBuilder msgreturn =
-                new StringBuilder().append(dt.getName()).append(": ").append(newOrder.getDocumentNo());
-        addLog(0, null, null, msgreturn.toString(), newOrder.getTableId(), newOrder.getOrderId());
+        addLog(0, null, null, dt.getName() + ": " + newOrder.getDocumentNo(), newOrder.getTableId(), newOrder.getOrderId());
         return "@C_Order_ID@ @Created@";
     } //	doIt
 } //	CopyOrder

@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_Product_PO;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.DBException;
 
 import java.util.List;
@@ -90,8 +90,8 @@ public class MProductPO extends X_M_Product_PO {
             if (cnt > 0) {
                 log.saveError(
                         "SaveError",
-                        Msg.getMsg(DBException.SAVE_ERROR_NOT_UNIQUE_MSG, true)
-                                + Msg.getElement(I_M_Product_PO.COLUMNNAME_IsCurrentVendor));
+                        MsgKt.getMsg(DBException.SAVE_ERROR_NOT_UNIQUE_MSG, true)
+                                + MsgKt.getElementTranslation(I_M_Product_PO.COLUMNNAME_IsCurrentVendor));
                 return false;
             }
         }

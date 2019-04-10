@@ -52,6 +52,7 @@ import kotlin.test.fail
 import org.idempiere.common.util.AdempiereSystemError
 import software.hsharp.core.util.Environment
 import org.compiere.crm.defaultRegion
+import org.compiere.orm.getDocumentTypeOfDocBaseType
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -313,7 +314,7 @@ class InvoiceTest : BaseComponentTest() {
     @Test
     fun `create invoice from order (on credit)`() {
         DB.run {
-            val salesOrderTypes = MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_SalesOrder)
+            val salesOrderTypes = getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_SalesOrder)
             val onCreditOrder = salesOrderTypes.first { it.name == "Credit Order" }
             createInvoiceFromOrder(onCreditOrder.id, testProduct.id, BigDecimal("1.10")) {}
         }

@@ -8,11 +8,11 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_InOutLineConfirm;
 import org.compiere.order.X_M_InOutConfirm;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.Query;
-import org.compiere.orm.X_C_DocType;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -22,6 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
+
+import static org.compiere.orm.MDocType.DOCBASETYPE_MaterialPhysicalInventory;
+import static org.compiere.orm.MDocType.DOCSUBTYPEINV_PhysicalInventory;
 
 public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements DocAction, IPODoc {
     /**
@@ -44,7 +47,6 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx               context
      * @param M_InOutConfirm_ID id
      */
     public MInOutConfirm(int M_InOutConfirm_ID) {
@@ -194,7 +196,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
 
         //	Check if we need to split Shipment
         if (isInDispute()) {
-            MDocType dt = MDocType.get(inout.getDocumentTypeId());
+            MDocType dt = MDocTypeKt.getDocumentType(inout.getDocumentTypeId());
             if (dt.isSplitWhenDifference()) {
                 if (dt.getDocTypeDifferenceId() == 0) {
                     m_processMsg = "No Split Document Type defined for: " + dt.getName();
@@ -313,7 +315,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
 
         m_processMsg = "Split @M_InOut_ID@=" + split.getDocumentNo() + " - @M_InOutConfirm_ID@=";
 
-        MDocType dt = MDocType.get(original.getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(original.getDocumentTypeId());
         if (!dt.isPrepareSplitDocument()) {
             return;
         }
@@ -363,7 +365,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             if (log.isLoggable(Level.INFO)) log.info("Difference=" + confirm.getDifferenceQty());
             if (m_creditMemo == null) {
                 m_creditMemo = new MInvoice(inout, null);
-                String msgd = Msg.translate("M_InOutConfirm_ID") +
+                String msgd = MsgKt.translate("M_InOutConfirm_ID") +
                         " " +
                         getDocumentNo();
                 m_creditMemo.setDescription(msgd);
@@ -389,7 +391,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             if (m_inventory == null) {
                 MWarehouse wh = MWarehouse.get(inout.getWarehouseId());
                 m_inventory = new MInventory(wh);
-                String msgd = Msg.translate("M_InOutConfirm_ID") +
+                String msgd = MsgKt.translate("M_InOutConfirm_ID") +
                         " " +
                         getDocumentNo();
                 m_inventory.setDescription(msgd);
@@ -426,9 +428,9 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      */
     private void setInventoryDocType(MInventory inventory) {
         MDocType[] doctypes =
-                MDocType.getOfDocBaseType(X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
+                MDocTypeKt.getDocumentTypeOfDocBaseType(DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
-            if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
+            if (DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
                 inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;
             }
@@ -584,7 +586,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")
@@ -641,7 +643,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement("M_InOutConfirm_ID") +
+        return MsgKt.getElementTranslation("M_InOutConfirm_ID") +
                 " " +
                 getDocumentNo();
     } //	getDocumentInfo

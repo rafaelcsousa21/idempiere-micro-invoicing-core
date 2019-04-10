@@ -7,7 +7,7 @@ import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.order.MCharge;
 import org.compiere.orm.Query;
 import org.compiere.product.IProductPricing;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
@@ -219,7 +219,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("M_RequisitionLine"));
+            log.saveError("ParentComplete", MsgKt.translate("M_RequisitionLine"));
             return false;
         }
         if (getLine() == 0) {
@@ -245,7 +245,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
          */
         if (getParent().getDocumentType().isChargeOrProductMandatory()) {
             if (getChargeId() == 0 && getProductId() == 0 && getPriceActual().signum() != 0) {
-                log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
+                log.saveError("FillMandatory", MsgKt.translate("ChargeOrProductMandatory"));
                 return false;
             }
         }

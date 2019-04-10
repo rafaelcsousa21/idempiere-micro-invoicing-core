@@ -5,7 +5,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -127,7 +127,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
         if (check.compareTo(getInvoiceAmt()) != 0) {
             log.saveError(
                     "Error",
-                    Msg.parseTranslation(
+                    MsgKt.parseTranslation(
                             "@InvoiceAmt@(" + getInvoiceAmt() + ") <> @Totals@(" + check + ")"));
             return false;
         }

@@ -214,7 +214,7 @@ class InitialClientSetup(
             throw AdempiereException("CoaFile $p_CoAFile is empty")
 
         // Process
-        val ms = MSetup(WINDOW_THIS_PROCESS)
+        val ms = MSetup()
         if (!ms.createClient(
                 p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
                 p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword

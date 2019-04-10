@@ -7,7 +7,7 @@ import org.compiere.orm.MOrg;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
@@ -186,7 +186,7 @@ public class MWarehouse extends X_M_Warehouse {
 
             int prdid = getSQLValueEx(sql, getWarehouseId());
             if (prdid > 0) {
-                log.saveError("Error", Msg.translate("NegativeOnhandExists"));
+                log.saveError("Error", MsgKt.translate("NegativeOnhandExists"));
                 return false;
             }
         }
@@ -197,7 +197,7 @@ public class MWarehouse extends X_M_Warehouse {
                 setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
             } else {
-                log.saveError("Error", Msg.translate("Org0NotAllowed"));
+                log.saveError("Error", MsgKt.translate("Org0NotAllowed"));
                 return false;
             }
         }

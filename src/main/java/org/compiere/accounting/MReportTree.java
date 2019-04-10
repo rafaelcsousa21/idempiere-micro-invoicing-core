@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -95,7 +96,7 @@ public class MReportTree {
      * @return tree
      */
     public static MReportTree get(int PA_Hierarchy_ID, String ElementType) {
-        MRole role = MRole.getDefault();
+        MRole role = MRoleKt.getDefaultRole();
         String key =
                 Env.getClientId()
                         + "_"

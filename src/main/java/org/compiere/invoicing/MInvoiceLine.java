@@ -8,7 +8,7 @@ import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MCharge;
 import org.compiere.order.MOrderLine;
 import org.compiere.order.MRMALine;
-import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.product.IProductPricing;
@@ -20,7 +20,7 @@ import org.compiere.tax.MTax;
 import org.compiere.tax.MTaxCategory;
 import org.compiere.tax.MTaxProvider;
 import org.compiere.tax.Tax;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -92,7 +92,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * ************************************************************************ Invoice Line
      * Constructor
      *
-     * @param ctx              context
      * @param C_InvoiceLine_ID invoice line or 0
      */
     public MInvoiceLine(int C_InvoiceLine_ID) {
@@ -128,8 +127,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MInvoiceLine(Row row) {
         super(row);
@@ -194,7 +191,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         m_C_BPartner_ID = invoice.getBusinessPartnerId();
         m_C_BPartner_Location_ID = invoice.getBusinessPartnerLocationId();
         m_IsSOTrx = invoice.isSOTrx();
-        m_precision = new Integer(invoice.getPrecision());
+        m_precision = invoice.getPrecision();
     } //	setOrder
 
     /**
@@ -320,8 +317,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         String desc = getDescription();
         if (desc == null) setDescription(description);
         else {
-            StringBuilder msgd = new StringBuilder(desc).append(" | ").append(description);
-            setDescription(msgd.toString());
+            setDescription(desc + " | " + description);
         }
     } //	addDescription
 
@@ -332,7 +328,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID == 0) // 	 0 is valid ID
-            setValue("M_AttributeSetInstance_ID", new Integer(0));
+            setValue("M_AttributeSetInstance_ID", 0);
         else super.setAttributeSetInstanceId(M_AttributeSetInstance_ID);
     } //	setAttributeSetInstanceId
 
@@ -345,16 +341,15 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (m_M_PriceList_ID == 0 || m_C_BPartner_ID == 0) setInvoice(getParent());
         if (m_M_PriceList_ID == 0 || m_C_BPartner_ID == 0)
             throw new IllegalStateException("setPrice - PriceList unknown!");
-        setPrice(m_M_PriceList_ID, m_C_BPartner_ID);
+        setPrice(m_M_PriceList_ID);
     } //	setPrice
 
     /**
      * Set Price for Product and PriceList
      *
      * @param M_PriceList_ID price list
-     * @param C_BPartner_ID  business partner
      */
-    public void setPrice(int M_PriceList_ID, int C_BPartner_ID) {
+    public void setPrice(int M_PriceList_ID) {
         if (getProductId() == 0 || isDescription()) return;
         //
         if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
@@ -735,7 +730,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         boolean parentComplete = getParent().isComplete();
         boolean isReversal = getParent().isReversal();
         if (newRecord && parentComplete) {
-            log.saveError("ParentComplete", Msg.translate("C_InvoiceLine"));
+            log.saveError("ParentComplete", MsgKt.translate("C_InvoiceLine"));
             return false;
         }
         // Re-set invoice header (need to update m_IsSOTrx flag) - phib [ 1686773 ]
@@ -753,7 +748,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 // IDEMPIERE-1574 Sales Order Line lets Price under the Price Limit when updating
                 //	Check PriceLimit
                 boolean enforce = m_IsSOTrx && getParent().getPriceList().isEnforcePriceLimit();
-                if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
+                if (enforce && MRoleKt.getDefaultRole().isOverwritePriceLimit()) enforce = false;
                 //	Check Price Limit?
                 if (enforce
                         && !getPriceLimit().equals(Env.ZERO)
@@ -798,7 +793,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 if (getChargeId() == 0
                         && getProductId() == 0
                         && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
-                    log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
+                    log.saveError("FillMandatory", MsgKt.translate("ChargeOrProductMandatory"));
                     return false;
                 }
             }
@@ -843,7 +838,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 new MTaxProvider(tax.getTaxProviderId());
         IInvoiceTaxProvider calculator =
                 MTaxProvider.getTaxProvider(provider, new StandardInvoiceTaxProvider());
-        if (calculator == null) throw new AdempiereException(Msg.getMsg("TaxNoProvider"));
+        if (calculator == null) throw new AdempiereException(MsgKt.getMsg("TaxNoProvider"));
         return calculator.recalculateTax(provider, this, newRecord);
     } //	afterSave
 
@@ -882,7 +877,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 new MTaxProvider(tax.getTaxProviderId());
         IInvoiceTaxProvider calculator =
                 MTaxProvider.getTaxProvider(provider, new StandardInvoiceTaxProvider());
-        if (calculator == null) throw new AdempiereException(Msg.getMsg("TaxNoProvider"));
+        if (calculator == null) throw new AdempiereException(MsgKt.getMsg("TaxNoProvider"));
         if (!calculator.updateInvoiceTax(provider, this)) return false;
 
         return calculator.updateHeaderTax(provider, this);
@@ -1150,7 +1145,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     // end MZ
 
     /**
-     * @param rmaline
+     * @param rmaLine
      */
     public void setRMALine(MRMALine rmaLine) {
         // Check if this invoice is CreditMemo - teo_sarca [ 2804142 ]

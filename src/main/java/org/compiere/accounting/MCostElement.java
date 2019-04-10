@@ -3,9 +3,9 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product_Category_Acct;
-import org.compiere.orm.MRefList;
+import org.compiere.orm.MRefListKt;
 import org.compiere.orm.Query;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -46,7 +46,6 @@ public class MCostElement extends X_M_CostElement {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx              context
      * @param M_CostElement_ID id
      */
     public MCostElement(int M_CostElement_ID) {
@@ -60,8 +59,6 @@ public class MCostElement extends X_M_CostElement {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MCostElement(Row row) {
         super(row);
@@ -96,9 +93,9 @@ public class MCostElement extends X_M_CostElement {
         retValue = new MCostElement(0);
         retValue.setClientOrg(po.getClientId(), 0);
         String name =
-                MRefList.getListName(
+                MRefListKt.getListName(
                         X_M_CostElement.COSTINGMETHOD_AD_Reference_ID, CostingMethod);
-        if (name == null || name.length() == 0) name = CostingMethod;
+        if (name.length() == 0) name = CostingMethod;
         retValue.setName(name);
         retValue.setCostElementType(X_M_CostElement.COSTELEMENTTYPE_Material);
         retValue.setCostingMethod(CostingMethod);
@@ -111,7 +108,6 @@ public class MCostElement extends X_M_CostElement {
     /**
      * Get first Material Cost Element
      *
-     * @param ctx           context
      * @param CostingMethod costing method
      * @return Cost Element or null
      */
@@ -134,7 +130,6 @@ public class MCostElement extends X_M_CostElement {
     /**
      * Get first Material Cost Element
      *
-     * @param ctx           context
      * @param CostingMethod costing method
      * @return Cost Element or null
      */
@@ -195,12 +190,11 @@ public class MCostElement extends X_M_CostElement {
     /**
      * Get Cost Element from Cache
      *
-     * @param ctx              context
      * @param M_CostElement_ID id
      * @return Cost Element
      */
     public static MCostElement get(int M_CostElement_ID) {
-        Integer key = new Integer(M_CostElement_ID);
+        Integer key = M_CostElement_ID;
         MCostElement retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCostElement(M_CostElement_ID);
@@ -247,7 +241,7 @@ public class MCostElement extends X_M_CostElement {
                     getSQLValue(
                             sql, getClientId(), getCostingMethod(), getCostElementType());
             if (id > 0 && id != getId()) {
-                log.saveError("AlreadyExists", Msg.getElement("CostingMethod"));
+                log.saveError("AlreadyExists", MsgKt.getElementTranslation("CostingMethod"));
                 return false;
             }
         }
@@ -287,11 +281,11 @@ public class MCostElement extends X_M_CostElement {
 
         //	Costing Methods on AS level
         MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
-        for (int i = 0; i < ass.length; i++) {
-            if (ass[i].getCostingMethod().equals(getCostingMethod())) {
+        for (MAcctSchema mAcctSchema : ass) {
+            if (mAcctSchema.getCostingMethod().equals(getCostingMethod())) {
                 log.saveError(
                         "CannotDeleteUsed",
-                        Msg.getElement("C_AcctSchema_ID") + " - " + ass[i].getName());
+                        MsgKt.getElementTranslation("C_AcctSchema_ID") + " - " + mAcctSchema.getName());
                 return false;
             }
         }
@@ -307,7 +301,7 @@ public class MCostElement extends X_M_CostElement {
         if (M_Product_Category_ID != 0) {
             log.saveError(
                     "CannotDeleteUsed",
-                    Msg.getElement("M_Product_Category_ID")
+                    MsgKt.getElementTranslation("M_Product_Category_ID")
                             + " (ID="
                             + M_Product_Category_ID
                             + ")");
@@ -428,15 +422,13 @@ public class MCostElement extends X_M_CostElement {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MCostElement[");
-        sb.append(getId())
-                .append("-")
-                .append(getName())
-                .append(",Type=")
-                .append(getCostElementType())
-                .append(",Method=")
-                .append(getCostingMethod())
-                .append("]");
-        return sb.toString();
+        return "MCostElement[" + getId() +
+                "-" +
+                getName() +
+                ",Type=" +
+                getCostElementType() +
+                ",Method=" +
+                getCostingMethod() +
+                "]";
     } //	toString
 } //	MCostElement

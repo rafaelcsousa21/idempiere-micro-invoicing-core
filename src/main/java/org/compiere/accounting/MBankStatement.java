@@ -11,7 +11,7 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
@@ -418,27 +418,27 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
             MBankStatementLine line = lines[i];
             if (line.getStmtAmt().compareTo(Env.ZERO) != 0) {
                 StringBuilder description =
-                        new StringBuilder(Msg.getMsg("Voided"))
+                        new StringBuilder(MsgKt.getMsg("Voided"))
                                 .append(" (")
-                                .append(Msg.translate("StmtAmt"))
+                                .append(MsgKt.translate("StmtAmt"))
                                 .append("=")
                                 .append(line.getStmtAmt());
                 if (line.getTrxAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate("TrxAmt"))
+                            .append(MsgKt.translate("TrxAmt"))
                             .append("=")
                             .append(line.getTrxAmt());
                 if (line.getChargeAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate("ChargeAmt"))
+                            .append(MsgKt.translate("ChargeAmt"))
                             .append("=")
                             .append(line.getChargeAmt());
                 if (line.getInterestAmt().compareTo(Env.ZERO) != 0)
                     description
                             .append(", ")
-                            .append(Msg.translate("InterestAmt"))
+                            .append(MsgKt.translate("InterestAmt"))
                             .append("=")
                             .append(line.getInterestAmt());
                 description.append(")");
@@ -457,7 +457,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 line.saveEx();
             }
         }
-        addDescription(Msg.getMsg("Voided"));
+        addDescription(MsgKt.getMsg("Voided"));
         setStatementDifference(Env.ZERO);
 
         // After Void
@@ -564,7 +564,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         sb.append(getName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("StatementDifference"))
+                .append(MsgKt.translate("StatementDifference"))
                 .append("=")
                 .append(getStatementDifference())
                 .append(" (#")

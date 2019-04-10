@@ -5,11 +5,12 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.PO;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -68,8 +69,6 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MJournalBatch(Row row) {
         super(row);
@@ -138,9 +137,9 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         int count = 0;
         int lineCount = 0;
         MJournal[] fromJournals = jb.getJournals(false);
-        for (int i = 0; i < fromJournals.length; i++) {
+        for (MJournal fromJournal : fromJournals) {
             MJournal toJournal = new MJournal(0);
-            PO.copyValues(fromJournals[i], toJournal, getClientId(), getOrgId());
+            PO.copyValues(fromJournal, toJournal, getClientId(), getOrgId());
             toJournal.setGLJournalBatchId(getGLJournalBatchId());
             toJournal.setValueNoCheck("DocumentNo", null); // 	create new
             toJournal.setValueNoCheck("C_Period_ID", null);
@@ -156,7 +155,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             toJournal.setProcessed(false);
             if (toJournal.save()) {
                 count++;
-                lineCount += toJournal.copyLinesFrom(fromJournals[i], getDateAcct(), 'x');
+                lineCount += toJournal.copyLinesFrom(fromJournal, getDateAcct(), 'x');
             }
         }
         if (fromJournals.length != count)
@@ -210,7 +209,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getDateAcct(), dt.getDocBaseType(), getOrgId())) {
@@ -258,19 +257,16 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         }
 
         //		 Bug 1353695 Currency Rate and COnbversion Type should get copied from journal to lines
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             MJournalLine[] lines = journal.getLines(true);
             if (journal.getCurrencyRate() != null && journal.getCurrencyRate().compareTo(Env.ZERO) != 0) {
-                for (int j = 0; j < lines.length; j++) {
-                    MJournalLine line = lines[j];
+                for (MJournalLine line : lines) {
                     line.setCurrencyRate(journal.getCurrencyRate());
                     line.saveEx();
                 }
             }
             if (journal.getConversionTypeId() > 0) {
-                for (int j = 0; j < lines.length; j++) {
-                    MJournalLine line = lines[j];
+                for (MJournalLine line : lines) {
                     line.setConversionTypeId(journal.getConversionTypeId());
                     line.saveEx();
                 }
@@ -387,7 +383,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             if (getDateAcct().before(getDateDoc())) {
@@ -433,8 +429,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         if (m_processMsg != null) return false;
 
         MJournal[] journals = getJournals(true);
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive() && !journal.isProcessed()) {
                 journal.setProcessed(true);
                 journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_Voided);
@@ -504,8 +499,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         reverse.saveEx();
 
         //	Reverse Journals
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) continue;
             if (journal.reverseCorrectIt(reverse.getGLJournalBatchId()) == null) {
                 m_processMsg = "Could not reverse " + journal;
@@ -579,8 +573,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         reverse.saveEx();
 
         //	Reverse Journals
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) continue;
             if (journal.reverseAccrualIt(reverse.getGLJournalBatchId()) == null) {
                 m_processMsg = "Could not reverse " + journal;
@@ -656,11 +649,11 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("TotalDr"))
+                .append(MsgKt.translate("TotalDr"))
                 .append("=")
                 .append(getTotalDr())
                 .append(" ")
-                .append(Msg.translate("TotalCR"))
+                .append(MsgKt.translate("TotalCR"))
                 .append("=")
                 .append(getTotalCr())
                 .append(" (#")
@@ -678,16 +671,14 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MJournalBatch[");
-        sb.append(getId())
-                .append(",")
-                .append(getDescription())
-                .append(",DR=")
-                .append(getTotalDr())
-                .append(",CR=")
-                .append(getTotalCr())
-                .append("]");
-        return sb.toString();
+        return "MJournalBatch[" + getId() +
+                "," +
+                getDescription() +
+                ",DR=" +
+                getTotalDr() +
+                ",CR=" +
+                getTotalCr() +
+                "]";
     } //	toString
 
     /**
@@ -697,10 +688,8 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
-        StringBuilder msgreturn =
-                new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
-        return msgreturn.toString();
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
+        return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -736,8 +725,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         String desc = getDescription();
         if (desc == null) setDescription(description);
         else {
-            StringBuilder msgd = new StringBuilder(desc).append(" | ").append(description);
-            setDescription(msgd.toString());
+            setDescription(desc + " | " + description);
         }
     }
 

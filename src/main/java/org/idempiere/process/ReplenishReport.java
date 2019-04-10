@@ -15,11 +15,12 @@ import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.ReplenishInterface;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
@@ -117,7 +118,7 @@ public class ReplenishReport extends SvrProcess {
         //
         if (p_ReplenishmentCreate == null) return "OK";
         //
-        MDocType dt = MDocType.get(p_C_DocType_ID);
+        MDocType dt = MDocTypeKt.getDocumentType(p_C_DocType_ID);
         if (!dt.getDocBaseType().equals(p_ReplenishmentCreate))
             throw new AdempiereSystemError(
                     "@C_DocType_ID@=" + dt.getName() + " <> " + p_ReplenishmentCreate);
@@ -399,7 +400,7 @@ public class ReplenishReport extends SvrProcess {
                 MBPartner bp = new MBPartner(replenish.getBusinessPartnerId());
                 order.setBPartner(bp);
                 order.setSalesRepresentativeId(getUserId());
-                order.setDescription(Msg.getMsg("Replenishment"));
+                order.setDescription(MsgKt.getMsg("Replenishment"));
                 //	Set Org/WH
                 order.setOrgId(wh.getOrgId());
                 order.setWarehouseId(wh.getWarehouseId());
@@ -408,7 +409,7 @@ public class ReplenishReport extends SvrProcess {
                         order.getOrderId(),
                         order.getDateOrdered(),
                         null,
-                        Msg.parseTranslation("@C_Order_ID@ @Created@"),
+                        MsgKt.parseTranslation("@C_Order_ID@ @Created@"),
                         MOrder.Table_ID,
                         order.getOrderId());
                 if (log.isLoggable(Level.FINE)) log.fine(order.toString());
@@ -445,7 +446,7 @@ public class ReplenishReport extends SvrProcess {
                 requisition = new MRequisition(0);
                 requisition.setUserId(getUserId());
                 requisition.setDocumentTypeId(p_C_DocType_ID);
-                requisition.setDescription(Msg.getMsg("Replenishment"));
+                requisition.setDescription(MsgKt.getMsg("Replenishment"));
                 //	Set Org/WH
                 requisition.setOrgId(wh.getOrgId());
                 requisition.setWarehouseId(wh.getWarehouseId());
@@ -454,7 +455,7 @@ public class ReplenishReport extends SvrProcess {
                         requisition.getRequisitionId(),
                         requisition.getDateDoc(),
                         null,
-                        Msg.parseTranslation("@M_Requisition_ID@ @Created@"),
+                        MsgKt.parseTranslation("@M_Requisition_ID@ @Created@"),
                         MRequisition.Table_ID,
                         requisition.getRequisitionId());
                 if (log.isLoggable(Level.FINE)) log.fine(requisition.toString());
@@ -506,7 +507,7 @@ public class ReplenishReport extends SvrProcess {
                 move = new MMovement(0);
                 move.setDocumentTypeId(p_C_DocType_ID);
                 move.setDescription(
-                        Msg.getMsg("Replenishment")
+                        MsgKt.getMsg("Replenishment")
                                 + ": "
                                 + whSource.getName()
                                 + "->"
@@ -518,7 +519,7 @@ public class ReplenishReport extends SvrProcess {
                         move.getMovementId(),
                         move.getMovementDate(),
                         null,
-                        Msg.parseTranslation("@M_Movement_ID@ @Created@"),
+                        MsgKt.parseTranslation("@M_Movement_ID@ @Created@"),
                         MMovement.Table_ID,
                         move.getMovementId());
                 if (log.isLoggable(Level.FINE)) log.fine(move.toString());
@@ -611,7 +612,7 @@ public class ReplenishReport extends SvrProcess {
 
                 order = new MDDOrder(0);
                 order.setDocumentTypeId(p_C_DocType_ID);
-                String msgsd = Msg.getMsg("Replenishment") +
+                String msgsd = MsgKt.getMsg("Replenishment") +
                         ": " +
                         whSource.getName() +
                         "->" +
@@ -625,7 +626,7 @@ public class ReplenishReport extends SvrProcess {
                 int C_BPartner_ID = orgTrx.getLinkedBusinessPartnerId();
                 if (C_BPartner_ID == 0)
                     throw new AdempiereUserError(
-                            Msg.translate("C_BPartner_ID") + " @FillMandatory@ ");
+                            MsgKt.translate("C_BPartner_ID") + " @FillMandatory@ ");
                 MBPartner bp = new MBPartner(C_BPartner_ID);
                 // Set BPartner Link to Org
                 order.setBPartner(bp);
@@ -655,7 +656,7 @@ public class ReplenishReport extends SvrProcess {
                         order.getDistributionOrderId(),
                         order.getDateOrdered(),
                         null,
-                        Msg.parseTranslation("@DD_Order_ID@ @Created@"),
+                        MsgKt.parseTranslation("@DD_Order_ID@ @Created@"),
                         MDDOrder.Table_ID,
                         order.getDistributionOrderId());
                 if (log.isLoggable(Level.FINE)) log.fine(order.toString());
@@ -667,7 +668,7 @@ public class ReplenishReport extends SvrProcess {
             int M_LocatorTo_ID = wh.getDefaultLocator().getLocatorId();
             int M_Locator_ID = whSource.getDefaultLocator().getLocatorId();
             if (M_LocatorTo_ID == 0 || M_Locator_ID == 0)
-                throw new AdempiereUserError(Msg.translate("M_Locator_ID") + " @FillMandatory@ ");
+                throw new AdempiereUserError(MsgKt.translate("M_Locator_ID") + " @FillMandatory@ ");
 
             //	From: Look-up Storage
       /*MProduct product = MProduct.get(replenish.getProductId());

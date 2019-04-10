@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 
 import java.math.BigDecimal;
@@ -64,7 +64,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
                     new MPaymentProcessor(getPaymentProcessorId());
             if (!pp.isActive())
                 throw new AdempiereException(
-                        Msg.translate("InactivePaymentProcessor") + ". " + pp.toString());
+                        MsgKt.translate("InactivePaymentProcessor") + ". " + pp.toString());
         }
 
         return true;

@@ -1,6 +1,7 @@
 package org.idempiere.process
 
 import org.compiere.orm.MRole
+import org.compiere.orm.getDefaultRole
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 
@@ -11,7 +12,7 @@ import software.hsharp.core.util.queryOf
  * @return matchers
  */
 fun getBankStatementMatcherAlgorithms(): Array<MBankStatementMatcher> {
-    val sql = MRole.getDefault(false)
+    val sql = getDefaultRole(false)
         .addAccessSQL(
             "SELECT * FROM C_BankStatementMatcher ORDER BY SeqNo",
             "C_BankStatementMatcher",

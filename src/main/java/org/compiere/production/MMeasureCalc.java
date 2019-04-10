@@ -3,6 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.I_PA_MeasureCalc;
 import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.CCache;
 
@@ -26,12 +27,11 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * Cache
      */
     private static CCache<Integer, MMeasureCalc> s_cache =
-            new CCache<Integer, MMeasureCalc>(I_PA_MeasureCalc.Table_Name, 10);
+            new CCache<>(I_PA_MeasureCalc.Table_Name, 10);
 
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx               context
      * @param PA_MeasureCalc_ID id
      */
     public MMeasureCalc(int PA_MeasureCalc_ID) {
@@ -40,8 +40,6 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MMeasureCalc(Row row) {
         super(row);
@@ -50,7 +48,6 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
     /**
      * Get MMeasureCalc from Cache
      *
-     * @param ctx               context
      * @param PA_MeasureCalc_ID id
      * @return MMeasureCalc
      */
@@ -88,46 +85,30 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
         StringBuilder sb = new StringBuilder(sql);
         //	Org Restrictions
         if (orgColumn != null) {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            for (int i = 0; i < restrictions.length; i++) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (MGoalRestriction restriction : restrictions) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_Organization.equals(
-                        restrictions[i].getGoalRestrictionType())) list.add(restrictions[i].getOrgId());
+                        restriction.getGoalRestrictionType())) list.add(restriction.getOrgId());
                 //	Hierarchy comes here
             }
-            if (list.size() == 1) sb.append(" AND ").append(orgColumn).append("=").append(list.get(0));
-            else if (list.size() > 1) {
-                sb.append(" AND ").append(orgColumn).append(" IN (");
-                for (int i = 0; i < list.size(); i++) {
-                    if (i > 0) sb.append(",");
-                    sb.append(list.get(i));
-                }
-                sb.append(")");
-            }
+            addOrgFilter(orgColumn, sb, list);
         } //	org
 
         //	BPartner Restrictions
         if (bpColumn != null) {
-            ArrayList<Integer> listBP = new ArrayList<Integer>();
-            ArrayList<Integer> listBPG = new ArrayList<Integer>();
-            for (int i = 0; i < restrictions.length; i++) {
+            ArrayList<Integer> listBP = new ArrayList<>();
+            ArrayList<Integer> listBPG = new ArrayList<>();
+            for (MGoalRestriction restriction : restrictions) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_BusinessPartner.equals(
-                        restrictions[i].getGoalRestrictionType()))
-                    listBP.add(restrictions[i].getBusinessPartnerId());
+                        restriction.getGoalRestrictionType()))
+                    listBP.add(restriction.getBusinessPartnerId());
                 //	Hierarchy comes here
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_BusPartnerGroup.equals(
-                        restrictions[i].getGoalRestrictionType()))
-                    listBPG.add(restrictions[i].getBPGroupId());
+                        restriction.getGoalRestrictionType()))
+                    listBPG.add(restriction.getBPGroupId());
             }
             //	BP
-            if (listBP.size() == 1) sb.append(" AND ").append(bpColumn).append("=").append(listBP.get(0));
-            else if (listBP.size() > 1) {
-                sb.append(" AND ").append(bpColumn).append(" IN (");
-                for (int i = 0; i < listBP.size(); i++) {
-                    if (i > 0) sb.append(",");
-                    sb.append(listBP.get(i));
-                }
-                sb.append(")");
-            }
+            addOrgFilter(bpColumn, sb, listBP);
             //	BPG
             if (bpColumn.indexOf('.') == -1) bpColumn = tableName + "." + bpColumn;
             if (listBPG.size() == 1)
@@ -150,26 +131,18 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
 
         //	Product Restrictions
         if (pColumn != null) {
-            ArrayList<Integer> listP = new ArrayList<Integer>();
-            ArrayList<Integer> listPC = new ArrayList<Integer>();
-            for (int i = 0; i < restrictions.length; i++) {
+            ArrayList<Integer> listP = new ArrayList<>();
+            ArrayList<Integer> listPC = new ArrayList<>();
+            for (MGoalRestriction restriction : restrictions) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_Product.equals(
-                        restrictions[i].getGoalRestrictionType())) listP.add(restrictions[i].getProductId());
+                        restriction.getGoalRestrictionType())) listP.add(restriction.getProductId());
                 //	Hierarchy comes here
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_ProductCategory.equals(
-                        restrictions[i].getGoalRestrictionType()))
-                    listPC.add(restrictions[i].getProductCategoryId());
+                        restriction.getGoalRestrictionType()))
+                    listPC.add(restriction.getProductCategoryId());
             }
             //	Product
-            if (listP.size() == 1) sb.append(" AND ").append(pColumn).append("=").append(listP.get(0));
-            else if (listP.size() > 1) {
-                sb.append(" AND ").append(pColumn).append(" IN (");
-                for (int i = 0; i < listP.size(); i++) {
-                    if (i > 0) sb.append(",");
-                    sb.append(listP.get(i));
-                }
-                sb.append(")");
-            }
+            addOrgFilter(pColumn, sb, listP);
             //	Category
             if (pColumn.indexOf('.') == -1) pColumn = tableName + "." + pColumn;
             if (listPC.size() == 1)
@@ -191,10 +164,21 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
         } //	product
         String finalSQL = sb.toString();
         if (queryOnly) return finalSQL;
-        if (role == null) role = MRole.getDefault();
-        String retValue = role.addAccessSQL(finalSQL, tableName, true, false);
-        return retValue;
+        if (role == null) role = MRoleKt.getDefaultRole();
+        return role.addAccessSQL(finalSQL, tableName, true, false);
     } //	addRestrictions
+
+    private static void addOrgFilter(String orgColumn, StringBuilder sb, ArrayList<Integer> list) {
+        if (list.size() == 1) sb.append(" AND ").append(orgColumn).append("=").append(list.get(0));
+        else if (list.size() > 1) {
+            sb.append(" AND ").append(orgColumn).append(" IN (");
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) sb.append(",");
+                sb.append(list.get(i));
+            }
+            sb.append(")");
+        }
+    }
 
     /**
      * Get Sql to return single value for the Performance Indicator
@@ -279,8 +263,6 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MMeasureCalc[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MMeasureCalc[" + getId() + "-" + getName() + "]";
     } //	toString
 } //	MMeasureCalc

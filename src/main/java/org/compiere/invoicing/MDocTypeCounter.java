@@ -3,6 +3,7 @@ package org.compiere.invoicing;
 import kotliquery.Row;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
@@ -24,7 +25,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * Counter Relationship Cache
      */
     private static CCache<Integer, MDocTypeCounter> s_counter =
-            new CCache<Integer, MDocTypeCounter>(
+            new CCache<>(
                     I_C_DocTypeCounter.Table_Name, "C_DocTypeCounter_Relation", 20);
     /**
      * Static Logger
@@ -34,7 +35,6 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx                 context
      * @param C_DocTypeCounter_ID id
      */
     public MDocTypeCounter(int C_DocTypeCounter_ID) {
@@ -47,8 +47,6 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MDocTypeCounter(Row row) {
         super(row);
@@ -57,7 +55,6 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     /**
      * Get Counter document for document type
      *
-     * @param ctx          context
      * @param C_DocType_ID base document
      * @return counter document C_DocType_ID or 0 or -1 if no counter doc
      */
@@ -71,11 +68,11 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
 
         //	Indirect Relationship
         int Counter_C_DocType_ID = 0;
-        MDocType dt = MDocType.get(C_DocType_ID);
+        MDocType dt = MDocTypeKt.getDocumentType(C_DocType_ID);
         if (!dt.isCreateCounter()) return -1;
         String cDocBaseType = getCounterDocBaseType(dt.getDocBaseType());
         if (cDocBaseType == null) return 0;
-        MDocType[] counters = MDocType.getOfDocBaseType(cDocBaseType);
+        MDocType[] counters = MDocTypeKt.getDocumentTypeOfDocBaseType(cDocBaseType);
         for (int i = 0; i < counters.length; i++) {
             MDocType counter = counters[i];
             if (counter.isDefaultCounterDoc()) {
@@ -91,7 +88,6 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     /**
      * Get (first) valid Counter document for document type
      *
-     * @param ctx          context
      * @param C_DocType_ID base document
      * @return counter document (may be invalid) or null
      */
@@ -114,32 +110,46 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
         if (DocBaseType == null) return null;
         String retValue = null;
         //	SO/PO
-        if (MDocType.DOCBASETYPE_SalesOrder.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_PurchaseOrder;
-        else if (MDocType.DOCBASETYPE_PurchaseOrder.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_SalesOrder;
+        switch (DocBaseType) {
+            case MDocType.DOCBASETYPE_SalesOrder:
+                retValue = MDocType.DOCBASETYPE_PurchaseOrder;
+                break;
+            case MDocType.DOCBASETYPE_PurchaseOrder:
+                retValue = MDocType.DOCBASETYPE_SalesOrder;
+                break;
             //	AP/AR Invoice
-        else if (MDocType.DOCBASETYPE_APInvoice.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_ARInvoice;
-        else if (MDocType.DOCBASETYPE_ARInvoice.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_APInvoice;
+            case MDocType.DOCBASETYPE_APInvoice:
+                retValue = MDocType.DOCBASETYPE_ARInvoice;
+                break;
+            case MDocType.DOCBASETYPE_ARInvoice:
+                retValue = MDocType.DOCBASETYPE_APInvoice;
+                break;
             //	Shipment
-        else if (MDocType.DOCBASETYPE_MaterialDelivery.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_MaterialReceipt;
-        else if (MDocType.DOCBASETYPE_MaterialReceipt.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_MaterialDelivery;
+            case MDocType.DOCBASETYPE_MaterialDelivery:
+                retValue = MDocType.DOCBASETYPE_MaterialReceipt;
+                break;
+            case MDocType.DOCBASETYPE_MaterialReceipt:
+                retValue = MDocType.DOCBASETYPE_MaterialDelivery;
+                break;
             //	AP/AR CreditMemo
-        else if (MDocType.DOCBASETYPE_APCreditMemo.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_ARCreditMemo;
-        else if (MDocType.DOCBASETYPE_ARCreditMemo.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_APCreditMemo;
+            case MDocType.DOCBASETYPE_APCreditMemo:
+                retValue = MDocType.DOCBASETYPE_ARCreditMemo;
+                break;
+            case MDocType.DOCBASETYPE_ARCreditMemo:
+                retValue = MDocType.DOCBASETYPE_APCreditMemo;
+                break;
             //	Receipt / Payment
-        else if (MDocType.DOCBASETYPE_ARReceipt.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_APPayment;
-        else if (MDocType.DOCBASETYPE_APPayment.equals(DocBaseType))
-            retValue = MDocType.DOCBASETYPE_ARReceipt;
+            case MDocType.DOCBASETYPE_ARReceipt:
+                retValue = MDocType.DOCBASETYPE_APPayment;
+                break;
+            case MDocType.DOCBASETYPE_APPayment:
+                retValue = MDocType.DOCBASETYPE_ARReceipt;
+                break;
             //
-        else s_log.log(Level.SEVERE, "getCounterDocBaseType for " + DocBaseType + ": None found");
+            default:
+                s_log.log(Level.SEVERE, "getCounterDocBaseType for " + DocBaseType + ": None found");
+                break;
+        }
         return retValue;
     } //	getCounterDocBaseType
 
@@ -171,7 +181,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     public MDocType getDocType() {
         MDocType dt = null;
         if (getDocumentTypeId() > 0) {
-            dt = MDocType.get(getDocumentTypeId());
+            dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;
@@ -185,7 +195,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     public MDocType getCounterDocType() {
         MDocType dt = null;
         if (getCounterDocTypeId() > 0) {
-            dt = MDocType.get(getCounterDocTypeId());
+            dt = MDocTypeKt.getDocumentType(getCounterDocTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;
@@ -257,18 +267,16 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MDocTypeCounter[");
-        sb.append(getId())
-                .append(",")
-                .append(getName())
-                .append(",C_DocType_ID=")
-                .append(getDocumentTypeId())
-                .append(",Counter=")
-                .append(getCounterDocTypeId())
-                .append(",DocAction=")
-                .append(getDocAction())
-                .append("]");
-        return sb.toString();
+        return "MDocTypeCounter[" + getId() +
+                "," +
+                getName() +
+                ",C_DocType_ID=" +
+                getDocumentTypeId() +
+                ",Counter=" +
+                getCounterDocTypeId() +
+                ",DocAction=" +
+                getDocAction() +
+                "]";
     } //	toString
 
     /**

@@ -15,7 +15,7 @@ import org.compiere.model.I_M_MatchInv;
 import org.compiere.model.I_M_MatchPO;
 import org.compiere.model.I_M_Production;
 import org.compiere.orm.MDocType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -645,9 +645,9 @@ public abstract class Doc implements IDoc {
                             + force
                             + ",RePost="
                             + repost);
-            if (!p_po.isActive()) return Msg.translate("CannotPostInactiveDocument");
-            if (force) return Msg.translate("CannotLockReSubmit");
-            return Msg.translate("CannotLockReSubmitOrRePostWithForce");
+            if (!p_po.isActive()) return MsgKt.translate("CannotPostInactiveDocument");
+            if (force) return MsgKt.translate("CannotLockReSubmit");
+            return MsgKt.translate("CannotLockReSubmitOrRePostWithForce");
         }
 
         p_Error = loadDocumentDetails();
@@ -734,7 +734,7 @@ public abstract class Doc implements IDoc {
             //  Insert Note
             String AD_MessageValue = "PostingError-" + p_Status;
             //	Text
-            StringBuilder Text = new StringBuilder(Msg.getMsg(AD_MessageValue));
+            StringBuilder Text = new StringBuilder(MsgKt.getMsg(AD_MessageValue));
             if (p_Error != null) Text.append(" (").append(p_Error).append(")");
             String cn = getClass().getName();
             Text.append(" - ")

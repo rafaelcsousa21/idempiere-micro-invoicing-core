@@ -3,7 +3,11 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.orm.MClient;
 import org.compiere.orm.X_AD_Tree;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
+
+import static org.compiere.orm.MTree_Base.TREETYPE_ElementValue;
+import static org.compiere.orm.MTree_Base.TREETYPE_User1;
+import static org.compiere.orm.MTree_Base.TREETYPE_User2;
 
 /**
  * Accounting Element Model.
@@ -29,9 +33,6 @@ public class MElement extends X_C_Element {
     public MElement(int C_Element_ID) {
         super(C_Element_ID);
         if (C_Element_ID == 0) {
-            //	setName (null);
-            //	setTreeId (0);
-            //	setElementType (null);	// A
             setIsBalancing(false);
             setIsNaturalAccount(false);
         }
@@ -88,15 +89,15 @@ public class MElement extends X_C_Element {
         if (tree == null) return false;
         String treeType = tree.getTreeType();
         if (X_C_Element.ELEMENTTYPE_UserDefined.equals(elementType)) {
-            if (!X_AD_Tree.TREETYPE_User1.equals(treeType) && !X_AD_Tree.TREETYPE_User2.equals(treeType)) {
+            if (!TREETYPE_User1.equals(treeType) && !TREETYPE_User2.equals(treeType)) {
                 log.saveError(
-                        "Error", Msg.parseTranslation("@TreeType@ <> @ElementType@ (U)"), false);
+                        "Error", MsgKt.parseTranslation("@TreeType@ <> @ElementType@ (U)"), false);
                 return false;
             }
         } else {
-            if (!X_AD_Tree.TREETYPE_ElementValue.equals(treeType)) {
+            if (!TREETYPE_ElementValue.equals(treeType)) {
                 log.saveError(
-                        "Error", Msg.parseTranslation("@TreeType@ <> @ElementType@ (A)"), false);
+                        "Error", MsgKt.parseTranslation("@TreeType@ <> @ElementType@ (A)"), false);
                 return false;
             }
         }

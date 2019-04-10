@@ -8,7 +8,7 @@ import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.MOrgKt;
-import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.orm.MRoleOrgAccess;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MLocator;
@@ -170,7 +170,7 @@ public class BPartnerOrgLink extends SvrProcess {
         }
 
         //	Reset Client Role
-        MRole.getDefault(true);
+        MRoleKt.getDefaultRole(true);
 
         return "Business Partner - Organization Link created";
     } //	doIt

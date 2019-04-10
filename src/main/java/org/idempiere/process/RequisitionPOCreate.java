@@ -13,7 +13,7 @@ import org.compiere.model.I_C_BPartner;
 import org.compiere.order.MCharge;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.sql.Timestamp;
@@ -349,7 +349,7 @@ public class RequisitionPOCreate extends SvrProcess {
             if (!p_ConsolidateDocument) {
                 StringBuilder msgsd =
                         new StringBuilder()
-                                .append(Msg.getElement("M_Requisition_ID"))
+                                .append(MsgKt.getElementTranslation("M_Requisition_ID"))
                                 .append(": ")
                                 .append(rLine.getParent().getDocumentNo());
                 m_order.setDescription(msgsd.toString());
@@ -374,7 +374,7 @@ public class RequisitionPOCreate extends SvrProcess {
         }
         if (m_order != null) {
             m_order.load();
-            String message = Msg.parseTranslation("@GeneratedPO@ " + m_order.getDocumentNo());
+            String message = MsgKt.parseTranslation("@GeneratedPO@ " + m_order.getDocumentNo());
             addBufferLog(
                     0,
                     null,

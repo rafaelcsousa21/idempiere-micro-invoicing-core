@@ -17,7 +17,7 @@ package org.idempiere.process;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -77,6 +77,6 @@ public class InvoicePayScheduleValidate extends SvrProcess {
                             .append(total)
                             .append("  - @Difference@ = ")
                             .append(invoice.getGrandTotal().subtract(total));
-        return Msg.parseTranslation(msg.toString());
+        return MsgKt.parseTranslation(msg.toString());
     } //	doIt
 } //	InvoicePayScheduleValidate

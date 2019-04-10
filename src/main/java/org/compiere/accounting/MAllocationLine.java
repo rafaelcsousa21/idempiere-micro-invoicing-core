@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -159,7 +159,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("C_AllocationLine"));
+            log.saveError("ParentComplete", MsgKt.translate("C_AllocationLine"));
             return false;
         }
         if (!newRecord && (isValueChanged("C_BPartner_ID") || isValueChanged("C_Invoice_ID"))) {

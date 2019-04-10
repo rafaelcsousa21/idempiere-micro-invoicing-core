@@ -2,7 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.model.I_R_StatusCategory;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -76,7 +76,7 @@ public class MStatusCategory extends X_R_StatusCategory {
         int AD_Client_ID = Env.getClientId();
         MStatusCategory retValue = new MStatusCategory(0);
         retValue.setClientOrg(AD_Client_ID, 0);
-        retValue.setName(Msg.getMsg("Standard"));
+        retValue.setName(MsgKt.getMsg("Standard"));
         retValue.setIsDefault(true);
         if (!retValue.save()) return null;
         String sql =

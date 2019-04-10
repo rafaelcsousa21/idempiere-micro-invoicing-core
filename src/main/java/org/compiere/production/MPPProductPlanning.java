@@ -1,7 +1,7 @@
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.Query;
 import org.compiere.product.MResource;
 import org.eevolution.model.I_PP_Product_Planning;
@@ -62,7 +62,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      */
     public static MPPProductPlanning get(
             int ad_client_id, int ad_org_id, int m_product_id) {
-        int M_Warehouse_ID = MOrgInfo.get(ad_org_id).getWarehouseId();
+        int M_Warehouse_ID = MOrgInfoKt.getOrganizationInfo(ad_org_id).getWarehouseId();
         if (M_Warehouse_ID <= 0) {
             return null;
         }

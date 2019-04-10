@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 /**
  * Cost Type Model
@@ -64,7 +64,7 @@ public class MCostType extends X_M_CostType {
         for (int i = 0; i < ass.length; i++) {
             if (ass[i].getCostTypeId() == getCostTypeId()) {
                 log.saveError(
-                        "CannotDelete", Msg.getElement("C_AcctSchema_ID") + " - " + ass[i].getName());
+                        "CannotDelete", MsgKt.getElementTranslation("C_AcctSchema_ID") + " - " + ass[i].getName());
                 return false;
             }
         }

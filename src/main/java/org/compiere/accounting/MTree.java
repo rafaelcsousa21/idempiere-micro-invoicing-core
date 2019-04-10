@@ -2,8 +2,10 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MTree_Base;
+import org.compiere.orm.MTree_BaseKt;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.Env;
 
@@ -57,7 +59,6 @@ public class MTree extends MTree_Base {
     /**
      * Default Constructor. Need to call loadNodes explicitly
      *
-     * @param ctx        context for security
      * @param AD_Tree_ID The tree to build
      */
     public MTree(int AD_Tree_ID) {
@@ -69,7 +70,6 @@ public class MTree extends MTree_Base {
      *
      * @param AD_Tree_ID The tree to build
      * @param editable   True, if tree can be modified - includes inactive and empty summary nodes
-     * @param ctx        context for security
      * @param clientTree the tree is displayed on the java client (not on web)
      */
     public MTree(
@@ -105,8 +105,6 @@ public class MTree extends MTree_Base {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MTree(Row row) {
         super(row);
@@ -119,25 +117,18 @@ public class MTree extends MTree_Base {
      */
     private void loadNodes(int AD_User_ID) {
         //  SQL for TreeNodes
-        StringBuffer sql = new StringBuffer();
+        StringBuffer sql;
         if (getTreeType()
                 .equals(TREETYPE_Menu)) // specific sql, need to load TreeBar IDEMPIERE 329 - nmicoud
         {
             sql =
                     new StringBuffer("SELECT " + "tn.Node_ID,tn.Parent_ID,tn.SeqNo,tb.IsActive " + "FROM ")
-                            .append(getNodeTableName())
-                            .append(
-                                    " tn"
-                                            + " LEFT OUTER JOIN AD_TreeBar tb ON (tn.AD_Tree_ID=tb.AD_Tree_ID"
-                                            + " AND tn.Node_ID=tb.Node_ID AND tb.IsFavourite = 'Y'"
-                                            + (AD_User_ID != -1 ? " AND tb.AD_User_ID=? " : "") // 	#1 (conditional)
-                                            + ") "
-                                            + "WHERE tn.AD_Tree_ID=?"); //	#2
+                            .append(getNodeTableName()).append(" tn" + " LEFT OUTER JOIN AD_TreeBar tb ON (tn.AD_Tree_ID=tb.AD_Tree_ID" + " AND tn.Node_ID=tb.Node_ID AND tb.IsFavourite = 'Y'").append(AD_User_ID != -1 ? " AND tb.AD_User_ID=? " : "").append(") ").append("WHERE tn.AD_Tree_ID=?"); //	#2
             if (!m_editable) sql.append(" AND tn.IsActive='Y'");
             sql.append(" ORDER BY COALESCE(tn.Parent_ID, -1), tn.SeqNo");
         } else // IDEMPIERE 329 - nmicoud
         {
-            String sourceTableName = getSourceTableName(getTreeType());
+            String sourceTableName = MTree_BaseKt.getSourceTableName(getTreeType());
             if (sourceTableName == null) {
                 if (getTreeTableId() > 0) sourceTableName = MTable.getDbTableName(getTreeTableId());
             }
@@ -145,19 +136,14 @@ public class MTree extends MTree_Base {
                     new StringBuffer("SELECT " + "tn.Node_ID,tn.Parent_ID,tn.SeqNo,st.IsActive " + "FROM ")
                             .append(sourceTableName)
                             .append(" st " + "LEFT OUTER JOIN ")
-                            .append(getNodeTableName())
-                            .append(
-                                    " tn ON (tn.Node_ID=st."
-                                            + sourceTableName
-                                            + "_ID) "
-                                            + "WHERE tn.AD_Tree_ID=?"); //	#2
+                            .append(getNodeTableName()).append(" tn ON (tn.Node_ID=st.").append(sourceTableName).append("_ID) ").append("WHERE tn.AD_Tree_ID=?"); //	#2
             if (!m_editable) sql.append(" AND tn.IsActive='Y'");
             sql.append(" ORDER BY COALESCE(tn.Parent_ID, -1), tn.SeqNo");
             // do not check access if allNodes
             if (AD_User_ID != -1)
                 sql =
                         new StringBuffer(
-                                MRole.getDefault()
+                                MRoleKt.getDefaultRole()
                                         .addAccessSQL(
                                                 sql.toString(),
                                                 "st",
@@ -381,7 +367,7 @@ public class MTree extends MTree_Base {
         String sql = sqlNode.toString();
         if (!m_editable) //	editable = menu/etc. window
             sql =
-                    MRole.getDefault(false)
+                    MRoleKt.getDefaultRole(false)
                             .addAccessSQL(sql, sourceTable, MRole.SQL_FULLYQUALIFIED, m_editable);
         log.fine(sql);
         m_nodeRowSet = getRowSet();
@@ -392,11 +378,7 @@ public class MTree extends MTree_Base {
             while (m_nodeRowSet.next()) {
                 i++;
                 Integer nodeId = m_nodeRowSet.getInt(1);
-                ArrayList<Integer> list = m_nodeIdMap.get(nodeId);
-                if (list == null) {
-                    list = new ArrayList<>(5);
-                    m_nodeIdMap.put(nodeId, list);
-                }
+                ArrayList<Integer> list = m_nodeIdMap.computeIfAbsent(nodeId, k -> new ArrayList<>(5));
                 list.add(i);
             }
         } catch (SQLException e) {
@@ -436,12 +418,10 @@ public class MTree extends MTree_Base {
                 String actionColor = m_nodeRowSet.getString(index++);
                 //	Menu only
                 if (getTreeType().equals(TREETYPE_Menu) && !isSummary) {
-                    MRole.getDefault(false);
-                    Boolean access = null;
-                    //	log.fine("getNodeDetail - " + name + " - " + actionColor + " - " + access);
+                    MRoleKt.getDefaultRole(false);
                     //
-                    if (access != null // 	rw or ro for Role
-                            || m_editable) //	Menu Window can see all
+                    // 	rw or ro for Role
+                    if (m_editable) //	Menu Window can see all
                     {
                         retValue =
                                 new MTreeNode(
@@ -478,26 +458,6 @@ public class MTree extends MTree_Base {
         return retValue;
     } //  getNodeDetails
 
-    /** Diagnostics: Print tree */
-  /*private void dumpTree()
-  {
-  	Enumeration<?> en = m_root.preorderEnumeration();
-  	int count = 0;
-  	while (en.hasMoreElements())
-  	{
-  		StringBuilder sb = new StringBuilder();
-  		MTreeNode nd = (MTreeNode)en.nextElement();
-  		for (int i = 0; i < nd.getLevel(); i++)
-  			sb.append(" ");
-  		sb.append("ID=").append(nd.getNodeId())
-  			.append(", SeqNo=").append(nd.getSeqNo())
-  			.append(" ").append(nd.getName());
-  		System.out.println(sb.toString());
-  		count++;
-  	}
-  	System.out.println("Count=" + count);
-  }   //  diagPrintTree*/
-
     /**
      * ************************************************************************ Trim tree of empty
      * summary nodes
@@ -532,9 +492,7 @@ public class MTree extends MTree_Base {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MTree[");
-        sb.append("AD_Tree_ID=").append(getTreeId()).append(", Name=").append(getName());
-        sb.append("]");
-        return sb.toString();
+        return "MTree[" + "AD_Tree_ID=" + getTreeId() + ", Name=" + getName() +
+                "]";
     }
 } //  MTree

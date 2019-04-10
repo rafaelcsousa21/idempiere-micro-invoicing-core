@@ -21,6 +21,7 @@ import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.PO;
 import org.compiere.orm.PeriodClosedException;
@@ -28,7 +29,7 @@ import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MTransaction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
@@ -85,7 +86,6 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     /**
      * Standard Constructor
      *
-     * @param ctx            context
      * @param M_Inventory_ID id
      */
     public MInventory(int M_Inventory_ID) {
@@ -103,8 +103,6 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MInventory(Row row) {
         super(row);
@@ -188,7 +186,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();
@@ -203,7 +201,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     protected boolean beforeSave(boolean newRecord) {
         if (getDocumentTypeId() == 0) {
             log.saveError(
-                    "FillMandatory", Msg.getElement(I_M_Inventory.COLUMNNAME_C_DocType_ID));
+                    "FillMandatory", MsgKt.getElementTranslation(I_M_Inventory.COLUMNNAME_C_DocType_ID));
             return false;
         }
         return true;
@@ -293,7 +291,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     if (!product
                             .getAttributeSet()
                             .excludeTableEntry(MInventoryLine.Table_ID, line.isSOTrx())) {
-                        MDocType dt = MDocType.get(getDocumentTypeId());
+                        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
                         String docSubTypeInv = dt.getDocSubTypeInv();
                         BigDecimal qtyDiff = line.getQtyInternalUse();
                         if (MDocType.DOCSUBTYPEINV_PhysicalInventory.equals(docSubTypeInv))
@@ -359,7 +357,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      */
     @NotNull
     public CompleteActionResult completeIt() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
         if (Util.isEmpty(docSubTypeInv)) {
             m_processMsg = "Document inventory subtype not configured, cannot complete";
@@ -588,7 +586,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
             } catch (NegativeInventoryDisallowedException e) {
                 log.severe(e.getMessage());
                 errors
-                        .append(Msg.getElement("Line"))
+                        .append(MsgKt.getElementTranslation("Line"))
                         .append(" ")
                         .append(line.getLine())
                         .append(": ");
@@ -619,7 +617,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(
@@ -950,7 +948,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
 
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         MPeriod.testPeriodOpen(reversalDate, dt.getDocBaseType(), getOrgId());
 
         //	Deep Copy
@@ -1086,7 +1084,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")

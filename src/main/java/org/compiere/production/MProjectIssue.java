@@ -6,7 +6,7 @@ import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.model.IDocLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
@@ -209,7 +209,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         } catch (NegativeInventoryDisallowedException e) {
             log.severe(e.getMessage());
             StringBuilder error = new StringBuilder();
-            error.append(Msg.getElement("Line")).append(" ").append(getLine()).append(": ");
+            error.append(MsgKt.getElementTranslation("Line")).append(" ").append(getLine()).append(": ");
             error.append(e.getMessage()).append("\n");
             throw new AdempiereException(error.toString());
         }

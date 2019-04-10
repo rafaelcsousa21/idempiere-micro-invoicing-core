@@ -16,7 +16,7 @@ import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.util.DisplayType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
@@ -221,7 +221,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder()
-                        .append(Msg.getElement("C_Cash_ID"))
+                        .append(MsgKt.getElementTranslation("C_Cash_ID"))
                         .append(" ")
                         .append(getDocumentNo());
         return msgreturn.toString();
@@ -236,7 +236,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     protected boolean beforeSave(boolean newRecord) {
         setOrgId(getCashBook().getOrgId());
         if (getOrgId() == 0) {
-            log.saveError("Error", Msg.parseTranslation("@orgId@"));
+            log.saveError("Error", MsgKt.parseTranslation("@orgId@"));
             return false;
         }
         //	Calculate End Balance
@@ -401,11 +401,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 //
                 StringBuilder name =
                         new StringBuilder()
-                                .append(Msg.translate("C_Cash_ID"))
+                                .append(MsgKt.translate("C_Cash_ID"))
                                 .append(": ")
                                 .append(getName())
                                 .append(" - ")
-                                .append(Msg.translate("Line"))
+                                .append(MsgKt.translate("Line"))
                                 .append(" ")
                                 .append(line.getLine());
                 MAllocationHdr hdr =
@@ -556,7 +556,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             cashline.setWriteOffAmt(Env.ZERO);
             StringBuilder msgadd =
                     new StringBuilder()
-                            .append(Msg.getMsg("Voided"))
+                            .append(MsgKt.getMsg("Voided"))
                             .append(" (Amount=")
                             .append(oldAmount)
                             .append(", Discount=")
@@ -577,7 +577,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         }
 
         setName(getName() + "^");
-        addDescription(Msg.getMsg("Voided"));
+        addDescription(MsgKt.getMsg("Voided"));
         setDocStatus(X_C_Cash.DOCSTATUS_Reversed); // 	for direct calls
         setProcessed(true);
         setPosted(true);
@@ -738,11 +738,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         sb.append(getName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("BeginningBalance"))
+                .append(MsgKt.translate("BeginningBalance"))
                 .append("=")
                 .append(getBeginningBalance())
                 .append(",")
-                .append(Msg.translate("EndingBalance"))
+                .append(MsgKt.translate("EndingBalance"))
                 .append("=")
                 .append(getEndingBalance())
                 .append(" (#")

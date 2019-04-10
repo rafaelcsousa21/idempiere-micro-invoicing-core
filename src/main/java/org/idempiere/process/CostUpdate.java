@@ -15,9 +15,10 @@ import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
@@ -140,7 +141,7 @@ public class CostUpdate extends SvrProcess {
         }
         if (!Util.isEmpty(p_SetStandardCostTo)) {
             if (p_C_DocType_ID <= 0) throw new AdempiereUserError("@FillMandatory@  @C_DocType_ID@");
-            else m_docType = MDocType.get(p_C_DocType_ID);
+            else m_docType = MDocTypeKt.getDocumentType(p_C_DocType_ID);
         }
         //	PLV required
         if (p_M_PriceList_Version_ID == 0
@@ -279,7 +280,7 @@ public class CostUpdate extends SvrProcess {
 
             if (!DocumentEngine.processIt(inventoryDoc, DocAction.Companion.getACTION_Complete())) {
                 StringBuilder msg = new StringBuilder();
-                msg.append(Msg.getMsg("ProcessFailed")).append(": ");
+                msg.append(MsgKt.getMsg("ProcessFailed")).append(": ");
                 if (Env.isBaseLanguage(I_C_DocType.Table_Name)) msg.append(m_docType.getName());
                 else msg.append(m_docType.get_Translation(HasName.COLUMNNAME_Name));
                 throw new AdempiereUserError(msg.toString());

@@ -4,11 +4,11 @@ import kotliquery.Row;
 import org.compiere.invoicing.MLandedCost;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.product.MAttributeSet;
 import org.compiere.product.MUOM;
 import org.compiere.product.ProductNotOnPriceListException;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -28,10 +28,6 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
 
     /**
      * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set record
-     * @param trxName transaction
      */
     public MOrderLine(Row row) {
         super(row);
@@ -40,9 +36,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     /**
      * ************************************************************************ Default Constructor
      *
-     * @param ctx            context
      * @param C_OrderLine_ID order line to load
-     * @param trxName        trx name
      */
     public MOrderLine(int C_OrderLine_ID) {
         super(C_OrderLine_ID);
@@ -89,7 +83,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     @Override
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("C_OrderLine"));
+            log.saveError("ParentComplete", MsgKt.translate("C_OrderLine"));
             return false;
         }
         //	Get Defaults from Parent
@@ -120,7 +114,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             // IDEMPIERE-1574 Sales Order Line lets Price under the Price Limit when updating
             //	Check PriceLimit
             boolean enforce = m_IsSOTrx && getParent().getPriceList().isEnforcePriceLimit();
-            if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
+            if (enforce && MRoleKt.getDefaultRole().isOverwritePriceLimit()) enforce = false;
             //	Check Price Limit?
             if (enforce
                     && !getPriceLimit().equals(Env.ZERO)
@@ -177,9 +171,9 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                                     0,
                                     null);
                     BigDecimal qty = Env.ZERO;
-                    for (int i = 0; i < storages.length; i++) {
-                        if (storages[i].getAttributeSetInstanceId() == getAttributeSetInstanceId())
-                            qty = qty.add(storages[i].getQtyOnHand());
+                    for (MStorageOnHand storage : storages) {
+                        if (storage.getAttributeSetInstanceId() == getAttributeSetInstanceId())
+                            qty = qty.add(storage.getQtyOnHand());
                     }
 
                     if (getQtyOrdered().compareTo(qty) > 0) {
@@ -215,7 +209,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             if (getChargeId() == 0
                     && getProductId() == 0
                     && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
-                log.saveError("FillMandatory", Msg.translate("ChargeOrProductMandatory"));
+                log.saveError("FillMandatory", MsgKt.translate("ChargeOrProductMandatory"));
                 return false;
             }
         }
@@ -233,16 +227,16 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         //	R/O Check - Something delivered. etc.
         if (Env.ZERO.compareTo(getQtyDelivered()) != 0) {
             log.saveError(
-                    "DeleteError", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
+                    "DeleteError", MsgKt.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyInvoiced()) != 0) {
-            log.saveError("DeleteError", Msg.translate("QtyInvoiced") + "=" + getQtyInvoiced());
+            log.saveError("DeleteError", MsgKt.translate("QtyInvoiced") + "=" + getQtyInvoiced());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyReserved()) != 0) {
             //	For PO should be On Order
-            log.saveError("DeleteError", Msg.translate("QtyReserved") + "=" + getQtyReserved());
+            log.saveError("DeleteError", MsgKt.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
 

@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.conversionrate.MConversionType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
@@ -29,7 +29,7 @@ public final class MConversionRateUtil {
             String trxName) {
         if (convertionTypeID == 0)
             convertionTypeID = MConversionType.getDefault(Env.getClientId());
-        return Msg.getMsg(
+        return MsgKt.getMsg(
                 adMessage,
                 new Object[]{
                         MCurrencyKt.getCurrency(currencyFromID).getISOCode(),

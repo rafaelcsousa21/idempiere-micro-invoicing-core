@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.order.MPaymentTerm;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.util.logging.Level;
@@ -32,7 +32,7 @@ public class PaymentTermValidate extends SvrProcess {
         String msg = pt.validate();
         pt.saveEx();
         //
-        String validMsg = Msg.parseTranslation("@OK@");
+        String validMsg = MsgKt.parseTranslation("@OK@");
         if (validMsg.equals(msg)) return msg;
         throw new AdempiereUserError(msg);
     } //	doIt

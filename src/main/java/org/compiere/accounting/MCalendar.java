@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.MClient;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 
 import java.util.Locale;
@@ -54,7 +54,7 @@ public class MCalendar extends X_C_Calendar {
         setClientOrg(client);
         String msgset = client.getName() +
                 " " +
-                Msg.translate("C_Calendar_ID");
+                MsgKt.translate("C_Calendar_ID");
         setName(msgset);
     } //	MCalendar
 

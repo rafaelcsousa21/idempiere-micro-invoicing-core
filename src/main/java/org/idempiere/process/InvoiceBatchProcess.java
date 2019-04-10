@@ -20,7 +20,7 @@ import org.compiere.invoicing.MInvoiceBatchLine;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.util.logging.Level;
@@ -162,7 +162,7 @@ public class InvoiceBatchProcess extends SvrProcess {
         m_invoice.saveEx();
 
         String message =
-                Msg.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+                MsgKt.parseTranslation("@InvoiceProcessed@ " + m_invoice.getDocumentNo());
         addBufferLog(
                 0,
                 m_invoice.getDateInvoiced(),

@@ -1,11 +1,11 @@
 package org.compiere.invoicing.test
 
 import company.bigger.idempiere.service.SimpleModelFactory
-import org.compiere.accounting.MWarehouse
+import org.compiere.accounting.MAcctSchema
 import org.compiere.accounting.MCharge
 import org.compiere.accounting.MCostDetail
-import org.compiere.accounting.MAcctSchema
 import org.compiere.accounting.MCostElement
+import org.compiere.accounting.MWarehouse
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
 import org.compiere.invoicing.MInventory
@@ -13,40 +13,40 @@ import org.compiere.invoicing.MInventoryLine
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
 import org.compiere.model.I_AD_Org
-import org.compiere.model.I_C_Tax
-import org.compiere.model.I_C_TaxCategory
-import org.compiere.model.I_M_Warehouse
-import org.compiere.model.I_C_PaymentTerm
 import org.compiere.model.I_C_BankAccount
 import org.compiere.model.I_C_Charge
+import org.compiere.model.I_C_PaymentTerm
+import org.compiere.model.I_C_Tax
+import org.compiere.model.I_C_TaxCategory
 import org.compiere.model.I_M_Product
+import org.compiere.model.I_M_Warehouse
 import org.compiere.order.MPaySchedule
+import org.compiere.orm.DefaultModelFactory
+import org.compiere.orm.IModelFactory
 import org.compiere.orm.MClient
-import org.compiere.orm.MDocType
+import org.compiere.orm.Query
+import org.compiere.orm.getClientDocumentTypes
+import org.compiere.orm.getClientOrganizations
+import org.compiere.orm.getOrg
 import org.compiere.process.DocAction
 import org.compiere.product.MAttributeSetInstance
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
 import org.compiere.tax.MTax
 import org.compiere.tax.MTaxCategory
+import org.idempiere.common.util.AdempiereSystemError
+import org.idempiere.common.util.EnvironmentServiceImpl
 import org.idempiere.icommon.model.IPO
 import org.junit.Before
 import org.slf4j.impl.SimpleLogger
+import software.hsharp.core.modules.BaseModuleImpl
 import software.hsharp.core.util.DB
+import software.hsharp.core.util.Environment
 import software.hsharp.core.util.HikariCPI
+import java.util.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import org.compiere.orm.Query
-import org.compiere.orm.IModelFactory
-import org.compiere.orm.DefaultModelFactory
-import org.compiere.orm.getClientOrganizations
-import org.compiere.orm.getOrg
-import java.util.Random
-import org.idempiere.common.util.AdempiereSystemError
-import org.idempiere.common.util.EnvironmentServiceImpl
-import software.hsharp.core.modules.BaseModuleImpl
-import software.hsharp.core.util.Environment
 
 internal val sessionUrl =
     System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
@@ -197,7 +197,7 @@ abstract class BaseComponentTest {
         val attributeSetInstance = MAttributeSetInstance.get(0, product.id)
 
         val inventory = MInventory(warehouse)
-        inventory.documentTypeId = MDocType.getOfClient().first { it.docSubTypeInv == "PI" }.id
+        inventory.documentTypeId = getClientDocumentTypes.first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
         val inventoryLine = MInventoryLine(

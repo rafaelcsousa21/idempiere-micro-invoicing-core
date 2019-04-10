@@ -7,7 +7,7 @@ import org.compiere.model.I_M_Product;
 import org.compiere.product.MAttributeSet;
 import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -184,12 +184,12 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public boolean canChangeWarehouse() {
         if (getQtyDelivered().signum() != 0) {
-            log.saveError("Error", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
+            log.saveError("Error", MsgKt.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
 
         if (getQtyReserved().signum() != 0) {
-            log.saveError("Error", Msg.translate("QtyReserved") + "=" + getQtyReserved());
+            log.saveError("Error", MsgKt.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
         //	We can change
@@ -349,7 +349,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("DD_OrderLine"));
+            log.saveError("ParentComplete", MsgKt.translate("DD_OrderLine"));
             return false;
         }
         //	Get Defaults from Parent
@@ -445,12 +445,12 @@ public class MDDOrderLine extends X_DD_OrderLine {
         //	R/O Check - Something delivered. etc.
         if (Env.ZERO.compareTo(getQtyDelivered()) != 0) {
             log.saveError(
-                    "DeleteError", Msg.translate("QtyDelivered") + "=" + getQtyDelivered());
+                    "DeleteError", MsgKt.translate("QtyDelivered") + "=" + getQtyDelivered());
             return false;
         }
         if (Env.ZERO.compareTo(getQtyReserved()) != 0) {
             //	For PO should be On Order
-            log.saveError("DeleteError", Msg.translate("QtyReserved") + "=" + getQtyReserved());
+            log.saveError("DeleteError", MsgKt.translate("QtyReserved") + "=" + getQtyReserved());
             return false;
         }
         return true;

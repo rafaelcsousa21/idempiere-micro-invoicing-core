@@ -21,8 +21,10 @@ import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MOrder;
 import org.compiere.order.MRMALine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.MSysConfig;
@@ -32,7 +34,7 @@ import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MTransaction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -79,8 +81,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
     /**
      * Load Constructor
-     *
-     * @param ctx context
      */
     public MInOut(Row row) {
         super(row);
@@ -116,7 +116,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         to.setDocumentTypeId(C_DocType_ID);
         to.setIsSOTrx(isSOTrx);
         if (counter) {
-            MDocType docType = MDocType.get(C_DocType_ID);
+            MDocType docType = MDocTypeKt.getDocumentType(C_DocType_ID);
             if (MDocType.DOCBASETYPE_MaterialDelivery.equals(docType.getDocBaseType())) {
                 to.setMovementType(isSOTrx ? MOVEMENTTYPE_CustomerShipment : MOVEMENTTYPE_VendorReturns);
             } else if (MDocType.DOCBASETYPE_MaterialReceipt.equals(docType.getDocBaseType())) {
@@ -277,7 +277,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
 
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //  Order OR RMA can be processed on a shipment/receipt
         if (getOrderId() != 0 && getRMAId() != 0) {
@@ -839,7 +839,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             } catch (NegativeInventoryDisallowedException e) {
                 log.severe(e.getMessage());
                 errors
-                        .append(Msg.getElement("Line"))
+                        .append(MsgKt.getElementTranslation("Line"))
                         .append(" ")
                         .append(sLine.getLine())
                         .append(": ");
@@ -990,7 +990,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     } //	reverseCorrectionIt
 
     protected MInOut reverse(boolean accrual) {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         Timestamp reversalDate = accrual ? Env.getContextAsDate() : getDateAcct();
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
@@ -1185,7 +1185,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * Create the missing next Confirmation
      */
     public void createConfirmation() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         boolean pick = dt.isPickQAConfirm();
         boolean ship = dt.isShipConfirm();
         //	Nothing to do
@@ -1241,7 +1241,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * Set the definite document number after completed
      */
     protected void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(TimeUtil.getDay(0));
             if (getDateAcct().before(getMovementDate())) {
@@ -1414,7 +1414,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         if (counterAD_Org_ID == 0) return null;
 
         MBPartner counterBP = new MBPartner(counterC_BPartner_ID);
-        MOrgInfo counterOrgInfo = MOrgInfo.get(counterAD_Org_ID);
+        MOrgInfo counterOrgInfo = MOrgInfoKt.getOrganizationInfo(counterAD_Org_ID);
         if (log.isLoggable(Level.INFO)) log.info("Counter BP=" + counterBP.getName());
 
         //	Document Type
@@ -1506,7 +1506,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         //	Document Type
         int C_DocTypeTarget_ID = 0;
         MDocType[] shipmentTypes =
-                MDocType.getOfDocBaseType(MDocType.DOCBASETYPE_MaterialDelivery);
+                MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialDelivery);
 
         for (MDocType shipmentType : shipmentTypes) {
             if (shipmentType.isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentType.isDefault()))
@@ -1621,7 +1621,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(":")
-                //	.append(Msg.translate("TotalLines")).append("=").append(getTotalLines())
+                //	.append(MsgKt.translate("TotalLines")).append("=").append(getTotalLines())
                 .append(" (#")
                 .append(getLines(false).length)
                 .append(")");
@@ -1638,7 +1638,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 

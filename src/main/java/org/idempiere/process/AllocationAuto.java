@@ -9,7 +9,7 @@ import org.compiere.accounting.MPayment;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.Env;
 
@@ -315,7 +315,7 @@ public class AllocationAuto extends SvrProcess {
                             if (availableAmt.compareTo(openAmt) == 0) {
                                 if (payment.allocateIt()) {
                                     String message =
-                                            Msg.parseTranslation(
+                                            MsgKt.parseTranslation(
                                                     "@PaymentAllocated@ " + payment.getDocumentNo() + " [1]");
                                     addBufferLog(
                                             0,
@@ -367,7 +367,7 @@ public class AllocationAuto extends SvrProcess {
                 if (availableAmt.compareTo(totalInvoice) == 0) {
                     if (payment.allocateIt()) {
                         String message =
-                                Msg.parseTranslation(
+                                MsgKt.parseTranslation(
                                         "@PaymentAllocated@ " + payment.getDocumentNo() + " [n]");
                         addBufferLog(
                                 0,
@@ -786,7 +786,7 @@ public class AllocationAuto extends SvrProcess {
             throw new IllegalStateException(msg);
         } else m_allocation.saveEx();
         String message =
-                Msg.parseTranslation("@AllocationProcessed@ " + m_allocation.getDescription());
+                MsgKt.parseTranslation("@AllocationProcessed@ " + m_allocation.getDescription());
         addLog(0, m_allocation.getDateAcct(), null, message);
         m_allocation = null;
         return success;

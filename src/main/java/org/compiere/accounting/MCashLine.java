@@ -6,7 +6,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.model.I_C_Invoice;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
@@ -149,7 +149,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         Boolean generated = (Boolean) getValueOld("IsGenerated");
         if (generated != null && generated.booleanValue()) {
             if (getValueOld("C_Invoice_ID") != null) {
-                log.saveError("Error", Msg.getMsg("CannotDeleteCashGenInvoice"));
+                log.saveError("Error", MsgKt.getMsg("CannotDeleteCashGenInvoice"));
                 return false;
             }
         }
@@ -175,14 +175,14 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("C_CashLine"));
+            log.saveError("ParentComplete", MsgKt.translate("C_CashLine"));
             return false;
         }
         //	Cannot change generated Invoices
         if (isValueChanged(I_C_CashLine.COLUMNNAME_C_Invoice_ID)) {
             Object generated = getValueOld(I_C_CashLine.COLUMNNAME_IsGenerated);
             if (generated != null && ((Boolean) generated).booleanValue()) {
-                log.saveError("Error", Msg.getMsg("CannotChangeCashGenInvoice"));
+                log.saveError("Error", MsgKt.getMsg("CannotChangeCashGenInvoice"));
                 return false;
             }
         }

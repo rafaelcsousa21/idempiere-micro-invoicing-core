@@ -15,7 +15,7 @@ import org.compiere.product.MAssetChange;
 import org.compiere.product.MAssetGroup;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.X_A_Asset;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 
@@ -62,7 +62,7 @@ public class MAsset extends org.compiere.product.MAsset {
         }
         setAssetGroupId(A_Asset_Group_ID);
         setHelp(
-                Msg.getMsg(
+                MsgKt.getMsg(
                         MClientKt.getClientWithAccounting().getADLanguage(),
                         "CreatedFromInvoiceLine",
                         new Object[]{invoiceLine.getInvoice().getDocumentNo(), invoiceLine.getLine()}));
@@ -121,7 +121,7 @@ public class MAsset extends org.compiere.product.MAsset {
         setIsInPosession(true);
         setAssetCreateDate(new Timestamp(System.currentTimeMillis()));
         setHelp(
-                Msg.getMsg(
+                MsgKt.getMsg(
                         MClientKt.getClientWithAccounting().getADLanguage(),
                         "CreatedFromProject",
                         new Object[]{project.getName()}));
@@ -135,7 +135,7 @@ public class MAsset extends org.compiere.product.MAsset {
         setIsInPosession(false);
         setAssetCreateDate(new Timestamp(System.currentTimeMillis()));
         setHelp(
-                Msg.getMsg(
+                MsgKt.getMsg(
                         MClientKt.getClientWithAccounting().getADLanguage(),
                         "CreatedFromShipment: ",
                         new Object[]{mInOut.getDocumentNo()}));

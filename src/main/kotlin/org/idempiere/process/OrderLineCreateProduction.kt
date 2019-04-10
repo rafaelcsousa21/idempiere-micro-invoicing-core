@@ -9,7 +9,7 @@ import org.compiere.model.I_M_Production
 import org.compiere.orm.MDocType
 import org.compiere.process.SvrProcess
 import org.compiere.production.MProduction
-import org.compiere.util.Msg
+import org.compiere.util.parseTranslation
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.getSQLValueString
 import java.sql.Timestamp
@@ -154,7 +154,7 @@ class OrderLineCreateProduction(
         production.isCreated = "Y"
         production.saveEx()
 
-        val msg = Msg.parseTranslation("@M_Production_ID@ @Created@ " + production.getDocumentNo())
+        val msg = parseTranslation("@M_Production_ID@ @Created@ " + production.getDocumentNo())
         addLog(production.productionId, null, null, msg, MProduction.Table_ID, production.productionId)
         return "@OK@"
     } // 	OrderLineCreateShipment

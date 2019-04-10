@@ -6,7 +6,7 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.M_Element;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 
 import java.util.logging.Level;
@@ -67,7 +67,7 @@ public class CopyColumnsFromTable extends SvrProcess {
         MTable targetTable = new MTable(p_target_AD_Table_ID);
         MColumn[] targetColumns = targetTable.getColumns(true);
         if (targetColumns.length > 0)
-            throw new AdempiereSystemError(Msg.getMsg("ErrorCopyColumns"));
+            throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyColumns"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
         MColumn[] sourceColumns = sourceTable.getColumns(true);

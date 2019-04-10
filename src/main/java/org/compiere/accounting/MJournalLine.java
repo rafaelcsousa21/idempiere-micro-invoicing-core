@@ -5,7 +5,7 @@ import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_GL_JournalLine;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -248,7 +248,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("GL_JournalLine"));
+            log.saveError("ParentComplete", MsgKt.translate("GL_JournalLine"));
             return false;
         }
         // idempiere 344 - nmicoud
@@ -256,7 +256,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         if (getValidAccountCombinationId() <= 0) {
             log.saveError(
                     "SaveError",
-                    Msg.parseTranslation("@FillMandatory@" + "@C_ValidCombination_ID@"));
+                    MsgKt.parseTranslation("@FillMandatory@" + "@C_ValidCombination_ID@"));
             return false;
         }
         fillDimensionsFromCombination();
@@ -393,7 +393,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
             if (errorFields.length() > 0) {
                 log.saveError(
                         "Error",
-                        Msg.parseTranslation(
+                        MsgKt.parseTranslation(
                                 "@IsMandatory@: " + errorFields.substring(0, errorFields.length() - 2)));
                 return false;
             }

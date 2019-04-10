@@ -11,7 +11,7 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Util;
@@ -260,7 +260,7 @@ public class DocumentEngine implements DocAction {
                     currentStatus = getSQLValueString(statusSql, docPO.getId());
                     if (!docStatusOriginal.equals(currentStatus)) {
                         throw new IllegalStateException(
-                                Msg.getMsg("DocStatusChanged") + " " + docPO.toString());
+                                MsgKt.getMsg("DocStatusChanged") + " " + docPO.toString());
                     }
                 }
             }

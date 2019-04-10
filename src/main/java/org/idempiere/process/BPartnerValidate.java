@@ -21,7 +21,7 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.math.BigDecimal;
@@ -111,9 +111,9 @@ public class BPartnerValidate extends SvrProcess {
         bp.saveEx();
         //
         //	if (bp.getSalesOrderCreditUsed().signum() != 0)
-        addLog(0, null, bp.getSalesOrderCreditUsed(), Msg.getElement("SO_CreditUsed"));
-        addLog(0, null, bp.getTotalOpenBalance(), Msg.getElement("TotalOpenBalance"));
-        addLog(0, null, bp.getActualLifeTimeValue(), Msg.getElement("ActualLifeTimeValue"));
+        addLog(0, null, bp.getSalesOrderCreditUsed(), MsgKt.getElementTranslation("SO_CreditUsed"));
+        addLog(0, null, bp.getTotalOpenBalance(), MsgKt.getElementTranslation("TotalOpenBalance"));
+        addLog(0, null, bp.getActualLifeTimeValue(), MsgKt.getElementTranslation("ActualLifeTimeValue"));
         //
     } //	checkBP
 
@@ -138,7 +138,7 @@ public class BPartnerValidate extends SvrProcess {
                     0,
                     null,
                     new BigDecimal(payments.length),
-                    Msg.getElement("C_Payment_ID") + " - #" + changed);
+                    MsgKt.getElementTranslation("C_Payment_ID") + " - #" + changed);
     } //	checkPayments
 
     /**
@@ -162,6 +162,6 @@ public class BPartnerValidate extends SvrProcess {
                     0,
                     null,
                     new BigDecimal(invoices.length),
-                    Msg.getElement("C_Invoice_ID") + " - #" + changed);
+                    MsgKt.getElementTranslation("C_Invoice_ID") + " - #" + changed);
     } //	checkInvoices
 } //	BPartnerValidate

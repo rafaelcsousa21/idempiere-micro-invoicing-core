@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 
 /**
@@ -59,7 +59,7 @@ public class MLandedCost extends X_C_LandedCost {
         if (getProductId() == 0 && getInOutId() == 0 && getInOutLineId() == 0) {
             log.saveError(
                     "Error",
-                    Msg.parseTranslation(
+                    MsgKt.parseTranslation(
                             "@NotFound@ @M_Product_ID@ | @M_InOut_ID@ | @M_InOutLine_ID@"));
             return false;
         }

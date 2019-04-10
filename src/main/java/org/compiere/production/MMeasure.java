@@ -6,11 +6,12 @@ import org.compiere.crm.MUserKt;
 import org.compiere.model.I_PA_Measure;
 import org.compiere.model.MeasureInterface;
 import org.compiere.orm.MRole;
+import org.compiere.orm.MRoleKt;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.compiere.orm.TimeUtil;
 import org.compiere.rule.MRule;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
@@ -94,22 +95,22 @@ public class MMeasure extends X_PA_Measure {
     protected boolean beforeSave(boolean newRecord) {
         if (X_PA_Measure.MEASURETYPE_Calculated.equals(getMeasureType())
                 && getMeasureCalcId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("PA_MeasureCalc_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("PA_MeasureCalc_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Ratio.equals(getMeasureType()) && getRatioId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("PA_Ratio_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("PA_Ratio_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_UserDefined.equals(getMeasureType())
                 && (getCalculationClass() == null || getCalculationClass().length() == 0)) {
-            log.saveError("FillMandatory", Msg.getElement("CalculationClass"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("CalculationClass"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType())
                 && getRequestTypeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("R_RequestType_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("R_RequestType_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType())
                 && getProjectTypeId() == 0) {
-            log.saveError("FillMandatory", Msg.getElement("C_ProjectType_ID"));
+            log.saveError("FillMandatory", MsgKt.getElementTranslation("C_ProjectType_ID"));
             return false;
         }
         return true;
@@ -209,13 +210,13 @@ public class MMeasure extends X_PA_Measure {
         for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRoleKt.getRole(goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
+            if (role == null) role = MRoleKt.getDefaultRole(false); // 	could result in wrong data
             //
             MMeasureCalc mc = MMeasureCalc.get(getMeasureCalcId());
             if (mc == null || mc.getId() == 0 || mc.getId() != getMeasureCalcId()) {
@@ -263,13 +264,13 @@ public class MMeasure extends X_PA_Measure {
         for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRoleKt.getRole(goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
+            if (role == null) role = MRoleKt.getDefaultRole(false); // 	could result in wrong data
             //
             MRequestType rt = MRequestType.get(getRequestTypeId());
             String sql =
@@ -303,13 +304,13 @@ public class MMeasure extends X_PA_Measure {
         for (MGoal goal : goals) {
             //	Find Role
             MRole role = null;
-            if (goal.getRoleId() != 0) role = MRole.get(goal.getRoleId());
+            if (goal.getRoleId() != 0) role = MRoleKt.getRole(goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUserKt.getUser(goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
-            if (role == null) role = MRole.getDefault(false); // 	could result in wrong data
+            if (role == null) role = MRoleKt.getDefaultRole(false); // 	could result in wrong data
             //
             MProjectType pt = MProjectType.get(getProjectTypeId());
             String sql =
@@ -365,7 +366,6 @@ public class MMeasure extends X_PA_Measure {
                         break;
                     }
                     ScriptEngine engine = rule.getScriptEngine();
-                    MRule.setContext(engine, 0);
                     engine.put(MRule.ARGUMENTS_PREFIX + "PO", po);
                     try {
                         Object value = engine.eval(rule.getScript());

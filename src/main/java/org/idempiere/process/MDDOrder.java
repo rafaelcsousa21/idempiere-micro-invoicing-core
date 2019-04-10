@@ -13,12 +13,13 @@ import org.compiere.model.I_C_BPartner;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_M_Product;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MLocator;
 import org.compiere.production.MProject;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.eevolution.model.I_DD_Order;
@@ -45,11 +46,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * Order Lines
      */
     private MDDOrderLine[] m_lines = null;
-    /**
-     * Force Creation of order
-     */
-    @SuppressWarnings("unused")
-    private boolean m_forceCreation = false;
     /**
      * Process Message
      */
@@ -155,20 +151,14 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
         setBusinessPartnerId(bp.getBusinessPartnerId());
         //	Defaults Payment Term
-        int ii = 0;
-        if (isSOTrx()) ii = bp.getPaymentTermId();
-        else ii = bp.getPurchaseOrderPaymentTermId();
+        int ii;
 
         //	Default Price List
-        if (isSOTrx()) ii = bp.getPriceListId();
-        else ii = bp.getPurchaseOrderPriceListId();
         //	Default Delivery/Via Rule
         String ss = bp.getDeliveryRule();
         if (ss != null) setDeliveryRule(ss);
         ss = bp.getDeliveryViaRule();
         if (ss != null) setDeliveryViaRule(ss);
-        //	Default Invoice/Payment Rule
-        ss = bp.getInvoiceRule();
 
         if (getSalesRepresentativeId() == 0) {
             ii = Env.getUserId();
@@ -178,8 +168,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         //	Set Locations
         List<I_C_BPartner_Location> locs = bp.getLocations();
         if (locs != null) {
-            for (int i = 0; i < locs.size(); i++) {
-                I_C_BPartner_Location loc = locs.get(i);
+            for (I_C_BPartner_Location loc : locs) {
                 if (loc.getIsShipTo()) {
                     super.setBusinessPartnerLocationId(loc.getBusinessPartnerLocationId());
                 }
@@ -204,17 +193,15 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @return info
      */
     public String toString() {
-        StringBuffer sb =
-                new StringBuffer("MDDOrder[")
-                        .append(getId())
-                        .append("-")
-                        .append(getDocumentNo())
-                        .append(",IsSOTrx=")
-                        .append(isSOTrx())
-                        .append(",C_DocType_ID=")
-                        .append(getDocumentTypeId())
-                        .append("]");
-        return sb.toString();
+        return "MDDOrder[" +
+                getId() +
+                "-" +
+                getDocumentNo() +
+                ",IsSOTrx=" +
+                isSOTrx() +
+                ",C_DocType_ID=" +
+                getDocumentTypeId() +
+                "]";
     } //	toString
 
     /**
@@ -224,7 +211,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
@@ -236,8 +223,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @return lines
      */
     public MDDOrderLine[] getLines(String whereClause, String orderClause) {
-        StringBuffer whereClauseFinal =
-                new StringBuffer(MDDOrderLine.COLUMNNAME_DD_Order_ID).append("=?");
+        StringBuilder whereClauseFinal =
+                new StringBuilder(MDDOrderLine.COLUMNNAME_DD_Order_ID).append("=?");
         if (!Util.isEmpty(whereClause, true))
             whereClauseFinal.append(" AND (").append(whereClause).append(")");
         //
@@ -246,7 +233,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         .setParameters(getDistributionOrderId())
                         .setOrderBy(orderClause)
                         .list();
-        return list.toArray(new MDDOrderLine[list.size()]);
+        return list.toArray(new MDDOrderLine[0]);
     } //	getLines
 
     /**
@@ -329,15 +316,15 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             int ii = Env.getContextAsInt("#M_Warehouse_ID");
             if (ii != 0) setWarehouseId(ii);
             else {
-                log.saveError("FillMandatory", Msg.getElement("M_Warehouse_ID"));
+                log.saveError("FillMandatory", MsgKt.getElementTranslation("M_Warehouse_ID"));
                 return false;
             }
         }
         //	Reservations in Warehouse
         if (!newRecord && isValueChanged("M_Warehouse_ID")) {
             MDDOrderLine[] lines = getLines(false, null);
-            for (int i = 0; i < lines.length; i++) {
-                if (!lines[i].canChangeWarehouse()) return false;
+            for (MDDOrderLine line : lines) {
+                if (!line.canChangeWarehouse()) return false;
             }
         }
 
@@ -414,7 +401,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      */
     public void setDocAction(String DocAction, boolean forceCreation) {
         super.setDocAction(DocAction);
-        m_forceCreation = forceCreation;
     } //	setDocAction
 
     /**
@@ -426,8 +412,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (isProcessed()) return false;
 
         getLines();
-        for (int i = 0; i < m_lines.length; i++) {
-            m_lines[i].delete(true);
+        for (MDDOrderLine m_line : m_lines) {
+            m_line.delete(true);
         }
         return true;
     } //	beforeDelete
@@ -477,7 +463,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getDateOrdered(), dt.getDocBaseType(), getOrgId())) {
@@ -494,8 +480,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
         // Bug 1564431
         if (getDeliveryRule() != null && getDeliveryRule().equals(DELIVERYRULE_CompleteOrder)) {
-            for (int i = 0; i < lines.length; i++) {
-                MDDOrderLine line = lines[i];
+            for (MDDOrderLine line : lines) {
                 I_M_Product product = line.getProduct();
                 if (product != null && product.isExcludeAutoDelivery()) {
                     m_processMsg = "@M_Product_ID@ " + product.getSearchKey() + " @IsExcludeAutoDelivery@";
@@ -605,7 +590,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 } catch (NegativeInventoryDisallowedException e) {
                     log.severe(e.getMessage());
                     errors
-                            .append(Msg.getElement("Line"))
+                            .append(MsgKt.getElementTranslation("Line"))
                             .append(" ")
                             .append(line.getLine())
                             .append(": ");
@@ -650,7 +635,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     @NotNull
     public CompleteActionResult completeIt() {
         @SuppressWarnings("unused")
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Just prepare
         if (DOCACTION_Prepare.equals(getDocAction())) {
@@ -705,15 +690,14 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (m_processMsg != null) return false;
 
         MDDOrderLine[] lines = getLines(true, "M_Product_ID");
-        for (int i = 0; i < lines.length; i++) {
-            MDDOrderLine line = lines[i];
+        for (MDDOrderLine line : lines) {
             BigDecimal old = line.getQtyOrdered();
             if (old.signum() != 0) {
-                line.addDescription(Msg.getMsg("Voided") + " (" + old + ")");
+                line.addDescription(MsgKt.getMsg("Voided") + " (" + old + ")");
                 line.saveEx();
             }
         }
-        addDescription(Msg.getMsg("Voided"));
+        addDescription(MsgKt.getMsg("Voided"));
         //	Clear Reservations
         reserveStock(lines);
         // After Void
@@ -725,92 +709,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         setDocAction(DOCACTION_None);
         return true;
     } //	voidIt
-
-    /**
-     * Create Shipment/Invoice Reversals
-     *
-     * @return true if success
-     */
-  /*
-  private boolean createReversals()
-  {
-  	//	Cancel only Sales
-  	if (!isSOTrx())
-  		return true;
-
-  	if (log.isLoggable(Level.INFO)) log.info("createReversals");
-  	StringBuffer info = new StringBuffer();
-
-  	//	Reverse All *Shipments*
-  	info.append("@M_InOut_ID@:");
-  	MInOut[] shipments = getShipments();
-  	for (int i = 0; i < shipments.length; i++)
-  	{
-  		MInOut ship = shipments[i];
-  		//	if closed - ignore
-  		if (MInOut.DOCSTATUS_Closed.equals(ship.getDocStatus())
-  			|| MInOut.DOCSTATUS_Reversed.equals(ship.getDocStatus())
-  			|| MInOut.DOCSTATUS_Voided.equals(ship.getDocStatus()) )
-  			continue;
-  		ship.set_TrxName(null);
-
-  		//	If not completed - void - otherwise reverse it
-  		if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus()))
-  		{
-  			if (ship.voidIt())
-  				ship.setDocStatus(MInOut.DOCSTATUS_Voided);
-  		}
-  		else if (ship.reverseCorrectIt())	//	completed shipment
-  		{
-  			ship.setDocStatus(MInOut.DOCSTATUS_Reversed);
-  			info.append(" ").append(ship.getDocumentNo());
-  		}
-  		else
-  		{
-  			m_processMsg = "Could not reverse Shipment " + ship;
-  			return false;
-  		}
-  		ship.setDocAction(MInOut.DOCACTION_None);
-  		ship.save(null);
-  	}	//	for all shipments
-
-  	//	Reverse All *Invoices*
-  	info.append(" - @C_Invoice_ID@:");
-  	MInvoice[] invoices = getInvoices();
-  	for (int i = 0; i < invoices.length; i++)
-  	{
-  		MInvoice invoice = invoices[i];
-  		//	if closed - ignore
-  		if (MInvoice.DOCSTATUS_Closed.equals(invoice.getDocStatus())
-  			|| MInvoice.DOCSTATUS_Reversed.equals(invoice.getDocStatus())
-  			|| MInvoice.DOCSTATUS_Voided.equals(invoice.getDocStatus()) )
-  			continue;
-  		invoice.set_TrxName(null);
-
-  		//	If not completed - void - otherwise reverse it
-  		if (!MInvoice.DOCSTATUS_Completed.equals(invoice.getDocStatus()))
-  		{
-  			if (invoice.voidIt())
-  				invoice.setDocStatus(MInvoice.DOCSTATUS_Voided);
-  		}
-  		else if (invoice.reverseCorrectIt())	//	completed invoice
-  		{
-  			invoice.setDocStatus(MInvoice.DOCSTATUS_Reversed);
-  			info.append(" ").append(invoice.getDocumentNo());
-  		}
-  		else
-  		{
-  			m_processMsg = "Could not reverse Invoice " + invoice;
-  			return false;
-  		}
-  		invoice.setDocAction(MInvoice.DOCACTION_None);
-  		invoice.save(null);
-  	}	//	for all shipments
-
-  	m_processMsg = info.toString();
-  	return true;
-  }	//	createReversals
-  */
 
     /**
      * Close Document. Cancel not delivered Qunatities
@@ -826,8 +724,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
         //	Close Not delivered Qty - SO/PO
         MDDOrderLine[] lines = getLines(true, "M_Product_ID");
-        for (int i = 0; i < lines.length; i++) {
-            MDDOrderLine line = lines[i];
+        for (MDDOrderLine line : lines) {
             BigDecimal old = line.getQtyOrdered();
             if (old.compareTo(line.getQtyDelivered()) != 0) {
                 line.setQtyOrdered(line.getQtyDelivered());

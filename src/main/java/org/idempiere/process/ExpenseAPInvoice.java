@@ -10,7 +10,7 @@ import org.compiere.orm.MDocType;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.sql.Timestamp;
@@ -103,7 +103,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                 invoice.setSalesRepresentativeId(te.getDocumentUserId());
                 StringBuilder descr =
                         new StringBuilder()
-                                .append(Msg.translate("S_TimeExpense_ID"))
+                                .append(MsgKt.translate("S_TimeExpense_ID"))
                                 .append(": ")
                                 .append(te.getDocumentNo())
                                 .append(" ")

@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.invoicing.MPaymentTransaction;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 
 import java.util.logging.Level;
@@ -20,12 +20,12 @@ public class VoidOnlineAuthorizationPaymentTransaction extends SvrProcess {
         if (!pt.getTenderType().equals(MPaymentTransaction.TENDERTYPE_CreditCard)
                 || !pt.isOnline()
                 || !pt.getTrxType().equals(MPaymentTransaction.TRXTYPE_Authorization))
-            throw new AdempiereException(Msg.getMsg("ActionNotSupported"));
+            throw new AdempiereException(MsgKt.getMsg("ActionNotSupported"));
         if (pt.isVoided())
-            throw new AdempiereException(Msg.getMsg("PaymentTransactionAlreadyVoided"));
+            throw new AdempiereException(MsgKt.getMsg("PaymentTransactionAlreadyVoided"));
         if (pt.isDelayedCapture())
             throw new AdempiereException(
-                    Msg.getMsg("PaymentTransactionAlreadyDelayedCapture"));
+                    MsgKt.getMsg("PaymentTransactionAlreadyDelayedCapture"));
 
         //  Process it
         boolean ok = pt.voidOnlineAuthorizationPaymentTransaction();

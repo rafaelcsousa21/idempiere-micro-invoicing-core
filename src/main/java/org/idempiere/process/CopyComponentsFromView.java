@@ -19,7 +19,7 @@ import org.compiere.orm.MViewColumn;
 import org.compiere.orm.MViewComponent;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 
 import java.util.logging.Level;
@@ -81,7 +81,7 @@ public class CopyComponentsFromView extends SvrProcess {
         MTable targetTable = new MTable(p_target_AD_Table_ID);
         MViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
         if (targetViewComponents.length > 0)
-            throw new AdempiereSystemError(Msg.getMsg("ErrorCopyView"));
+            throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyView"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
         MViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);

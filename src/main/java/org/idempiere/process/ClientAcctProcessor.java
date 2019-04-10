@@ -8,7 +8,7 @@ import org.compiere.accounting.MCost;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
 
@@ -77,7 +77,7 @@ public class ClientAcctProcessor extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
 
         if (!MClient.Companion.isClientAccounting())
-            throw new AdempiereUserError(Msg.getMsg("ClientAccountingNotEnabled"));
+            throw new AdempiereUserError(MsgKt.getMsg("ClientAccountingNotEnabled"));
 
         m_client = MClientKt.getClientWithAccounting(getClientId());
 

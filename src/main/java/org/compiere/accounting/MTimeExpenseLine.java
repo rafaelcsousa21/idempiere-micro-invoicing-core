@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -159,7 +159,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (newRecord && getParent().isComplete()) {
-            log.saveError("ParentComplete", Msg.translate("S_TimeExpenseLine"));
+            log.saveError("ParentComplete", MsgKt.translate("S_TimeExpenseLine"));
             return false;
         }
         //	Calculate Converted Amount

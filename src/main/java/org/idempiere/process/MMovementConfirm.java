@@ -11,13 +11,13 @@ import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.orm.MDocType;
-import org.compiere.orm.X_C_DocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.process.ProcessInfo;
 import org.compiere.production.MLocator;
 import org.compiere.server.ServerProcessCtl;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
@@ -157,7 +157,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
             String info =
                     user.getName()
                             + ": "
-                            + Msg.translate("IsApproved")
+                            + MsgKt.translate("IsApproved")
                             + " - "
                             + new Timestamp(System.currentTimeMillis());
             addDescription(info);
@@ -172,7 +172,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement("M_MovementConfirm_ID") + " " + getDocumentNo();
+        return MsgKt.getElementTranslation("M_MovementConfirm_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -349,7 +349,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
             }
 
             m_processMsg = " @M_Inventory_ID@: " + m_inventoryInfo;
-            addDescription(Msg.translate("M_Inventory_ID") + ": " + m_inventoryInfo);
+            addDescription(MsgKt.translate("M_Inventory_ID") + ": " + m_inventoryInfo);
         }
 
         m_inventoryDoc = null;
@@ -389,7 +389,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 MWarehouse wh = MWarehouse.get(loc.getWarehouseId());
                 m_inventoryFrom = new MInventory(wh);
                 m_inventoryFrom.setDescription(
-                        Msg.translate("M_MovementConfirm_ID") + " " + getDocumentNo());
+                        MsgKt.translate("M_MovementConfirm_ID") + " " + getDocumentNo());
                 setInventoryDocType(m_inventoryFrom);
                 if (!m_inventoryFrom.save()) {
                     updateProcessMsg("Inventory not created");
@@ -413,7 +413,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                             mLine.getAttributeSetInstanceId(),
                             confirm.getDifferenceQty(),
                             Env.ZERO);
-            line.setDescription(Msg.translate("DifferenceQty"));
+            line.setDescription(MsgKt.translate("DifferenceQty"));
             if (!line.save()) {
                 updateProcessMsg("Inventory Line not created");
                 return false;
@@ -432,7 +432,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 MWarehouse wh = MWarehouse.get(loc.getWarehouseId());
                 m_inventoryTo = new MInventory(wh);
                 m_inventoryTo.setDescription(
-                        Msg.translate("M_MovementConfirm_ID") + " " + getDocumentNo());
+                        MsgKt.translate("M_MovementConfirm_ID") + " " + getDocumentNo());
                 setInventoryDocType(m_inventoryTo);
                 if (!m_inventoryTo.save()) {
                     updateProcessMsg("Inventory not created");
@@ -456,7 +456,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                             mLine.getAttributeSetInstanceId(),
                             confirm.getScrappedQty(),
                             Env.ZERO);
-            line.setDescription(Msg.translate("ScrappedQty"));
+            line.setDescription(MsgKt.translate("ScrappedQty"));
             if (!line.save()) {
                 updateProcessMsg("Inventory Line not created");
                 return false;
@@ -476,7 +476,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         ValueNamePair error = CLogger.retrieveError();
         if (error != null)
             m_processMsg =
-                    m_processMsg + ": " + Msg.getMsg(error.getValue()) + " " + error.getName();
+                    m_processMsg + ": " + MsgKt.getMsg(error.getValue()) + " " + error.getName();
     }
 
     /**
@@ -484,9 +484,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      */
     private void setInventoryDocType(MInventory inventory) {
         MDocType[] doctypes =
-                MDocType.getOfDocBaseType(X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
+                MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
-            if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
+            if (MDocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
                 inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;
             }
@@ -608,7 +608,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")

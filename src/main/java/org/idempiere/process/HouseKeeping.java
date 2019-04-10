@@ -17,7 +17,7 @@ package org.idempiere.process;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MTable;
 import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.AdempiereSystemError;
 
 import java.io.File;
@@ -123,7 +123,7 @@ public class HouseKeeping extends SvrProcess {
         addLog("@Deleted@ " + nodel);
         StringBuilder msg =
                 new StringBuilder()
-                        .append(Msg.getElement(tableName + "_ID"))
+                        .append(MsgKt.getElementTranslation(tableName + "_ID"))
                         .append(" #")
                         .append(nodel);
         return msg.toString();

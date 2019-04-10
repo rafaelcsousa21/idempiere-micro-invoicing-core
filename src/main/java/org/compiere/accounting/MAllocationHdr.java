@@ -12,13 +12,14 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -96,7 +97,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             setPosted(false);
             setProcessed(false);
             setProcessing(false);
-            setDocumentTypeId(MDocType.getDocType("CMA"));
+            setDocumentTypeId(MDocTypeKt.getDocumentTypeDocType("CMA"));
         }
     } //	MAllocation
 
@@ -517,7 +518,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                 line.processIt(true);
             }
 
-            addDescription(Msg.getMsg("Voided"));
+            addDescription(MsgKt.getMsg("Voided"));
             retValue = true;
         } else {
             boolean accrual = false;
@@ -649,7 +650,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement("C_AllocationHdr_ID") +
+        return MsgKt.getElementTranslation("C_AllocationHdr_ID") +
                 " " +
                 getDocumentNo();
     } //	getDocumentInfo
@@ -665,7 +666,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         sb.append(getDocumentNo());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("ApprovalAmt"))
+                .append(MsgKt.translate("ApprovalAmt"))
                 .append("=")
                 .append(getApprovalAmt())
                 .append(" (#")
@@ -797,7 +798,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                 line.processIt(true); // 	reverse
             }
 
-            addDescription(Msg.getMsg("Voided"));
+            addDescription(MsgKt.getMsg("Voided"));
         }
 
         setProcessed(true);

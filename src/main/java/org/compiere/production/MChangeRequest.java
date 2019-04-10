@@ -1,7 +1,7 @@
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 
 /**
  * Change Request Model
@@ -40,7 +40,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
         setClientOrg(request);
         StringBuilder msgset =
                 new StringBuilder()
-                        .append(Msg.getElement("R_Request_ID"))
+                        .append(MsgKt.getElementTranslation("R_Request_ID"))
                         .append(": ")
                         .append(request.getDocumentNo());
         setName(msgset.toString());
@@ -67,7 +67,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
         //	Have at least one
         if (getProductBOMId() == 0 && getChangeNoticeId() == 0) {
             log.saveError(
-                    "Error", Msg.parseTranslation("@NotFound@: @M_BOM_ID@ / @M_ChangeNotice_ID@"));
+                    "Error", MsgKt.parseTranslation("@NotFound@: @M_BOM_ID@ / @M_ChangeNotice_ID@"));
             return false;
         }
 

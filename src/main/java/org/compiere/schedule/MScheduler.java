@@ -10,11 +10,10 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.MUserRoles;
 import org.compiere.orm.Query;
 import org.compiere.util.DisplayType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.icommon.model.IPO;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -183,7 +182,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
                             .setParameters(getDBTableId(), DisplayType.Button, getProcessId())
                             .firstId();
             if (colid <= 0) {
-                log.saveError("Error", Msg.getMsg("TableMustHaveProcessButton"));
+                log.saveError("Error", MsgKt.getMsg("TableMustHaveProcessButton"));
                 return false;
             }
         } else {
@@ -193,14 +192,14 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         if (getRecordId() != 0) {
             // Validate AD_Table_ID must be set
             if (getDBTableId() <= 0) {
-                log.saveError("Error", Msg.getMsg("MustFillTable"));
+                log.saveError("Error", MsgKt.getMsg("MustFillTable"));
                 return false;
             }
             // Validate the record must exists on the same client of the scheduler
             MTable table = MTable.get(getDBTableId());
             IPO po = table.getPO(getRecordId());
             if (po == null || po.getId() <= 0 || po.getClientId() != getClientId()) {
-                log.saveError("Error", Msg.getMsg("NoRecordID"));
+                log.saveError("Error", MsgKt.getMsg("NoRecordID"));
                 return false;
             }
         }

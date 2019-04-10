@@ -5,7 +5,7 @@ import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
 import org.compiere.util.DisplayType;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -316,12 +316,12 @@ public class MConversionRate extends X_C_Conversion_Rate {
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
         if (getCurrencyId() == getTargetCurrencyId()) {
-            log.saveError("Error", Msg.parseTranslation("@C_Currency_ID@ = @C_Currency_ID@"));
+            log.saveError("Error", MsgKt.parseTranslation("@C_Currency_ID@ = @C_Currency_ID@"));
             return false;
         }
         //	Nothing to convert
         if (getMultiplyRate().compareTo(Env.ZERO) <= 0) {
-            log.saveError("Error", Msg.parseTranslation("@MultiplyRate@ <= 0"));
+            log.saveError("Error", MsgKt.parseTranslation("@MultiplyRate@ <= 0"));
             return false;
         }
 
@@ -330,7 +330,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         if (getValidTo() == null) {
             // setValidTo (TimeUtil.getDay(2056, 1, 29));	//	 no exchange rates after my 100th birthday
             log.saveError(
-                    "FillMandatory", Msg.getElement(I_C_Conversion_Rate.COLUMNNAME_ValidTo));
+                    "FillMandatory", MsgKt.getElementTranslation(I_C_Conversion_Rate.COLUMNNAME_ValidTo));
             return false;
         }
         Timestamp to = getValidTo();

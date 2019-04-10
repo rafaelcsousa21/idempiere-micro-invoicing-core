@@ -6,13 +6,11 @@ import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_StorageOnHand;
 import org.compiere.model.I_M_Transaction;
-import org.compiere.orm.MTree_Base;
 import org.compiere.orm.Query;
-import org.compiere.orm.X_AD_Tree;
 import org.compiere.product.MAttributeSet;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.X_I_Product;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
@@ -22,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 
+import static org.compiere.orm.MTree_Base.TREETYPE_Product;
 import static software.hsharp.core.util.DBKt.executeUpdate;
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
@@ -46,7 +45,6 @@ public class MProduct extends org.compiere.product.MProduct {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx          context
      * @param M_Product_ID id
      */
     public MProduct(int M_Product_ID) {
@@ -55,8 +53,6 @@ public class MProduct extends org.compiere.product.MProduct {
 
     /**
      * Load constructor
-     *
-     * @param ctx context
      */
     public MProduct(Row row) {
         super(row);
@@ -65,7 +61,6 @@ public class MProduct extends org.compiere.product.MProduct {
     /**
      * Get MProduct from Cache
      *
-     * @param ctx          context
      * @param M_Product_ID id
      * @return MProduct or null
      */
@@ -165,10 +160,10 @@ public class MProduct extends org.compiere.product.MProduct {
                     "M_Product_Acct",
                     "M_Product_Category_Acct",
                     "p.M_Product_Category_ID=" + getProductCategoryId());
-            insert_Tree(X_AD_Tree.TREETYPE_Product);
+            insert_Tree(TREETYPE_Product);
         }
         if (newRecord || isValueChanged(I_M_Product.COLUMNNAME_Value))
-            update_Tree(MTree_Base.TREETYPE_Product);
+            update_Tree(TREETYPE_Product);
 
         //	New Costing
         if (newRecord || isValueChanged("M_Product_Category_ID")) MCost.create(this);
@@ -185,7 +180,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (isStocked() || I_M_Product.PRODUCTTYPE_Item.equals(getProductType())) {
             String errMsg = verifyStorage();
             if (!Util.isEmpty(errMsg)) {
-                log.saveError("Error", Msg.parseTranslation(errMsg));
+                log.saveError("Error", MsgKt.parseTranslation(errMsg));
                 return false;
             }
         }
@@ -319,14 +314,14 @@ public class MProduct extends org.compiere.product.MProduct {
                         && I_M_Product.PRODUCTTYPE_Item.equals(getValueOld("ProductType"))))) {
             String errMsg = verifyStorage();
             if (!Util.isEmpty(errMsg)) {
-                log.saveError("Error", Msg.parseTranslation(errMsg));
+                log.saveError("Error", MsgKt.parseTranslation(errMsg));
                 return false;
             }
         } //	storage
 
         // it checks if UOM has been changed , if so disallow the change if the condition is true.
         if ((!newRecord) && isValueChanged("C_UOM_ID") && hasInventoryOrCost()) {
-            log.saveError("Error", Msg.getMsg("SaveUomError"));
+            log.saveError("Error", MsgKt.getMsg("SaveUomError"));
             return false;
         }
 

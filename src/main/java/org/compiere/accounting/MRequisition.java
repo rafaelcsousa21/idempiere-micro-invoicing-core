@@ -7,12 +7,13 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MDocType;
+import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -131,7 +132,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      */
     @NotNull
     public String getDocumentInfo() {
-        return Msg.getElement("M_Requisition_ID") + " " + getDocumentNo();
+        return MsgKt.getElementTranslation("M_Requisition_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -314,7 +315,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getDocumentTypeId());
+        MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(
@@ -469,7 +470,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         sb.append(" - ").append(getUserName());
         //	: Total Lines = 123.00 (#1)
         sb.append(": ")
-                .append(Msg.translate("TotalLines"))
+                .append(MsgKt.translate("TotalLines"))
                 .append("=")
                 .append(getTotalLines())
                 .append(" (#")

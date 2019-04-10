@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.bo.MCurrency;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.crm.MClientInfo;
+import org.compiere.crm.MClientInfoKt;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MClient;
@@ -165,7 +166,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
 
         //  Create New
         ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
-        MClientInfo info = MClientInfo.get(AD_Client_ID);
+        MClientInfo info = MClientInfoKt.getClientInfo(AD_Client_ID);
         MAcctSchema as = MAcctSchema.get(info.getAcctSchema1Id());
         if (as.getId() != 0) list.add(as);
 
@@ -480,7 +481,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         checkCosting();
         //	Check Primary
         if (getOrganizationOnlyId() != 0) {
-            MClientInfo info = MClientInfo.get(getClientId());
+            MClientInfo info = MClientInfoKt.getClientInfo(getClientId());
             if (info.getAcctSchema1Id() == getAccountingSchemaId()) setOrganizationOnlyId(0);
         }
         return true;

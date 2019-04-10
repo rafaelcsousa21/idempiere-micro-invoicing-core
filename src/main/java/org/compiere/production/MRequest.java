@@ -373,7 +373,7 @@ public class MRequest extends X_R_Request {
 
   		//  RequestActionEMailInfo - EMail from {0} to {1}
   //		Object[] args = new Object[] {emailFrom, emailTo};
-  //		String msg = Msg.getMsg( "RequestActionEMailInfo", args);
+  //		String msg = MsgKt.getMsg( "RequestActionEMailInfo", args);
   //		setLastResult(msg);
   		//
 
@@ -453,7 +453,7 @@ public class MRequest extends X_R_Request {
   			MUserKt.getUserNameOfUser(oldSalesRep_ID),
   			MUserKt.getUserNameOfUser(getSalesRepresentativeId())
   			};
-  		String subject = Msg.getMsg( "RequestActionTransfer", args);
+  		String subject = MsgKt.getMsg( "RequestActionTransfer", args);
   		String message = subject + "\n" + getSummary();
   		MClient client = MClientKt.getClient(Env.getCtx());
   		MUser from = MUserKt.getUser (AD_User_ID);

@@ -5,7 +5,7 @@ import org.compiere.model.I_C_UOM_Conversion;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.Query;
 import org.compiere.product.MUOM;
-import org.compiere.util.Msg;
+import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
@@ -405,12 +405,12 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
         if (getUOMId() == getTargetUOMId()) {
-            log.saveError("Error", Msg.parseTranslation("@C_UOM_ID@ = @C_UOM_To_ID@"));
+            log.saveError("Error", MsgKt.parseTranslation("@C_UOM_ID@ = @C_UOM_To_ID@"));
             return false;
         }
         //	Nothing to convert
         if (getMultiplyRate().compareTo(Env.ZERO) <= 0) {
-            log.saveError("Error", Msg.parseTranslation("@MultiplyRate@ <= 0"));
+            log.saveError("Error", MsgKt.parseTranslation("@MultiplyRate@ <= 0"));
             return false;
         }
         //	Enforce Product UOM
