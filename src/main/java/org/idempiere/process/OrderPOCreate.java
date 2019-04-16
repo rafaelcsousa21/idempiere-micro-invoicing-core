@@ -4,6 +4,7 @@ import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.MOrgInfoKt;
 import org.compiere.process.SvrProcess;
@@ -159,8 +160,8 @@ public class OrderPOCreate extends SvrProcess {
      */
     private int createPOFromSO(MOrder so) throws Exception {
         if (log.isLoggable(Level.INFO)) log.info(so.toString());
-        MOrderLine[] soLines = so.getLines(true, null);
-        if (soLines == null || soLines.length == 0) {
+        I_C_OrderLine[] soLines = so.getLines(true, null).toArray(new I_C_OrderLine[0]);
+        if (soLines.length == 0) {
             log.warning("No Lines - " + so);
             return 0;
         }
@@ -196,23 +197,23 @@ public class OrderPOCreate extends SvrProcess {
 
                 //	Line
                 int M_Product_ID = rs.getInt(2);
-                for (int i = 0; i < soLines.length; i++) {
-                    if (soLines[i].getProductId() == M_Product_ID) {
+                for (I_C_OrderLine soLine : soLines) {
+                    if (soLine.getProductId() == M_Product_ID) {
                         MOrderLine poLine = new MOrderLine(po);
-                        poLine.setLink_OrderLineId(soLines[i].getOrderLineId());
-                        poLine.setProductId(soLines[i].getProductId());
-                        poLine.setChargeId(soLines[i].getChargeId());
-                        poLine.setAttributeSetInstanceId(soLines[i].getAttributeSetInstanceId());
-                        poLine.setUOMId(soLines[i].getUOMId());
-                        poLine.setQtyEntered(soLines[i].getQtyEntered());
-                        poLine.setQtyOrdered(soLines[i].getQtyOrdered());
-                        poLine.setDescription(soLines[i].getDescription());
-                        poLine.setDatePromised(soLines[i].getDatePromised());
+                        poLine.setLink_OrderLineId(soLine.getOrderLineId());
+                        poLine.setProductId(soLine.getProductId());
+                        poLine.setChargeId(soLine.getChargeId());
+                        poLine.setAttributeSetInstanceId(soLine.getAttributeSetInstanceId());
+                        poLine.setUOMId(soLine.getUOMId());
+                        poLine.setQtyEntered(soLine.getQtyEntered());
+                        poLine.setQtyOrdered(soLine.getQtyOrdered());
+                        poLine.setDescription(soLine.getDescription());
+                        poLine.setDatePromised(soLine.getDatePromised());
                         poLine.setPrice();
                         poLine.saveEx();
 
-                        soLines[i].setLink_OrderLineId(poLine.getOrderLineId());
-                        soLines[i].saveEx();
+                        soLine.setLink_OrderLineId(poLine.getOrderLineId());
+                        soLine.saveEx();
                     }
                 }
             }

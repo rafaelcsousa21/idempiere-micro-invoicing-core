@@ -440,7 +440,6 @@ public class DocLine {
      * Get Charge Account
      *
      * @param as     account schema
-     * @param amount amount for expense(+)/revenue(-)
      * @return Charge Account or null
      */
     public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as) {
@@ -522,14 +521,14 @@ public class DocLine {
      * @return true if product
      */
     public boolean isItem() {
-        if (m_isItem != null) return m_isItem.booleanValue();
+        if (m_isItem != null) return m_isItem;
 
         m_isItem = Boolean.FALSE;
         if (getProductId() != 0) {
             org.compiere.product.MProduct product = MProduct.get(getProductId());
             if (product.getId() == getProductId() && product.isItem()) m_isItem = Boolean.TRUE;
         }
-        return m_isItem.booleanValue();
+        return m_isItem;
     } //	isItem
 
     /**

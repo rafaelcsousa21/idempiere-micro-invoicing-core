@@ -14,8 +14,10 @@ import org.compiere.invoicing.MPaymentTerm;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOut;
+import org.compiere.model.I_M_Product;
 import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.order.MOrderTax;
@@ -26,7 +28,6 @@ import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.MSequence;
 import org.compiere.orm.MSysConfig;
-import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
@@ -45,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -179,8 +181,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         {
             if (!INVOICERULE_Immediate.equals(getInvoiceRule())) setInvoiceRule(INVOICERULE_Immediate);
             //
-            MOrderLine[] oLines = getLines();
-            for (MOrderLine oLine : oLines) {
+            I_C_OrderLine[] oLines = getLines().toArray(new I_C_OrderLine[0]);
+            for (I_C_OrderLine oLine : oLines) {
                 //
                 MInvoiceLine iLine = new MInvoiceLine(invoice);
                 iLine.setOrderLine(oLine);
@@ -275,8 +277,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         //	Reservations in Warehouse
         if (!newRecord && isValueChanged("M_Warehouse_ID")) {
-            MOrderLine[] lines = getLines(false, null);
-            for (MOrderLine line : lines) {
+            I_C_OrderLine[] lines = getLines(false, null).toArray(new I_C_OrderLine[0]);
+            for (I_C_OrderLine line : lines) {
                 if (!line.canChangeWarehouse()) return false;
             }
         }
@@ -417,7 +419,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return lines
      */
-    public MOrderLine[] getLines() {
+    public List<I_C_OrderLine> getLines() {
         return getLines(false, null);
     } //	getLines
 
@@ -428,16 +430,16 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @param orderBy optional order by column
      * @return lines
      */
-    public MOrderLine[] getLines(boolean requery, String orderBy) {
+    public List<I_C_OrderLine> getLines(boolean requery, String orderBy) {
         if (m_lines != null && !requery) {
-            return m_lines;
+            return Arrays.asList(m_lines);
         }
         //
         String orderClause = "";
         if (orderBy != null && orderBy.length() > 0) orderClause += orderBy;
         else orderClause += "Line";
         m_lines = getLines(null, orderClause);
-        return m_lines;
+        return Arrays.asList(m_lines);
     } //	getLines
 
     /**
@@ -494,7 +496,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         }
 
         //	Lines
-        MOrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID);
+        I_C_OrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -502,8 +504,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         // Bug 1564431
         if (getDeliveryRule() != null && getDeliveryRule().equals(DELIVERYRULE_CompleteOrder)) {
-            for (org.compiere.order.MOrderLine line : lines) {
-                org.compiere.product.MProduct product = line.getProduct();
+            for (I_C_OrderLine line : lines) {
+                I_M_Product product = line.getProduct();
                 if (product != null && product.isExcludeAutoDelivery()) {
                     m_processMsg = "@M_Product_ID@ " + product.getSearchKey() + " @IsExcludeAutoDelivery@";
                     return DocAction.Companion.getSTATUS_Invalid();
@@ -519,7 +521,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 if (MDocType.DOCSUBTYPESO_StandardOrder.equals(dtOld.getDocSubTypeSO()) // 	From SO
                         && !MDocType.DOCSUBTYPESO_StandardOrder.equals(dt.getDocSubTypeSO())) // 	To !SO
                 {
-                    for (MOrderLine line : lines) {
+                    for (I_C_OrderLine line : lines) {
                         if (line.getWarehouseId() != getWarehouseId()) {
                             log.warning("different Warehouse " + line);
                             m_processMsg = "@CannotChangeDocType@";
@@ -546,9 +548,9 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         } //	convert DocType
 
         //	Mandatory Product Attribute Set Instance
-        for (MOrderLine line : getLines()) {
+        for (I_C_OrderLine line : getLines()) {
             if (line.getProductId() > 0 && line.getAttributeSetInstanceId() == 0) {
-                MProduct product = line.getProduct();
+                I_M_Product product = line.getProduct();
                 if (product.isASIMandatory(isSOTrx())) {
                     if (product.getAttributeSet() == null) {
                         m_processMsg = "@NoAttributeSet@=" + product.getSearchKey();
@@ -567,7 +569,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         }
 
         //	Lines
-        if (explodeBOM()) lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID);
+        if (explodeBOM()) lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]);
         if (!reserveStock(dt, lines)) {
             String innerMsg = CLogger.retrieveErrorString("");
             m_processMsg = "Cannot reserve Stock";
@@ -668,7 +670,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @param lines order lines (ordered by M_Product_ID for deadlock prevention)
      * @return true if (un) reserved
      */
-    protected boolean reserveStock(MDocType dt, MOrderLine[] lines) {
+    protected boolean reserveStock(MDocType dt, I_C_OrderLine[] lines) {
         if (dt == null) dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
 
         //	Binding
@@ -691,7 +693,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         BigDecimal Weight = Env.ZERO;
 
         //	Always check and (un) Reserve Inventory
-        for (MOrderLine line : lines) {
+        for (I_C_OrderLine line : lines) {
             //	Check/set WH/Org
             if (header_M_Warehouse_ID != 0) // 	enforce WH
             {
@@ -706,7 +708,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
             if (difference.signum() == 0 || line.getQtyOrdered().signum() < 0) {
                 if (difference.signum() == 0 || line.getQtyReserved().signum() == 0) {
-                    org.compiere.product.MProduct product = line.getProduct();
+                    I_M_Product product = line.getProduct();
                     if (product != null) {
                         Volume = Volume.add(product.getVolume().multiply(line.getQtyOrdered()));
                         Weight = Weight.add(product.getWeight().multiply(line.getQtyOrdered()));
@@ -733,7 +735,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                                 + line.getQtyDelivered());
 
             //	Check Product - Stocked and Item
-            org.compiere.product.MProduct product = line.getProduct();
+            I_M_Product product = line.getProduct();
             if (product != null) {
                 if (product.isStocked()) {
                     //	Update Reservation Storage
@@ -784,7 +786,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 || MDocType.DOCSUBTYPESO_Quotation.equals(DocSubTypeSO)) {
             //	Binding
             if (MDocType.DOCSUBTYPESO_Quotation.equals(DocSubTypeSO))
-                reserveStock(dt, getLines(true, MOrderLine.COLUMNNAME_M_Product_ID));
+                reserveStock(dt, getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]));
             m_processMsg =
                     ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_COMPLETE);
             if (m_processMsg != null)
@@ -894,8 +896,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     } //	completeIt
 
     protected String landedCostAllocation() {
-        MOrderLandedCost[] landedCosts = MOrderLandedCost.getOfOrder(getOrderId());
-        for (MOrderLandedCost landedCost : landedCosts) {
+        I_C_OrderLandedCost[] landedCosts = MOrderLandedCost.getOfOrder(getOrderId());
+        for (I_C_OrderLandedCost landedCost : landedCosts) {
             String error = landedCost.distributeLandedCost();
             if (!Util.isEmpty(error)) return error;
         }
@@ -1053,8 +1055,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             return null;
         }
         //
-        MOrderLine[] oLines = getLines(true, null);
-        for (MOrderLine oLine : oLines) {
+        I_C_OrderLine[] oLines = getLines(true, null).toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine oLine : oLines) {
             //
             MInOutLine ioLine = new MInOutLine(shipment);
             //	Qty = Ordered - Delivered
@@ -1146,8 +1148,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         counter.saveEx();
 
         //	Update copied lines
-        MOrderLine[] counterLines = counter.getLines(true, null);
-        for (MOrderLine counterLine : counterLines) {
+        I_C_OrderLine[] counterLines = counter.getLines(true, null).toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine counterLine : counterLines) {
             counterLine.setOrder(counter); // 	copies header values (BP, etc.)
             counterLine.setPrice();
             counterLine.setTax();
@@ -1191,8 +1193,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         if (!createReversals()) return false;
 
-        MOrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID);
-        for (MOrderLine line : lines) {
+        I_C_OrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine line : lines) {
             BigDecimal old = line.getQtyOrdered();
             if (old.signum() != 0) {
                 line.addDescription(MsgKt.getMsg("Voided") + " (" + old + ")");
@@ -1248,18 +1250,18 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return shipments
      */
-    public MInOut[] getShipments() {
+    public I_M_InOut[] getShipments() {
         final String whereClause =
                 "EXISTS (SELECT 1 FROM M_InOutLine iol, C_OrderLine ol"
                         + " WHERE iol.M_InOut_ID=M_InOut.M_InOut_ID"
                         + " AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
                         + " AND ol.C_Order_ID=?)";
-        List<PO> list =
+        List<I_M_InOut> list =
                 new Query(I_M_InOut.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy("M_InOut_ID DESC")
                         .list();
-        return list.toArray(new MInOut[0]);
+        return list.toArray(new I_M_InOut[0]);
     } //	getShipments
 
     /**
@@ -1276,8 +1278,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         //	Reverse All *Shipments*
         info.append("@M_InOut_ID@:");
-        MInOut[] shipments = getShipments();
-        for (MInOut ship : shipments) {
+        I_M_InOut[] shipments = getShipments();
+        for (I_M_InOut ship : shipments) {
             //	if closed - ignore
             if (MInOut.DOCSTATUS_Closed.equals(ship.getDocStatus())
                     || MInOut.DOCSTATUS_Reversed.equals(ship.getDocStatus())
@@ -1339,8 +1341,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (m_processMsg != null) return false;
 
         //	Close Not delivered Qty - SO/PO
-        MOrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID);
-        for (MOrderLine line : lines) {
+        I_C_OrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine line : lines) {
             BigDecimal old = line.getQtyOrdered();
             if (old.compareTo(line.getQtyDelivered()) != 0) {
                 line.setQtyLostSales(line.getQtyOrdered().subtract(line.getQtyDelivered()));
@@ -1374,8 +1376,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         }
 
         //
-        MOrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID);
-        for (MOrderLine line : lines) {
+        I_C_OrderLine[] lines = getLines(true, MOrderLine.COLUMNNAME_M_Product_ID).toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine line : lines) {
             if (Env.ZERO.compareTo(line.getQtyLostSales()) != 0) {
                 line.setQtyOrdered(line.getQtyLostSales().add(line.getQtyDelivered()));
                 line.setQtyLostSales(Env.ZERO);
@@ -1507,7 +1509,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     } //	reActivateIt
 
     // AZ Goodwill
-    protected String deleteMatchPOCostDetail(MOrderLine line) {
+    protected String deleteMatchPOCostDetail(I_C_OrderLine line) {
         // Get Account Schemas to delete MCostDetail
         MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
         for (MAcctSchema as : acctschemas) {

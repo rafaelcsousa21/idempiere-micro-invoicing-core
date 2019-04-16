@@ -1,10 +1,10 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
-import org.compiere.accounting.MOrderLine;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.Env;
 
@@ -59,10 +59,10 @@ public class OrderRePrice extends SvrProcess {
         if (p_C_Order_ID != 0) {
             MOrder order = new MOrder(p_C_Order_ID);
             BigDecimal oldPrice = order.getGrandTotal();
-            MOrderLine[] lines = order.getLines();
-            for (int i = 0; i < lines.length; i++) {
-                lines[i].setPrice(order.getPriceListId());
-                lines[i].saveEx();
+            I_C_OrderLine[] lines = order.getLines().toArray(new I_C_OrderLine[0]);
+            for (I_C_OrderLine line : lines) {
+                line.setPrice(order.getPriceListId());
+                line.saveEx();
             }
             order = new MOrder(p_C_Order_ID);
             BigDecimal newPrice = order.getGrandTotal();
@@ -78,11 +78,11 @@ public class OrderRePrice extends SvrProcess {
             MInvoice invoice = new MInvoice(p_C_Invoice_ID);
             BigDecimal oldPrice = invoice.getGrandTotal();
             MInvoiceLine[] lines = invoice.getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                lines[i].setPrice(invoice.getPriceListId());
-                if (lines[i].is_Changed()) {
-                    lines[i].setTaxAmt();
-                    lines[i].saveEx();
+            for (MInvoiceLine line : lines) {
+                line.setPrice(invoice.getPriceListId());
+                if (line.is_Changed()) {
+                    line.setTaxAmt();
+                    line.saveEx();
                 }
             }
             invoice = new MInvoice(p_C_Invoice_ID);

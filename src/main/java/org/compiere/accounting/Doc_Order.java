@@ -4,8 +4,8 @@ import kotliquery.Row;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_C_ValidCombination;
-import org.compiere.order.MOrderLine;
 import org.compiere.tax.MTax;
 import org.idempiere.common.util.Env;
 
@@ -85,8 +85,7 @@ public class Doc_Order extends Doc {
         @SuppressWarnings("unused")
         FactLine fl = null;
         int C_Currency_ID = -1;
-        for (int i = 0; i < commitments.length; i++) {
-            DocLine line = commitments[i];
+        for (DocLine line : commitments) {
             if (C_Currency_ID == -1) C_Currency_ID = line.getCurrencyId();
             else if (C_Currency_ID != line.getCurrencyId()) {
                 doc.p_Error = "Different Currencies of Order Lines";
@@ -98,7 +97,7 @@ public class Doc_Order extends Doc {
 
             //	Account
             I_C_ValidCombination expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
-            fl = fact.createLine(line, expense, C_Currency_ID, null, cost);
+            fact.createLine(line, expense, C_Currency_ID, null, cost);
         }
         //	Offset
         MAccount offset = doc.getAccount(ACCTTYPE_CommitmentOffset, as);
@@ -140,8 +139,7 @@ public class Doc_Order extends Doc {
         @SuppressWarnings("unused")
         FactLine fl = null;
         int C_Currency_ID = -1;
-        for (int i = 0; i < commitments.length; i++) {
-            DocLine line = commitments[i];
+        for (DocLine line : commitments) {
             if (C_Currency_ID == -1) C_Currency_ID = line.getCurrencyId();
             else if (C_Currency_ID != line.getCurrencyId()) {
                 doc.p_Error = "Different Currencies of Order Lines";
@@ -153,7 +151,7 @@ public class Doc_Order extends Doc {
 
             //	Account
             I_C_ValidCombination revenue = line.getAccount(ProductCost.ACCTTYPE_P_Revenue, as);
-            fl = fact.createLine(line, revenue, C_Currency_ID, cost, null);
+            fact.createLine(line, revenue, C_Currency_ID, cost, null);
         }
         //	Offset
         MAccount offset = doc.getAccount(ACCTTYPE_CommitmentOffsetSales, as);
@@ -194,10 +192,9 @@ public class Doc_Order extends Doc {
      * @return DocLine Array
      */
     private DocLine[] loadLines(MOrder order) {
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
-        MOrderLine[] lines = order.getLines();
-        for (int i = 0; i < lines.length; i++) {
-            MOrderLine line = lines[i];
+        ArrayList<DocLine> list = new ArrayList<>();
+        I_C_OrderLine[] lines = order.getLines().toArray(new I_C_OrderLine[0]);
+        for (I_C_OrderLine line : lines) {
             DocLine docLine = new DocLine(line, this);
             BigDecimal Qty = line.getQtyOrdered();
             docLine.setQty(Qty, order.isSOTrx());
@@ -205,7 +202,7 @@ public class Doc_Order extends Doc {
             BigDecimal PriceCost = null;
             if (getDocumentType().equals(DOCTYPE_POrder)) // 	PO
                 PriceCost = line.getPriceCost();
-            BigDecimal LineNetAmt = null;
+            BigDecimal LineNetAmt;
             if (PriceCost != null && PriceCost.signum() != 0) LineNetAmt = Qty.multiply(PriceCost);
             else LineNetAmt = line.getLineNetAmt();
             docLine.setAmount(LineNetAmt); // 	DR
@@ -219,9 +216,9 @@ public class Doc_Order extends Doc {
                     if (log.isLoggable(Level.FINE))
                         log.fine("LineNetAmt=" + LineNetAmt + " - Tax=" + LineNetAmtTax);
                     LineNetAmt = LineNetAmt.subtract(LineNetAmtTax);
-                    for (int t = 0; t < m_taxes.length; t++) {
-                        if (m_taxes[t].getTaxId() == C_Tax_ID) {
-                            m_taxes[t].addIncludedTax(LineNetAmtTax);
+                    for (DocTax m_tax : m_taxes) {
+                        if (m_tax.getTaxId() == C_Tax_ID) {
+                            m_tax.addIncludedTax(LineNetAmtTax);
                             break;
                         }
                     }
@@ -378,7 +375,7 @@ public class Doc_Order extends Doc {
 
                     //	Account
                     I_C_ValidCombination expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
-                    fl = fact.createLine(line, expense, getCurrencyId(), cost, null);
+                    fact.createLine(line, expense, getCurrencyId(), cost, null);
                 }
                 //	Offset
                 MAccount offset = getAccount(ACCTTYPE_CommitmentOffset, as);
@@ -397,14 +394,13 @@ public class Doc_Order extends Doc {
                 Fact fact = new Fact(this, as, Fact.POST_Reservation);
                 BigDecimal total = Env.ZERO;
                 if (m_requisitions == null) m_requisitions = loadRequisitions();
-                for (int i = 0; i < m_requisitions.length; i++) {
-                    DocLine line = m_requisitions[i];
+                for (DocLine line : m_requisitions) {
                     BigDecimal cost = line.getAmtSource();
                     total = total.add(cost);
 
                     //	Account
                     I_C_ValidCombination expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
-                    fl = fact.createLine(line, expense, getCurrencyId(), null, cost);
+                    fact.createLine(line, expense, getCurrencyId(), null, cost);
                 }
                 //	Offset
                 if (m_requisitions.length > 0) {
@@ -428,14 +424,13 @@ public class Doc_Order extends Doc {
             if (as.isCreateSOCommitment()) {
                 Fact fact = new Fact(this, as, Fact.POST_Commitment);
                 BigDecimal total = Env.ZERO;
-                for (int i = 0; i < p_lines.length; i++) {
-                    DocLine line = p_lines[i];
+                for (DocLine line : p_lines) {
                     BigDecimal cost = line.getAmtSource();
                     total = total.add(cost);
 
                     //	Account
                     I_C_ValidCombination revenue = line.getAccount(ProductCost.ACCTTYPE_P_Revenue, as);
-                    fl = fact.createLine(line, revenue, getCurrencyId(), null, cost);
+                    fact.createLine(line, revenue, getCurrencyId(), null, cost);
                 }
                 //	Offset
                 MAccount offset = getAccount(ACCTTYPE_CommitmentOffsetSales, as);
@@ -461,32 +456,30 @@ public class Doc_Order extends Doc {
         MClientInfo ci = MClientInfo.get(as.getClientId());
         if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 
-        StringBuilder sql =
-                new StringBuilder("UPDATE M_Product_PO po ")
-                        .append(
-                                "SET PriceLastPO = (SELECT currencyConvert(ol.PriceActual,ol.C_Currency_ID,po.C_Currency_ID,o.DateOrdered,o.C_ConversionType_ID,o.AD_Client_ID,o.orgId) ")
-                        .append("FROM C_Order o, C_OrderLine ol ")
-                        .append("WHERE o.C_Order_ID=ol.C_Order_ID")
-                        .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID ");
-        // jz + " AND ROWNUM=1 AND o.C_Order_ID=").append(getId()).append(") ")
-        sql.append(" AND ol.C_OrderLine_ID = (SELECT MIN(ol1.C_OrderLine_ID) ")
-                .append("FROM C_Order o1, C_OrderLine ol1 ")
-                .append("WHERE o1.C_Order_ID=ol1.C_Order_ID")
-                .append(" AND po.M_Product_ID=ol1.M_Product_ID AND po.C_BPartner_ID=o1.C_BPartner_ID")
-                .append("  AND o1.C_Order_ID=")
-                .append(getId())
-                .append(") ");
-        sql.append("  AND o.C_Order_ID=")
-                .append(getId())
-                .append(") ")
-                .append("WHERE EXISTS (SELECT * ")
-                .append("FROM C_Order o, C_OrderLine ol ")
-                .append("WHERE o.C_Order_ID=ol.C_Order_ID")
-                .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID")
-                .append(" AND o.C_Order_ID=")
-                .append(getId())
-                .append(")");
-        int no = executeUpdate(sql.toString());
+        String sql = "UPDATE M_Product_PO po " +
+                "SET PriceLastPO = (SELECT currencyConvert(ol.PriceActual,ol.C_Currency_ID,po.C_Currency_ID,o.DateOrdered,o.C_ConversionType_ID,o.AD_Client_ID,o.orgId) " +
+                "FROM C_Order o, C_OrderLine ol " +
+                "WHERE o.C_Order_ID=ol.C_Order_ID" +
+                " AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID " +
+                // jz + " AND ROWNUM=1 AND o.C_Order_ID=").append(getId()).append(") ")
+                " AND ol.C_OrderLine_ID = (SELECT MIN(ol1.C_OrderLine_ID) " +
+                "FROM C_Order o1, C_OrderLine ol1 " +
+                "WHERE o1.C_Order_ID=ol1.C_Order_ID" +
+                " AND po.M_Product_ID=ol1.M_Product_ID AND po.C_BPartner_ID=o1.C_BPartner_ID" +
+                "  AND o1.C_Order_ID=" +
+                getId() +
+                ") " +
+                "  AND o.C_Order_ID=" +
+                getId() +
+                ") " +
+                "WHERE EXISTS (SELECT * " +
+                "FROM C_Order o, C_OrderLine ol " +
+                "WHERE o.C_Order_ID=ol.C_Order_ID" +
+                " AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID" +
+                " AND o.C_Order_ID=" +
+                getId() +
+                ")";
+        int no = executeUpdate(sql);
         if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);
     } //	updateProductPO
 } //  Doc_Order

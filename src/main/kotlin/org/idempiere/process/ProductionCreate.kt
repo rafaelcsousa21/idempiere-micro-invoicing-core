@@ -96,7 +96,7 @@ class ProductionCreate(
             if (newQty != null)
                 m_production!!.productionQty = newQty
 
-            m_production!!.deleteLines(null)
+            m_production!!.deleteLines()
             created = m_production!!.createLines(mustBeStocked)
         } else {
             val planQuery = Query(I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")

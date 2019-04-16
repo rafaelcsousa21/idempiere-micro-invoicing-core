@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MCharge;
 import org.compiere.order.MOrderLine;
@@ -209,7 +210,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @param oLine line
      */
-    public void setOrderLine(org.compiere.order.MOrderLine oLine) {
+    public void setOrderLine(I_C_OrderLine oLine) {
         setOrderLineId(oLine.getOrderLineId());
         //
         setLine(oLine.getLine());
@@ -249,7 +250,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @param sLine ship line
      */
-    public void setShipLine(org.compiere.order.MInOutLine sLine) {
+    public void setShipLine(I_M_InOutLine sLine) {
         setInOutLineId(sLine.getInOutLineId());
         setOrderLineId(sLine.getOrderLineId());
         // Set RMALine ID if shipment/receipt is based on RMA Doc
@@ -429,7 +430,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * Calculate Tax Amt. Assumes Line Net is calculated
      */
     public void setTaxAmt() {
-        BigDecimal TaxAmt = Env.ZERO;
+        BigDecimal TaxAmt;
         if (getTaxId() == 0) return;
         setLineNetAmt();
         MTax tax = MTax.get(getTaxId());
@@ -669,17 +670,15 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @return info
      */
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder("MInvoiceLine[")
-                        .append(getId())
-                        .append(",")
-                        .append(getLine())
-                        .append(",QtyInvoiced=")
-                        .append(getQtyInvoiced())
-                        .append(",LineNetAmt=")
-                        .append(getLineNetAmt())
-                        .append("]");
-        return sb.toString();
+        return "MInvoiceLine[" +
+                getId() +
+                "," +
+                getLine() +
+                ",QtyInvoiced=" +
+                getQtyInvoiced() +
+                ",LineNetAmt=" +
+                getLineNetAmt() +
+                "]";
     } //	toString
 
     /**
@@ -890,10 +889,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     public String allocateLandedCosts() {
         if (isProcessed()) return "Processed";
-        StringBuilder sql =
-                new StringBuilder("DELETE C_LandedCostAllocation WHERE C_InvoiceLine_ID=")
-                        .append(getInvoiceLineId());
-        int no = executeUpdate(sql.toString());
+        String sql = "DELETE C_LandedCostAllocation WHERE C_InvoiceLine_ID=" +
+                getInvoiceLineId();
+        int no = executeUpdate(sql);
         if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
         MLandedCost[] lcs = MLandedCost.getLandedCosts(this);
         if (lcs.length == 0) return "";
@@ -905,7 +903,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             MLandedCost lc = lcs[0];
             if (lc.getInOutId() != 0 && lc.getInOutLineId() == 0) {
                 //	Create List
-                ArrayList<MInOutLine> list = new ArrayList<MInOutLine>();
+                ArrayList<MInOutLine> list = new ArrayList<>();
                 MInOut ship = new MInOut(lc.getInOutId());
                 MInOutLine[] lines = ship.getLines();
                 for (int i = 0; i < lines.length; i++) {
@@ -1012,17 +1010,16 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         }
         //	Create List
         ArrayList<org.compiere.order.MInOutLine> list = new ArrayList<org.compiere.order.MInOutLine>();
-        for (int ii = 0; ii < lcs.length; ii++) {
-            MLandedCost lc = lcs[ii];
+        for (MLandedCost lc : lcs) {
             if (lc.getInOutId() != 0 && lc.getInOutLineId() == 0) // 	entire receipt
             {
                 org.compiere.order.MInOut ship = new MInOut(lc.getInOutId());
                 org.compiere.order.MInOutLine[] lines = ship.getLines();
-                for (int i = 0; i < lines.length; i++) {
-                    if (lines[i].isDescription() // 	decription or no product
-                            || lines[i].getProductId() == 0) continue;
+                for (org.compiere.order.MInOutLine line : lines) {
+                    if (line.isDescription() // 	decription or no product
+                            || line.getProductId() == 0) continue;
                     if (lc.getProductId() == 0 // 	no restriction or product match
-                            || lc.getProductId() == lines[i].getProductId()) list.add(lines[i]);
+                            || lc.getProductId() == line.getProductId()) list.add(line);
                 }
             } else if (lc.getInOutLineId() != 0) // 	receipt line
             {
@@ -1034,8 +1031,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (list.size() == 0) return "No Matching Lines (with Product)";
         //	Calculate total & base
         BigDecimal total = Env.ZERO;
-        for (int i = 0; i < list.size(); i++) {
-            MInOutLine iol = (MInOutLine) list.get(i);
+        for (org.compiere.order.MInOutLine mInOutLine : list) {
+            MInOutLine iol = (MInOutLine) mInOutLine;
             total = total.add(iol.getBase(LandedCostDistribution));
         }
         if (total.signum() == 0) {
@@ -1043,8 +1040,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             return msgreturn.toString();
         }
         //	Create Allocations
-        for (int i = 0; i < list.size(); i++) {
-            MInOutLine iol = (MInOutLine) list.get(i);
+        for (org.compiere.order.MInOutLine mInOutLine : list) {
+            MInOutLine iol = (MInOutLine) mInOutLine;
             MLandedCostAllocation lca = new MLandedCostAllocation(this, lcs[0].getCostElementId());
             lca.setProductId(iol.getProductId());
             lca.setAttributeSetInstanceId(iol.getAttributeSetInstanceId());
@@ -1080,8 +1077,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 MLandedCostAllocation.getOfInvoiceLine(getInvoiceLineId());
         MLandedCostAllocation largestAmtAllocation = null;
         BigDecimal allocationAmt = Env.ZERO;
-        for (int i = 0; i < allocations.length; i++) {
-            MLandedCostAllocation allocation = allocations[i];
+        for (MLandedCostAllocation allocation : allocations) {
             if (largestAmtAllocation == null
                     || allocation.getAmt().compareTo(largestAmtAllocation.getAmt()) > 0)
                 largestAmtAllocation = allocation;
@@ -1124,14 +1120,13 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (otherInvoiceLine == null) return 0;
         MLandedCost[] fromLandedCosts = otherInvoiceLine.getLandedCost(null);
         int count = 0;
-        for (int i = 0; i < fromLandedCosts.length; i++) {
+        for (MLandedCost cost : fromLandedCosts) {
             MLandedCost landedCost = new MLandedCost(0);
-            MLandedCost fromLandedCost = fromLandedCosts[i];
             PO.copyValues(
-                    fromLandedCost,
+                    cost,
                     landedCost,
-                    fromLandedCost.getClientId(),
-                    fromLandedCost.getOrgId());
+                    cost.getClientId(),
+                    cost.getOrgId());
             landedCost.setInvoiceLineId(getInvoiceLineId());
             landedCost.setValueNoCheck("C_LandedCost_ID", I_ZERO); // new
             if (landedCost.save()) count++;

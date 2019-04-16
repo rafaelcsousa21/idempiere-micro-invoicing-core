@@ -220,6 +220,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param isSOTrx is outgoing trx?
      * @return true if ASI is mandatory, false otherwise
      */
+    @Override
     public boolean isASIMandatory(boolean isSOTrx) {
         //
         //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas

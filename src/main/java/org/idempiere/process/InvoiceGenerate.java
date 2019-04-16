@@ -15,6 +15,9 @@ import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.invoicing.MInvoiceSchedule;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_OrderLine;
+import org.compiere.model.I_M_InOut;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -77,7 +80,7 @@ public class InvoiceGenerate extends SvrProcess {
     /**
      * The current Shipment
      */
-    private MInOut m_ship = null;
+    private I_M_InOut m_ship = null;
     /**
      * Numner of Invoices
      */
@@ -245,15 +248,15 @@ public class InvoiceGenerate extends SvrProcess {
 
             //	After Delivery
             if (doInvoice || MOrder.INVOICERULE_AfterDelivery.equals(order.getInvoiceRule())) {
-                MInOut[] shipments = order.getShipments();
-                for (MInOut ship : shipments) {
+                I_M_InOut[] shipments = order.getShipments();
+                for (I_M_InOut ship : shipments) {
                     createLines(order, ship);
                 }
             }
             //	After Order Delivered, Immediate
             else {
-                MOrderLine[] oLines = order.getLines(true, null);
-                for (MOrderLine oLine : oLines) {
+                I_C_OrderLine[] oLines = order.getLines(true, null).toArray(new I_C_OrderLine[0]);
+                for (I_C_OrderLine oLine : oLines) {
                     BigDecimal toInvoice = oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced());
                     if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getProductId() != 0) continue;
                     @SuppressWarnings("unused")
@@ -311,8 +314,8 @@ public class InvoiceGenerate extends SvrProcess {
             //	Complete Order successful
             if (completeOrder
                     && MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule())) {
-                MInOut[] shipments = order.getShipments();
-                for (MInOut ship : shipments) {
+                I_M_InOut[] shipments = order.getShipments();
+                for (I_M_InOut ship : shipments) {
                     createLines(order, ship);
                 }
             } //	complete Order
@@ -322,11 +325,11 @@ public class InvoiceGenerate extends SvrProcess {
         return "@Created@ = " + m_created;
     } //	generate
 
-    private void createLines(MOrder order, MInOut ship) {
+    private void createLines(MOrder order, I_M_InOut ship) {
         if (!ship.isComplete() // 	ignore incomplete or reversals
                 || ship.getDocStatus().equals(MInOut.DOCSTATUS_Reversed)) return;
-        MInOutLine[] shipLines = ship.getLines(false);
-        for (MInOutLine shipLine : shipLines) {
+        I_M_InOutLine[] shipLines = ship.getLines(false);
+        for (I_M_InOutLine shipLine : shipLines) {
             if (!order.isOrderLine(shipLine.getOrderLineId())) continue;
             if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
         }
@@ -343,7 +346,7 @@ public class InvoiceGenerate extends SvrProcess {
      * @param qtyEntered  qty
      */
     private void createLine(
-            MOrder order, MOrderLine orderLine, BigDecimal qtyInvoiced, BigDecimal qtyEntered) {
+            MOrder order, I_C_OrderLine orderLine, BigDecimal qtyInvoiced, BigDecimal qtyEntered) {
         if (m_invoice == null) {
             m_invoice = new MInvoice(order, 0, p_DateInvoiced);
             if (!m_invoice.save()) throw new IllegalStateException("Could not create Invoice (o)");
@@ -365,7 +368,7 @@ public class InvoiceGenerate extends SvrProcess {
      * @param ship  shipment header
      * @param sLine shipment line
      */
-    private void createLine(MOrder order, MInOut ship, MInOutLine sLine) {
+    private void createLine(MOrder order, I_M_InOut ship, I_M_InOutLine sLine) {
         if (m_invoice == null) {
             m_invoice = new MInvoice(order, 0, p_DateInvoiced);
             if (!m_invoice.save()) throw new IllegalStateException("Could not create Invoice (s)");

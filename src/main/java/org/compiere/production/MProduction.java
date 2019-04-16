@@ -12,9 +12,9 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_Production;
 import org.compiere.model.I_M_ProductionPlan;
-import org.compiere.order.MOrderLine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.PO;
@@ -82,7 +82,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         super(row);
     }
 
-    public MProduction(MOrderLine line) {
+    public MProduction(I_C_OrderLine line) {
         super(0);
         setADClientID(line.getClientId());
         setOrgId(line.getOrgId());
@@ -94,8 +94,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         MProject project = new MProject(line.getProjectId());
         MWarehouse wh = new MWarehouse(project.getWarehouseId());
 
-        MLocator M_Locator = null;
-        int M_Locator_ID = 0;
+        int M_Locator_ID;
 
         M_Locator_ID = wh.getDefaultLocator().getLocatorId();
         setADClientID(line.getClientId());
@@ -146,7 +145,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 m_processMsg = errors.toString();
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
             }
-            processed = processed + lines.length;
         } else {
             Query planQuery =
                     new Query(
@@ -202,13 +200,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     private Object processLines(MProductionLine[] lines) {
         StringBuilder errors = new StringBuilder();
-        for (int i = 0; i < lines.length; i++) {
-            String error = lines[i].createTransactions(getMovementDate(), false);
+        for (MProductionLine line : lines) {
+            String error = line.createTransactions(getMovementDate(), false);
             if (!Util.isEmpty(error)) {
                 errors.append(error);
             } else {
-                lines[i].setProcessed(true);
-                lines[i].saveEx();
+                line.setProcessed(true);
+                line.saveEx();
             }
         }
 
@@ -216,15 +214,15 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     public MProductionLine[] getLines() {
-        ArrayList<MProductionLine> list = new ArrayList<MProductionLine>();
+        ArrayList<MProductionLine> list = new ArrayList<>();
 
         String sql =
                 "SELECT pl.M_ProductionLine_ID "
                         + "FROM M_ProductionLine pl "
                         + "WHERE pl.M_Production_ID = ?";
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getId());
@@ -232,10 +230,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             while (rs.next()) list.add(new MProductionLine(rs.getInt(1)));
         } catch (SQLException ex) {
             throw new AdempiereException("Unable to load production lines", ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         MProductionLine[] retValue = new MProductionLine[list.size()];
@@ -243,7 +237,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         return retValue;
     }
 
-    public void deleteLines(String trxName) {
+    public void deleteLines() {
 
         for (MProductionLine line : getLines()) {
             line.deleteEx(true);
@@ -276,7 +270,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     private int createLines(boolean mustBeStocked, MProduct finishedProduct, BigDecimal requiredQty) {
 
-        int defaultLocator = 0;
+        int defaultLocator;
 
         MLocator finishedLocator = MLocator.get(getLocatorId());
 
@@ -292,8 +286,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                         + finishedProduct.getProductId()
                         + " ORDER BY Line";
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
 
         try {
             pstmt = prepareStatement(sql);
@@ -371,14 +365,14 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                         int prevLoc = -1;
                         int previousAttribSet = -1;
                         // Create lines from storage until qty is reached
-                        for (int sl = 0; sl < storages.length; sl++) {
+                        for (MStorageOnHand storage : storages) {
 
-                            BigDecimal lineQty = storages[sl].getQtyOnHand();
+                            BigDecimal lineQty = storage.getQtyOnHand();
                             if (lineQty.signum() != 0) {
                                 if (lineQty.compareTo(BOMMovementQty) > 0) lineQty = BOMMovementQty;
 
-                                int loc = storages[sl].getLocatorId();
-                                int slASI = storages[sl].getAttributeSetInstanceId();
+                                int loc = storage.getLocatorId();
+                                int slASI = storage.getAttributeSetInstanceId();
                                 int locAttribSet =
                                         new MAttributeSetInstance(asi).getAttributeSetId();
 
@@ -454,7 +448,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     @Override
     protected boolean beforeDelete() {
-        deleteLines(null);
+        deleteLines();
         return true;
     }
 
@@ -631,7 +625,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 || X_M_Production.DOCSTATUS_NotApproved.equals(getDocStatus())) {
             setIsCreated("N");
             if (!isUseProductionPlan()) {
-                deleteLines(null);
+                deleteLines();
                 setProductionQty(BigDecimal.ZERO);
             } else {
                 Query planQuery =
@@ -733,13 +727,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             //	We need to copy MA
             if (sLines[i].getAttributeSetInstanceId() == 0) {
                 MProductionLineMA[] mas = MProductionLineMA.get(sLines[i].getId());
-                for (int j = 0; j < mas.length; j++) {
+                for (MProductionLineMA mProductionLineMA : mas) {
                     MProductionLineMA ma =
                             new MProductionLineMA(
                                     tLines[i],
-                                    mas[j].getAttributeSetInstanceId(),
-                                    mas[j].getMovementQty().negate(),
-                                    mas[j].getDateMaterialPolicy());
+                                    mProductionLineMA.getAttributeSetInstanceId(),
+                                    mProductionLineMA.getMovementQty().negate(),
+                                    mProductionLineMA.getDateMaterialPolicy());
                     ma.saveEx();
                 }
             }
@@ -835,8 +829,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         String desc = getDescription();
         if (desc == null) setDescription(description);
         else {
-            StringBuilder msgd = new StringBuilder(desc).append(" | ").append(description);
-            setDescription(msgd.toString());
+            setDescription(desc + " | " + description);
         }
     } //	addDescription
 

@@ -3,6 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLandedCostAllocation;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
@@ -23,7 +24,6 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
     private static final long serialVersionUID = 2629138678703667123L;
 
     /**
-     * @param ctx
      * @param C_OrderLandedCost_ID
      */
     public MOrderLandedCost(int C_OrderLandedCost_ID) {
@@ -31,7 +31,6 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
     }
 
     /**
-     * @param ctx
      */
     public MOrderLandedCost(Row row) {
         super(row);
@@ -43,12 +42,12 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
      * @param C_Order_ID
      * @return lines
      */
-    public static MOrderLandedCost[] getOfOrder(int C_Order_ID) {
-        List<MOrderLandedCostAllocation> list =
+    public static I_C_OrderLandedCost[] getOfOrder(int C_Order_ID) {
+        List<I_C_OrderLandedCost> list =
                 new Query(I_C_OrderLandedCost.Table_Name, I_C_OrderLandedCost.COLUMNNAME_C_Order_ID + "=?")
                         .setParameters(C_Order_ID)
                         .list();
-        return list.toArray(new MOrderLandedCost[list.size()]);
+        return list.toArray(new I_C_OrderLandedCost[0]);
     } //	getLines
 
     /**
@@ -68,17 +67,17 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                 )
                         .setParameters(getOrderLandedCostId())
                         .list();
-        return list.toArray(new MOrderLandedCostAllocation[list.size()]);
+        return list.toArray(new MOrderLandedCostAllocation[0]);
     } //	getLines
 
     public String distributeLandedCost() {
         MOrderLandedCostAllocation[] lines = getLines("");
         if (lines.length == 0) {
             MOrder order = (MOrder) getOrder();
-            MOrderLine[] orderLines = order.getLines();
+            I_C_OrderLine[] orderLines = order.getLines().toArray(new I_C_OrderLine[0]);
             if (orderLines.length > 0) {
-                List<MOrderLandedCostAllocation> list = new ArrayList<MOrderLandedCostAllocation>();
-                for (MOrderLine line : orderLines) {
+                List<MOrderLandedCostAllocation> list = new ArrayList<>();
+                for (I_C_OrderLine line : orderLines) {
                     if (line.getProductId() > 0) {
                         MOrderLandedCostAllocation allocation =
                                 new MOrderLandedCostAllocation(0);
@@ -102,9 +101,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
             MOrderLine orderLine = (MOrderLine) lines[0].getOrderLine();
             BigDecimal base = orderLine.getBase(getLandedCostDistribution());
             if (base.signum() == 0) {
-                StringBuilder msgreturn =
-                        new StringBuilder("Total of Base values is 0 - ").append(getLandedCostDistribution());
-                return msgreturn.toString();
+                return "Total of Base values is 0 - " + getLandedCostDistribution();
             }
             lines[0].setBase(base);
             lines[0].setQty(orderLine.getQtyOrdered());
@@ -118,9 +115,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                 total = total.add(orderLine.getBase(getLandedCostDistribution()));
             }
             if (total.signum() == 0) {
-                StringBuilder msgreturn =
-                        new StringBuilder("Total of Base values is 0 - ").append(getLandedCostDistribution());
-                return msgreturn.toString();
+                return "Total of Base values is 0 - " + getLandedCostDistribution();
             }
             //	Create Allocations
             for (MOrderLandedCostAllocation allocation : lines) {

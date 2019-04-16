@@ -42,6 +42,7 @@ import org.compiere.util.getElementTranslation
 import org.compiere.util.getMsg
 import org.compiere.util.translate
 import org.idempiere.common.exceptions.AdempiereException
+import org.idempiere.common.util.AdempiereSystemError
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
@@ -901,7 +902,7 @@ class MSetup
     @Throws(Exception::class)
     private fun createAccountingRecord(tableName: String) {
         val table = MTable.get(tableName)
-        val acct = table.getPO(-1) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
+        val acct : PO = table.getPO(-1) ?: throw AdempiereSystemError("Unable to create new entry for $tableName") // Note this should create a new Acct; ugly hack, because we return null for 0
 
         val cols = table.getColumns(false)
         for (c in cols) {
