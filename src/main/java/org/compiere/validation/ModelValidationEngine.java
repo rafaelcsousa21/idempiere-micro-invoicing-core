@@ -4,10 +4,13 @@ import org.compiere.accounting.MClientKt;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IFact;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_AD_ModelValidator;
+import org.compiere.model.I_AD_Rule;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_Query;
 import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
-import org.compiere.orm.Query;
 import org.compiere.process.ImportProcess;
 import org.compiere.process.ImportValidator;
 import org.compiere.rule.MRule;
@@ -54,30 +57,30 @@ public class ModelValidationEngine {
     /**
      * Validators
      */
-    private ArrayList<ModelValidator> m_validators = new ArrayList<ModelValidator>();
+    private ArrayList<ModelValidator> m_validators = new ArrayList<>();
     /**
      * Model Change Listeners
      */
     private Hashtable<String, ArrayList<ModelValidator>> m_modelChangeListeners =
-            new Hashtable<String, ArrayList<ModelValidator>>();
+            new Hashtable<>();
     /**
      * Document Validation Listeners
      */
     private Hashtable<String, ArrayList<ModelValidator>> m_docValidateListeners =
-            new Hashtable<String, ArrayList<ModelValidator>>();
+            new Hashtable<>();
     /**
      * Accounting Facts Validation Listeners
      */
     private Hashtable<String, ArrayList<FactsValidator>> m_factsValidateListeners =
-            new Hashtable<String, ArrayList<FactsValidator>>();
+            new Hashtable<>();
     /**
      * Data Import Validation Listeners
      */
     private Hashtable<String, ArrayList<ImportValidator>> m_impValidateListeners =
-            new Hashtable<String, ArrayList<ImportValidator>>();
+            new Hashtable<>();
     //	/** Change Support			*/
     //	private VetoableChangeSupport m_changeSupport = new VetoableChangeSupport(this);
-    private ArrayList<ModelValidator> m_globalValidators = new ArrayList<ModelValidator>();
+    private ArrayList<ModelValidator> m_globalValidators = new ArrayList<>();
 
     /**
      * ************************************************************************ Constructor. Creates
@@ -87,12 +90,12 @@ public class ModelValidationEngine {
         super();
         // Load global validators
 
-        MTable table = MTable.get(X_AD_ModelValidator.Table_ID);
-        Query query = table.createQuery("IsActive='Y'");
+        MTable table = MBaseTableKt.getTable(X_AD_ModelValidator.Table_ID);
+        I_Query<I_AD_ModelValidator> query = table.createQuery("IsActive='Y'");
         query.setOrderBy("SeqNo");
         try {
-            List<X_AD_ModelValidator> entityTypes = query.list();
-            for (X_AD_ModelValidator entityType : entityTypes) {
+            List<I_AD_ModelValidator> entityTypes = query.list();
+            for (I_AD_ModelValidator entityType : entityTypes) {
                 String className = entityType.getModelValidationClass();
                 if (className == null || className.length() == 0) continue;
                 loadValidatorClass(null, className);
@@ -134,7 +137,7 @@ public class ModelValidationEngine {
     private void loadValidatorClasses(ClientWithAccounting client, String classNames) {
         StringTokenizer st = new StringTokenizer(classNames, ";");
         while (st.hasMoreTokens()) {
-            String className = null;
+            String className ;
             try {
                 className = st.nextToken();
                 if (className == null) continue;
@@ -221,7 +224,7 @@ public class ModelValidationEngine {
                         po.getTableId(), ModelValidator.documentEventValidators[docTiming]);
         if (scriptValidators != null) {
             for (MTableScriptValidator scriptValidator : scriptValidators) {
-                MRule rule = MRule.get(scriptValidator.getRuleId());
+                I_AD_Rule rule = MRule.get(scriptValidator.getRuleId());
                 // currently just JSR 223 supported
                 if (rule != null
                         && rule.isActive()
@@ -332,10 +335,10 @@ public class ModelValidationEngine {
 
     private String fireFactsValidate(
             I_C_AcctSchema schema, List<IFact> facts, IPO po, ArrayList<FactsValidator> list) {
-        for (int i = 0; i < list.size(); i++) {
-            FactsValidator validator = null;
+        for (FactsValidator factsValidator : list) {
+            FactsValidator validator;
             try {
-                validator = list.get(i);
+                validator = factsValidator;
                 if (validator.getClientId() == po.getClientId()
                         || (validator instanceof ModelValidator
                         && m_globalValidators.contains(validator))) {
@@ -388,15 +391,13 @@ public class ModelValidationEngine {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("ModelValidationEngine[");
-        sb.append("Validators=#")
-                .append(m_validators.size())
-                .append(", ModelChange=#")
-                .append(m_modelChangeListeners.size())
-                .append(", DocValidate=#")
-                .append(m_docValidateListeners.size())
-                .append("]");
-        return sb.toString();
+        return "ModelValidationEngine[" + "Validators=#" +
+                m_validators.size() +
+                ", ModelChange=#" +
+                m_modelChangeListeners.size() +
+                ", DocValidate=#" +
+                m_docValidateListeners.size() +
+                "]";
     } //	toString
 
 } //	ModelValidatorEngine

@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_Cost;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Cost extends PO implements I_M_Cost {
+public abstract class X_M_Cost extends PO implements I_M_Cost {
 
     /**
      * Average PO = A
@@ -34,12 +34,6 @@ public class X_M_Cost extends PO implements I_M_Cost {
      */
     public X_M_Cost(int M_Cost_ID) {
         super(M_Cost_ID);
-        /**
-         * if (M_Cost_ID == 0) { setAccountingSchemaId (0); setCurrentCostPrice (Env.ZERO);
-         * setCurrentCostPriceLL (Env.ZERO); setCurrentQty (Env.ZERO); setFutureCostPrice (Env.ZERO);
-         * setAttributeSetInstanceId (0); setCostElementId (0); setCostTypeId (0);
-         * setProductId (0); }
-         */
     }
 
 
@@ -60,13 +54,12 @@ public class X_M_Cost extends PO implements I_M_Cost {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Cost[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Cost[" + getId() + "]";
     }
 
     public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
-                MTable.get(org.compiere.model.I_C_AcctSchema.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_AcctSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 
@@ -223,12 +216,12 @@ public class X_M_Cost extends PO implements I_M_Cost {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+                    COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     public org.compiere.model.I_M_CostElement getCostElement() throws RuntimeException {
         return (org.compiere.model.I_M_CostElement)
-                MTable.get(org.compiere.model.I_M_CostElement.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_CostElement.Table_Name)
                         .getPO(getCostElementId());
     }
 
@@ -250,7 +243,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      */
     public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
+        else setValueNoCheck(COLUMNNAME_M_CostElement_ID, M_CostElement_ID);
     }
 
     /**
@@ -271,12 +264,12 @@ public class X_M_Cost extends PO implements I_M_Cost {
      */
     public void setCostTypeId(int M_CostType_ID) {
         if (M_CostType_ID < 1) setValueNoCheck(COLUMNNAME_M_CostType_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
+        else setValueNoCheck(COLUMNNAME_M_CostType_ID, M_CostType_ID);
     }
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 

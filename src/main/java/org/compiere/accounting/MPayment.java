@@ -17,8 +17,10 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.IPaymentProcessor;
 import org.compiere.model.IProcessInfo;
+import org.compiere.model.I_C_Cash;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_Payment;
+import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.model.PaymentInterface;
 import org.compiere.order.MOnlineTrxHistory;
 import org.compiere.order.X_C_Order;
@@ -1055,7 +1057,7 @@ public class MPayment extends X_C_Payment
      * @param pAllocs
      * @return true if ok
      */
-    private boolean verifyDocType(MPaymentAllocate[] pAllocs) {
+    private boolean verifyDocType(I_C_PaymentAllocate[] pAllocs) {
         if (getDocumentTypeId() == 0) return false;
         //
         Boolean documentSO = null;
@@ -1107,7 +1109,7 @@ public class MPayment extends X_C_Payment
         } // now payment allocate
         else {
             if (pAllocs.length > 0) {
-                for (MPaymentAllocate pAlloc : pAllocs) {
+                for (I_C_PaymentAllocate pAlloc : pAllocs) {
                     String sql =
                             "SELECT idt.IsSOTrx "
                                     + "FROM C_Invoice i"
@@ -1171,7 +1173,7 @@ public class MPayment extends X_C_Payment
      * @param pAllocs
      * @return true if ok
      */
-    private boolean verifyPaymentAllocateVsHeader(MPaymentAllocate[] pAllocs) {
+    private boolean verifyPaymentAllocateVsHeader(I_C_PaymentAllocate[] pAllocs) {
         if (pAllocs.length > 0) {
             return getChargeId() <= 0 && getInvoiceId() <= 0 && getOrderId() <= 0;
         }
@@ -1184,10 +1186,10 @@ public class MPayment extends X_C_Payment
      * @param pAllocs
      * @return true if ok
      */
-    private boolean verifyPaymentAllocateSum(MPaymentAllocate[] pAllocs) {
+    private boolean verifyPaymentAllocateSum(I_C_PaymentAllocate[] pAllocs) {
         BigDecimal sumPaymentAllocates = Env.ZERO;
         if (pAllocs.length > 0) {
-            for (MPaymentAllocate pAlloc : pAllocs)
+            for (I_C_PaymentAllocate pAlloc : pAllocs)
                 sumPaymentAllocates = sumPaymentAllocates.add(pAlloc.getAmount());
             if (getPayAmt().compareTo(sumPaymentAllocates) != 0) {
                 if (isReceipt() && getPayAmt().compareTo(sumPaymentAllocates) < 0) {
@@ -1343,7 +1345,7 @@ public class MPayment extends X_C_Payment
             } //	WaitingPayment
         }
 
-        MPaymentAllocate[] pAllocs = MPaymentAllocate.get(this);
+        I_C_PaymentAllocate[] pAllocs = MPaymentAllocate.get(this);
 
         //	Consistency of Invoice / Document Type and IsReceipt
         if (!verifyDocType(pAllocs)) {
@@ -1508,7 +1510,7 @@ public class MPayment extends X_C_Payment
                 m_processMsg = "@NoCashBook@";
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
             }
-            MCash cash =
+            I_C_Cash cash =
                     MCash.get(getOrgId(), getDateAcct(), getCurrencyId());
             if (cash == null || cash.getId() == 0) {
                 m_processMsg = "@NoCashBook@";
@@ -1524,14 +1526,6 @@ public class MPayment extends X_C_Payment
             m_processMsg = info.toString();
             //	Amount
             BigDecimal amt = this.getPayAmt();
-      /*
-      			MDocType dt = MDocTypeKt.getDocumentType(invoice.getDocTypeId());
-      			if (MDocType.DOCBASETYPE_APInvoice.equals( dt.getDocBaseType() )
-      				|| MDocType.DOCBASETYPE_ARCreditMemo.equals( dt.getDocBaseType() )
-      			) {
-      				amt = amt.negate();
-      			}
-      */
             cl.setAmount(amt);
             //
             cl.setDiscountAmt(Env.ZERO);
@@ -1700,7 +1694,7 @@ public class MPayment extends X_C_Payment
         if (getOrderId() != 0) return false;
 
         //	Allocate to multiple Payments based on entry
-        MPaymentAllocate[] pAllocs = MPaymentAllocate.get(this);
+        I_C_PaymentAllocate[] pAllocs = MPaymentAllocate.get(this);
         if (pAllocs.length == 0) return false;
 
         MAllocationHdr alloc =
@@ -1720,8 +1714,7 @@ public class MPayment extends X_C_Payment
             return false;
         }
         //	Lines
-        for (int i = 0; i < pAllocs.length; i++) {
-            MPaymentAllocate pa = pAllocs[i];
+        for (I_C_PaymentAllocate pa : pAllocs) {
             MAllocationLine aLine = null;
             if (isReceipt())
                 aLine =

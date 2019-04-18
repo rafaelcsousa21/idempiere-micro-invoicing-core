@@ -3,12 +3,14 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClientInfo;
-import org.compiere.accounting.MCost;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_AttributeSet;
 import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.model.I_M_ProductionPlan;
+import org.compiere.model.I_M_QualityTest;
+import org.compiere.model.I_M_StorageOnHand;
 import org.compiere.orm.Query;
 import org.compiere.product.MAttributeSetInstance;
 import org.idempiere.common.util.Env;
@@ -58,7 +60,7 @@ public class MProductionLine extends X_M_ProductionLine {
     public MProductionLine(MProduction header) {
         super(0);
         setProductionId(header.getId());
-        setADClientID(header.getClientId());
+        setClientId(header.getClientId());
         setOrgId(header.getOrgId());
         productionParent = header;
     }
@@ -66,7 +68,7 @@ public class MProductionLine extends X_M_ProductionLine {
     public MProductionLine(MProductionPlan header) {
         super(0);
         setProductionPlanId(header.getId());
-        setADClientID(header.getClientId());
+        setClientId(header.getClientId());
         setOrgId(header.getOrgId());
     }
 
@@ -141,7 +143,7 @@ public class MProductionLine extends X_M_ProductionLine {
                 log.log(Level.SEVERE, "Could not save transaction for " + toString());
                 errorString.append("Could not save transaction for " + toString() + "\n");
             }
-            MStorageOnHand storage =
+            I_M_StorageOnHand storage =
                     MStorageOnHand.getCreate(
                             getLocatorId(),
                             getProductId(),
@@ -156,11 +158,11 @@ public class MProductionLine extends X_M_ProductionLine {
         }
 
         // create transactions and update stock used in production
-        MStorageOnHand[] storages =
+        I_M_StorageOnHand[] storages =
                 MStorageOnHand.getAll(
                         getProductId(), getLocatorId(), null, false, 0);
 
-        MProductionLineMA lineMA = null;
+        I_M_ProductionLineMA lineMA = null;
         MTransaction matTrx = null;
         BigDecimal qtyToMove = getMovementQty().negate();
 
@@ -236,8 +238,8 @@ public class MProductionLine extends X_M_ProductionLine {
                     && MAcctSchema.COSTINGLEVEL_BatchLot.equals(prod.getCostingLevel(acctSchema))) {
                 // add quantity to last attributesetinstance
                 String sqlWhere = "M_Product_ID=? AND M_Locator_ID=? AND M_AttributeSetInstance_ID > 0 ";
-                MStorageOnHand storage =
-                        new Query(MStorageOnHand.Table_Name, sqlWhere)
+                I_M_StorageOnHand storage =
+                        new Query<I_M_StorageOnHand>(MStorageOnHand.Table_Name, sqlWhere)
                                 .setParameters(getProductId(), getLocatorId())
                                 .setOrderBy(
                                         MStorageOnHand.COLUMNNAME_DateMaterialPolicy
@@ -259,8 +261,8 @@ public class MProductionLine extends X_M_ProductionLine {
                                     .append(" AND C_AcctSchema_ID=?")
                                     .append(" AND ce.CostingMethod = ? ")
                                     .append(" AND CurrentCostPrice <> 0 ");
-                    MCost cost =
-                            new Query(I_M_Cost.Table_Name, localWhereClause.toString())
+                    I_M_Cost cost =
+                            new Query<I_M_Cost>(I_M_Cost.Table_Name, localWhereClause.toString())
                                     .setParameters(getProductId(), acctSchema.getId(), costingMethod)
                                     .addJoinClause(
                                             " INNER JOIN M_CostElement ce ON (M_Cost.M_CostElement_ID =ce.M_CostElement_ID ) ")
@@ -287,7 +289,7 @@ public class MProductionLine extends X_M_ProductionLine {
                 errorString.append(
                         "Insufficient qty on hand of " + prod.toString() + " at " + loc.toString() + "\n");
             } else {
-                MStorageOnHand storage =
+                I_M_StorageOnHand storage =
                         MStorageOnHand.getCreate(
 
                                 getLocatorId(),
@@ -412,13 +414,13 @@ public class MProductionLine extends X_M_ProductionLine {
                             + "AND M_QualityTest_ID NOT IN (SELECT M_QualityTest_ID "
                             + "FROM M_QualityTestResult WHERE M_AttributeSetInstance_ID=?)";
 
-            List<MQualityTest> tests =
-                    new Query(MQualityTest.Table_Name, where)
+            List<I_M_QualityTest> tests =
+                    new Query<I_M_QualityTest>(MQualityTest.Table_Name, where)
                             .setOnlyActiveRecords(true)
                             .setParameters(getProductId(), getAttributeSetInstanceId())
                             .list();
             // create quality control results
-            for (MQualityTest test : tests) {
+            for (I_M_QualityTest test : tests) {
                 test.createResult(getAttributeSetInstanceId());
             }
         }

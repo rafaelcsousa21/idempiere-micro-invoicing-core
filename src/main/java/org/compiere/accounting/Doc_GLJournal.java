@@ -3,6 +3,8 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
+import org.compiere.model.I_GL_JournalLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -62,9 +64,8 @@ public class Doc_GLJournal extends Doc {
      */
     protected DocLine[] loadLines(MJournal journal) {
         ArrayList<DocLine> list = new ArrayList<DocLine>();
-        MJournalLine[] lines = journal.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MJournalLine line = lines[i];
+        I_GL_JournalLine[] lines = journal.getLines(false);
+        for (I_GL_JournalLine line : lines) {
             DocLine docLine = new DocLine(line, this);
             // -- Quantity
             docLine.setQty(line.getQty(), false);
@@ -73,7 +74,7 @@ public class Doc_GLJournal extends Doc {
             //  --  Converted Amounts
             docLine.setConvertedAmt(m_C_AcctSchema_ID, line.getAmtAcctDr(), line.getAmtAcctCr());
             //  --  Account
-            MAccount account = line.getAccount_Combi();
+            I_C_ValidCombination account = line.getAccount_Combi();
             docLine.setAccount(account);
             //	--	Organization of Line was set to Org of Account
             list.add(docLine);

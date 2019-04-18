@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import org.compiere.model.I_M_Product;
 import org.compiere.product.MProduct;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.exceptions.DBException;
@@ -108,7 +109,7 @@ class ProductLowLevelCalculator {
                     }
                 } else {
                     // Child = Parent error
-                    MProduct product = MProduct.get(M_Product_ID);
+                    I_M_Product product = MProduct.get(M_Product_ID);
                     throw new AdempiereException(
                             "Cycle BOM & Formula:"
                                     + rs.getString(2)

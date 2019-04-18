@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCostAllocation;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -92,7 +92,7 @@ public class X_C_OrderLandedCostAllocation extends PO
 
     public org.compiere.model.I_C_OrderLandedCost getOrderLandedCost() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLandedCost)
-                MTable.get(org.compiere.model.I_C_OrderLandedCost.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_OrderLandedCost.Table_Name)
                         .getPO(getOrderLandedCostId());
     }
 
@@ -119,7 +119,7 @@ public class X_C_OrderLandedCostAllocation extends PO
 
     public org.compiere.model.I_C_OrderLine getOrderLine() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLine)
-                MTable.get(org.compiere.model.I_C_OrderLine.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_OrderLine.Table_Name)
                         .getPO(getOrderLineId());
     }
 

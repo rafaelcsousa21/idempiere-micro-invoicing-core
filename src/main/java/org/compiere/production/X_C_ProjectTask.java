@@ -3,7 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.I_C_ProjectTask;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -51,7 +51,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
 
     public org.compiere.model.I_C_ProjectPhase getProjectPhase() throws RuntimeException {
         return (org.compiere.model.I_C_ProjectPhase)
-                MTable.get(org.compiere.model.I_C_ProjectPhase.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_ProjectPhase.Table_Name)
                         .getPO(getProjectPhaseId());
     }
 

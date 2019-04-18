@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_CostDetail;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_CostDetail extends PO implements I_M_CostDetail {
+public abstract class X_M_CostDetail extends PO implements I_M_CostDetail {
 
     /**
      *
@@ -324,7 +324,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
 
     public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
-                MTable.get(org.compiere.model.I_M_InventoryLine.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_InventoryLine.Table_Name)
                         .getPO(getInventoryLineId());
     }
 

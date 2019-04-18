@@ -99,8 +99,8 @@ class ProductionCreate(
             m_production!!.deleteLines()
             created = m_production!!.createLines(mustBeStocked)
         } else {
-            val planQuery = Query(I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
-            val plans = planQuery.setParameters(m_production!!.productionId).list<MProductionPlan>()
+            val planQuery = Query<I_M_ProductionPlan>(I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
+            val plans = planQuery.setParameters(m_production!!.productionId).list()
             for (plan in plans) {
                 validateEndProduct(plan.productId)
 

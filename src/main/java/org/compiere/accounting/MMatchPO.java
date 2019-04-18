@@ -9,6 +9,7 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_Order;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_MatchPO;
 import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderLine;
@@ -74,7 +75,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx          context
      * @param M_MatchPO_ID id
      */
     public MMatchPO(int M_MatchPO_ID) {
@@ -90,7 +90,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * Load Construor
      *
-     * @param ctx context
      */
     public MMatchPO(Row row) {
         super(row);
@@ -103,7 +102,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
      * @param dateTrx optional date
      * @param qty     matched quantity
      */
-    public MMatchPO(MInOutLine sLine, Timestamp dateTrx, BigDecimal qty) {
+    public MMatchPO(I_M_InOutLine sLine, Timestamp dateTrx, BigDecimal qty) {
         this(0);
         setClientOrg(sLine);
         setInOutLineId(sLine.getInOutLineId());
@@ -137,7 +136,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * Get PO Match of Receipt Line
      *
-     * @param ctx            context
      * @param M_InOutLine_ID receipt
      * @return array of matches
      */
@@ -148,7 +146,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * Get PO Matches of receipt
      *
-     * @param ctx        context
      * @param M_InOut_ID receipt
      * @return array of matches
      */
@@ -159,7 +156,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * Get PO Matches of Invoice
      *
-     * @param ctx          context
      * @param C_Invoice_ID invoice
      * @return array of matches
      */
@@ -170,7 +166,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     /**
      * Get PO Matches for OrderLine
      *
-     * @param ctx            context
      * @param C_OrderLine_ID order
      * @return array of matches
      */
@@ -188,7 +183,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
      * @return Match Record
      */
     public static MMatchPO create(
-            I_C_InvoiceLine iLine, MInOutLine sLine, Timestamp dateTrx, BigDecimal qty) {
+            I_C_InvoiceLine iLine, I_M_InOutLine sLine, Timestamp dateTrx, BigDecimal qty) {
 
         int C_OrderLine_ID = 0;
         if (iLine != null) {
@@ -234,7 +229,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     private static MMatchPO create(
 
             I_C_InvoiceLine iLine,
-            MInOutLine sLine,
+            I_M_InOutLine sLine,
             int C_OrderLine_ID,
             Timestamp dateTrx,
             BigDecimal qty) {

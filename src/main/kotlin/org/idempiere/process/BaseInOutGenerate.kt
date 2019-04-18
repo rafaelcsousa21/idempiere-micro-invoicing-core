@@ -6,6 +6,7 @@ import org.compiere.accounting.MOrderLine
 import org.compiere.accounting.MStorageOnHand
 import org.compiere.invoicing.MInOut
 import org.compiere.invoicing.MInOutLine
+import org.compiere.model.I_C_OrderLine
 import org.compiere.orm.MClient.Companion.MMPOLICY_FiFo
 import org.compiere.process.SvrProcess
 import org.idempiere.common.util.AdempiereUserError
@@ -66,7 +67,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
 
     protected abstract fun createLine(
         order: MOrder,
-        orderLine: MOrderLine,
+        orderLine: I_C_OrderLine,
         qty: BigDecimal,
         storages: Array<MStorageOnHand>?,
         force: Boolean

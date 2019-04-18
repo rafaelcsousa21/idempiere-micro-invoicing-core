@@ -23,7 +23,6 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Default ConstructorX_A_Asset_Group_Acct
      *
-     * @param ctx                     context
      * @param X_A_Asset_Group_Acct_ID id
      */
     public MAssetGroupAcct(int X_A_Asset_Group_Acct_ID) {
@@ -33,7 +32,6 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MAssetGroupAcct(Row row) {
         super(row);
@@ -42,8 +40,8 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Get Asset Group Accountings for given group
      */
-    public static List<MAssetGroupAcct> forA_Asset_GroupId(int A_Asset_Group_ID) {
-        return new Query(
+    public static List<I_A_Asset_Group_Acct> forA_Asset_GroupId(int A_Asset_Group_ID) {
+        return new Query<I_A_Asset_Group_Acct>(
                 I_A_Asset_Group_Acct.Table_Name,
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
         )
@@ -54,24 +52,17 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Get Asset Group Accountings for given group
      */
-    public static MAssetGroupAcct forA_Asset_GroupId(
+    public static I_A_Asset_Group_Acct forA_Asset_GroupId(
             int A_Asset_Group_ID, String postingType) {
         final String whereClause =
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
                         + "=? AND "
                         + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
                         + "=?";
-        return new Query(I_A_Asset_Group_Acct.Table_Name, whereClause)
+        return new Query<I_A_Asset_Group_Acct>(I_A_Asset_Group_Acct.Table_Name, whereClause)
                 .setParameters(A_Asset_Group_ID, postingType)
                 .firstOnly();
     }
-
-  /* commented by @win
-  public int getA_Asset_ClassId()
-  {
-  	return getParent().getA_Asset_ClassId();
-  }
-  */
 
     public Timestamp getAssetServiceDate() {
         return null;

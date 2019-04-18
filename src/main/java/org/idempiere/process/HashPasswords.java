@@ -1,8 +1,10 @@
 package org.idempiere.process;
 
 import org.compiere.crm.MUser;
+import org.compiere.model.I_AD_User;
+import org.compiere.model.I_Query;
 import org.compiere.orm.MSysConfig;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.SystemIDs;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -40,9 +42,9 @@ public class HashPasswords extends SvrProcess {
 
         int count = 0;
         try {
-            List<MUser> users =
-                    MTable.get(MUser.Table_ID).createQuery(where).list();
-            for (MUser user : users) {
+            I_Query<I_AD_User> query = MBaseTableKt.getTable(MUser.Table_ID).createQuery(where);
+            List<I_AD_User> users = query.list();
+            for (I_AD_User user : users) {
                 user.setPassword(user.getPassword());
                 count++;
                 user.saveEx();

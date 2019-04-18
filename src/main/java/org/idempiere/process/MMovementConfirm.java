@@ -10,6 +10,9 @@ import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_DocType;
+import org.compiere.model.I_M_MovementConfirm;
+import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.process.CompleteActionResult;
@@ -101,9 +104,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * @param checkExisting if false, new confirmation is created
      * @return Confirmation
      */
-    public static MMovementConfirm create(MMovement move, boolean checkExisting) {
+    public static I_M_MovementConfirm create(MMovement move, boolean checkExisting) {
         if (checkExisting) {
-            MMovementConfirm[] confirmations = move.getConfirmations(false);
+            I_M_MovementConfirm[] confirmations = move.getConfirmations(false);
             if (confirmations.length > 0) {
                 return confirmations[0];
             }
@@ -111,8 +114,8 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
 
         MMovementConfirm confirm = new MMovementConfirm(move);
         confirm.saveEx();
-        MMovementLine[] moveLines = move.getLines(false);
-        for (MMovementLine mLine : moveLines) {
+        I_M_MovementLine[] moveLines = move.getLines(false);
+        for (I_M_MovementLine mLine : moveLines) {
             MMovementLineConfirm cLine = new MMovementLineConfirm(confirm);
             cLine.setMovementLine(mLine);
             cLine.saveEx();
@@ -376,7 +379,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * @return true if created
      */
     private boolean createDifferenceDoc(MMovement move, MMovementLineConfirm confirm) {
-        MMovementLine mLine = confirm.getLine();
+        I_M_MovementLine mLine = confirm.getLine();
 
         //	Difference - Create Inventory Difference for Source Location
         if (Env.ZERO.compareTo(confirm.getDifferenceQty()) != 0) {
@@ -483,9 +486,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * @param inventory
      */
     private void setInventoryDocType(MInventory inventory) {
-        MDocType[] doctypes =
+        I_C_DocType[] doctypes =
                 MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialPhysicalInventory);
-        for (MDocType doctype : doctypes) {
+        for (I_C_DocType doctype : doctypes) {
             if (MDocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
                 inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;

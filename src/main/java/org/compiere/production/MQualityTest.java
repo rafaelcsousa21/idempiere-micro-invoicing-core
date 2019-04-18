@@ -1,12 +1,10 @@
 package org.compiere.production;
 
 import kotliquery.Row;
+import org.compiere.model.I_M_QualityTestResult;
 
 public class MQualityTest extends X_M_QualityTest {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -8585270006299484402L;
 
     public MQualityTest(int M_QualityTest_ID) {
@@ -17,7 +15,7 @@ public class MQualityTest extends X_M_QualityTest {
         super(row);
     }
 
-    public MQualityTestResult createResult(int m_attributesetinstance_id) {
+    public I_M_QualityTestResult createResult(int m_attributesetinstance_id) {
         MQualityTestResult result = new MQualityTestResult(0);
         result.setClientOrg(this);
         result.setQualityTestId(getQualityTestId());

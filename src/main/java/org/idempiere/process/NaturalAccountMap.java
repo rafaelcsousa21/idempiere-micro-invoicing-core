@@ -215,7 +215,7 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
         Iterator<?> iterator = this.values().iterator();
         while (iterator.hasNext()) {
             MElementValue na = (MElementValue) iterator.next();
-            na.setADClientID(AD_Client_ID);
+            na.setClientId(AD_Client_ID);
             na.setOrgId(AD_Org_ID);
             na.setElementId(C_Element_ID);
             na.setIsActive(isActive);

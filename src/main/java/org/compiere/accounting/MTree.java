@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MRoleKt;
-import org.compiere.orm.MTable;
+import org.compiere.orm.MTableKt;
 import org.compiere.orm.MTree_Base;
 import org.compiere.orm.MTree_BaseKt;
 import org.idempiere.common.util.CLogMgt;
@@ -130,7 +130,7 @@ public class MTree extends MTree_Base {
         {
             String sourceTableName = MTree_BaseKt.getSourceTableName(getTreeType());
             if (sourceTableName == null) {
-                if (getTreeTableId() > 0) sourceTableName = MTable.getDbTableName(getTreeTableId());
+                if (getTreeTableId() > 0) sourceTableName = MTableKt.getDbTableName(getTreeTableId());
             }
             sql =
                     new StringBuffer("SELECT " + "tn.Node_ID,tn.Parent_ID,tn.SeqNo,st.IsActive " + "FROM ")
@@ -331,7 +331,7 @@ public class MTree extends MTree_Base {
                 sqlNode.append(" IS NOT NULL))");
             }
         } else if (getTreeTableId() != 0) {
-            String tableName = MTable.getDbTableName(getTreeTableId());
+            String tableName = MTableKt.getDbTableName(getTreeTableId());
             sqlNode.append("SELECT t.").append(tableName).append("_ID,");
             if (isTreeDrivenByValue()) sqlNode.append("t.Value || ' - ' || t.Name,");
             else sqlNode.append("t.Name,");

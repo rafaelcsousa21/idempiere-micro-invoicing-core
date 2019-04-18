@@ -23,11 +23,15 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_AD_User;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.model.I_C_BPartner_Location;
+import org.compiere.model.I_C_BankAccount;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceBatch;
 import org.compiere.model.I_C_InvoiceBatchLine;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_InvoiceTax;
+import org.compiere.model.I_M_PriceList;
+import org.compiere.model.I_M_PriceList_Version;
 import org.compiere.order.BPartnerNoAddressException;
 import org.compiere.order.MInOut;
 import org.compiere.order.MInOutLine;
@@ -952,11 +956,11 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                     return false;
                 }
                 if (isValueChanged(I_C_Invoice.COLUMNNAME_DateInvoiced)) {
-                    MPriceList pList = MPriceList.get(getPriceListId());
-                    MPriceListVersion plOld =
+                    I_M_PriceList pList = MPriceList.get(getPriceListId());
+                    I_M_PriceList_Version plOld =
                             pList.getPriceListVersion(
                                     (Timestamp) getValueOld(I_C_Invoice.COLUMNNAME_DateInvoiced));
-                    MPriceListVersion plNew =
+                    I_M_PriceList_Version plNew =
                             pList.getPriceListVersion((Timestamp) getValue(I_C_Invoice.COLUMNNAME_DateInvoiced));
                     if (plNew == null || !plNew.equals(plOld)) {
                         log.saveError("Error", MsgKt.getMsg("CannotChangeDateInvoiced"));
@@ -1084,7 +1088,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      */
     @Override
     public void setPriceListId(int M_PriceList_ID) {
-        MPriceList pl = MPriceList.get(M_PriceList_ID);
+        I_M_PriceList pl = MPriceList.get(M_PriceList_ID);
         if (pl != null) {
             setCurrencyId(pl.getCurrencyId());
             super.setPriceListId(M_PriceList_ID);
@@ -1497,8 +1501,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         //	Create Cash Payment
         if (X_C_Invoice.PAYMENTRULE_Cash.equals(getPaymentRule()) && !fromPOS) {
             String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
-            MBankAccount ba =
-                    new Query(MBankAccount.Table_Name, whereClause)
+            I_C_BankAccount ba =
+                    new Query<I_C_BankAccount>(MBankAccount.Table_Name, whereClause)
                             .setParameters(getOrgId(), getCurrencyId())
                             .setOnlyActiveRecords(true)
                             .setOrderBy("IsDefault DESC")
@@ -1512,13 +1516,13 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (isSOTrx()) docBaseType = MDocType.DOCBASETYPE_ARReceipt;
             else docBaseType = MDocType.DOCBASETYPE_APPayment;
 
-            MDocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(docBaseType);
-            if (doctypes == null || doctypes.length == 0) {
+            I_C_DocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(docBaseType);
+            if (doctypes.length == 0) {
                 m_processMsg = "No document type ";
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
             }
-            MDocType doctype = null;
-            for (MDocType doc : doctypes) {
+            I_C_DocType doctype = null;
+            for (I_C_DocType doc : doctypes) {
                 if (doc.getOrgId() == this.getOrgId()) {
                     doctype = doc;
                     break;

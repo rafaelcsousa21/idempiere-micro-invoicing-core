@@ -40,15 +40,11 @@ public class MDistributionLine extends X_GL_DistributionLine {
     /**
      * Standard Constructor
      *
-     * @param ctx                    context
      * @param GL_DistributionLine_ID id
-     * @param trxName                transaction
      */
     public MDistributionLine(int GL_DistributionLine_ID) {
         super(GL_DistributionLine_ID);
         if (GL_DistributionLine_ID == 0) {
-            //	setGLDistributionId (0);		//	Parent
-            //	setLine (0);
             //
             setOverwriteAcct(false);
             setOverwriteActivity(false);
@@ -71,9 +67,6 @@ public class MDistributionLine extends X_GL_DistributionLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MDistributionLine(Row row) {
         super(row);
@@ -104,30 +97,28 @@ public class MDistributionLine extends X_GL_DistributionLine {
      *
      * @return account
      */
-    public MAccount getAccount() {
-        MAccount acct =
-                MAccount.get(
-                        m_account.getClientId(),
-                        isOverwriteOrg() && getOrgId() != 0 ? getOrgId() : m_account.getOrgId(),
-                        m_account.getAccountingSchemaId(),
-                        isOverwriteAcct() && getAccountId() != 0 ? getAccountId() : m_account.getAccountId(),
-                        m_account.getSubAccountId(),
-                        //
-                        isOverwriteProduct() ? getProductId() : m_account.getProductId(),
-                        isOverwriteBPartner() ? getBusinessPartnerId() : m_account.getBusinessPartnerId(),
-                        isOverwriteOrgTrx() ? getTransactionOrganizationId() : m_account.getTransactionOrganizationId(),
-                        isOverwriteLocFrom() ? getLocationFromId() : m_account.getLocationFromId(),
-                        isOverwriteLocTo() ? getLocationToId() : m_account.getLocationToId(),
-                        isOverwriteSalesRegion() ? getSalesRegionId() : m_account.getSalesRegionId(),
-                        isOverwriteProject() ? getProjectId() : m_account.getProjectId(),
-                        isOverwriteCampaign() ? getCampaignId() : m_account.getCampaignId(),
-                        isOverwriteActivity() ? getBusinessActivityId() : m_account.getBusinessActivityId(),
-                        isOverwriteUser1() ? getUser1Id() : m_account.getUser1Id(),
-                        isOverwriteUser2() ? getUser2Id() : m_account.getUser2Id(),
-                        m_account.getUserElement1Id(),
-                        m_account.getUserElement2Id()
-                );
-        return acct;
+    public I_C_ValidCombination getAccount() {
+        return MAccount.get(
+                m_account.getClientId(),
+                isOverwriteOrg() && getOrgId() != 0 ? getOrgId() : m_account.getOrgId(),
+                m_account.getAccountingSchemaId(),
+                isOverwriteAcct() && getAccountId() != 0 ? getAccountId() : m_account.getAccountId(),
+                m_account.getSubAccountId(),
+                //
+                isOverwriteProduct() ? getProductId() : m_account.getProductId(),
+                isOverwriteBPartner() ? getBusinessPartnerId() : m_account.getBusinessPartnerId(),
+                isOverwriteOrgTrx() ? getTransactionOrganizationId() : m_account.getTransactionOrganizationId(),
+                isOverwriteLocFrom() ? getLocationFromId() : m_account.getLocationFromId(),
+                isOverwriteLocTo() ? getLocationToId() : m_account.getLocationToId(),
+                isOverwriteSalesRegion() ? getSalesRegionId() : m_account.getSalesRegionId(),
+                isOverwriteProject() ? getProjectId() : m_account.getProjectId(),
+                isOverwriteCampaign() ? getCampaignId() : m_account.getCampaignId(),
+                isOverwriteActivity() ? getBusinessActivityId() : m_account.getBusinessActivityId(),
+                isOverwriteUser1() ? getUser1Id() : m_account.getUser1Id(),
+                isOverwriteUser2() ? getUser2Id() : m_account.getUser2Id(),
+                m_account.getUserElement1Id(),
+                m_account.getUserElement2Id()
+        );
     } //	setAccount
 
     /**

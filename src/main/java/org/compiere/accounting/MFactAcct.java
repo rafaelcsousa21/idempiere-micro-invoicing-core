@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_ValidCombination;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
 
@@ -107,8 +108,8 @@ public class MFactAcct extends X_Fact_Acct {
      *
      * @return Valid Account Combination
      */
-    public MAccount getMAccount() {
-        MAccount acct =
+    public I_C_ValidCombination getMAccount() {
+        I_C_ValidCombination acct =
                 MAccount.get(
                         getClientId(),
                         getOrgId(),

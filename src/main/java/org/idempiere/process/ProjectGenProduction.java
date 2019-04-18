@@ -2,6 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_ProjectLine;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProduction;
 import org.compiere.production.MProject;
@@ -72,14 +73,14 @@ public class ProjectGenProduction extends SvrProcess {
             createProduction(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
             MProject project = new MProject(m_C_Project_ID);
-            for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
+            for (I_C_ProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
                 if (line.isActive()) {
                     createProduction(project, line);
                 }
             }
         } else {
             MProject project = new MProject(m_C_Project_ID);
-            for (MProjectLine line : project.getLines()) {
+            for (I_C_ProjectLine line : project.getLines()) {
                 if (line.isActive()) {
                     createProduction(project, line);
                 }
@@ -93,7 +94,7 @@ public class ProjectGenProduction extends SvrProcess {
      *
      * @param projectLine project line
      */
-    private void createProduction(MProject project, MProjectLine projectLine) {
+    private void createProduction(MProject project, I_C_ProjectLine projectLine) {
         if (projectLine.getProductId() == 0) {
             addLog(
                     project.getProjectId(),

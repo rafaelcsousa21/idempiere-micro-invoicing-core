@@ -4,6 +4,7 @@ import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MRequest;
@@ -193,8 +194,8 @@ public class RequestInvoice extends SvrProcess {
      * @param request request
      */
     private void invoiceLine(MRequest request) {
-        MRequestUpdate[] updates = request.getUpdates(null);
-        for (MRequestUpdate update : updates) {
+        I_R_RequestUpdate[] updates = request.getUpdates(null);
+        for (I_R_RequestUpdate update : updates) {
             BigDecimal qty = update.getQtyInvoiced();
             if (qty == null || qty.signum() == 0) continue;
 

@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_Period;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 
 import java.sql.Timestamp;
 
@@ -69,7 +69,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
 
     public org.compiere.model.I_C_Year getYear() throws RuntimeException {
         return (org.compiere.model.I_C_Year)
-                MTable.get(org.compiere.model.I_C_Year.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Year.Table_Name)
                         .getPO(getYearId());
     }
 

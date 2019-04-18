@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.invoicing.MInOut;
@@ -201,8 +187,8 @@ public class InOutGenerateRMA extends SvrProcess {
                 //
                 // Link to corresponding Invoice Line (if any) - teo_sarca [ 2818523 ]
                 // The MMatchInv records will be automatically generated on MInOut.completeIt()
-                MInvoiceLine invoiceLine =
-                        new Query(
+                I_C_InvoiceLine invoiceLine =
+                        new Query<I_C_InvoiceLine>(
                                 I_C_InvoiceLine.Table_Name,
                                 I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID + "=?"
                         )

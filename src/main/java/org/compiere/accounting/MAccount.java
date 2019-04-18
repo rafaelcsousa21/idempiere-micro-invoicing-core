@@ -43,7 +43,6 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     /**
      * ************************************************************************ Default constructor
      *
-     * @param ctx                   context
      * @param C_ValidCombination_ID combination
      */
     public MAccount(int C_ValidCombination_ID) {
@@ -58,7 +57,6 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     /**
      * Load constructor
      *
-     * @param ctx context
      */
     public MAccount(Row row) {
         super(row);
@@ -78,7 +76,6 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     /**
      * Get existing Account or create it
      *
-     * @param ctx              context
      * @param AD_Client_ID
      * @param AD_Org_ID
      * @param C_AcctSchema_ID
@@ -99,7 +96,7 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
      * @param UserElement2_ID
      * @return account or null
      */
-    public static MAccount get(
+    public static I_C_ValidCombination get(
 
             int AD_Client_ID,
             int AD_Org_ID,
@@ -210,8 +207,8 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
         }
         //	whereClause.append(" ORDER BY IsFullyQualified DESC");
 
-        MAccount existingAccount =
-                new Query(MAccount.Table_Name, whereClause.toString())
+        I_C_ValidCombination existingAccount =
+                new Query<I_C_ValidCombination>(MAccount.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOnlyActiveRecords(true)
                         .firstOnly();
@@ -254,7 +251,7 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
      * @param fa accounting fact
      * @return account
      */
-    public static MAccount get(X_Fact_Acct fa) {
+    public static I_C_ValidCombination get(X_Fact_Acct fa) {
         return get(
 
                 fa.getClientId(),
@@ -342,7 +339,6 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     /**
      * Get Account
      *
-     * @param ctx                   context
      * @param C_ValidCombination_ID combination
      * @return Account
      */
@@ -354,16 +350,15 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     /**
      * Update Value/Description after change of account element value/description.
      *
-     * @param ctx   context
      * @param where where clause
      */
     public static void updateValueDescription(final String where) {
-        List<MAccount> accounts =
-                new Query(MAccount.Table_Name, where)
+        List<I_C_ValidCombination> accounts =
+                new Query<I_C_ValidCombination>(MAccount.Table_Name, where)
                         .setOrderBy(MAccount.COLUMNNAME_C_ValidCombination_ID)
                         .list();
 
-        for (MAccount account : accounts) {
+        for (I_C_ValidCombination account : accounts) {
             account.setValueDescription();
             account.saveEx();
         }

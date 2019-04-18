@@ -5,6 +5,7 @@ import org.compiere.crm.MUserKt;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_M_PriceList;
 import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -139,7 +140,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * Set default PriceList
      */
     public void setPriceListId() {
-        MPriceList defaultPL = MPriceList.getDefault(false);
+        I_M_PriceList defaultPL = MPriceList.getDefault(false);
         if (defaultPL == null) defaultPL = MPriceList.getDefault(true);
         if (defaultPL != null) setPriceListId(defaultPL.getPriceListId());
     } //	setPriceListId()
@@ -507,7 +508,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return C_Currency_ID
      */
     public int getCurrencyId() {
-        MPriceList pl = MPriceList.get(getPriceListId());
+        I_M_PriceList pl = MPriceList.get(getPriceListId());
         return pl.getCurrencyId();
     }
 

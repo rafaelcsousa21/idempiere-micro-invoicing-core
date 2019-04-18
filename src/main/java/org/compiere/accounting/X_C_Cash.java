@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Cash extends BasePOName implements I_C_Cash {
+public abstract class X_C_Cash extends BasePOName implements I_C_Cash {
 
     /**
      * Complete = CO

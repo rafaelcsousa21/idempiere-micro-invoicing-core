@@ -6,6 +6,7 @@ import org.compiere.accounting.MProductPO;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_ProjectLine;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
@@ -93,14 +94,14 @@ public class ProjectGenPO extends SvrProcess {
             createPO(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
             MProject project = new MProject(m_C_Project_ID);
-            for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
+            for (I_C_ProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
                 if (line.isActive()) {
                     createPO(project, line);
                 }
             }
         } else {
             MProject project = new MProject(m_C_Project_ID);
-            for (MProjectLine line : project.getLines()) {
+            for (I_C_ProjectLine line : project.getLines()) {
                 if (line.isActive()) {
                     createPO(project, line);
                 }
@@ -114,7 +115,7 @@ public class ProjectGenPO extends SvrProcess {
      *
      * @param projectLine project line
      */
-    private void createPO(MProject project, MProjectLine projectLine) {
+    private void createPO(MProject project, I_C_ProjectLine projectLine) {
         if (projectLine.getProductId() == 0) {
             addLog(projectLine.getLine(), null, null, "Line has no Product");
             return;
@@ -135,8 +136,7 @@ public class ProjectGenPO extends SvrProcess {
         //	Create to Order
         MOrder order = null;
         //	try to find PO to C_BPartner
-        for (int i = 0; i < m_pos.size(); i++) {
-            MOrder test = m_pos.get(i);
+        for (MOrder test : m_pos) {
             if (test.getBusinessPartnerId() == pos[0].getBusinessPartnerId()) {
                 order = test;
                 break;

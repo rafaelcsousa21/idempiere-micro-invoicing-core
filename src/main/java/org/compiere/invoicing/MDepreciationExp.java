@@ -3,7 +3,9 @@ package org.compiere.invoicing;
 import kotliquery.Row;
 import org.compiere.accounting.MPeriod;
 import org.compiere.model.IDocLine;
+import org.compiere.model.I_A_Asset_Acct;
 import org.compiere.model.I_A_Depreciation_Exp;
+import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
@@ -92,11 +94,10 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             BigDecimal amt_F,
             BigDecimal accumAmt,
             BigDecimal accumAmt_F,
-            String help,
-            String trxName) {
-        ArrayList<MDepreciationExp> list = new ArrayList<MDepreciationExp>();
-        MAssetAcct assetAcct = assetwk.getAssetAccounting(dateAcct);
-        MDepreciationExp depexp = null;
+            String help) {
+        ArrayList<MDepreciationExp> list = new ArrayList<>();
+        I_A_Asset_Acct assetAcct = assetwk.getAssetAccounting(dateAcct);
+        MDepreciationExp depexp;
 
         depexp =
                 createEntry(
@@ -154,7 +155,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
      *
      * @param wk asset workfile
      */
-    public void updateFrom(MDepreciationWorkfile wk) {
+    public void updateFrom(I_A_Depreciation_Workfile wk) {
         setAssetCost(wk.getAssetCost());
         setAccumulatedDepreciation(wk.getAccumulatedDepreciation());
         setAccumulatedDepreciationFiscal(wk.getAccumulatedDepreciationFiscal());
@@ -164,7 +165,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         setAssetRemainingFiscal(wk.getAssetRemainingFiscal());
     }
 
-    private MDepreciationWorkfile getA_Depreciation_Workfile() {
+    private I_A_Depreciation_Workfile getA_Depreciation_Workfile() {
         return MDepreciationWorkfile.get(getAssetId(), getPostingType());
     }
 
@@ -178,7 +179,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         }
 
         //
-        MDepreciationWorkfile assetwk = getA_Depreciation_Workfile();
+        I_A_Depreciation_Workfile assetwk = getA_Depreciation_Workfile();
         if (assetwk == null) {
             throw new AssetException("@NotFound@ @A_Depreciation_Workfile_ID@");
         }
@@ -211,7 +212,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     protected boolean beforeDelete() {
         if (isProcessed()) {
             // TODO : check if we can reverse it (check period, check dateacct etc)
-            MDepreciationWorkfile assetwk = getA_Depreciation_Workfile();
+            I_A_Depreciation_Workfile assetwk = getA_Depreciation_Workfile();
             assetwk.adjustAccumulatedDepreciation(
                     getAccumulatedDepreciation().negate(), getAccumulatedDepreciationFiscal().negate(), false);
             assetwk.saveEx();
@@ -232,7 +233,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         //
         // If it was processed, we need to update workfile's current period
         if (isProcessed()) {
-            MDepreciationWorkfile wk = getA_Depreciation_Workfile();
+            I_A_Depreciation_Workfile wk = getA_Depreciation_Workfile();
             wk.setCurrentPeriod();
             wk.saveEx();
         }

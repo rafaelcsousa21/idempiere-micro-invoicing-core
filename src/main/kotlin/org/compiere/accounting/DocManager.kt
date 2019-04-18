@@ -3,10 +3,10 @@ package org.compiere.accounting
 import kotliquery.Row
 import org.compiere.model.IDoc
 import org.compiere.model.I_C_AcctSchema
-import org.compiere.orm.MTable
 import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.CLogger
+import software.hsharp.core.orm.getTable
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.executeUpdate
 import software.hsharp.core.util.prepareStatement
@@ -83,7 +83,7 @@ object DocManager {
     fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
         var tableName: String? = null
         val documentsTableId = getDocumentsTableID()
-        val documentsTableName = DocManager.getDocumentsTableName()
+        val documentsTableName = getDocumentsTableName()
         for (i in 0 until documentsTableId.size) {
             if (documentsTableId[i] == AD_Table_ID) {
                 tableName = documentsTableName[i]
@@ -138,7 +138,7 @@ object DocManager {
 
         var tableName: String? = null
         val documentsTableId = getDocumentsTableID()
-        val documentsTableName = DocManager.getDocumentsTableName()
+        val documentsTableName = getDocumentsTableName()
 
         for (i in 0 until documentsTableId.size) {
             if (documentsTableId[i] == AD_Table_ID) {
@@ -195,7 +195,7 @@ object DocManager {
             }
         }
 
-        val table = MTable.get(AD_Table_ID)
+        val table = getTable(AD_Table_ID)
         val recordId = rs.int(table.tableKeyColumns[0])
         //  Commit Doc
         if (!save(AD_Table_ID, recordId, status)) {
@@ -214,7 +214,7 @@ object DocManager {
      * @return true if saved
      */
     private fun save(AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {
-        val table = MTable.get(AD_Table_ID)
+        val table = getTable(AD_Table_ID)
         val sql = StringBuilder("UPDATE ")
         sql.append(table.dbTableName).append(" SET Posted='").append(status)
             .append("',Processing='N' ")

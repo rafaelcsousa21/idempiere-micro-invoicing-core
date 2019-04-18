@@ -62,7 +62,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+                    COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     /**
@@ -72,7 +72,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      */
     public void setQualityTestId(int M_QualityTest_ID) {
         if (M_QualityTest_ID < 1) setValueNoCheck(COLUMNNAME_M_QualityTest_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_QualityTest_ID, Integer.valueOf(M_QualityTest_ID));
+        else setValueNoCheck(COLUMNNAME_M_QualityTest_ID, M_QualityTest_ID);
     }
 
     /**
@@ -81,7 +81,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_InventoryLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
+public abstract class X_M_InventoryLine extends PO implements I_M_InventoryLine {
 
     /**
      * Inventory Difference = D
@@ -34,11 +34,6 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public X_M_InventoryLine(int M_InventoryLine_ID) {
         super(M_InventoryLine_ID);
-        /**
-         * if (M_InventoryLine_ID == 0) { setInventoryType (null); // D setAttributeSetInstanceId
-         * (0); setInventoryId (0); setInventoryLineId (0); setProductId (0); setProcessed
-         * (false); setQtyBook (Env.ZERO); setQtyCount (Env.ZERO); setQtyCsv (Env.ZERO); }
-         */
     }
 
     /**
@@ -58,8 +53,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_InventoryLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_InventoryLine[" + getId() + "]";
     }
 
     /**
@@ -80,7 +74,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public void setChargeId(int C_Charge_ID) {
         if (C_Charge_ID < 1) setValue(COLUMNNAME_C_Charge_ID, null);
-        else setValue(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+        else setValue(COLUMNNAME_C_Charge_ID, C_Charge_ID);
     }
 
     /**
@@ -157,7 +151,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Line);
     }
 
     /**
@@ -179,12 +173,12 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     public org.compiere.model.I_M_Inventory getInventory() throws RuntimeException {
         return (org.compiere.model.I_M_Inventory)
-                MTable.get(org.compiere.model.I_M_Inventory.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Inventory.Table_Name)
                         .getPO(getInventoryId());
     }
 
@@ -206,7 +200,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public void setInventoryId(int M_Inventory_ID) {
         if (M_Inventory_ID < 1) setValueNoCheck(COLUMNNAME_M_Inventory_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
+        else setValueNoCheck(COLUMNNAME_M_Inventory_ID, M_Inventory_ID);
     }
 
     /**
@@ -238,12 +232,12 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
-        else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        else setValue(COLUMNNAME_M_Locator_ID, M_Locator_ID);
     }
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -294,7 +288,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -364,7 +358,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public void setReversalLineId(int ReversalLine_ID) {
         if (ReversalLine_ID < 1) setValue(COLUMNNAME_ReversalLine_ID, null);
-        else setValue(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
+        else setValue(COLUMNNAME_ReversalLine_ID, ReversalLine_ID);
     }
 
     @Override

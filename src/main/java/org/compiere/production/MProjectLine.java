@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.accounting.MProduct;
+import org.compiere.model.I_C_ProjectIssue;
 import org.compiere.product.IProductPricing;
 import org.compiere.product.MProductCategory;
 import org.idempiere.common.util.Env;
@@ -31,7 +32,6 @@ public class MProjectLine extends X_C_ProjectLine {
     /**
      * Standard Constructor
      *
-     * @param ctx              context
      * @param C_ProjectLine_ID id
      */
     public MProjectLine(int C_ProjectLine_ID) {
@@ -53,7 +53,6 @@ public class MProjectLine extends X_C_ProjectLine {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MProjectLine(Row row) {
         super(row);
@@ -86,7 +85,7 @@ public class MProjectLine extends X_C_ProjectLine {
      *
      * @param pi project issue
      */
-    public void setMProjectIssue(MProjectIssue pi) {
+    public void setMProjectIssue(I_C_ProjectIssue pi) {
         setProjectIssueId(pi.getProjectIssueId());
         setProductId(pi.getProductId());
         setCommittedQty(pi.getMovementQty());

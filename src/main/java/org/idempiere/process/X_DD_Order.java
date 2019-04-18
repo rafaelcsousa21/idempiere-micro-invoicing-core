@@ -1,7 +1,7 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_DD_Order;
 import org.idempiere.common.util.Env;
@@ -127,7 +127,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_AD_User getUser() throws RuntimeException {
         return (org.compiere.model.I_AD_User)
-                MTable.get(org.compiere.model.I_AD_User.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
                         .getPO(getUserId());
     }
 
@@ -154,7 +154,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Activity getActivity() throws RuntimeException {
         return (org.compiere.model.I_C_Activity)
-                MTable.get(org.compiere.model.I_C_Activity.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Activity.Table_Name)
                         .getPO(getBusinessActivityId());
     }
 
@@ -181,7 +181,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_BPartner getBPartner() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner)
-                MTable.get(org.compiere.model.I_C_BPartner.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_BPartner.Table_Name)
                         .getPO(getBusinessPartnerId());
     }
 
@@ -208,7 +208,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_BPartner_Location getBPartnerLocation() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner_Location)
-                MTable.get(org.compiere.model.I_C_BPartner_Location.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_BPartner_Location.Table_Name)
                         .getPO(getBusinessPartnerLocationId());
     }
 
@@ -235,7 +235,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Campaign getCampaign() throws RuntimeException {
         return (org.compiere.model.I_C_Campaign)
-                MTable.get(org.compiere.model.I_C_Campaign.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Campaign.Table_Name)
                         .getPO(getCampaignId());
     }
 
@@ -262,7 +262,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Charge getCharge() throws RuntimeException {
         return (org.compiere.model.I_C_Charge)
-                MTable.get(org.compiere.model.I_C_Charge.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Charge.Table_Name)
                         .getPO(getChargeId());
     }
 
@@ -289,7 +289,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
-                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 
@@ -336,7 +336,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
-                MTable.get(org.compiere.model.I_C_Invoice.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
     }
 
@@ -363,7 +363,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
-                MTable.get(org.compiere.model.I_C_Order.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getOrderId());
     }
 
@@ -390,7 +390,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(org.compiere.model.I_C_Project.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 
@@ -936,7 +936,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_M_Shipper getShipper() throws RuntimeException {
         return (org.compiere.model.I_M_Shipper)
-                MTable.get(org.compiere.model.I_M_Shipper.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Shipper.Table_Name)
                         .getPO(getShipperId());
     }
 
@@ -963,7 +963,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_M_Warehouse getWarehouse() throws RuntimeException {
         return (org.compiere.model.I_M_Warehouse)
-                MTable.get(org.compiere.model.I_M_Warehouse.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Warehouse.Table_Name)
                         .getPO(getWarehouseId());
     }
 
@@ -1156,7 +1156,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_Order getReferencedOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
-                MTable.get(org.compiere.model.I_C_Order.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getReferencedOrderId());
     }
 
@@ -1183,7 +1183,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
         return (org.compiere.model.I_AD_User)
-                MTable.get(org.compiere.model.I_AD_User.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
                         .getPO(getSalesRepresentativeId());
     }
 
@@ -1269,7 +1269,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
-                MTable.get(org.compiere.model.I_C_ElementValue.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
                         .getPO(getUser1Id());
     }
 
@@ -1296,7 +1296,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
 
     public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
-                MTable.get(org.compiere.model.I_C_ElementValue.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
                         .getPO(getUser2Id());
     }
 

@@ -3,7 +3,8 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_ProductionLineMA;
-import org.compiere.orm.MTable;
+import org.compiere.model.I_Query;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
@@ -55,16 +56,17 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
         setDateMaterialPolicy(dateMaterialPolicy);
     }
 
-    public static MProductionLineMA get(MProductionLine parent, int asi, Timestamp dateMPolicy) {
+    public static I_M_ProductionLineMA get(MProductionLine parent, int asi, Timestamp dateMPolicy) {
         String where = " M_ProductionLine_ID = ? AND M_AttributeSetInstance_ID = ? ";
         if (dateMPolicy == null) {
             dateMPolicy = new Timestamp(new Date().getTime());
         }
         where = where + "AND DateMaterialPolicy = trunc(cast(? as date))";
 
-        MProductionLineMA lineMA =
-                MTable.get(I_M_ProductionLineMA.Table_Name)
-                        .createQuery(where)
+        I_Query<I_M_ProductionLineMA> query = MBaseTableKt.getTable(I_M_ProductionLineMA.Table_Name)
+                .createQuery(where);
+
+        I_M_ProductionLineMA lineMA = query
                         .setParameters(parent.getProductionLineId(), asi, dateMPolicy)
                         .first();
 
@@ -75,20 +77,17 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
     /**
      * Get Material Allocations for Line
      *
-     * @param ctx                 context
      * @param M_ProductionLine_ID line
-     * @param trxName             trx
      * @return allocations
      */
-    public static MProductionLineMA[] get(int M_ProductionLine_ID) {
+    public static I_M_ProductionLineMA[] get(int M_ProductionLine_ID) {
 
-        Query query =
-                MTable.get(I_M_ProductionLineMA.Table_Name)
+        I_Query<I_M_ProductionLineMA> query =
+                MBaseTableKt.getTable(I_M_ProductionLineMA.Table_Name)
                         .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?");
         query.setParameters(M_ProductionLine_ID);
-        List<MProductionLineMA> list = query.list();
-        MProductionLineMA[] retValue = list.toArray(new MProductionLineMA[0]);
-        return retValue;
+        List<I_M_ProductionLineMA> list = query.list();
+        return list.toArray(new I_M_ProductionLineMA[0]);
     } //	get
 
     @Override

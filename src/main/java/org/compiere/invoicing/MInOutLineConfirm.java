@@ -1,6 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MInOutConfirm;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
@@ -21,12 +22,11 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     /**
      * Ship Line
      */
-    private MInOutLine m_line = null;
+    private I_M_InOutLine m_line = null;
 
     /**
      * Standard Constructor
      *
-     * @param ctx                   context
      * @param M_InOutLineConfirm_ID id
      */
     public MInOutLineConfirm(int M_InOutLineConfirm_ID) {
@@ -41,7 +41,6 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MInOutLineConfirm(Row row) {
         super(row);
@@ -63,7 +62,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      *
      * @param line shipment line
      */
-    public void setInOutLine(MInOutLine line) {
+    public void setInOutLine(I_M_InOutLine line) {
         setInOutLineId(line.getInOutLineId());
         setTargetQty(line.getMovementQty()); // 	Confirmations in Storage UOM
         setConfirmedQty(getTargetQty()); // 	suggestion
@@ -75,7 +74,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      *
      * @return line
      */
-    public MInOutLine getLine() {
+    public I_M_InOutLine getLine() {
         if (m_line == null) m_line = new MInOutLine(getInOutLineId());
         return m_line;
     } //	getLine
@@ -88,7 +87,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @return success
      */
     public boolean processLine(boolean isSOTrx, String confirmType) {
-        MInOutLine line = getLine();
+        I_M_InOutLine line = getLine();
 
         //	Customer
         if (MInOutConfirm.CONFIRMTYPE_CustomerConfirmation.equals(confirmType)) {

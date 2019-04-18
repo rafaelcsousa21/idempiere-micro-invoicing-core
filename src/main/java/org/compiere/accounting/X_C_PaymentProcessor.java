@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_PaymentProcessor;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 
 import java.math.BigDecimal;
 
@@ -279,7 +279,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
 
     public org.compiere.model.I_C_BankAccount getBankAccount() throws RuntimeException {
         return (org.compiere.model.I_C_BankAccount)
-                MTable.get(org.compiere.model.I_C_BankAccount.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_BankAccount.Table_Name)
                         .getPO(getBankAccountId());
     }
 

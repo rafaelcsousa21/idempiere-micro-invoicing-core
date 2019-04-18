@@ -5,6 +5,8 @@ import org.compiere.accounting.MCost;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.X_T_BOM_Indented;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_Product_BOM;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MProductBOM;
@@ -68,8 +70,6 @@ public class IndentedBOM extends SvrProcess {
     /**
      * Generate an Explosion for this product
      *
-     * @param product
-     * @param isComponent component / header
      */
     private llCost explodeProduct(int M_Product_ID, BigDecimal qty, BigDecimal accumQty) {
         MProduct product = MProduct.get(M_Product_ID);
@@ -92,7 +92,7 @@ public class IndentedBOM extends SvrProcess {
         tboml.setLevels((m_LevelNo > 0 ? ":" : "") + pad + " " + product.getSearchKey());
         //
         // Set Costs:
-        MCost cost = MCost.get(product, 0, m_as, p_AD_Org_ID, p_M_CostElement_ID);
+        I_M_Cost cost = MCost.get(product, 0, m_as, p_AD_Org_ID, p_M_CostElement_ID);
         tboml.setCurrentCostPrice(cost.getCurrentCostPrice());
         tboml.setCost(cost.getCurrentCostPrice().multiply(accumQty));
         tboml.setFutureCostPrice(cost.getFutureCostPrice());
@@ -101,8 +101,8 @@ public class IndentedBOM extends SvrProcess {
 
         BigDecimal llCost = Env.ZERO;
         BigDecimal llFutureCost = Env.ZERO;
-        List<MProductBOM> list = getBOMs(product);
-        for (MProductBOM bom : list) {
+        List<I_M_Product_BOM> list = getBOMs(product);
+        for (I_M_Product_BOM bom : list) {
             m_LevelNo++;
             llCost ll =
                     explodeProduct(
@@ -137,22 +137,19 @@ public class IndentedBOM extends SvrProcess {
      * Get BOMs for given product
      *
      * @param product
-     * @param isComponent
      * @return list of MProductBOM
      */
-    private List<MProductBOM> getBOMs(MProduct product) {
+    private List<I_M_Product_BOM> getBOMs(MProduct product) {
         ArrayList<Object> params = new ArrayList<Object>();
         StringBuilder whereClause = new StringBuilder();
         whereClause.append(MProductBOM.COLUMNNAME_M_Product_ID).append("=?");
         params.add(product.getId());
 
-        List<MProductBOM> list =
-                new Query(MProductBOM.Table_Name, whereClause.toString())
-                        .setParameters(params)
-                        .setOnlyActiveRecords(true)
-                        .setOrderBy(MProductBOM.COLUMNNAME_Line)
-                        .list();
-        return list;
+        return new Query<I_M_Product_BOM>(MProductBOM.Table_Name, whereClause.toString())
+                .setParameters(params)
+                .setOnlyActiveRecords(true)
+                .setOrderBy(MProductBOM.COLUMNNAME_Line)
+                .list();
     }
 
     private static class llCost {

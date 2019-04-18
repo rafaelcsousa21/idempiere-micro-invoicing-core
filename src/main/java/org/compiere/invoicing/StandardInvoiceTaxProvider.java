@@ -27,7 +27,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
             if (!taxList.contains(line.getTaxId())) {
                 MTax tax = new MTax(line.getTaxId());
                 if (tax.getTaxProviderId() != 0) continue;
-                MInvoiceTax iTax =
+                I_C_InvoiceTax iTax =
                         MInvoiceTax.get(
                                 line, invoice.getPrecision(), false); // 	current Tax
                 if (iTax != null) {

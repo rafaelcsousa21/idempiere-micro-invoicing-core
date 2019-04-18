@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AllocationLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -149,7 +149,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
 
     public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
-                MTable.get(org.compiere.model.I_C_Invoice.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
     }
 
@@ -197,7 +197,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
 
     public org.compiere.model.I_C_Payment getPayment() throws RuntimeException {
         return (org.compiere.model.I_C_Payment)
-                MTable.get(org.compiere.model.I_C_Payment.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Payment.Table_Name)
                         .getPO(getPaymentId());
     }
 

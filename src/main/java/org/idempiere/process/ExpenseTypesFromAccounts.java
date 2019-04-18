@@ -20,12 +20,12 @@ import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.model.I_C_ValidCombination;
+import org.compiere.model.I_M_PriceList_Version;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Product_Acct;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MPriceList;
-import org.compiere.product.MPriceListVersion;
 import org.compiere.product.MProductPrice;
 import org.idempiere.common.util.Env;
 
@@ -110,43 +110,43 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         m_clientId = priceList.getClientId();
 
         // Get active price list version
-        MPriceListVersion pv = priceList.getPriceListVersion(null);
+        I_M_PriceList_Version pv = priceList.getPriceListVersion(null);
         if (pv == null)
             throw new Exception("Pricelist " + priceList.getName() + " has no default version.");
 
-        MProduct product;
+        I_M_Product product;
 
         // Read all existing applicable products into memory for quick comparison.
-        List<MProduct> products =
-                new Query(I_M_Product.Table_Name, "ProductType=?")
+        List<I_M_Product> products =
+                new Query<I_M_Product>(I_M_Product.Table_Name, "ProductType=?")
                         .setParameters(MProduct.PRODUCTTYPE_ExpenseType)
                         .list();
 
-        Map<String, MProduct> productMap = new TreeMap<String, MProduct>();
-        for (Iterator<MProduct> it = products.iterator(); it.hasNext(); ) {
-            product = it.next();
+        Map<String, I_M_Product> productMap = new TreeMap<>();
+        for (I_M_Product prod : products) {
+            product = prod;
             productMap.put(product.getSearchKey(), product);
         }
 
         // Read all existing valid combinations comparison
-        MAccount validComb;
-        List<MAccount> validCombs =
-                new Query(
+        I_C_ValidCombination validComb;
+        List<I_C_ValidCombination> validCombs =
+                new Query<I_C_ValidCombination>(
                         I_C_ValidCombination.Table_Name,
                         "C_AcctSchema_ID=? and AD_Client_ID=? and orgId=0"
                 )
                         .setParameters(m_acctSchemaId, m_clientId)
                         .list();
 
-        Map<Integer, MAccount> validCombMap = new TreeMap<Integer, MAccount>();
-        for (Iterator<MAccount> it = validCombs.iterator(); it.hasNext(); ) {
-            validComb = it.next();
+        Map<Integer, I_C_ValidCombination> validCombMap = new TreeMap<>();
+        for (I_C_ValidCombination comb : validCombs) {
+            validComb = comb;
             validCombMap.put(validComb.getAccountId(), validComb);
         }
 
         // Read all accounttypes that fit the given criteria.
-        List<MElementValue> result =
-                new Query(
+        List<I_C_ElementValue> result =
+                new Query<I_C_ElementValue>(
                         I_C_ElementValue.Table_Name,
                         "AccountType=? and isSummary='N' and Value>=? and Value<=? and AD_Client_ID=?"
                 )
@@ -154,23 +154,23 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                                 MElementValue.ACCOUNTTYPE_Expense, m_startElement, m_endElement, m_clientId)
                         .list();
 
-        MElementValue elem;
+        I_C_ElementValue elem;
         MProductPrice priceRec;
-        X_M_Product_Acct productAcct;
+        I_M_Product_Acct productAcct;
         String expenseItemValue;
         BigDecimal zero = Env.ZERO;
         int addCount = 0;
         int skipCount = 0;
 
-        for (Iterator<MElementValue> it = result.iterator(); it.hasNext(); ) {
-            elem = it.next();
+        for (I_C_ElementValue i_c_elementValue : result) {
+            elem = i_c_elementValue;
             expenseItemValue = m_productValuePrefix + elem.getSearchKey() + m_productValueSuffix;
             // See if a product with this key already exists
             product = productMap.get(expenseItemValue);
             if (product == null) {
                 // Create a new product from the account element
                 product = new MProduct(0);
-                product.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
+                product.setClientId(m_clientId);
                 product.setSearchKey(expenseItemValue);
                 product.setName(elem.getName());
                 product.setDescription(elem.getDescription());
@@ -197,7 +197,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 if (validComb == null) {
                     // Create new valid combination
                     validComb = new MAccount(0);
-                    validComb.set_ValueOfColumn("AD_Client_ID", m_clientId);
+                    validComb.setClientId(m_clientId);
                     validComb.setOrgId(0);
                     validComb.setAlias(elem.getSearchKey());
                     validComb.setAccountId(elem.getId());
@@ -208,7 +208,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 // TODO: It might be needed to make the accounting more specific, but the purpose
                 // of the process now is to create general accounts so this is intentional.
                 productAcct =
-                        new Query(
+                        new Query<I_M_Product_Acct>(
                                 I_M_Product_Acct.Table_Name,
                                 "M_Product_ID=? and C_AcctSchema_ID=?"
                         )

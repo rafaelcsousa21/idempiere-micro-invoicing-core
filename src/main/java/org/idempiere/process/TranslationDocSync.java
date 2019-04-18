@@ -1,8 +1,8 @@
 package org.idempiere.process;
 
 import org.compiere.model.I_AD_Client;
+import org.compiere.model.I_AD_Column;
 import org.compiere.orm.MClientKt;
-import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
@@ -65,8 +65,8 @@ public class TranslationDocSync extends SvrProcess {
      */
     private void processTable(MTable table, I_AD_Client client) {
         StringBuilder columnNames = new StringBuilder();
-        MColumn[] columns = table.getColumns(false);
-        for (MColumn column : columns) {
+        I_AD_Column[] columns = table.getColumns(false);
+        for (I_AD_Column column : columns) {
             if ((!column.getColumnName().equals(PO.getUUIDColumnName(table.getDbTableName())))
                     && (column.getReferenceId() == DisplayType.String
                     || column.getReferenceId() == DisplayType.Text)) {

@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.model.I_GL_Journal;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.MDocType;
@@ -64,21 +65,12 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public MJournal(int GL_Journal_ID) {
         super(GL_Journal_ID);
         if (GL_Journal_ID == 0) {
-            //	setGLJournal_ID (0);		//	PK
-            //	setAccountingSchemaId (0);
-            //	setCurrencyId (0);
-            //	setDocumentTypeId (0);
-            //	setPeriodId (0);
             //
             setCurrencyRate(Env.ONE);
-            //	setConversionTypeId(0);
             setDateAcct(new Timestamp(System.currentTimeMillis()));
             setDateDoc(new Timestamp(System.currentTimeMillis()));
-            //	setDescription (null);
             setDocAction(X_GL_Journal.DOCACTION_Complete);
             setDocStatus(X_GL_Journal.DOCSTATUS_Drafted);
-            //	setDocumentNo (null);
-            //	setGLCategoryId (0);
             setPostingType(X_GL_Journal.POSTINGTYPE_Actual);
             setTotalCr(Env.ZERO);
             setTotalDr(Env.ZERO);
@@ -135,10 +127,6 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         setCurrencyId(original.getCurrencyId());
         setConversionTypeId(original.getConversionTypeId());
         setCurrencyRate(original.getCurrencyRate());
-
-        //	setDateDoc(original.getDateDoc());
-        //	setDateAcct(original.getDateAcct());
-        //	setPeriodId(original.getPeriodId());
     } //	MJournal
 
     /**
@@ -189,8 +177,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         String desc = getDescription();
         if (desc == null) setDescription(description);
         else {
-            StringBuilder msgd = new StringBuilder(desc).append(" | ").append(description);
-            setDescription(msgd.toString());
+            setDescription(desc + " | " + description);
         }
     }
 
@@ -200,16 +187,16 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param requery requery
      * @return Array of lines
      */
-    public MJournalLine[] getLines(boolean requery) {
+    public I_GL_JournalLine[] getLines(boolean requery) {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "GL_Journal_ID=?";
-        List<MJournalLine> list =
-                new Query(I_GL_JournalLine.Table_Name, whereClause)
+        List<I_GL_JournalLine> list =
+                new Query<I_GL_JournalLine>(I_GL_JournalLine.Table_Name, whereClause)
                         .setParameters(getGLJournalId())
                         .setOrderBy("Line")
                         .list();
         //
-        MJournalLine[] retValue = new MJournalLine[list.size()];
+        I_GL_JournalLine[] retValue = new I_GL_JournalLine[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getLines
@@ -225,22 +212,22 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public int copyLinesFrom(MJournal fromJournal, Timestamp dateAcct, char typeCR) {
         if (isProcessed() || fromJournal == null) return 0;
         int count = 0;
-        MJournalLine[] fromLines = fromJournal.getLines(false);
-        for (int i = 0; i < fromLines.length; i++) {
+        I_GL_JournalLine[] fromLines = fromJournal.getLines(false);
+        for (I_GL_JournalLine fromLine : fromLines) {
             MJournalLine toLine = new MJournalLine(0);
-            PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
+            PO.copyValues((PO)fromLine, toLine, getClientId(), getOrgId());
             toLine.setGLJournalId(getGLJournalId());
             //
             if (dateAcct != null) toLine.setDateAcct(dateAcct);
             //	Amounts
             if (typeCR == 'C') // 	correct
             {
-                toLine.setAmtSourceDr(fromLines[i].getAmtSourceDr().negate());
-                toLine.setAmtSourceCr(fromLines[i].getAmtSourceCr().negate());
+                toLine.setAmtSourceDr(fromLine.getAmtSourceDr().negate());
+                toLine.setAmtSourceCr(fromLine.getAmtSourceCr().negate());
             } else if (typeCR == 'R') // 	reverse
             {
-                toLine.setAmtSourceDr(fromLines[i].getAmtSourceCr());
-                toLine.setAmtSourceCr(fromLines[i].getAmtSourceDr());
+                toLine.setAmtSourceDr(fromLine.getAmtSourceCr());
+                toLine.setAmtSourceCr(fromLine.getAmtSourceDr());
             }
             toLine.setIsGenerated(true);
             toLine.setProcessed(false);
@@ -262,12 +249,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public void setProcessed(boolean processed) {
         super.setProcessed(processed);
         if (getId() == 0) return;
-        StringBuilder sql =
-                new StringBuilder("UPDATE GL_JournalLine SET Processed='")
-                        .append((processed ? "Y" : "N"))
-                        .append("' WHERE GL_Journal_ID=")
-                        .append(getGLJournalId());
-        int noLine = executeUpdate(sql.toString());
+        String sql = "UPDATE GL_JournalLine SET Processed='" +
+                (processed ? "Y" : "N") +
+                "' WHERE GL_Journal_ID=" +
+                getGLJournalId();
+        int noLine = executeUpdate(sql);
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
     } //	setProcessed
 
@@ -350,15 +336,12 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      */
     private boolean updateBatch() {
         if (getGLJournalBatchId() != 0) { // idempiere 344 - nmicoud
-            StringBuilder sql =
-                    new StringBuilder("UPDATE GL_JournalBatch jb")
-                            .append(
-                                    " SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(TotalDr),0), COALESCE(SUM(TotalCr),0)")
-                            .append(
-                                    " FROM GL_Journal j WHERE j.IsActive='Y' AND jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
-                            .append("WHERE GL_JournalBatch_ID=")
-                            .append(getGLJournalBatchId());
-            int no = executeUpdate(sql.toString());
+            String sql = "UPDATE GL_JournalBatch jb" +
+                    " SET (TotalDr, TotalCr) = (SELECT COALESCE(SUM(TotalDr),0), COALESCE(SUM(TotalCr),0)" +
+                    " FROM GL_Journal j WHERE j.IsActive='Y' AND jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) " +
+                    "WHERE GL_JournalBatch_ID=" +
+                    getGLJournalBatchId();
+            int no = executeUpdate(sql);
             if (no != 1) log.warning("afterSave - Update Batch #" + no);
             return no == 1;
         }
@@ -435,7 +418,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         }
 
         //	Lines
-        MJournalLine[] lines = getLines(true);
+        I_GL_JournalLine[] lines = getLines(true);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -444,8 +427,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         //	Add up Amounts
         BigDecimal AmtSourceDr = Env.ZERO;
         BigDecimal AmtSourceCr = Env.ZERO;
-        for (int i = 0; i < lines.length; i++) {
-            MJournalLine line = lines[i];
+        for (I_GL_JournalLine line : lines) {
             if (!isActive()) continue;
 
             // bcahya, BF [2789319] No check of Actual, Budget, Statistical attribute
@@ -516,7 +498,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
         //	Unbalanced Jornal & Not Suspense
         if (AmtSourceDr.compareTo(AmtSourceCr) != 0) {
-            MAcctSchemaGL gl = MAcctSchemaGL.get(getAccountingSchemaId());
+            I_C_AcctSchema_GL gl = MAcctSchemaGL.get(getAccountingSchemaId());
             if (gl == null || !gl.isUseSuspenseBalancing()) {
                 m_processMsg = "@UnbalancedJornal@";
                 return DocAction.Companion.getSTATUS_Invalid();
@@ -634,9 +616,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (X_GL_Journal.DOCSTATUS_Drafted.equals(getDocStatus())
                 || X_GL_Journal.DOCSTATUS_Invalid.equals(getDocStatus())) {
             // set lines to 0
-            MJournalLine[] lines = getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                MJournalLine line = lines[i];
+            I_GL_JournalLine[] lines = getLines(false);
+            for (I_GL_JournalLine line : lines) {
                 if (line.getAmtAcctDr().signum() != 0 || line.getAmtAcctCr().signum() != 0) {
                     line.setAmtAcctDr(Env.ZERO);
                     line.setAmtAcctCr(Env.ZERO);

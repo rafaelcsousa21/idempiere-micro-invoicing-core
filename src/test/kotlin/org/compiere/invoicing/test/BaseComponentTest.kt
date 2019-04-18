@@ -12,6 +12,7 @@ import org.compiere.invoicing.MInventory
 import org.compiere.invoicing.MInventoryLine
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
+import org.compiere.model.I_AD_Client
 import org.compiere.model.I_AD_Org
 import org.compiere.model.I_C_BankAccount
 import org.compiere.model.I_C_Charge
@@ -97,8 +98,8 @@ abstract class BaseComponentTest {
         Environment.run(baseModule) {
             environmentService.login(NEW_AD_CLIENT_ID, 0, 0)
             DB.run {
-                val query = Query("AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
-                val result = query.list<MClient>()
+                val query = Query<I_AD_Client>("AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
+                val result = query.list()
                 if (result.isEmpty()) {
                     environmentService.login(0, 0, 0)
                     createClient()

@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
@@ -258,15 +259,15 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         //		 Bug 1353695 Currency Rate and COnbversion Type should get copied from journal to lines
         for (MJournal journal : journals) {
-            MJournalLine[] lines = journal.getLines(true);
+            I_GL_JournalLine[] lines = journal.getLines(true);
             if (journal.getCurrencyRate() != null && journal.getCurrencyRate().compareTo(Env.ZERO) != 0) {
-                for (MJournalLine line : lines) {
+                for (I_GL_JournalLine line : lines) {
                     line.setCurrencyRate(journal.getCurrencyRate());
                     line.saveEx();
                 }
             }
             if (journal.getConversionTypeId() > 0) {
-                for (MJournalLine line : lines) {
+                for (I_GL_JournalLine line : lines) {
                     line.setConversionTypeId(journal.getConversionTypeId());
                     line.saveEx();
                 }

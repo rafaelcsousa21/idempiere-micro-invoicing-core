@@ -1,25 +1,12 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MTimeExpense;
 import org.compiere.accounting.MTimeExpenseLine;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_ProjectLine;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MInOut;
-import org.compiere.order.MInOutLine;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectIssue;
@@ -177,41 +164,41 @@ public class ProjectIssue extends SvrProcess {
             throw new IllegalArgumentException(
                     "Receipt for other Project (" + inOut.getProjectId() + ")");
 
-        MInOutLine[] inOutLines = inOut.getLines(false);
+        I_M_InOutLine[] inOutLines = inOut.getLines(false);
         int counter = 0;
-        for (int i = 0; i < inOutLines.length; i++) {
+        for (I_M_InOutLine inOutLine : inOutLines) {
             //	Need to have a Product
-            if (inOutLines[i].getProductId() == 0) continue;
+            if (inOutLine.getProductId() == 0) continue;
             //	Need to have Quantity
-            if (inOutLines[i].getMovementQty() == null || inOutLines[i].getMovementQty().signum() == 0)
+            if (inOutLine.getMovementQty() == null || inOutLine.getMovementQty().signum() == 0)
                 continue;
             //	not issued yet
-            if (projectIssueHasReceipt(inOutLines[i].getInOutLineId())) continue;
+            if (projectIssueHasReceipt(inOutLine.getInOutLineId())) continue;
             //	Create Issue
             MProjectIssue pi = new MProjectIssue(m_project);
             pi.setMandatory(
-                    inOutLines[i].getLocatorId(),
-                    inOutLines[i].getProductId(),
-                    inOutLines[i].getMovementQty());
+                    inOutLine.getLocatorId(),
+                    inOutLine.getProductId(),
+                    inOutLine.getMovementQty());
             if (m_MovementDate != null) // 	default today
                 pi.setMovementDate(m_MovementDate);
             if (m_Description != null && m_Description.length() > 0) pi.setDescription(m_Description);
-            else if (inOutLines[i].getDescription() != null)
-                pi.setDescription(inOutLines[i].getDescription());
+            else if (inOutLine.getDescription() != null)
+                pi.setDescription(inOutLine.getDescription());
             else if (inOut.getDescription() != null) pi.setDescription(inOut.getDescription());
-            pi.setInOutLineId(inOutLines[i].getInOutLineId());
+            pi.setInOutLineId(inOutLine.getInOutLineId());
             pi.process();
 
             //	Find/Create Project Line
-            MProjectLine pl = null;
-            MProjectLine[] pls = m_project.getLines();
-            for (int ii = 0; ii < pls.length; ii++) {
+            I_C_ProjectLine pl = null;
+            I_C_ProjectLine[] pls = m_project.getLines();
+            for (I_C_ProjectLine i_c_projectLine : pls) {
                 //	The Order we generated is the same as the Order of the receipt
-                if (pls[ii].getOrderPOId() == inOut.getOrderId()
-                        && pls[ii].getProductId() == inOutLines[i].getProductId()
-                        && pls[ii].getProjectIssueId() == 0) // 	not issued
+                if (i_c_projectLine.getOrderPOId() == inOut.getOrderId()
+                        && i_c_projectLine.getProductId() == inOutLine.getProductId()
+                        && i_c_projectLine.getProjectIssueId() == 0) // 	not issued
                 {
-                    pl = pls[ii];
+                    pl = i_c_projectLine;
                     break;
                 }
             }
@@ -221,8 +208,7 @@ public class ProjectIssue extends SvrProcess {
             addLog(pi.getLine(), pi.getMovementDate(), pi.getMovementQty(), null);
             counter++;
         } //	all InOutLines
-        StringBuilder msgreturn = new StringBuilder("@Created@ ").append(counter);
-        return msgreturn.toString();
+        return "@Created@ " + counter;
     } //	issueReceipt
 
     /**
@@ -239,39 +225,39 @@ public class ProjectIssue extends SvrProcess {
         //	for all expense lines
         MTimeExpenseLine[] expenseLines = expense.getLines(false);
         int counter = 0;
-        for (int i = 0; i < expenseLines.length; i++) {
+        for (MTimeExpenseLine expenseLine : expenseLines) {
             //	Need to have a Product
-            if (expenseLines[i].getProductId() == 0) continue;
+            if (expenseLine.getProductId() == 0) continue;
             //	Need to have Quantity
-            if (expenseLines[i].getQty() == null || expenseLines[i].getQty().signum() == 0) continue;
+            if (expenseLine.getQty() == null || expenseLine.getQty().signum() == 0) continue;
             //	Need to the same project
-            if (expenseLines[i].getProjectId() != m_project.getProjectId()) continue;
+            if (expenseLine.getProjectId() != m_project.getProjectId()) continue;
             //	not issued yet
-            if (projectIssueHasExpense(expenseLines[i].getTimeExpenseLineId())) continue;
+            if (projectIssueHasExpense(expenseLine.getTimeExpenseLineId())) continue;
 
             //	Find Location
-            int M_Locator_ID = 0;
+            int M_Locator_ID;
             //	MProduct product = new MProduct (expenseLines[i].getProductId());
             //	if (product.isStocked())
             M_Locator_ID =
                     MStorageOnHand.getLocatorId(
                             expense.getWarehouseId(),
-                            expenseLines[i].getProductId(),
+                            expenseLine.getProductId(),
                             0, //	no ASI
-                            expenseLines[i].getQty(),
+                            expenseLine.getQty(),
                             null);
             if (M_Locator_ID == 0) // 	Service/Expense - get default (and fallback)
                 M_Locator_ID = expense.getLocatorId();
 
             //	Create Issue
             MProjectIssue pi = new MProjectIssue(m_project);
-            pi.setMandatory(M_Locator_ID, expenseLines[i].getProductId(), expenseLines[i].getQty());
+            pi.setMandatory(M_Locator_ID, expenseLine.getProductId(), expenseLine.getQty());
             if (m_MovementDate != null) // 	default today
                 pi.setMovementDate(m_MovementDate);
             if (m_Description != null && m_Description.length() > 0) pi.setDescription(m_Description);
-            else if (expenseLines[i].getDescription() != null)
-                pi.setDescription(expenseLines[i].getDescription());
-            pi.setTimeExpenseLineId(expenseLines[i].getTimeExpenseLineId());
+            else if (expenseLine.getDescription() != null)
+                pi.setDescription(expenseLine.getDescription());
+            pi.setTimeExpenseLineId(expenseLine.getTimeExpenseLineId());
             pi.process();
             //	Find/Create Project Line
             MProjectLine pl = new MProjectLine(m_project);
@@ -281,8 +267,7 @@ public class ProjectIssue extends SvrProcess {
             counter++;
         } //	allExpenseLines
 
-        StringBuilder msgreturn = new StringBuilder("@Created@ ").append(counter);
-        return msgreturn.toString();
+        return "@Created@ " + counter;
     } //	issueExpense
 
     /**
@@ -348,8 +333,8 @@ public class ProjectIssue extends SvrProcess {
      */
     private boolean projectIssueHasExpense(int S_TimeExpenseLine_ID) {
         if (m_projectIssues == null) m_projectIssues = m_project.getIssues();
-        for (int i = 0; i < m_projectIssues.length; i++) {
-            if (m_projectIssues[i].getTimeExpenseLineId() == S_TimeExpenseLine_ID) return true;
+        for (MProjectIssue m_projectIssue : m_projectIssues) {
+            if (m_projectIssue.getTimeExpenseLineId() == S_TimeExpenseLine_ID) return true;
         }
         return false;
     } //	projectIssueHasExpense
@@ -362,8 +347,8 @@ public class ProjectIssue extends SvrProcess {
      */
     private boolean projectIssueHasReceipt(int M_InOutLine_ID) {
         if (m_projectIssues == null) m_projectIssues = m_project.getIssues();
-        for (int i = 0; i < m_projectIssues.length; i++) {
-            if (m_projectIssues[i].getInOutLineId() == M_InOutLine_ID) return true;
+        for (MProjectIssue m_projectIssue : m_projectIssues) {
+            if (m_projectIssue.getInOutLineId() == M_InOutLine_ID) return true;
         }
         return false;
     } //	projectIssueHasReceipt

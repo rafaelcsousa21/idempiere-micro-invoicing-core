@@ -2,11 +2,13 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_DocType;
+import org.compiere.model.I_Query;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.MOrgInfoKt;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
@@ -470,8 +472,8 @@ public class MPeriod extends X_C_Period {
 
         MYear year = new MYear(getYearId());
 
-        Query query =
-                MTable.get("C_Period")
+        I_Query query =
+                MBaseTableKt.getTable("C_Period")
                         .createQuery(
                                 "C_Year_ID IN (SELECT y.C_Year_ID from C_Year y WHERE"
                                         + "                   y.C_Calendar_ID =?)"
@@ -503,11 +505,10 @@ public class MPeriod extends X_C_Period {
         if (!success) return success;
         if (newRecord) {
             //	SELECT Value FROM AD_Ref_List WHERE AD_Reference_ID=183
-            MDocType[] types = MDocTypeKt.getGetClientDocumentTypes();
+            I_C_DocType[] types = MDocTypeKt.getGetClientDocumentTypes();
             int count = 0;
             ArrayList<String> baseTypes = new ArrayList<String>();
-            for (int i = 0; i < types.length; i++) {
-                MDocType type = types[i];
+            for (I_C_DocType type : types) {
                 String DocBaseType = type.getDocBaseType();
                 if (baseTypes.contains(DocBaseType)) continue;
                 MPeriodControl pc = new MPeriodControl(this, DocBaseType);

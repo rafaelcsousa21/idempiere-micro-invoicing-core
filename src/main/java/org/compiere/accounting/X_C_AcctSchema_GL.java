@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
+public abstract class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
 
     /**
      *
@@ -22,12 +22,6 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
      */
     public X_C_AcctSchema_GL(int C_AcctSchema_GL_ID) {
         super(C_AcctSchema_GL_ID);
-        /**
-         * if (C_AcctSchema_GL_ID == 0) { setAccountingSchemaId (0); setCommitmentOffset_Acct (0);
-         * setCommitmentOffsetSales_Acct (0); setIntercompanyDueFrom_Acct (0); setIntercompanyDueToAccount
-         * (0); setPPVOffset_Acct (0); setUseCurrencyBalancing (false); setUseSuspenseBalancing (false);
-         * setUseSuspenseError (false); }
-         */
     }
 
     /**

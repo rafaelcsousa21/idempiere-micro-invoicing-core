@@ -6,6 +6,7 @@ import org.compiere.accounting.MProduct;
 import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_M_Cost;
 import org.compiere.process.SvrProcess;
 
 import java.math.BigDecimal;
@@ -31,7 +32,7 @@ public class CostAdjustmentLineRefreshCost extends SvrProcess {
         MProduct product = line.getProduct();
         ClientWithAccounting client = MClientKt.getClientWithAccounting(line.getClientId());
         I_C_AcctSchema as = client.getAcctSchema();
-        MCost cost =
+        I_M_Cost cost =
                 product.getCostingRecord(
                         as,
                         line.getOrgId(),

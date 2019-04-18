@@ -23,11 +23,12 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MLocator;
 import org.compiere.production.MPPProductBOM;
-import org.compiere.production.MPPProductBOMLine;
 import org.compiere.production.MTransaction;
 import org.compiere.production.X_M_Production;
 import org.compiere.production.X_M_ProductionLine;
 import org.compiere.production.X_M_ProductionPlan;
+import org.eevolution.model.I_PP_Product_BOM;
+import org.eevolution.model.I_PP_Product_BOMLine;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.ValueNamePair;
@@ -226,7 +227,7 @@ public class M_Production_Run extends SvrProcess {
      */
     private int explosion(X_M_ProductionPlan pp, MProduct product, BigDecimal qty, int line)
             throws Exception {
-        MPPProductBOM bom = MPPProductBOM.getDefault(product);
+        I_PP_Product_BOM bom = MPPProductBOM.getDefault(product);
         if (bom == null) {
             raiseError(
                     "Do not exist default BOM for this product :"
@@ -235,11 +236,11 @@ public class M_Production_Run extends SvrProcess {
                             + product.getName(),
                     "");
         }
-        MPPProductBOMLine[] bom_lines = bom.getLines(new Timestamp(System.currentTimeMillis()));
+        I_PP_Product_BOMLine[] bom_lines = bom.getLines(new Timestamp(System.currentTimeMillis()));
         m_level += 1;
         int components = 0;
         line = line * m_level;
-        for (MPPProductBOMLine bomline : bom_lines) {
+        for (I_PP_Product_BOMLine bomline : bom_lines) {
             MProduct component = MProduct.get(bomline.getProductId());
 
             if (component.isBOM() && !component.isStocked()) {

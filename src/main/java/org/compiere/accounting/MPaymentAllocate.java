@@ -3,8 +3,8 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.I_C_PaymentAllocate;
-import org.compiere.orm.MTable;
-import org.compiere.orm.Query;
+import org.compiere.model.I_Query;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
@@ -30,15 +30,11 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx                  context
      * @param C_PaymentAllocate_ID id
-     * @param trxName              trx
      */
     public MPaymentAllocate(int C_PaymentAllocate_ID) {
         super(C_PaymentAllocate_ID);
         if (C_PaymentAllocate_ID == 0) {
-            //	setPaymentId (0);	//	Parent
-            //	setInvoiceId (0);
             setAmount(Env.ZERO);
             setDiscountAmt(Env.ZERO);
             setOverUnderAmt(Env.ZERO);
@@ -50,9 +46,6 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     /**
      * Load Cosntructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
     public MPaymentAllocate(Row row) {
         super(row);
@@ -64,14 +57,14 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @param parent payment
      * @return array of allocations
      */
-    public static MPaymentAllocate[] get(MPayment parent) {
+    public static I_C_PaymentAllocate[] get(MPayment parent) {
         final String whereClause = "C_Payment_ID=?";
-        Query query =
-                MTable.get(I_C_PaymentAllocate.Table_ID)
+        I_Query<I_C_PaymentAllocate> query =
+                MBaseTableKt.getTable(I_C_PaymentAllocate.Table_ID)
                         .createQuery(whereClause);
         query.setParameters(parent.getPaymentId()).setOnlyActiveRecords(true);
-        List<MPaymentAllocate> list = query.list();
-        return list.toArray(new MPaymentAllocate[list.size()]);
+        List<I_C_PaymentAllocate> list = query.list();
+        return list.toArray(new I_C_PaymentAllocate[0]);
     } //	get
 
     /**

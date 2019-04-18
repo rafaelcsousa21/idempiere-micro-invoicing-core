@@ -61,7 +61,7 @@ public final class FactLine extends X_Fact_Acct {
      */
     public FactLine(int AD_Table_ID, int Record_ID, int Line_ID) {
         super(0);
-        setADClientID(0); // 	do not derive
+        setClientId(0); // 	do not derive
         setOrgId(0); // 	do not derive
         //
         setAmtAcctCr(Env.ZERO);
@@ -120,7 +120,7 @@ public final class FactLine extends X_Fact_Acct {
         setAccountingSchemaId(acctSchema.getAccountingSchemaId());
         //
         m_acct = acct;
-        if (getClientId() == 0) setADClientID(m_acct.getClientId());
+        if (getClientId() == 0) setClientId(m_acct.getClientId());
         setAccountId(m_acct.getAccountId());
         setSubAccountId(m_acct.getSubAccountId());
 
@@ -168,13 +168,13 @@ public final class FactLine extends X_Fact_Acct {
             // begin Victor Perez e-evolution 30.08.2005
             // fix Debit & Credit
             if (AmtSourceDr != null) {
-                if (AmtSourceDr.compareTo(Env.ZERO) == -1) {
+                if (AmtSourceDr.compareTo(Env.ZERO) < 0) {
                     AmtSourceCr = AmtSourceDr.abs();
                     AmtSourceDr = Env.ZERO;
                 }
             }
             if (AmtSourceCr != null) {
-                if (AmtSourceCr.compareTo(Env.ZERO) == -1) {
+                if (AmtSourceCr.compareTo(Env.ZERO) < 0) {
                     AmtSourceDr = AmtSourceCr.abs();
                     AmtSourceCr = Env.ZERO;
                 }
@@ -215,11 +215,11 @@ public final class FactLine extends X_Fact_Acct {
         if (!m_acctSchema.isAllowNegativePosting()) {
             // begin Victor Perez e-evolution 30.08.2005
             // fix Debit & Credit
-            if (AmtAcctDr.compareTo(Env.ZERO) == -1) {
+            if (AmtAcctDr.compareTo(Env.ZERO) < 0) {
                 AmtAcctCr = AmtAcctDr.abs();
                 AmtAcctDr = Env.ZERO;
             }
-            if (AmtAcctCr.compareTo(Env.ZERO) == -1) {
+            if (AmtAcctCr.compareTo(Env.ZERO) < 0) {
                 AmtAcctDr = AmtAcctCr.abs();
                 AmtAcctCr = Env.ZERO;
             }
@@ -240,13 +240,13 @@ public final class FactLine extends X_Fact_Acct {
         if (!m_acctSchema.isAllowNegativePosting()) {
             // fix Debit & Credit
             if (AmtAcctDr != null) {
-                if (AmtAcctDr.compareTo(Env.ZERO) == -1) {
+                if (AmtAcctDr.compareTo(Env.ZERO) < 0) {
                     AmtAcctCr = AmtAcctDr.abs();
                     AmtAcctDr = Env.ZERO;
                 }
             }
             if (AmtAcctCr != null) {
-                if (AmtAcctCr.compareTo(Env.ZERO) == -1) {
+                if (AmtAcctCr.compareTo(Env.ZERO) < 0) {
                     AmtAcctDr = AmtAcctCr.abs();
                     AmtAcctCr = Env.ZERO;
                 }
@@ -283,7 +283,7 @@ public final class FactLine extends X_Fact_Acct {
         setOrgId(0);
         setSalesRegionId(0);
         //	Client
-        if (getClientId() == 0) setADClientID(m_doc.getClientId());
+        if (getClientId() == 0) setClientId(m_doc.getClientId());
         //	Date Trx
         setDateTrx(m_doc.getDateDoc());
         if (m_docLine != null && m_docLine.getDateDoc() != null) setDateTrx(m_docLine.getDateDoc());
@@ -891,7 +891,7 @@ public final class FactLine extends X_Fact_Acct {
             int UserElement2_ID) {
         if (log.isLoggable(Level.FINE)) log.fine("From Accout_ID=" + Account_ID);
         //  get VC for P_Revenue (from Product)
-        MAccount revenue =
+        I_C_ValidCombination revenue =
                 MAccount.get(
                         AD_Client_ID,
                         AD_Org_ID,
@@ -928,8 +928,8 @@ public final class FactLine extends X_Fact_Acct {
                         + "WHERE ga.C_BP_Group_ID=p.C_BP_Group_ID"
                         + " AND ga.UnearnedRevenue_Acct=vc.C_ValidCombination_ID"
                         + " AND ga.C_AcctSchema_ID=? AND p.C_BPartner_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getAccountingSchemaId());
@@ -941,10 +941,6 @@ public final class FactLine extends X_Fact_Acct {
             }
         } catch (SQLException e) {
             log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         if (new_Account_ID == 0) {
             log.severe("UnearnedRevenue_Acct not found");
@@ -997,44 +993,38 @@ public final class FactLine extends X_Fact_Acct {
         //  Accounted Amounts - reverse
         BigDecimal dr = fact.getAmtAcctDr();
         BigDecimal cr = fact.getAmtAcctCr();
-        // setAmtAcctDr (cr.multiply(multiplier));
-        // setAmtAcctCr (dr.multiply(multiplier));
         setAmtAcct(fact.getCurrencyId(), cr.multiply(multiplier), dr.multiply(multiplier));
         //
-        //  Bayu Sistematika - Source Amounts
-        //  Fixing source amounts
         BigDecimal drSourceAmt = fact.getAmtSourceDr();
         BigDecimal crSourceAmt = fact.getAmtSourceCr();
         setAmtSource(
                 fact.getCurrencyId(),
                 crSourceAmt.multiply(multiplier),
                 drSourceAmt.multiply(multiplier));
-        //  end Bayu Sistematika
         //
         success = true;
         if (log.isLoggable(Level.FINE))
             log.fine(
-                    new StringBuilder("(Table=")
-                            .append(AD_Table_ID)
-                            .append(",Record_ID=")
-                            .append(Record_ID)
-                            .append(",Line=")
-                            .append(Record_ID)
-                            .append(", Account=")
-                            .append(m_acct)
-                            .append(",dr=")
-                            .append(dr)
-                            .append(",cr=")
-                            .append(cr)
-                            .append(") - DR=")
-                            .append(getAmtSourceDr())
-                            .append("|")
-                            .append(getAmtAcctDr())
-                            .append(", CR=")
-                            .append(getAmtSourceCr())
-                            .append("|")
-                            .append(getAmtAcctCr())
-                            .toString());
+                    "(Table=" +
+                            AD_Table_ID +
+                            ",Record_ID=" +
+                            Record_ID +
+                            ",Line=" +
+                            Record_ID +
+                            ", Account=" +
+                            m_acct +
+                            ",dr=" +
+                            dr +
+                            ",cr=" +
+                            cr +
+                            ") - DR=" +
+                            getAmtSourceDr() +
+                            "|" +
+                            getAmtAcctDr() +
+                            ", CR=" +
+                            getAmtSourceCr() +
+                            "|" +
+                            getAmtAcctCr());
         //	Dimensions
         setTransactionOrganizationId(fact.getTransactionOrganizationId());
         setProjectId(fact.getProjectId());

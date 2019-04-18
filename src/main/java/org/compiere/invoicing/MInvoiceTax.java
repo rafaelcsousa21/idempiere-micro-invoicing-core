@@ -49,7 +49,6 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * ************************************************************************ Persistency
      * Constructor
      *
-     * @param ctx     context
      * @param ignored ignored
      */
     public MInvoiceTax(int ignored) {
@@ -63,7 +62,6 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     /**
      * Load Constructor. Set Precision and TaxIncluded for tax calculations!
      *
-     * @param ctx context
      */
     public MInvoiceTax(Row row) {
         super(row);
@@ -77,9 +75,9 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @param oldTax    if true old tax is returned
      * @return existing or new tax
      */
-    public static MInvoiceTax get(
+    public static I_C_InvoiceTax get(
             I_C_InvoiceLine line, int precision, boolean oldTax) {
-        MInvoiceTax retValue = null;
+        I_C_InvoiceTax retValue;
         if (line == null || line.getInvoiceId() == 0) return null;
         int C_Tax_ID = line.getTaxId();
         boolean isOldTax =
@@ -97,7 +95,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         }
 
         retValue =
-                new Query(Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
+                new Query<I_C_InvoiceTax>(Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
                         .setParameters(line.getInvoiceId(), C_Tax_ID)
                         .firstOnly();
         if (retValue != null) {
@@ -137,7 +135,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      *
      * @param precision The precision to set.
      */
-    protected void setPrecision(int precision) {
+    public void setPrecision(int precision) {
         m_precision = precision;
     } //	setPrecision
 
@@ -231,6 +229,11 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     protected void setClientOrg(I_C_Invoice po) {
         super.setClientOrg(po);
     } //	setClientOrg
+
+    @Override
+    public void setClientOrg(I_C_InvoiceLine line) {
+        super.setClientOrg(line);
+    }
 
     /**
      * Get Tax Provider.

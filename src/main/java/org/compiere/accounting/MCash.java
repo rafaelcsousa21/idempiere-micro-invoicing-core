@@ -5,7 +5,9 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_Cash;
+import org.compiere.model.I_C_CashBook;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
@@ -58,11 +60,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     /**
      * Lines
      */
-    private MCashLine[] m_lines = null;
+    private I_C_CashLine[] m_lines = null;
     /**
      * CashBook
      */
-    private MCashBook m_book = null;
+    private I_C_CashBook m_book = null;
     /**
      * Process Message
      */
@@ -116,7 +118,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param cb    cash book
      * @param today date - if null today
      */
-    public MCash(MCashBook cb, Timestamp today) {
+    public MCash(I_C_CashBook cb, Timestamp today) {
         this(0);
         setClientOrg(cb);
         setCashBookId(cb.getCashBookId());
@@ -139,7 +141,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param dateAcct      date
      * @return cash
      */
-    public static MCash get(
+    public static I_C_Cash get(
             int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID) {
         //	Existing Journal
         final String whereClause =
@@ -149,15 +151,15 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                         + " AND EXISTS (SELECT * FROM C_CashBook cb "
                         + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.AD_Org_ID=C_Cash.orgId"
                         + " AND cb.C_Currency_ID=?)"; //	#3
-        MCash retValue =
-                new Query(I_C_Cash.Table_Name, whereClause)
+        I_C_Cash retValue =
+                new Query<I_C_Cash>(I_C_Cash.Table_Name, whereClause)
                         .setParameters(AD_Org_ID, TimeUtil.getDay(dateAcct), C_Currency_ID)
                         .first();
 
         if (retValue != null) return retValue;
 
         //	Get CashBook
-        MCashBook cb = MCashBook.get(AD_Org_ID, C_Currency_ID);
+        I_C_CashBook cb = MCashBook.get(AD_Org_ID, C_Currency_ID);
         if (cb == null) {
             s_log.warning("No CashBook for AD_Org_ID=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
             return null;
@@ -175,20 +177,20 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param requery requery
      * @return lines
      */
-    public MCashLine[] getLines(boolean requery) {
+    public I_C_CashLine[] getLines(boolean requery) {
         if (m_lines != null && !requery) {
             return m_lines;
         }
 
         final String whereClause = MCashLine.COLUMNNAME_C_Cash_ID + "=?";
-        List<MCashLine> list =
-                new Query(I_C_CashLine.Table_Name, whereClause)
+        List<I_C_CashLine> list =
+                new Query<I_C_CashLine>(I_C_CashLine.Table_Name, whereClause)
                         .setParameters(getCashId())
                         .setOrderBy(I_C_CashLine.COLUMNNAME_Line)
                         .setOnlyActiveRecords(true)
                         .list();
 
-        m_lines = list.toArray(new MCashLine[list.size()]);
+        m_lines = list.toArray(new I_C_CashLine[list.size()]);
         return m_lines;
     } //	getLines
 
@@ -197,7 +199,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return cash book
      */
-    public MCashBook getCashBook() {
+    public I_C_CashBook getCashBook() {
         if (m_book == null) m_book = MCashBook.get(getCashBookId());
         return m_book;
     } //	getCashBook
@@ -296,7 +298,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
-        MCashLine[] lines = getLines(false);
+        I_C_CashLine[] lines = getLines(false);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -304,8 +306,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         //	Add up Amounts
         BigDecimal difference = Env.ZERO;
         int C_Currency_ID = getCurrencyId();
-        for (int i = 0; i < lines.length; i++) {
-            MCashLine line = lines[i];
+        for (I_C_CashLine line : lines) {
             if (!line.isActive()) continue;
             if (C_Currency_ID == line.getCurrencyId()) difference = difference.add(line.getAmount());
             else {
@@ -385,9 +386,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         //
         if (log.isLoggable(Level.INFO)) log.info(toString());
 
-        MCashLine[] lines = getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MCashLine line = lines[i];
+        I_C_CashLine[] lines = getLines(false);
+        for (I_C_CashLine line : lines) {
             if (MCashLine.CASHTYPE_Invoice.equals(line.getCashType())) {
                 // Check if the invoice is completed - teo_sarca BF [ 1894524 ]
                 I_C_Invoice invoice = line.getInvoice();
@@ -399,21 +399,19 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                 }
                 //
-                StringBuilder name =
-                        new StringBuilder()
-                                .append(MsgKt.translate("C_Cash_ID"))
-                                .append(": ")
-                                .append(getName())
-                                .append(" - ")
-                                .append(MsgKt.translate("Line"))
-                                .append(" ")
-                                .append(line.getLine());
+                String name = MsgKt.translate("C_Cash_ID") +
+                        ": " +
+                        getName() +
+                        " - " +
+                        MsgKt.translate("Line") +
+                        " " +
+                        line.getLine();
                 MAllocationHdr hdr =
                         new MAllocationHdr(
                                 false,
                                 getDateAcct(),
                                 line.getCurrencyId(),
-                                name.toString()
+                                name
                         );
                 hdr.setOrgId(getOrgId());
                 if (!hdr.save()) {
@@ -539,32 +537,30 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             throw new IllegalStateException("@PeriodClosed@");
 
         //	Reverse Allocations
-        MAllocationHdr[] allocations =
+        I_C_AllocationHdr[] allocations =
                 MAllocationHdr.getOfCash(getCashId());
-        for (MAllocationHdr allocation : allocations) {
+        for (I_C_AllocationHdr allocation : allocations) {
             allocation.reverseCorrectIt();
             if (!allocation.save()) throw new IllegalStateException("Cannot reverse allocations");
         }
 
-        MCashLine[] cashlines = getLines(true);
-        for (MCashLine cashline : cashlines) {
+        I_C_CashLine[] cashlines = getLines(true);
+        for (I_C_CashLine cashline : cashlines) {
             BigDecimal oldAmount = cashline.getAmount();
             BigDecimal oldDiscount = cashline.getDiscountAmt();
             BigDecimal oldWriteOff = cashline.getWriteOffAmt();
             cashline.setAmount(Env.ZERO);
             cashline.setDiscountAmt(Env.ZERO);
             cashline.setWriteOffAmt(Env.ZERO);
-            StringBuilder msgadd =
-                    new StringBuilder()
-                            .append(MsgKt.getMsg("Voided"))
-                            .append(" (Amount=")
-                            .append(oldAmount)
-                            .append(", Discount=")
-                            .append(oldDiscount)
-                            .append(", WriteOff=")
-                            .append(oldWriteOff)
-                            .append(", )");
-            cashline.addDescription(msgadd.toString());
+            String msgadd = MsgKt.getMsg("Voided") +
+                    " (Amount=" +
+                    oldAmount +
+                    ", Discount=" +
+                    oldDiscount +
+                    ", WriteOff=" +
+                    oldWriteOff +
+                    ", )";
+            cashline.addDescription(msgadd);
             if (MCashLine.CASHTYPE_BankAccountTransfer.equals(cashline.getCashType())) {
                 if (cashline.getPaymentId() == 0)
                     throw new IllegalStateException("Cannot reverse payment");

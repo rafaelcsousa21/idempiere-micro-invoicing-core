@@ -7,10 +7,12 @@ import org.compiere.accounting.MProduct;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.I_A_Asset;
 import org.compiere.model.I_A_Asset_Addition;
+import org.compiere.model.I_A_Asset_Group_Acct;
 import org.compiere.model.I_C_Project;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MInOut;
 import org.compiere.order.MInOutLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.product.MAssetChange;
 import org.compiere.product.MAssetGroup;
 import org.compiere.product.MAttributeSetInstance;
@@ -129,7 +131,7 @@ public class MAsset extends org.compiere.product.MAsset {
         setDescription(project.getDescription());
     }
 
-    public MAsset(MInOut mInOut, MInOutLine sLine) {
+    public MAsset(MInOut mInOut, I_M_InOutLine sLine) {
         this(0);
         setIsOwned(false);
         setIsInPosession(false);
@@ -201,7 +203,7 @@ public class MAsset extends org.compiere.product.MAsset {
     }
 
     public static MAsset get(int A_Asset_ID) {
-        return (MAsset) MTable.get(MAsset.Table_Name).getPO(A_Asset_ID);
+        return (MAsset) MBaseTableKt.getTable(MAsset.Table_Name).getPO(A_Asset_ID);
     } //	get
 
     @Override
@@ -252,7 +254,7 @@ public class MAsset extends org.compiere.product.MAsset {
             // end @win
 
             // for each asset group acounting create an asset accounting and a workfile too
-            for (MAssetGroupAcct assetgrpacct :
+            for (I_A_Asset_Group_Acct assetgrpacct :
                     MAssetGroupAcct.forA_Asset_GroupId(getAssetGroupId())) {
                 // Asset Accounting
                 MAssetAcct assetacct = new MAssetAcct(this, assetgrpacct);

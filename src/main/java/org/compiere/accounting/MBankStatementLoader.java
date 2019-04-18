@@ -1,10 +1,11 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.bank.X_C_BankAccount;
 import org.compiere.bo.X_C_Currency;
+import org.compiere.model.I_C_Currency;
+import org.compiere.model.I_Query;
 import org.compiere.orm.MTable;
-import org.compiere.orm.Query;
+import software.hsharp.core.orm.MBaseTableKt;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,9 +45,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     /**
      * Create a Statement Loader Added for compatibility with new PO infrastructure (bug# 968136)
      *
-     * @param ctx                      Current context
      * @param C_BankStatementLoader_ID loader to use
-     * @param trxName                  transaction
      */
     public MBankStatementLoader(int C_BankStatementLoader_ID) {
         super(C_BankStatementLoader_ID);
@@ -56,10 +55,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     /**
      * Create a Statement Loader
      *
-     * @param ctx                      Current context
      * @param C_BankStatementLoader_ID loader to use
      * @param fileName                 input file
-     * @param trxName                  transaction
      */
     public MBankStatementLoader(
             int C_BankStatementLoader_ID, String fileName) {
@@ -70,7 +67,6 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     /**
      * Create a Statement Loader
      *
-     * @param ctx Current context
      */
     public MBankStatementLoader(Row row) {
         super(row);
@@ -122,13 +118,11 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
      * @return Name
      */
     public String toString() {
-        StringBuilder sb =
-                new StringBuilder("MBankStatementLoader[")
-                        .append(getId())
-                        .append("-")
-                        .append(getName())
-                        .append("]");
-        return sb.toString();
+        return "MBankStatementLoader[" +
+                getId() +
+                "-" +
+                getName() +
+                "]";
     } //	toString
 
     /**
@@ -144,15 +138,15 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
             return result;
         }
         // Initialize lookup lists
-        MTable table = MTable.get(X_C_BankAccount.Table_ID);
-        Query query;
+        MTable table;
+        I_Query<I_C_Currency> query;
 
-        table = MTable.get(X_C_Currency.Table_ID);
+        table = MBaseTableKt.getTable(X_C_Currency.Table_ID);
         query = table.createQuery("IsActive='Y'");
-        List<X_C_Currency> currencyList = query.list();
-        currencyMap = new HashMap<String, Integer>();
+        List<I_C_Currency> currencyList = query.list();
+        currencyMap = new HashMap<>();
 
-        for (X_C_Currency currency : currencyList) {
+        for (I_C_Currency currency : currencyList) {
             currencyMap.put(currency.getISOCode(), currency.getId());
         }
         //	Initialize the Loader

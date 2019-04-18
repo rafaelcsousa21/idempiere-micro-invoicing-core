@@ -1,7 +1,7 @@
 package org.compiere.accounting
 
 import org.compiere.model.I_C_InvoiceLine
-import org.compiere.order.MInOutLine
+import org.compiere.model.I_M_InOutLine
 import org.idempiere.common.util.CLogger
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.getSQLValue
@@ -74,7 +74,7 @@ internal fun getPOMatchesForOrderLine(C_OrderLine_ID: Int): Array<MMatchPO> {
 
 internal fun create(
     iLine: I_C_InvoiceLine?,
-    sLine: MInOutLine?,
+    sLine: I_M_InOutLine?,
     C_OrderLine_ID: Int,
     dateTrx: Timestamp,
     quantity: BigDecimal
@@ -115,7 +115,7 @@ internal fun create(
                         continue
                 }
                 if ((iLine != null || mpo.invoiceLineId > 0) && (sLine != null || mpo.inOutLineId > 0)) {
-                    val M_InOutLine_ID = if (sLine != null) sLine.inOutLineId else mpo.inOutLineId
+                    val M_InOutLine_ID = sLine?.inOutLineId ?: mpo.inOutLineId
                     val C_InvoiceLine_ID =
                         if (iLine != null) iLine.invoiceLineId else mpo.invoiceLineId
 
@@ -139,7 +139,7 @@ internal fun create(
                         matchInv.invoiceLineId = C_InvoiceLine_ID
                         matchInv.setProductId(mpo.productId)
                         matchInv.inOutLineId = M_InOutLine_ID
-                        matchInv.setADClientID(mpo.clientId)
+                        matchInv.setClientId(mpo.clientId)
                         matchInv.setOrgId(mpo.orgId)
                         matchInv.attributeSetInstanceId = mpo.attributeSetInstanceId
                         matchInv.qty = mpo.qty

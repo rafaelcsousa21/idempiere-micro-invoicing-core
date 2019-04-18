@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_CashLine extends PO implements I_C_CashLine {
+public abstract class X_C_CashLine extends PO implements I_C_CashLine {
 
     /**
      * Bank Account Transfer = T

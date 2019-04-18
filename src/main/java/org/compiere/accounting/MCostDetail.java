@@ -2,7 +2,9 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostDetail;
+import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product;
 import org.compiere.orm.Query;
 import org.compiere.production.MProductionLine;
@@ -50,18 +52,12 @@ public class MCostDetail extends X_M_CostDetail {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx             context
      * @param M_CostDetail_ID id
      */
     public MCostDetail(int M_CostDetail_ID) {
         super(M_CostDetail_ID);
         if (M_CostDetail_ID == 0) {
-            //	setAccountingSchemaId (0);
-            //	setProductId (0);
             setAttributeSetInstanceId(0);
-            //	setOrderLineId (0);
-            //	setInOutLineId(0);
-            //	setInvoiceLineId (0);
             setProcessed(false);
             setAmt(Env.ZERO);
             setQty(Env.ZERO);
@@ -74,7 +70,6 @@ public class MCostDetail extends X_M_CostDetail {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MCostDetail(Row row) {
         super(row);
@@ -140,7 +135,7 @@ public class MCostDetail extends X_M_CostDetail {
             BigDecimal Amt,
             BigDecimal Qty,
             String Description) {
-        MCostDetail cd =
+        I_M_CostDetail cd =
                 get(
                         "C_InvoiceLine_ID=? AND Coalesce(M_CostElement_ID,0)="
                                 + M_CostElement_ID
@@ -217,7 +212,7 @@ public class MCostDetail extends X_M_CostDetail {
             BigDecimal Qty,
             String Description,
             boolean IsSOTrx) {
-        MCostDetail cd =
+        I_M_CostDetail cd =
                 get(
                         "M_InOutLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
                         M_InOutLine_ID,
@@ -292,7 +287,7 @@ public class MCostDetail extends X_M_CostDetail {
             BigDecimal Qty,
             String Description,
             String trxName) {
-        MCostDetail cd =
+        I_M_CostDetail cd =
                 get(
 
                         "M_InventoryLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
@@ -349,21 +344,18 @@ public class MCostDetail extends X_M_CostDetail {
      * @param M_AttributeSetInstance_ID ASI
      * @return cost detail
      */
-    public static MCostDetail get(
+    public static I_M_CostDetail get(
 
             String whereClause,
             int ID,
             int M_AttributeSetInstance_ID,
             int C_AcctSchema_ID) {
-        StringBuilder localWhereClause =
-                new StringBuilder(whereClause)
-                        .append(" AND M_AttributeSetInstance_ID=?")
-                        .append(" AND C_AcctSchema_ID=?");
-        MCostDetail retValue =
-                new Query(I_M_CostDetail.Table_Name, localWhereClause.toString())
-                        .setParameters(ID, M_AttributeSetInstance_ID, C_AcctSchema_ID)
-                        .first();
-        return retValue;
+        String localWhereClause = whereClause +
+                " AND M_AttributeSetInstance_ID=?" +
+                " AND C_AcctSchema_ID=?";
+        return new Query<I_M_CostDetail>(I_M_CostDetail.Table_Name, localWhereClause)
+                .setParameters(ID, M_AttributeSetInstance_ID, C_AcctSchema_ID)
+                .first();
     } //	get
 
     /**
@@ -381,13 +373,13 @@ public class MCostDetail extends X_M_CostDetail {
                         + "=?";
         int counterOK = 0;
         int counterError = 0;
-        List<MCostDetail> list =
-                new Query(I_M_CostDetail.Table_Name, whereClause)
+        List<I_M_CostDetail> list =
+                new Query<I_M_CostDetail>(I_M_CostDetail.Table_Name, whereClause)
                         .setParameters(product.getProductId(), false)
                         .setOrderBy(
                                 "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
                         .list();
-        for (MCostDetail cd : list) {
+        for (I_M_CostDetail cd : list) {
             if (cd.process()) // 	saves
                 counterOK++;
             else counterError++;
@@ -512,9 +504,8 @@ public class MCostDetail extends X_M_CostDetail {
 
         //	Create Material Cost elements
         if (getCostElementId() == 0) {
-            MCostElement[] ces = MCostElement.getCostingMethods(this);
-            for (int i = 0; i < ces.length; i++) {
-                MCostElement ce = ces[i];
+            I_M_CostElement[] ces = MCostElement.getCostingMethods(this);
+            for (I_M_CostElement ce : ces) {
                 if (ce.isAverageInvoice() || ce.isAveragePO() || ce.isLifo() || ce.isFifo()) {
                     if (!product.isStocked()) continue;
                 }
@@ -525,8 +516,8 @@ public class MCostDetail extends X_M_CostDetail {
         else {
             MCostElement ce = MCostElement.get(getCostElementId());
             if (ce.getCostingMethod() == null) {
-                MCostElement[] ces = MCostElement.getCostingMethods(this);
-                for (MCostElement costingElement : ces) {
+                I_M_CostElement[] ces = MCostElement.getCostingMethods(this);
+                for (I_M_CostElement costingElement : ces) {
                     if (costingElement.isAverageInvoice()
                             || costingElement.isAveragePO()
                             || costingElement.isLifo()
@@ -567,7 +558,7 @@ public class MCostDetail extends X_M_CostDetail {
      * @return true if cost ok
      */
     private boolean process(
-            MAcctSchema as, MProduct product, MCostElement ce, int Org_ID, int M_ASI_ID) {
+            MAcctSchema as, MProduct product, I_M_CostElement ce, int Org_ID, int M_ASI_ID) {
         // handle compatibility issue between average invoice and average po
         String costingMethod = product.getCostingMethod(as);
         if (X_M_Cost.COSTINGMETHOD_AverageInvoice.equals(costingMethod)) {
@@ -576,13 +567,9 @@ public class MCostDetail extends X_M_CostDetail {
             if (ce.isAverageInvoice()) return true;
         }
 
-        MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getCostElementId());
+        I_M_Cost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getCostElementId());
 
         forUpdate(cost);
-
-        //	if (cost == null)
-        //		cost = new MCost(product, M_ASI_ID,
-        //			as, Org_ID, ce.getCostElementId());
 
         // save history for m_cost
         X_M_CostHistory history = new X_M_CostHistory(0);
@@ -623,7 +610,7 @@ public class MCostDetail extends X_M_CostDetail {
         BigDecimal price = amt;
         if (qty.signum() != 0) price = amt.divide(qty, precision, BigDecimal.ROUND_HALF_UP);
 
-        /**
+        /*
          * All Costing Methods if (ce.isAverageInvoice()) else if (ce.isAveragePO()) else if
          * (ce.isFifo()) else if (ce.isLifo()) else if (ce.isLastInvoice()) else if (ce.isLastPOPrice())
          * else if (ce.isStandardCosting()) else if (ce.isUserDefined()) else if (!ce.isCostingMethod())

@@ -3,6 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.crm.MUser;
 import org.compiere.crm.MUserKt;
+import org.compiere.model.I_AD_Rule;
 import org.compiere.model.I_PA_Measure;
 import org.compiere.model.MeasureInterface;
 import org.compiere.orm.MRole;
@@ -350,7 +351,7 @@ public class MMeasure extends X_PA_Measure {
                 StringBuilder retValue = new StringBuilder();
                 if (cmd.toLowerCase().startsWith(MRule.SCRIPT_PREFIX)) {
 
-                    MRule rule = MRule.get(cmd.substring(MRule.SCRIPT_PREFIX.length()));
+                    I_AD_Rule rule = MRule.get(cmd.substring(MRule.SCRIPT_PREFIX.length()));
                     if (rule == null) {
                         retValue = new StringBuilder("Script ").append(cmd).append(" not found");
                         log.log(Level.SEVERE, retValue.toString());

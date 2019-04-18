@@ -2,13 +2,13 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_MovementLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 
-public class X_M_MovementLine extends PO implements I_M_MovementLine {
+public abstract class X_M_MovementLine extends PO implements I_M_MovementLine {
 
     /**
      *
@@ -20,13 +20,6 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public X_M_MovementLine(int M_MovementLine_ID) {
         super(M_MovementLine_ID);
-        /*
-         * if (M_MovementLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue
-         * FROM M_MovementLine WHERE M_Movement_ID=@M_Movement_ID@ setLocatorId (0);
-         * // @M_Locator_ID@ setLocatorTo_ID (0); // @M_LocatorTo_ID@ setMovementId (0);
-         * setMovementLine_ID (0); setMovementQty (Env.ZERO); // 1 setProductId (0); setProcessed
-         * (false); setTargetQty (Env.ZERO); // 0 }
-         */
     }
 
     /**
@@ -99,7 +92,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Line);
     }
 
     /**
@@ -121,7 +114,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
     public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     /**
@@ -134,7 +127,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
             setValueNoCheck(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
         else
             setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstanceTo_ID, Integer.valueOf(M_AttributeSetInstanceTo_ID));
+                    COLUMNNAME_M_AttributeSetInstanceTo_ID, M_AttributeSetInstanceTo_ID);
     }
 
     /**
@@ -166,7 +159,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
-        else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        else setValue(COLUMNNAME_M_Locator_ID, M_Locator_ID);
     }
 
     /**
@@ -187,12 +180,12 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setLocatorToId(int M_LocatorTo_ID) {
         if (M_LocatorTo_ID < 1) setValue(COLUMNNAME_M_LocatorTo_ID, null);
-        else setValue(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
+        else setValue(COLUMNNAME_M_LocatorTo_ID, M_LocatorTo_ID);
     }
 
     public org.compiere.model.I_M_Movement getMovement() throws RuntimeException {
         return (org.compiere.model.I_M_Movement)
-                MTable.get(org.compiere.model.I_M_Movement.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Movement.Table_Name)
                         .getPO(getMovementId());
     }
 
@@ -214,7 +207,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setMovementId(int M_Movement_ID) {
         if (M_Movement_ID < 1) setValueNoCheck(COLUMNNAME_M_Movement_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
+        else setValueNoCheck(COLUMNNAME_M_Movement_ID, M_Movement_ID);
     }
 
     /**
@@ -266,7 +259,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
-        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -275,7 +268,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -285,7 +278,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setReversalLineId(int ReversalLine_ID) {
         if (ReversalLine_ID < 1) setValue(COLUMNNAME_ReversalLine_ID, null);
-        else setValue(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
+        else setValue(COLUMNNAME_ReversalLine_ID, ReversalLine_ID);
     }
 
     /**

@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.util.MsgKt;
+import org.eevolution.model.I_PP_Product_BOM;
 
 /**
  * Change Request Model
@@ -73,7 +74,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
 
         //	Derive ChangeNotice from BOM if defined
         if (newRecord && getProductBOMId() != 0 && getChangeNoticeId() == 0) {
-            MPPProductBOM bom = MPPProductBOM.get(getProductBOMId());
+            I_PP_Product_BOM bom = MPPProductBOM.get(getProductBOMId());
             if (bom.getChangeNoticeId() != 0) {
                 setChangeNoticeId(bom.getChangeNoticeId());
             }

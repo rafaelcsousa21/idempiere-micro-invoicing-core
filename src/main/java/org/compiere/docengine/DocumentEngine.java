@@ -7,7 +7,8 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.I_M_InOut;
-import org.compiere.orm.MTable;
+import org.compiere.orm.MTableKt;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
@@ -83,7 +84,6 @@ public class DocumentEngine implements DocAction {
     /**
      * Post Immediate
      *
-     * @param ctx          Client Context
      * @param AD_Client_ID Client ID of Document
      * @param AD_Table_ID  Table ID of Document
      * @param Record_ID    Record ID of this document
@@ -97,9 +97,9 @@ public class DocumentEngine implements DocAction {
             int Record_ID,
             boolean force) {
         // Ensure the table has Posted column / i.e. GL_JournalBatch can be completed but not posted
-        if (getColumnId(MTable.getDbTableName(AD_Table_ID), "Posted") <= 0) return null;
+        if (getColumnId(MTableKt.getDbTableName(AD_Table_ID), "Posted") <= 0) return null;
 
-        String error = null;
+        String error;
         if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);
         MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(AD_Client_ID);
         error = Doc.postImmediate(ass, AD_Table_ID, Record_ID, force);

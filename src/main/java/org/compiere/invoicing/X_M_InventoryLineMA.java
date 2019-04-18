@@ -2,7 +2,7 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_InventoryLineMA;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -121,7 +121,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
 
     public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
-                MTable.get(org.compiere.model.I_M_InventoryLine.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_InventoryLine.Table_Name)
                         .getPO(getInventoryLineId());
     }
 

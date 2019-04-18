@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
@@ -39,7 +40,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     /**
      * Account Combination
      */
-    private MAccount m_account = null;
+    private I_C_ValidCombination m_account = null;
     /**
      * Account Element
      */
@@ -194,7 +195,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      *
      * @param acct account
      */
-    public void setValidCombinationId(MAccount acct) {
+    public void setValidCombinationId(I_C_ValidCombination acct) {
         if (acct == null) throw new IllegalArgumentException("Account is null");
         super.setValidAccountCombinationId(acct.getValidAccountCombinationId());
         m_account = acct;
@@ -206,7 +207,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      *
      * @return combination or null
      */
-    public MAccount getAccount_Combi() {
+    public I_C_ValidCombination getAccount_Combi() {
         if (m_account == null && getValidAccountCombinationId() != 0)
             m_account = new MAccount(getValidAccountCombinationId());
         return m_account;
@@ -219,7 +220,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     public MElementValue getAccountElementValue() {
         if (m_accountElement == null) {
-            MAccount vc = getAccount_Combi();
+            I_C_ValidCombination vc = getAccount_Combi();
             if (vc != null && vc.getAccountId() != 0)
                 m_accountElement = new MElementValue(vc.getAccountId());
         }
@@ -398,7 +399,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 return false;
             }
 
-            MAccount acct =
+            I_C_ValidCombination acct =
                     MAccount.get(
                             getClientId(),
                             getOrgId(),

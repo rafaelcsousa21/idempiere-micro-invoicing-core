@@ -2,6 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
+import org.compiere.model.I_C_ProjectLine;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
@@ -24,9 +25,7 @@ public class ProjectGenOrder extends SvrProcess {
     /**
      * Get and validate Project
      *
-     * @param ctx          context
      * @param C_Project_ID id
-     * @param trxName      transaction
      * @return valid project
      */
     protected static MProject getProject(int C_Project_ID) {
@@ -61,7 +60,7 @@ public class ProjectGenOrder extends SvrProcess {
         MProject fromProject = getProject(m_C_Project_ID);
         Env.setSOTrx(true); // 	Set SO context
 
-        /** @todo duplicate invoice prevention */
+        /* @todo duplicate invoice prevention */
         MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);
         if (!order.save()) throw new Exception("Could not create Order");
 
@@ -70,23 +69,23 @@ public class ProjectGenOrder extends SvrProcess {
 
         //	Service Project
         if (MProject.PROJECTCATEGORY_ServiceChargeProject.equals(fromProject.getProjectCategory())) {
-            /** @todo service project invoicing */
+            /* @todo service project invoicing */
             throw new Exception("Service Charge Projects are on the TODO List");
         } //	Service Lines
         else //	Order Lines
         {
-            MProjectLine[] lines = fromProject.getLines();
-            for (int i = 0; i < lines.length; i++) {
+            I_C_ProjectLine[] lines = fromProject.getLines();
+            for (I_C_ProjectLine line : lines) {
                 MOrderLine ol = new MOrderLine(order);
-                ol.setLine(lines[i].getLine());
-                ol.setDescription(lines[i].getDescription());
+                ol.setLine(line.getLine());
+                ol.setDescription(line.getDescription());
                 //
-                ol.setProductId(lines[i].getProductId(), true);
-                ol.setQty(lines[i].getPlannedQty().subtract(lines[i].getInvoicedQty()));
+                ol.setProductId(line.getProductId(), true);
+                ol.setQty(line.getPlannedQty().subtract(line.getInvoicedQty()));
                 ol.setPrice();
-                if (lines[i].getPlannedPrice() != null
-                        && lines[i].getPlannedPrice().compareTo(Env.ZERO) != 0)
-                    ol.setPrice(lines[i].getPlannedPrice());
+                if (line.getPlannedPrice() != null
+                        && line.getPlannedPrice().compareTo(Env.ZERO) != 0)
+                    ol.setPrice(line.getPlannedPrice());
                 ol.setDiscount();
                 ol.setTax();
                 if (ol.save()) count++;
@@ -96,12 +95,11 @@ public class ProjectGenOrder extends SvrProcess {
                         Level.SEVERE, "Lines difference - ProjectLines=" + lines.length + " <> Saved=" + count);
         } //	Order Lines
 
-        StringBuilder msgreturn =
-                new StringBuilder("@C_Order_ID@ ")
-                        .append(order.getDocumentNo())
-                        .append(" (")
-                        .append(count)
-                        .append(")");
-        return msgreturn.toString();
+        String msgreturn = "@C_Order_ID@ " +
+                order.getDocumentNo() +
+                " (" +
+                count +
+                ")";
+        return msgreturn;
     } //	doIt
 } //	ProjectGenOrder

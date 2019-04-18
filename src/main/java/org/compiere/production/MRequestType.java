@@ -34,7 +34,7 @@ public class MRequestType extends X_R_RequestType {
      * Cache
      */
     private static CCache<Integer, MRequestType> s_cache =
-            new CCache<Integer, MRequestType>(I_R_RequestType.Table_Name, 10);
+            new CCache<>(I_R_RequestType.Table_Name, 10);
 
     /**
      * ************************************************************************ Standard Constructor
@@ -86,13 +86,13 @@ public class MRequestType extends X_R_RequestType {
      *
      * @return Request Type
      */
-    public static MRequestType getDefault() {
+    public static I_R_RequestType getDefault() {
         int AD_Client_ID = Env.getClientId();
 
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "AD_Client_ID IN (0," + AD_Client_ID + ")";
-        MRequestType retValue =
-                new Query(I_R_RequestType.Table_Name, whereClause)
+        I_R_RequestType retValue =
+                new Query<I_R_RequestType>(I_R_RequestType.Table_Name, whereClause)
                         .setOrderBy("IsDefault DESC, clientId DESC")
                         .first();
 

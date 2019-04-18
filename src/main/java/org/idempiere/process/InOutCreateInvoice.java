@@ -9,6 +9,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
@@ -80,8 +81,8 @@ public class InOutCreateInvoice extends SvrProcess {
         if (p_InvoiceDocumentNo != null && p_InvoiceDocumentNo.length() > 0)
             invoice.setDocumentNo(p_InvoiceDocumentNo);
         if (!invoice.save()) throw new IllegalArgumentException("Cannot save Invoice");
-        MInOutLine[] shipLines = ship.getLines(false);
-        for (MInOutLine sLine : shipLines) {
+        I_M_InOutLine[] shipLines = ship.getLines(false);
+        for (I_M_InOutLine sLine : shipLines) {
             MInvoiceLine line = new MInvoiceLine(invoice);
             line.setShipLine(sLine);
             if (sLine.sameOrderLineUOM()) line.setQtyEntered(sLine.getQtyEntered());

@@ -2,7 +2,7 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_LandedCostAllocation;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -161,7 +161,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
 
     public org.compiere.model.I_M_InOutLine getInOutLine() throws RuntimeException {
         return (org.compiere.model.I_M_InOutLine)
-                MTable.get(org.compiere.model.I_M_InOutLine.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_InOutLine.Table_Name)
                         .getPO(getInOutLineId());
     }
 

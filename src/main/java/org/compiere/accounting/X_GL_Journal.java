@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_GL_Journal;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -115,7 +115,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
 
     public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
-                MTable.get(org.compiere.model.I_C_AcctSchema.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_AcctSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 
@@ -225,7 +225,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
 
     public org.compiere.model.I_C_Period getPeriod() throws RuntimeException {
         return (org.compiere.model.I_C_Period)
-                MTable.get(org.compiere.model.I_C_Period.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Period.Table_Name)
                         .getPO(getPeriodId());
     }
 

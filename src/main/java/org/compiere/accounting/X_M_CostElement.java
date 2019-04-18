@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_CostElement extends BasePOName implements I_M_CostElement {
+public abstract class X_M_CostElement extends BasePOName implements I_M_CostElement {
 
     /**
      * Material = M

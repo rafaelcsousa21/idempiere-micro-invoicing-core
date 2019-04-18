@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
-import org.compiere.orm.MTable;
+import org.compiere.orm.MTableKt;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
 
@@ -63,9 +63,9 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
     * 53092	HR_Process			Doc_HRProcess
     */
 
-        String tableName = MTable.getDbTableName(tableId);
+        String tableName = MTableKt.getDbTableName(tableId);
         String packageName = "org.compiere.accounting";
-        String className = null;
+        String className;
 
         int firstUnderscore = tableName.indexOf("_");
         if (firstUnderscore == 1)
@@ -83,7 +83,6 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
                     "Doc Class invalid: " + className + " (" + e.toString() + ")", e);
         }
 
-        if (doc == null) s_log.log(Level.SEVERE, "Unknown AD_Table_ID=" + tableId);
         return doc;
     }
 }

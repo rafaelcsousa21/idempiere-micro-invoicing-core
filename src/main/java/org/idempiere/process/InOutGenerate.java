@@ -7,6 +7,7 @@ import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MLocatorType;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_OrderLine;
 import org.compiere.process.DocAction;
 import org.compiere.production.MLocator;
 import org.compiere.util.MsgKt;
@@ -112,7 +113,7 @@ public class InOutGenerate extends BaseInOutGenerate {
      */
     protected void createLine(
             @NotNull MOrder order,
-            @NotNull MOrderLine orderLine,
+            @NotNull I_C_OrderLine orderLine,
             @NotNull BigDecimal qty,
             MStorageOnHand[] storages,
             boolean force) {
@@ -146,7 +147,7 @@ public class InOutGenerate extends BaseInOutGenerate {
         }
 
         //	Inventory Lines
-        ArrayList<MInOutLine> list = new ArrayList<MInOutLine>();
+        ArrayList<MInOutLine> list = new ArrayList<>();
         BigDecimal toDeliver = qty;
         for (int i = 0; i < storages.length; i++) {
             MStorageOnHand storage = storages[i];
@@ -158,8 +159,8 @@ public class InOutGenerate extends BaseInOutGenerate {
             if (deliver.compareTo(storage.getQtyOnHand()) > 0
                     && storage.getQtyOnHand().signum() >= 0) // 	positive storage
             {
-                if (!force //	Adjust to OnHand Qty
-                        || (force && i + 1 != storages.length)) // 	if force not on last location
+                //	Adjust to OnHand Qty
+                if (!force || i + 1 != storages.length) // 	if force not on last location
                     deliver = storage.getQtyOnHand();
             }
             if (deliver.signum() == 0) // 	zero deliver
@@ -169,8 +170,7 @@ public class InOutGenerate extends BaseInOutGenerate {
             MInOutLine line = null;
             if (orderLine.getAttributeSetInstanceId() == 0) //      find line with Locator
             {
-                for (int ll = 0; ll < list.size(); ll++) {
-                    MInOutLine test = list.get(ll);
+                for (MInOutLine test : list) {
                     if (test.getLocatorId() == M_Locator_ID && test.getAttributeSetInstanceId() == 0) {
                         line = test;
                         break;
@@ -255,7 +255,7 @@ public class InOutGenerate extends BaseInOutGenerate {
                             null);
 
             /* IDEMPIERE-2668 - filter just locators enabled for shipping */
-            List<MStorageOnHand> m_storagesForShipping = new ArrayList<MStorageOnHand>();
+            List<MStorageOnHand> m_storagesForShipping = new ArrayList<>();
             for (MStorageOnHand soh : tmpStorages) {
                 MLocator loc = MLocator.get(soh.getLocatorId());
                 MLocatorType lt = null;

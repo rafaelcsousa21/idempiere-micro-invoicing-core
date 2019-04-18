@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default {
+public abstract class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default {
 
     /**
      *
@@ -22,20 +22,6 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
      */
     public X_C_AcctSchema_Default(int C_AcctSchema_Default_ID) {
         super(C_AcctSchema_Default_ID);
-        /**
-         * if (C_AcctSchema_Default_ID == 0) { setB_Asset_Acct (0); setB_InterestExp_Acct (0);
-         * setB_InterestRev_Acct (0); setB_InTransit_Acct (0); setB_PaymentSelect_Acct (0);
-         * setB_UnallocatedCash_Acct (0); setAccountingSchemaId (0); setCh_Expense_Acct (0);
-         * setPrepayment_Acct (0); setReceivable_Acct (0); setNotInvoicedReceipts_Acct (0);
-         * setP_Asset_Acct (0); setPayDiscount_Exp_Acct (0); setPayDiscount_Rev_Acct (0); setP_COGS_Acct
-         * (0); setP_CostAdjustment_Acct (0); setProductExpenseAccount (0); setInventoryClearingAccount (0);
-         * setInvoicePriceVarianceAccount (0); setPJ_Asset_Acct (0); setPJ_WIP_Acct (0);
-         * setP_PurchasePriceVariance_Acct (0); setP_RateVariance_Acct (0); setRevenueAccount (0);
-         * setP_TradeDiscountGrant_Acct (0); setP_TradeDiscountRec_Acct (0); setRealizedGain_Acct (0);
-         * setRealizedLoss_Acct (0); setT_Credit_Acct (0); setT_Due_Acct (0); setT_Expense_Acct (0);
-         * setUnrealizedGain_Acct (0); setUnrealizedLoss_Acct (0); setV_Liability_Acct (0);
-         * setV_Prepayment_Acct (0); setW_Differences_Acct (0); setWriteOff_Acct (0); }
-         */
     }
 
     /**
@@ -55,8 +41,7 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_AcctSchema_Default[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_AcctSchema_Default[" + getId() + "]";
     }
 
     /**
@@ -143,7 +128,7 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
      */
     public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**

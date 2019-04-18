@@ -13,14 +13,20 @@ import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.invoicing.MPaymentTerm;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_BankAccount;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLine;
+import org.compiere.model.I_C_OrderTax;
+import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_InOut;
+import org.compiere.model.I_M_InOutLine;
+import org.compiere.model.I_M_PriceList;
+import org.compiere.model.I_M_PriceList_Version;
 import org.compiere.model.I_M_Product;
 import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderPaySchedule;
-import org.compiere.order.MOrderTax;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MOrgInfo;
@@ -32,7 +38,6 @@ import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
-import org.compiere.product.MPriceListVersion;
 import org.compiere.production.MProject;
 import org.compiere.util.MsgKt;
 import org.compiere.validation.ModelValidationEngine;
@@ -59,7 +64,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     /**
      * Order Lines
      */
-    protected MOrderLine[] m_lines = null;
+    protected I_C_OrderLine[] m_lines = null;
 
     /**
      * ************************************************************************ Default Constructor
@@ -86,7 +91,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      */
     public MOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
         this(0);
-        setADClientID(project.getClientId());
+        setClientId(project.getClientId());
         setOrgId(project.getOrgId());
         setCampaignId(project.getCampaignId());
         setSalesRepresentativeId(project.getSalesRepresentativeId());
@@ -158,8 +163,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             if (!INVOICERULE_AfterDelivery.equals(getInvoiceRule()))
                 setInvoiceRule(INVOICERULE_AfterDelivery);
             //
-            MInOutLine[] sLines = shipment.getLines(false);
-            for (MInOutLine sLine : sLines) {
+            I_M_InOutLine[] sLines = shipment.getLines(false);
+            for (I_M_InOutLine sLine : sLines) {
                 //
                 MInvoiceLine iLine = new MInvoiceLine(invoice);
                 iLine.setShipLine(sLine);
@@ -375,10 +380,10 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                     return false;
                 }
                 if (isValueChanged(COLUMNNAME_DateOrdered)) {
-                    MPriceList pList = MPriceList.get(getPriceListId());
-                    MPriceListVersion plOld =
+                    I_M_PriceList pList = MPriceList.get(getPriceListId());
+                    I_M_PriceList_Version plOld =
                             pList.getPriceListVersion((Timestamp) getValueOld(COLUMNNAME_DateOrdered));
-                    MPriceListVersion plNew =
+                    I_M_PriceList_Version plNew =
                             pList.getPriceListVersion((Timestamp) getValue(COLUMNNAME_DateOrdered));
                     if (plNew == null || !plNew.equals(plOld)) {
                         log.saveError("Error", MsgKt.getMsg("CannotChangeDateOrdered"));
@@ -449,22 +454,22 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @param orderClause order clause
      * @return lines
      */
-    public MOrderLine[] getLines(String whereClause, String orderClause) {
+    public I_C_OrderLine[] getLines(String whereClause, String orderClause) {
         // red1 - using new Query class from Teo / Victor's MDDOrder.java implementation
         StringBuilder whereClauseFinal = new StringBuilder(MOrderLine.COLUMNNAME_C_Order_ID + "=? ");
         if (!Util.isEmpty(whereClause, true)) whereClauseFinal.append(whereClause);
         if (orderClause.length() == 0) orderClause = MOrderLine.COLUMNNAME_Line;
         //
-        List<MOrderLine> list =
-                new Query(I_C_OrderLine.Table_Name, whereClauseFinal.toString())
+        List<I_C_OrderLine> list =
+                new Query<I_C_OrderLine>(I_C_OrderLine.Table_Name, whereClauseFinal.toString())
                         .setParameters(getId())
                         .setOrderBy(orderClause)
                         .list();
-        for (MOrderLine ol : list) {
+        for (I_C_OrderLine ol : list) {
             ol.setHeaderInfo(this);
         }
         //
-        return list.toArray(new MOrderLine[0]);
+        return list.toArray(new I_C_OrderLine[0]);
     } //	getLines
 
     /**
@@ -935,17 +940,17 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                     + grandTotal;
 
         String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
-        MBankAccount ba =
-                new Query(MBankAccount.Table_Name, whereClause)
+        I_C_BankAccount ba =
+                new Query<I_C_BankAccount>(MBankAccount.Table_Name, whereClause)
                         .setParameters(this.getOrgId(), this.getCurrencyId())
                         .setOrderBy("IsDefault DESC")
                         .first();
         if (ba == null) return "@NoAccountOrgCurrency@";
 
-        MDocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
+        I_C_DocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
         if (doctypes.length == 0) return "No document type for AR Receipt";
-        MDocType doctype = null;
-        for (MDocType doc : doctypes) {
+        I_C_DocType doctype = null;
+        for (I_C_DocType doc : doctypes) {
             if (doc.getOrgId() == this.getOrgId()) {
                 doctype = doc;
                 break;
@@ -1214,8 +1219,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         }
 
         // update taxes
-        MOrderTax[] taxes = getTaxes(true);
-        for (MOrderTax tax : taxes) {
+        I_C_OrderTax[] taxes = getTaxes(true);
+        for (I_C_OrderTax tax : taxes) {
             if (!(tax.calculateTaxFromLines() && tax.save())) return false;
         }
 
@@ -1257,7 +1262,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                         + " AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
                         + " AND ol.C_Order_ID=?)";
         List<I_M_InOut> list =
-                new Query(I_M_InOut.Table_Name, whereClause)
+                new Query<I_M_InOut>(I_M_InOut.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy("M_InOut_ID DESC")
                         .list();
@@ -1469,9 +1474,9 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         //	Replace Prepay with POS to revert all doc
         if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(DocSubTypeSO)) {
-            MDocType newDT = null;
-            MDocType[] dts = MDocTypeKt.getGetClientDocumentTypes();
-            for (MDocType type : dts) {
+            I_C_DocType newDT = null;
+            I_C_DocType[] dts = MDocTypeKt.getGetClientDocumentTypes();
+            for (I_C_DocType type : dts) {
                 if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(type.getDocSubTypeSO())) {
                     if (type.isDefault() || newDT == null) newDT = type;
                 }
@@ -1521,7 +1526,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             MMatchPO[] mPO = MMatchPO.getOrderLine(line.getOrderLineId());
             // delete Cost Detail if the Matched PO has been deleted
             if (mPO.length == 0) {
-                MCostDetail cd =
+                I_M_CostDetail cd =
                         MCostDetail.get(
 
                                 "C_OrderLine_ID=?",

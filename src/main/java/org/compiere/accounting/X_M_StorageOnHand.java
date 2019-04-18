@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
+public abstract class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
 
     /**
      *

@@ -2,7 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOMLine;
 import org.idempiere.common.util.Env;
@@ -137,7 +137,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
-                MTable.get(org.compiere.model.I_C_UOM.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_UOM.Table_Name)
                         .getPO(getUOMId());
     }
 
@@ -343,7 +343,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(I_M_AttributeSetInstance.Table_Name)
+                MBaseTableKt.getTable(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getAttributeSetInstanceId());
     }
 
@@ -371,7 +371,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_M_ChangeNotice getChangeNotice() throws RuntimeException {
         return (org.compiere.model.I_M_ChangeNotice)
-                MTable.get(org.compiere.model.I_M_ChangeNotice.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_ChangeNotice.Table_Name)
                         .getPO(getChangeNoticeId());
     }
 
@@ -398,7 +398,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -425,7 +425,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
 
     public org.eevolution.model.I_PP_Product_BOM getProductBOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
-                MTable.get(org.eevolution.model.I_PP_Product_BOM.Table_Name)
+                MBaseTableKt.getTable(org.eevolution.model.I_PP_Product_BOM.Table_Name)
                         .getPO(getProductBOMId());
     }
 

@@ -21,7 +21,7 @@ import software.hsharp.core.util.Environment
 import java.io.File
 import java.util.Locale
 
-private fun loadAllClients(): List<ClientWithAccounting> = Query(I_AD_Client.Table_Name, null).list()
+private fun loadAllClients() = Query<ClientWithAccounting>(I_AD_Client.Table_Name, null).list()
 
 private val clientFactory = factory(loadAllClients()) { MClient(it) }
 
@@ -259,7 +259,7 @@ class MClient : MBaseClient, ClientWithAccounting {
         // IDEMPIERE-722
         private val MAIL_SEND_CREDENTIALS_USER = "U"
         private val MAIL_SEND_CREDENTIALS_SYSTEM = "S"
-        protected var s_cache = CCache<Int, org.compiere.orm.MClient>(I_AD_Client.Table_Name, 3, 120, true)
+        protected var s_cache = CCache<Int, I_AD_Client>(I_AD_Client.Table_Name, 3, 120, true)
         /**
          * Static Logger
          */
@@ -270,7 +270,7 @@ class MClient : MBaseClient, ClientWithAccounting {
          *
          * @return clients
          */
-        val all: Array<MClient>
+        val all: Array<I_AD_Client>
             get() = getAll("") // 	getAll
 
         /**
@@ -279,8 +279,8 @@ class MClient : MBaseClient, ClientWithAccounting {
          * @param orderBy by clause
          * @return clients
          */
-        fun getAll(orderBy: String): Array<MClient> {
-            val list = Query(I_AD_Client.Table_Name, null).setOrderBy(orderBy).list<MClient>()
+        fun getAll(orderBy: String): Array<I_AD_Client> {
+            val list = Query<I_AD_Client>(I_AD_Client.Table_Name, null).setOrderBy(orderBy).list()
             for (client in list) {
                 s_cache[client.clientId] = client
             }

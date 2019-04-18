@@ -26,9 +26,7 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
     /**
      * Load Constructor
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID AcctSchema
-     * @param trxName         transaction
      */
     public MAcctSchemaGL(int C_AcctSchema_ID) {
         super(C_AcctSchema_ID);
@@ -42,9 +40,6 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MAcctSchemaGL(Row row) {
         super(row);
@@ -53,13 +48,12 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
     /**
      * Get Accounting Schema GL Info
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID id
      * @return defaults
      */
-    public static MAcctSchemaGL get(int C_AcctSchema_ID) {
+    public static I_C_AcctSchema_GL get(int C_AcctSchema_ID) {
         final String whereClause = "C_AcctSchema_ID=?";
-        return new Query(I_C_AcctSchema_GL.Table_Name, whereClause)
+        return new Query<I_C_AcctSchema_GL>(I_C_AcctSchema_GL.Table_Name, whereClause)
                 .setParameters(C_AcctSchema_ID)
                 .firstOnly();
     } //	get
@@ -70,7 +64,7 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @return list
      */
     public ArrayList<KeyNamePair> getAcctInfo() {
-        ArrayList<KeyNamePair> list = new ArrayList<KeyNamePair>();
+        ArrayList<KeyNamePair> list = new ArrayList<>();
         for (int i = 0; i < get_ColumnCount(); i++) {
             String columnName = get_ColumnName(i);
             if (columnName.endsWith("Acct")) {

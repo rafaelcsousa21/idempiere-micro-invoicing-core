@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MAccount;
@@ -20,6 +6,9 @@ import org.compiere.accounting.MAcctSchemaDefault;
 import org.compiere.accounting.MAcctSchemaElement;
 import org.compiere.accounting.MAcctSchemaGL;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.I_C_AcctSchema_GL;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
@@ -109,16 +98,15 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @throws Exception
      */
     private void copyGL(MAcctSchema targetAS) throws Exception {
-        MAcctSchemaGL source = MAcctSchemaGL.get(p_SourceAcctSchema_ID);
+        I_C_AcctSchema_GL source = MAcctSchemaGL.get(p_SourceAcctSchema_ID);
         MAcctSchemaGL target = new MAcctSchemaGL(0);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
-        for (int i = 0; i < list.size(); i++) {
-            KeyNamePair pp = list.get(i);
+        for (KeyNamePair pp : list) {
             int sourceC_ValidCombination_ID = pp.getKey();
             String columnName = pp.getName();
             MAccount sourceAccount = MAccount.get(sourceC_ValidCombination_ID);
-            MAccount targetAccount = createAccount(targetAS, sourceAccount);
+            I_C_ValidCombination targetAccount = createAccount(targetAS, sourceAccount);
             target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
         if (!target.save()) throw new AdempiereSystemError("Could not Save GL");
@@ -131,17 +119,16 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @throws Exception
      */
     private void copyDefault(MAcctSchema targetAS) throws Exception {
-        MAcctSchemaDefault source = MAcctSchemaDefault.get(p_SourceAcctSchema_ID);
+        I_C_AcctSchema_Default source = MAcctSchemaDefault.get(p_SourceAcctSchema_ID);
         MAcctSchemaDefault target = new MAcctSchemaDefault(0);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
-        for (int i = 0; i < list.size(); i++) {
-            KeyNamePair pp = list.get(i);
+        for (KeyNamePair pp : list) {
             int sourceC_ValidCombination_ID = pp.getKey();
             String columnName = pp.getName();
             MAccount sourceAccount = MAccount.get(sourceC_ValidCombination_ID);
-            MAccount targetAccount = createAccount(targetAS, sourceAccount);
+            I_C_ValidCombination targetAccount = createAccount(targetAS, sourceAccount);
             target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
         if (!target.save()) throw new AdempiereSystemError("Could not Save Default");
@@ -154,7 +141,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @param sourceAcct source account
      * @return target account
      */
-    private MAccount createAccount(MAcctSchema targetAS, MAccount sourceAcct) {
+    private I_C_ValidCombination createAccount(MAcctSchema targetAS, MAccount sourceAcct) {
         int AD_Client_ID = targetAS.getClientId();
         int C_AcctSchema_ID = targetAS.getAccountingSchemaId();
         //
@@ -177,42 +164,59 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         //
         //  Active Elements
         MAcctSchemaElement[] elements = targetAS.getAcctSchemaElements();
-        for (int i = 0; i < elements.length; i++) {
-            MAcctSchemaElement ase = elements[i];
+        for (MAcctSchemaElement ase : elements) {
             String elementType = ase.getElementType();
             //
-            if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Organization))
-                AD_Org_ID = sourceAcct.getOrgId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Account))
-                Account_ID = sourceAcct.getAccountId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SubAccount))
-                C_SubAcct_ID = sourceAcct.getSubAccountId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_BPartner))
-                C_BPartner_ID = sourceAcct.getBusinessPartnerId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Product))
-                M_Product_ID = sourceAcct.getProductId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Activity))
-                C_Activity_ID = sourceAcct.getBusinessActivityId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationFrom))
-                C_LocFrom_ID = sourceAcct.getLocationFromId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationTo))
-                C_LocTo_ID = sourceAcct.getLocationToId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Campaign))
-                C_Campaign_ID = sourceAcct.getCampaignId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_OrgTrx))
-                AD_OrgTrx_ID = sourceAcct.getTransactionOrganizationId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Project))
-                C_Project_ID = sourceAcct.getProjectId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
-                C_SalesRegion_ID = sourceAcct.getSalesRegionId();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList1))
-                User1_ID = sourceAcct.getUser1Id();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList2))
-                User2_ID = sourceAcct.getUser2Id();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn1))
-                UserElement1_ID = sourceAcct.getUserElement1Id();
-            else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn2))
-                UserElement2_ID = sourceAcct.getUserElement2Id();
+            switch (elementType) {
+                case MAcctSchemaElement.ELEMENTTYPE_Organization:
+                    AD_Org_ID = sourceAcct.getOrgId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_Account:
+                    Account_ID = sourceAcct.getAccountId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_SubAccount:
+                    C_SubAcct_ID = sourceAcct.getSubAccountId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_BPartner:
+                    C_BPartner_ID = sourceAcct.getBusinessPartnerId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_Product:
+                    M_Product_ID = sourceAcct.getProductId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_Activity:
+                    C_Activity_ID = sourceAcct.getBusinessActivityId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_LocationFrom:
+                    C_LocFrom_ID = sourceAcct.getLocationFromId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_LocationTo:
+                    C_LocTo_ID = sourceAcct.getLocationToId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_Campaign:
+                    C_Campaign_ID = sourceAcct.getCampaignId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_OrgTrx:
+                    AD_OrgTrx_ID = sourceAcct.getTransactionOrganizationId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_Project:
+                    C_Project_ID = sourceAcct.getProjectId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_SalesRegion:
+                    C_SalesRegion_ID = sourceAcct.getSalesRegionId();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_UserElementList1:
+                    User1_ID = sourceAcct.getUser1Id();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_UserElementList2:
+                    User2_ID = sourceAcct.getUser2Id();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_UserColumn1:
+                    UserElement1_ID = sourceAcct.getUserElement1Id();
+                    break;
+                case MAcctSchemaElement.ELEMENTTYPE_UserColumn2:
+                    UserElement2_ID = sourceAcct.getUserElement2Id();
+                    break;
+            }
             //	No UserElement
         }
         //

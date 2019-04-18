@@ -4,6 +4,8 @@ import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
+import org.compiere.model.I_C_Cash;
+import org.compiere.model.I_C_CashBook;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.util.MsgKt;
@@ -31,11 +33,11 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     /**
      * Parent
      */
-    private MCash m_parent = null;
+    private I_C_Cash m_parent = null;
     /**
      * Cash Book
      */
-    private MCashBook m_cashBook = null;
+    private I_C_CashBook m_cashBook = null;
     /**
      * Bank Account
      */
@@ -48,15 +50,11 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     /**
      * Standard Constructor
      *
-     * @param ctx           context
      * @param C_CashLine_ID id
-     * @param trxName       transaction
      */
     public MCashLine(int C_CashLine_ID) {
         super(C_CashLine_ID);
         if (C_CashLine_ID == 0) {
-            //	setLine (0);
-            //	setCashType (CASHTYPE_GeneralExpense);
             setAmount(Env.ZERO);
             setDiscountAmt(Env.ZERO);
             setWriteOffAmt(Env.ZERO);
@@ -67,7 +65,6 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     /**
      * Load Cosntructor
      *
-     * @param ctx context
      */
     public MCashLine(Row row) {
         super(row);
@@ -78,7 +75,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      *
      * @param cash parent
      */
-    public MCashLine(MCash cash) {
+    public MCashLine(I_C_Cash cash) {
         this(0);
         setClientOrg(cash);
         setCashId(cash.getCashId());
@@ -102,7 +99,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      *
      * @return cash
      */
-    public MCash getParent() {
+    public I_C_Cash getParent() {
         if (m_parent == null) m_parent = new MCash(getCashId());
         return m_parent;
     } //	getCash
@@ -112,7 +109,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      *
      * @return cash book
      */
-    public MCashBook getCashBook() {
+    public I_C_CashBook getCashBook() {
         if (m_cashBook == null) m_cashBook = MCashBook.get(getParent().getCashBookId());
         return m_cashBook;
     } //	getCashBook
@@ -181,7 +178,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         //	Cannot change generated Invoices
         if (isValueChanged(I_C_CashLine.COLUMNNAME_C_Invoice_ID)) {
             Object generated = getValueOld(I_C_CashLine.COLUMNNAME_IsGenerated);
-            if (generated != null && ((Boolean) generated).booleanValue()) {
+            if (generated != null && (Boolean) generated) {
                 log.saveError("Error", MsgKt.getMsg("CannotChangeCashGenInvoice"));
                 return false;
             }

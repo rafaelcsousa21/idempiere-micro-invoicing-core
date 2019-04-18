@@ -13,6 +13,8 @@ import org.compiere.model.HasName;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_DocType;
+import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -72,7 +74,7 @@ public class CostUpdate extends SvrProcess {
     /**
      * Standard Cost Element
      */
-    private MCostElement m_ce = null;
+    private I_M_CostElement m_ce = null;
     /**
      * Client Accounting SChema
      */
@@ -80,7 +82,7 @@ public class CostUpdate extends SvrProcess {
     /**
      * Map of Cost Elements
      */
-    private HashMap<String, MCostElement> m_ces = new HashMap<>();
+    private HashMap<String, I_M_CostElement> m_ces = new HashMap<>();
 
     private MDocType m_docType = null;
 
@@ -188,7 +190,7 @@ public class CostUpdate extends SvrProcess {
                 || to.equals(TO_FiFo)
                 || to.equals(TO_LiFo)
                 || to.equals(TO_StandardCost)) {
-            MCostElement ce = getCostElement(p_SetFutureCostTo);
+            I_M_CostElement ce = getCostElement(p_SetFutureCostTo);
             return ce != null;
         }
         return true;
@@ -229,7 +231,7 @@ public class CostUpdate extends SvrProcess {
      * @return true if created
      */
     private boolean createNew(MProduct product, MAcctSchema as) {
-        MCost cost = MCost.get(product, 0, as, 0, m_ce.getCostElementId());
+        I_M_Cost cost = MCost.get(product, 0, as, 0, m_ce.getCostElementId());
         if (cost.isNew()) return cost.save();
         return false;
     } //	createNew
@@ -379,9 +381,9 @@ public class CostUpdate extends SvrProcess {
         //	Average Invoice
         switch (to) {
             case TO_AverageInvoice: {
-                MCostElement ce = getCostElement(TO_AverageInvoice);
+                I_M_CostElement ce = getCostElement(TO_AverageInvoice);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -396,9 +398,9 @@ public class CostUpdate extends SvrProcess {
             }
             //	Average Invoice History
             case TO_AverageInvoiceHistory: {
-                MCostElement ce = getCostElement(TO_AverageInvoice);
+                I_M_CostElement ce = getCostElement(TO_AverageInvoice);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AverageInvoice);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -414,9 +416,9 @@ public class CostUpdate extends SvrProcess {
 
             //	Average PO
             case TO_AveragePO: {
-                MCostElement ce = getCostElement(TO_AveragePO);
+                I_M_CostElement ce = getCostElement(TO_AveragePO);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -431,9 +433,9 @@ public class CostUpdate extends SvrProcess {
             }
             //	Average PO History
             case TO_AveragePOHistory: {
-                MCostElement ce = getCostElement(TO_AveragePO);
+                I_M_CostElement ce = getCostElement(TO_AveragePO);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_AveragePO);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -449,9 +451,9 @@ public class CostUpdate extends SvrProcess {
 
             //	FiFo
             case TO_FiFo: {
-                MCostElement ce = getCostElement(TO_FiFo);
+                I_M_CostElement ce = getCostElement(TO_FiFo);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_FiFo);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -472,9 +474,9 @@ public class CostUpdate extends SvrProcess {
 
             //	Last Inv Price
             case TO_LastInvoicePrice: {
-                MCostElement ce = getCostElement(TO_LastInvoicePrice);
+                I_M_CostElement ce = getCostElement(TO_LastInvoicePrice);
                 if (ce != null) {
-                    MCost xCost =
+                    I_M_Cost xCost =
                             MCost.get(
                                     cost.getClientId(),
                                     cost.getOrgId(),
@@ -501,9 +503,9 @@ public class CostUpdate extends SvrProcess {
 
             //	Last PO Price
             case TO_LastPOPrice: {
-                MCostElement ce = getCostElement(TO_LastPOPrice);
+                I_M_CostElement ce = getCostElement(TO_LastPOPrice);
                 if (ce != null) {
-                    MCost xCost =
+                    I_M_Cost xCost =
                             MCost.get(
                                     cost.getClientId(),
                                     cost.getOrgId(),
@@ -530,9 +532,9 @@ public class CostUpdate extends SvrProcess {
 
             //	FiFo
             case TO_LiFo: {
-                MCostElement ce = getCostElement(TO_LiFo);
+                I_M_CostElement ce = getCostElement(TO_LiFo);
                 if (ce == null) throw new AdempiereSystemError("CostElement not found: " + TO_LiFo);
-                MCost xCost =
+                I_M_Cost xCost =
                         MCost.get(
                                 cost.getClientId(),
                                 cost.getOrgId(),
@@ -566,8 +568,8 @@ public class CostUpdate extends SvrProcess {
      * @param CostingMethod method
      * @return costing element or null
      */
-    private MCostElement getCostElement(String CostingMethod) {
-        MCostElement ce = m_ces.get(CostingMethod);
+    private I_M_CostElement getCostElement(String CostingMethod) {
+        I_M_CostElement ce = m_ces.get(CostingMethod);
         if (ce == null) {
             ce = MCostElement.getMaterialCostElement(CostingMethod);
             m_ces.put(CostingMethod, ce);

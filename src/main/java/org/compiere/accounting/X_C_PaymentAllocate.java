@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
+public abstract class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
 
     /**
      *
@@ -25,11 +25,6 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      */
     public X_C_PaymentAllocate(int C_PaymentAllocate_ID) {
         super(C_PaymentAllocate_ID);
-        /**
-         * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setInvoiceId (0);
-         * setPaymentAllocate_ID (0); setPaymentId (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
-         * (Env.ZERO); setWriteOffAmt (Env.ZERO); }
-         */
     }
 
     /**
@@ -49,8 +44,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_PaymentAllocate[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_PaymentAllocate[" + getId() + "]";
     }
 
     /**
@@ -80,7 +74,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      */
     public void setAllocationLineId(int C_AllocationLine_ID) {
         if (C_AllocationLine_ID < 1) setValue(COLUMNNAME_C_AllocationLine_ID, null);
-        else setValue(COLUMNNAME_C_AllocationLine_ID, Integer.valueOf(C_AllocationLine_ID));
+        else setValue(COLUMNNAME_C_AllocationLine_ID, C_AllocationLine_ID);
     }
 
     /**
@@ -101,7 +95,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      */
     public void setInvoiceId(int C_Invoice_ID) {
         if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
-        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+        else setValue(COLUMNNAME_C_Invoice_ID, C_Invoice_ID);
     }
 
     /**

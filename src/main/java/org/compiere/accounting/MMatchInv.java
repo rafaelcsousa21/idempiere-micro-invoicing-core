@@ -5,6 +5,7 @@ import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_MatchInv;
 import org.compiere.order.MInOutLine;
 import org.compiere.orm.MDocType;
@@ -309,7 +310,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
         for (int asn = 0; asn < acctschemas.length; asn++) {
             MAcctSchema as = acctschemas[asn];
 
-            MCostDetail cd =
+            I_M_CostDetail cd =
                     MCostDetail.get(
                             "M_MatchInv_ID=?",
                             getMatchInvoiceId(),
@@ -360,7 +361,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     public void setProcessedOn(String processed, boolean b, boolean b1) {
     }
 
-    public void setADClientID(int a) {
-        super.setADClientID(a);
+    public void setClientId(int a) {
+        super.setClientId(a);
     }
 } //	MMatchInv

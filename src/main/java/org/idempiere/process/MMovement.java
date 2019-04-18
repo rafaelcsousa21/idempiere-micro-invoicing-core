@@ -9,11 +9,15 @@ import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.model.I_M_MovementLine;
+import org.compiere.model.I_M_MovementLineMA;
+import org.compiere.model.I_M_Product;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
+import org.compiere.orm.PO;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
@@ -46,11 +50,11 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     /**
      * Lines
      */
-    private MMovementLine[] m_lines = null;
+    private I_M_MovementLine[] m_lines = null;
     /**
      * Confirmations
      */
-    private MMovementConfirm[] m_confirms = null;
+    private I_M_MovementConfirm[] m_confirms = null;
     /**
      * Process Message
      */
@@ -67,7 +71,6 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     /**
      * Standard Constructor
      *
-     * @param ctx           context
      * @param M_Movement_ID id
      */
     public MMovement(int M_Movement_ID) {
@@ -86,7 +89,6 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MMovement(Row row) {
         super(row);
@@ -98,18 +100,18 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * @param requery requery
      * @return array of lines
      */
-    public MMovementLine[] getLines(boolean requery) {
+    public I_M_MovementLine[] getLines(boolean requery) {
         if (m_lines != null && !requery) {
             return m_lines;
         }
         //
         final String whereClause = "M_Movement_ID=?";
-        List<MMovementLine> list =
-                new Query(I_M_MovementLine.Table_Name, whereClause)
+        List<I_M_MovementLine> list =
+                new Query<I_M_MovementLine>(I_M_MovementLine.Table_Name, whereClause)
                         .setParameters(getMovementId())
                         .setOrderBy(MMovementLine.COLUMNNAME_Line)
                         .list();
-        m_lines = new MMovementLine[list.size()];
+        m_lines = new I_M_MovementLine[list.size()];
         list.toArray(m_lines);
         return m_lines;
     } //	getLines
@@ -120,14 +122,14 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * @param requery requery
      * @return array of Confirmations
      */
-    public MMovementConfirm[] getConfirmations(boolean requery) {
+    public I_M_MovementConfirm[] getConfirmations(boolean requery) {
         if (m_confirms != null && !requery) return m_confirms;
 
-        List<MMovementConfirm> list =
-                new Query(I_M_MovementConfirm.Table_Name, "M_Movement_ID=?")
+        List<I_M_MovementConfirm> list =
+                new Query<I_M_MovementConfirm>(I_M_MovementConfirm.Table_Name, "M_Movement_ID=?")
                         .setParameters(getId())
                         .list();
-        m_confirms = list.toArray(new MMovementConfirm[list.size()]);
+        m_confirms = list.toArray(new I_M_MovementConfirm[0]);
         return m_confirms;
     } //	getConfirmations
 
@@ -161,7 +163,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (getDocumentTypeId() == 0) {
-            MDocType[] types = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
+            I_C_DocType[] types = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
             if (types.length > 0) // 	get first
                 setDocumentTypeId(types[0].getDocTypeId());
             else {
@@ -239,7 +241,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             m_processMsg = "@PeriodClosed@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
-        MMovementLine[] lines = getLines(false);
+        I_M_MovementLine[] lines = getLines(false);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -247,9 +249,9 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
 
         // Validate mandatory ASI on lines - IDEMPIERE-1770 - ASI validation must be moved to
         // MMovement.prepareIt
-        for (MMovementLine line : lines) {
+        for (I_M_MovementLine line : lines) {
             //      Mandatory Instance
-            MProduct product = line.getProduct();
+            I_M_Product product = line.getProduct();
             if (line.getAttributeSetInstanceId() == 0) {
                 if (product != null && product.isASIMandatory(true)) {
                     if (!product
@@ -304,7 +306,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * Create Movement Confirmation
      */
     private void createConfirmation() {
-        MMovementConfirm[] confirmations = getConfirmations(false);
+        I_M_MovementConfirm[] confirmations = getConfirmations(false);
         if (confirmations.length > 0) return;
 
         //	Create Confirmation
@@ -357,9 +359,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
 
         //	Outstanding (not processed) Incoming Confirmations ?
-        MMovementConfirm[] confirmations = getConfirmations(true);
-        for (int i = 0; i < confirmations.length; i++) {
-            MMovementConfirm confirm = confirmations[i];
+        I_M_MovementConfirm[] confirmations = getConfirmations(true);
+        for (I_M_MovementConfirm confirm : confirmations) {
             if (!confirm.isProcessed()) {
                 m_processMsg = "Open: @M_MovementConfirm_ID@ - " + confirm.getDocumentNo();
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_InProgress());
@@ -372,13 +373,12 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
 
         StringBuilder errors = new StringBuilder();
         //
-        MMovementLine[] lines = getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MMovementLine line = lines[i];
+        I_M_MovementLine[] lines = getLines(false);
+        for (I_M_MovementLine line : lines) {
             MTransaction trxFrom = null;
 
             // Stock Movement - Counterpart MOrder.reserveStock
-            MProduct product = line.getProduct();
+            I_M_Product product = line.getProduct();
             try {
                 if (product != null && product.isStocked()) {
                     // Ignore the Material Policy when is Reverse Correction
@@ -399,8 +399,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                     if (line.getAttributeSetInstanceId() == 0) {
                         MMovementLineMA[] mas =
                                 MMovementLineMA.get(line.getMovementLineId());
-                        for (int j = 0; j < mas.length; j++) {
-                            MMovementLineMA ma = mas[j];
+                        for (MMovementLineMA ma : mas) {
                             //
                             MLocator locator = new MLocator(line.getLocatorId());
                             // Update Storage
@@ -479,7 +478,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                     //	Fallback - We have ASI
                     if (trxFrom == null) {
                         Timestamp dateMPolicy = null;
-                        MStorageOnHand[] storages = null;
+                        MStorageOnHand[] storages;
                         if (line.getMovementQty().compareTo(Env.ZERO) > 0) {
                             // Find Date Material Policy bases on ASI
                             storages =
@@ -639,7 +638,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     /**
      * Check Material Policy Sets line ASI
      */
-    private void checkMaterialPolicy(MMovementLine line, BigDecimal qtyToDeliver) {
+    private void checkMaterialPolicy(I_M_MovementLine line, BigDecimal qtyToDeliver) {
 
         int no = MMovementLineMA.deleteMovementLineMA(line.getMovementLineId());
         if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Delete old #" + no);
@@ -694,16 +693,13 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
 
             //	No AttributeSetInstance found for remainder
             if (qtyToDeliver.signum() != 0) {
-                MMovementLineMA ma =
+                I_M_MovementLineMA ma =
                         MMovementLineMA.addOrCreate(line, 0, qtyToDeliver, getMovementDate(), true);
                 ma.saveEx();
                 if (log.isLoggable(Level.FINE)) log.fine("##: " + ma);
             }
         } //	attributeSetInstance
 
-        if (needSave) {
-            line.saveEx();
-        }
     } //	checkMaterialPolicy
 
     /**
@@ -733,9 +729,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             if (m_processMsg != null) return false;
 
             //	Set lines to 0
-            MMovementLine[] lines = getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                MMovementLine line = lines[i];
+            I_M_MovementLine[] lines = getLines(false);
+            for (I_M_MovementLine line : lines) {
                 BigDecimal old = line.getMovementQty();
                 if (old.compareTo(Env.ZERO) != 0) {
                     line.setMovementQty(Env.ZERO);
@@ -842,11 +837,10 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         }
         reversal.setReversal(true);
         //	Reverse Line Qty
-        MMovementLine[] oLines = getLines(true);
-        for (int i = 0; i < oLines.length; i++) {
-            MMovementLine oLine = oLines[i];
+        I_M_MovementLine[] oLines = getLines(true);
+        for (I_M_MovementLine oLine : oLines) {
             MMovementLine rLine = new MMovementLine(0);
-            copyValues(oLine, rLine, oLine.getClientId(), oLine.getOrgId());
+            copyValues((PO)oLine, rLine, oLine.getClientId(), oLine.getOrgId());
             rLine.setMovementId(reversal.getMovementId());
             // AZ Goodwill
             // store original (voided/reversed) document line
@@ -866,13 +860,13 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             if (rLine.getAttributeSetInstanceId() == 0) {
                 MMovementLineMA[] mas =
                         MMovementLineMA.get(oLine.getMovementLineId());
-                for (int j = 0; j < mas.length; j++) {
+                for (MMovementLineMA mMovementLineMA : mas) {
                     MMovementLineMA ma =
                             new MMovementLineMA(
                                     rLine,
-                                    mas[j].getAttributeSetInstanceId(),
-                                    mas[j].getMovementQty().negate(),
-                                    mas[j].getDateMaterialPolicy(),
+                                    mMovementLineMA.getAttributeSetInstanceId(),
+                                    mMovementLineMA.getMovementQty().negate(),
+                                    mMovementLineMA.getDateMaterialPolicy(),
                                     true);
                     ma.saveEx();
                 }

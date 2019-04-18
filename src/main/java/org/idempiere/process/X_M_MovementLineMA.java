@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_MovementLineMA;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -118,7 +118,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
 
     public org.compiere.model.I_M_MovementLine getMovementLine() throws RuntimeException {
         return (org.compiere.model.I_M_MovementLine)
-                MTable.get(org.compiere.model.I_M_MovementLine.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_MovementLine.Table_Name)
                         .getPO(getMovementLineId());
     }
 

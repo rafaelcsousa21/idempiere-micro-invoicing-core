@@ -1,6 +1,7 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
+import org.compiere.model.I_M_MovementLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     /**
      * Movement Line
      */
-    private MMovementLine m_line = null;
+    private I_M_MovementLine m_line = null;
 
     /**
      * Standard Constructor
@@ -55,7 +56,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      *
      * @param line line
      */
-    public void setMovementLine(MMovementLine line) {
+    public void setMovementLine(I_M_MovementLine line) {
         setMovementLineId(line.getMovementLineId());
         setTargetQty(line.getMovementQty());
         setConfirmedQty(getTargetQty()); // 	suggestion
@@ -67,7 +68,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      *
      * @return line
      */
-    public MMovementLine getLine() {
+    public I_M_MovementLine getLine() {
         if (m_line == null) m_line = new MMovementLine(getMovementLineId());
         return m_line;
     } //	getLine
@@ -78,7 +79,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      * @return success
      */
     public boolean processLine() {
-        MMovementLine line = getLine();
+        I_M_MovementLine line = getLine();
 
         line.setTargetQty(getTargetQty());
         line.setMovementQty(getConfirmedQty());

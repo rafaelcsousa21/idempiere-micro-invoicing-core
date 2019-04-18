@@ -33,13 +33,13 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Cache
      */
-    private static CCache<Integer, MDepreciation> s_cache =
-            new CCache<Integer, MDepreciation>(I_A_Depreciation.Table_Name, 5);
+    private static CCache<Integer, I_A_Depreciation> s_cache =
+            new CCache<>(I_A_Depreciation.Table_Name, 5);
     /**
      * Cache for type
      */
-    private static CCache<String, MDepreciation> s_cache_forType =
-            new CCache<String, MDepreciation>(
+    private static CCache<String, I_A_Depreciation> s_cache_forType =
+            new CCache<>(
                     I_A_Depreciation.Table_Name, I_A_Depreciation.Table_Name + "_DepreciationType", 5);
     /**
      * Static logger
@@ -56,14 +56,12 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Load Constructor
      *
-     * @param ctx context
-     * @param rs  result set record
      */
     public MDepreciation(Row row) {
         super(row);
     } //	MDepreciation
 
-    private static void addToCache(MDepreciation depr) {
+    private static void addToCache(I_A_Depreciation depr) {
         if (depr == null) {
             return;
         }
@@ -76,11 +74,10 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Get Depreciation method
      *
-     * @param ctx
      * @param A_Depreciation_ID depreciation id
      */
-    public static MDepreciation get(int A_Depreciation_ID) {
-        MDepreciation depr = s_cache.get(A_Depreciation_ID);
+    public static I_A_Depreciation get(int A_Depreciation_ID) {
+        I_A_Depreciation depr = s_cache.get(A_Depreciation_ID);
         if (depr != null) {
             return depr;
         }
@@ -96,13 +93,12 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Get Depreciation method
      *
-     * @param ctx
      * @param depreciationType depreciation type (e.g. SL)
      */
-    public static MDepreciation get(String depreciationType) {
+    public static I_A_Depreciation get(String depreciationType) {
         int AD_Client_ID = Env.getClientId();
         String key = "" + AD_Client_ID + "_" + depreciationType;
-        MDepreciation depr = s_cache_forType.get(key);
+        I_A_Depreciation depr = s_cache_forType.get(key);
         if (depr != null) {
             return depr;
         }
@@ -110,7 +106,7 @@ public class MDepreciation extends X_A_Depreciation {
         final String whereClause =
                 I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
         depr =
-                new Query(I_A_Depreciation.Table_Name, whereClause)
+                new Query<I_A_Depreciation>(I_A_Depreciation.Table_Name, whereClause)
                         .setOrderBy("AD_Client_ID DESC")
                         .setParameters(depreciationType, AD_Client_ID)
                         .firstOnly();
@@ -149,9 +145,7 @@ public class MDepreciation extends X_A_Depreciation {
             int A_Current_Period,
             BigDecimal Accum_Dep) {
         String depreciationType = getDepreciationType();
-        BigDecimal retValue = null;
-        // ~ int offset = getFixMonthOffset();
-        // ~ A_Current_Period += offset;
+        BigDecimal retValue;
 
         if (CLogMgt.isLevelFinest()) {
             if (log.isLoggable(Level.FINE))
@@ -168,15 +162,15 @@ public class MDepreciation extends X_A_Depreciation {
                                 + Accum_Dep);
         }
 
-        if (!canInvoke(assetwk, assetAcct, A_Current_Period, Accum_Dep)) {
+        if (!canInvoke(assetwk, A_Current_Period, Accum_Dep)) {
             return BigDecimal.ZERO;
         }
         if (depreciationType.equalsIgnoreCase("SL")) {
-            retValue = apply_SL(assetwk, assetAcct, A_Current_Period, Accum_Dep);
+            retValue = apply_SL(assetwk, A_Current_Period, Accum_Dep);
         } else if (depreciationType.equalsIgnoreCase("ARH_VAR")) {
             retValue = apply_ARH_VAR(assetwk, assetAcct, A_Current_Period, Accum_Dep);
         } else if (depreciationType.equalsIgnoreCase("ARH_AD1")) {
-            retValue = apply_ARH_AD1(assetwk, assetAcct, A_Current_Period, Accum_Dep);
+            retValue = apply_ARH_AD1(assetwk, A_Current_Period, Accum_Dep);
         } else if (depreciationType.equalsIgnoreCase("ARH_AD2")) {
             retValue = apply_ARH_AD2(assetwk, assetAcct, A_Current_Period, Accum_Dep);
         } else if (depreciationType.equalsIgnoreCase("ARH_ZERO")) {
@@ -197,15 +191,12 @@ public class MDepreciation extends X_A_Depreciation {
 
     /**
      * Check if the method can be invoked to give parameters
-     *
-     * @param assetwk
-     * @param assetAcct
+     *  @param assetwk
      * @param A_Current_Period between 0 to UseLifeMonths - 1
      * @param Accum_Dep
      */
     public boolean canInvoke(
             MDepreciationWorkfile assetwk,
-            MAssetAcct assetAcct,
             int A_Current_Period,
             BigDecimal Accum_Dep) {
         // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(A_Asset_ID, PostingType);
@@ -235,10 +226,7 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Without depreciation
      *
-     * @param A_Asset_ID       Assets IDs (ignored)
      * @param A_Current_Period current period (in months, between 0 and UseLifeMonths - 1) (ignored)
-     * @param PostingType      posting type (eg. A - Actual, S - Statistics ...) (ignored)
-     * @param A_Asset_Acct_ID  FA accounting IDs (see table A_Asset_Acct) (ignored)
      * @param Accum_Dep        Accumulated depreciation from this method (ignored)
      * @return Env.ZERO
      */
@@ -250,15 +238,12 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Linear depreciation regime
      *
-     * @param A_Asset_ID       Assets IDs
      * @param A_Current_Period current period (in months, between 0 and UseLifeMonths - 1)
-     * @param PostingType      posting type (eg. A - Actual, S - Statistics ...)
-     * @param A_Asset_Acct_ID  FA accounting IDs (see table A_Asset_Acct)
      * @param Accum_Dep        Accumulated depreciation from this method
      * @return depreciation for the current month
      */
     private BigDecimal apply_SL(
-            MDepreciationWorkfile wk, MAssetAcct assetAcct, int A_Current_Period, BigDecimal Accum_Dep) {
+            MDepreciationWorkfile wk, int A_Current_Period, BigDecimal Accum_Dep) {
         BigDecimal remainingPeriods = new BigDecimal(wk.getRemainingPeriods(A_Current_Period - 1));
         BigDecimal remainingAmt = wk.getRemainingCost(Accum_Dep);
         BigDecimal amtPerPeriod = Env.ZERO;
@@ -284,8 +269,6 @@ public class MDepreciation extends X_A_Depreciation {
      * Accelerated depreciation regime
      *
      * @param A_Current_Period current period (in months, between 0 and UseLifeMonths - 1)
-     * @param PostingType      posting type (eg. A - Actual, S - Statistics ...)
-     * @param A_Asset_Acct_ID  FA accounting IDs (see table A_Asset_Acct)
      * @param Accum_Dep        Accumulated depreciation from this method
      * @return depreciation for the current month
      */
@@ -325,41 +308,31 @@ public class MDepreciation extends X_A_Depreciation {
      * Digressive depreciation regime (AD1)
      *
      * @param A_Current_Period current period (in months, between 0 and UseLifeMonths - 1)
-     * @param PostingType      posting type (eg. A - Actual, S - Statistics ...)
-     * @param A_Asset_Acct_ID  FA accounting IDs (see table A_Asset_Acct)
      * @param Accum_Dep        Accumulated depreciation from this method
      * @return depreciation for the current month TODO RE TEST IT!
      */
     private BigDecimal apply_ARH_AD1(
-            MDepreciationWorkfile wk, MAssetAcct assetAcct, int A_Current_Period, BigDecimal Accum_Dep) {
+            MDepreciationWorkfile wk, int A_Current_Period, BigDecimal Accum_Dep) {
         // ~ /** Current Worksheet */
         // ~ MDepreciationWorkfile wk = MDepreciationWorkfile.get(A_Asset_ID, PostingType);
 
-        /** FAs' value = acquisition value - the amount recovered */
+        /* FAs' value = acquisition value - the amount recovered */
         BigDecimal assetAmt = wk.getActualCost();
-        /** Life in months */
+        /* Life in months */
         int A_Life_Period = wk.getLifePeriod();
-        /** Year = integer part of (current period / 12) => first year will be 0 */
+        /* Year = integer part of (current period / 12) => first year will be 0 */
         int A_Current_Year = (A_Current_Period / 12);
-        /** Life in years = integer part of (the life in months / 12) => first year will be 0 */
+        /* Life in years = integer part of (the life in months / 12) => first year will be 0 */
         int A_Life_Year = (A_Life_Period / 12);
         // ~ /** Number of years of use remaining (including current year) */
         // ~ int A_RemainingLife_Year = A_Life_Year - A_Current_Year;
 
-        /** Coefficient K */
-    /* @win : looks like a country specific requirement
-    BigDecimal coef_K = get_AD_K(A_Life_Year);
-    */
-
-        /** Linear damping coefficient for one year = 1 / total number of years */
+        /* Linear damping coefficient for one year = 1 / total number of years */
         BigDecimal coef_sl =
                 BigDecimal.ONE.divide(new BigDecimal(A_Life_Year), getPrecision() + 2, RoundingMode.DOWN);
-        /** Degressive damping coefficient for one year = one-year linear depreciation * coeficient K */
+        /* Degressive damping coefficient for one year = one-year linear depreciation * coeficient K */
         // BigDecimal coef_ad1 = coef_sl.multiply(coef_K); //commented by @win
         BigDecimal coef_ad1 = coef_sl.multiply(BigDecimal.valueOf(2.0)); // added by @win
-
-        /** AD2 */
-        // ~ BigDecimal DUR = BD_100.multiply(
 
         // logging
         if (log.isLoggable(Level.FINE)) {
@@ -369,25 +342,25 @@ public class MDepreciation extends X_A_Depreciation {
             // //commented out by @win
         }
 
-        /** Depreciation for the current year, is calculated below */
+        /* Depreciation for the current year, is calculated below */
         BigDecimal amtPerYear = BigDecimal.ZERO;
-        /** They went on linear depreciation */
+        /* They went on linear depreciation */
         boolean is_SL = false;
-        /**
+        /*
          * Year linear depreciation = depreciation remaining / number of years remaining (including this
          * year)
          */
         BigDecimal amt_sl = BigDecimal.ZERO;
-        /** Remaining depreciation */
+        /* Remaining depreciation */
         BigDecimal amt_r = assetAmt;
 
         for (int curr_year = 0; curr_year <= A_Current_Year; curr_year++) {
             if (!is_SL) {
-                /** Number of years of use remaining (including current year) */
+                /* Number of years of use remaining (including current year) */
                 int A_RemainingLife_Year = A_Life_Year - curr_year;
-                /** Degressive current year depreciation */
+                /* Degressive current year depreciation */
                 BigDecimal amt_ad1 = amt_r.multiply(coef_ad1);
-                /**
+                /*
                  * Year linear depreciation = depreciation remaining / number of years remaining (including
                  * this year)
                  */
@@ -410,7 +383,7 @@ public class MDepreciation extends X_A_Depreciation {
                                         + A_RemainingLife_Year);
                 }
 
-                /**
+                /*
                  * If the first year or if the value depreciation value depreciation degressive more linear
                  * ...
                  */
@@ -435,10 +408,10 @@ public class MDepreciation extends X_A_Depreciation {
         if (s_log.isLoggable(Level.FINE))
             s_log.fine("amt_r=" + amt_r + ", amtPerYear=" + amtPerYear); // logging
 
-        /** Damping value for the current month */
+        /* Damping value for the current month */
         BigDecimal assetExp = getPeriodExp(A_Current_Period, amtPerYear);
 
-        /** Depreciation refund */
+        /* Depreciation refund */
         if (log.isLoggable(Level.FINE)) log.fine("assetExp=" + assetExp);
         return assetExp;
     }
@@ -450,32 +423,6 @@ public class MDepreciation extends X_A_Depreciation {
             MDepreciationWorkfile wk, MAssetAcct assetAcct, int A_Current_Period, BigDecimal Accum_Dep) {
         throw new AssetNotImplementedException("AD2");
     }
-
-    /**
-     * For depreciation regime skimmed returns coefficient K depending on the life of FAs
-     *
-     * @param A_Life_Year life in years
-     * @return coeficient K degressive method for
-     * @see #apply_ARH_AD1(int, int, String, int, BigDecimal)
-     */
-  /*private static BigDecimal get_AD_K(int A_Life_Year)
-  {
-  	if (A_Life_Year < 2) {
-  		throw new IllegalArgumentException("@A_Life_Year@ = " + A_Life_Year + " < 2");
-  	}
-  	// A_Life_Year in [2, 5]
-  	else if (A_Life_Year <= 5) {
-  		return new BigDecimal(1.5);
-  	}
-  	// A_Life_Year in (5, 10]
-  	else if (A_Life_Year <= 10) {
-  		return new BigDecimal(2.0);
-  	}
-  	// A_Life_Year in (10, infinit)
-  	else {
-  		return new BigDecimal(2.5);
-  	}
-  }*/
 
     /**
      * Calculate the value of depreciation over a month (period). In the last month of the year we add

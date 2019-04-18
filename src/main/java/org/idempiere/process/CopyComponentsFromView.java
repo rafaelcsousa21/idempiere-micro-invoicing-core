@@ -1,19 +1,8 @@
-/**
- * ******************************************************************** This file is part of
- * iDempiere ERP Open Source * http://www.idempiere.org * * Copyright (C) Contributors * * This
- * program is free software; you can redistribute it and/or * modify it under the terms of the GNU
- * General Public License * as published by the Free Software Foundation; either version 2 * of the
- * License, or (at your option) any later version. * * This program is distributed in the hope that
- * it will be useful, * but WITHOUT ANY WARRANTY; without even the implied warranty of *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the * GNU General Public License for
- * more details. * * You should have received a copy of the GNU General Public License * along with
- * this program; if not, write to the Free Software * Foundation, Inc., 51 Franklin Street, Fifth
- * Floor, Boston, * MA 02110-1301, USA. * * Contributors: * - Diego Ruiz *
- * ********************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_AD_ViewColumn;
+import org.compiere.model.I_AD_ViewComponent;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MViewColumn;
 import org.compiere.orm.MViewComponent;
@@ -79,16 +68,16 @@ public class CopyComponentsFromView extends SvrProcess {
                             + p_target_AD_Table_ID);
 
         MTable targetTable = new MTable(p_target_AD_Table_ID);
-        MViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
+        I_AD_ViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
         if (targetViewComponents.length > 0)
             throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyView"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
-        MViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
+        I_AD_ViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
 
         for (int i = 0; i < sourceViewComponents.length; i++) {
             MViewComponent viewComponentTarget = new MViewComponent(targetTable);
-            PO.copyValues(sourceViewComponents[i], viewComponentTarget);
+            PO.copyValues((PO)sourceViewComponents[i], viewComponentTarget);
             viewComponentTarget.setViewTableId(targetTable.getTableTableId());
             viewComponentTarget.setEntityType(targetTable.getEntityType());
 
@@ -107,17 +96,17 @@ public class CopyComponentsFromView extends SvrProcess {
     /**
      * Copy view columns from one component to another
      */
-    public void copyViewColumns(MViewComponent sourceComponent, MViewComponent targetComponent) {
+    public void copyViewColumns(I_AD_ViewComponent sourceComponent, I_AD_ViewComponent targetComponent) {
 
-        MViewColumn[] sourceColumns = sourceComponent.getColumns(true);
+        I_AD_ViewColumn[] sourceColumns = sourceComponent.getColumns(true);
 
-        for (int i = 0; i < sourceColumns.length; i++) {
+        for (I_AD_ViewColumn sourceColumn : sourceColumns) {
             MViewColumn columnTarget = new MViewColumn(targetComponent);
-            PO.copyValues(sourceColumns[i], columnTarget);
+            PO.copyValues((PO)sourceColumn, columnTarget);
             columnTarget.setViewComponentId(targetComponent.getViewComponentId());
             columnTarget.setEntityType(targetComponent.getEntityType());
 
-            columnTarget.setIsActive(sourceColumns[i].isActive());
+            columnTarget.setIsActive(sourceColumn.isActive());
             columnTarget.saveEx();
         }
     }

@@ -1,6 +1,7 @@
 package org.compiere.accounting
 
 import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.I_M_CostElement
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 
@@ -60,7 +61,7 @@ fun getCostQueueRecordsInLifoFifoOrder(
     M_ASI_ID: Int,
     `as`: I_C_AcctSchema,
     Org_ID: Int,
-    ce: MCostElement
+    ce: I_M_CostElement
 ): Array<MCostQueue> {
     val sql = StringBuilder("SELECT * FROM M_CostQueue ")
         .append("WHERE AD_Client_ID=? AND AD_Org_ID=?")

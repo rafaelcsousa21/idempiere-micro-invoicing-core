@@ -3,12 +3,13 @@ package org.compiere.invoicing;
 import kotliquery.Row;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClientKt;
-import org.compiere.accounting.MCost;
 import org.compiere.accounting.MCostElement;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_Inventory;
 import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -177,7 +178,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      *
      * @return parent
      */
-    public MInventory getParent() {
+    public I_M_Inventory getParent() {
         if (m_parent == null) m_parent = new MInventory(getInventoryId());
         return m_parent;
     } //	getParent
@@ -298,7 +299,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
 
             String costingMethod = getParent().getCostingMethod();
             int AD_Org_ID = getOrgId();
-            MCost cost = product.getCostingRecord(as, AD_Org_ID, M_ASI_ID, costingMethod);
+            I_M_Cost cost = product.getCostingRecord(as, AD_Org_ID, M_ASI_ID, costingMethod);
             if (cost == null) {
                 if (!MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
                     log.saveError("NoCostingRecord", "");

@@ -3,6 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_StorageOnHand;
+import org.compiere.model.I_Query;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
@@ -91,7 +92,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @return MStorageOnHand
      * @deprecated
      */
-    public static MStorageOnHand get(
+    public static I_M_StorageOnHand get(
 
             int M_Locator_ID,
             int M_Product_ID,
@@ -108,8 +109,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param dateMPolicy
      * @return existing or null
      */
-    public static MStorageOnHand get(
-
+    public static I_M_StorageOnHand get(
             int M_Locator_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -121,11 +121,11 @@ public class MStorageOnHand extends X_M_StorageOnHand {
 
         if (dateMPolicy != null) sqlWhere += " AND DateMaterialPolicy=trunc(cast(? as date))";
 
-        Query query = new Query(MStorageOnHand.Table_Name, sqlWhere);
+        Query<I_M_StorageOnHand> query = new Query<I_M_StorageOnHand>(MStorageOnHand.Table_Name, sqlWhere);
         if (dateMPolicy != null)
             query.setParameters(M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, dateMPolicy);
         else query.setParameters(M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID);
-        MStorageOnHand retValue = query.first();
+        I_M_StorageOnHand retValue = query.first();
 
         if (retValue == null) {
             if (s_log.isLoggable(Level.FINE))
@@ -157,7 +157,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param trxName      transaction
      * @return existing or null
      */
-    public static MStorageOnHand[] getAll(
+    public static I_M_StorageOnHand[] getAll(
 
             int M_Product_ID,
             int M_Locator_ID,
@@ -165,8 +165,8 @@ public class MStorageOnHand extends X_M_StorageOnHand {
             boolean forUpdate,
             int timeout) {
         String sqlWhere = "M_Product_ID=? AND M_Locator_ID=? AND QtyOnHand <> 0";
-        Query query =
-                new Query(MStorageOnHand.Table_Name, sqlWhere)
+        I_Query<I_M_StorageOnHand> query =
+                new Query<I_M_StorageOnHand>(MStorageOnHand.Table_Name, sqlWhere)
                         .setParameters(M_Product_ID, M_Locator_ID);
         MProduct product = new MProduct(M_Product_ID);
         if (product.isUseGuaranteeDateForMPolicy()) {
@@ -186,9 +186,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 query.setQueryTimeout(timeout);
             }
         }
-        List<MStorageOnHand> list = query.list();
+        List<I_M_StorageOnHand> list = query.list();
 
-        MStorageOnHand[] retValue = new MStorageOnHand[list.size()];
+        I_M_StorageOnHand[] retValue = new I_M_StorageOnHand[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getAll
@@ -434,7 +434,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param trxName                   transaction
      * @return existing/new or null
      */
-    public static MStorageOnHand getCreate(
+    public static I_M_StorageOnHand getCreate(
 
             int M_Locator_ID,
             int M_Product_ID,
@@ -455,7 +455,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param forUpdate
      * @return existing/new or null
      */
-    public static MStorageOnHand getCreate(
+    public static I_M_StorageOnHand getCreate(
 
             int M_Locator_ID,
             int M_Product_ID,
@@ -469,9 +469,8 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 M_Product_ID,
                 M_AttributeSetInstance_ID,
                 dateMPolicy,
-                trxName,
-                forUpdate,
-                0);
+                forUpdate
+        );
     }
 
     /**
@@ -480,25 +479,21 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param M_Locator_ID              locator
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID instance
-     * @param trxName                   transaction
      * @param forUpdate
-     * @param timeout
      * @return existing/new or null
      */
-    public static MStorageOnHand getCreate(
+    public static I_M_StorageOnHand getCreate(
 
             int M_Locator_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             Timestamp dateMPolicy,
-            String trxName,
-            boolean forUpdate,
-            int timeout) {
+            boolean forUpdate) {
         if (M_Locator_ID == 0) throw new IllegalArgumentException("M_Locator_ID=0");
         if (M_Product_ID == 0) throw new IllegalArgumentException("M_Product_ID=0");
         if (dateMPolicy != null) dateMPolicy = Util.removeTime(dateMPolicy);
 
-        MStorageOnHand retValue =
+        I_M_StorageOnHand retValue =
                 get(M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, dateMPolicy);
         if (retValue != null) {
             if (forUpdate) forUpdate(retValue);
@@ -577,16 +572,15 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         if (dateMPolicy != null) dateMPolicy = Util.removeTime(dateMPolicy);
 
         //	Get Storage
-        MStorageOnHand storage =
+        I_M_StorageOnHand storage =
                 getCreate(
 
                         M_Locator_ID,
                         M_Product_ID,
                         M_AttributeSetInstance_ID,
                         dateMPolicy,
-                        trxName,
-                        true,
-                        120);
+                        true
+                );
         //	Verify
         if (storage.getLocatorId() != M_Locator_ID
                 && storage.getProductId() != M_Product_ID
@@ -603,12 +597,11 @@ public class MStorageOnHand extends X_M_StorageOnHand {
 
         storage.addQtyOnHand(diffQtyOnHand);
         if (s_log.isLoggable(Level.FINE)) {
-            StringBuilder diffText =
-                    new StringBuilder("(OnHand=")
-                            .append(diffQtyOnHand)
-                            .append(") -> ")
-                            .append(storage.toString());
-            s_log.fine(diffText.toString());
+            String diffText = "(OnHand=" +
+                    diffQtyOnHand +
+                    ") -> " +
+                    storage.toString();
+            s_log.fine(diffText);
         }
         return true;
     } //	add

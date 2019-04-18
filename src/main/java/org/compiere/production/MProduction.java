@@ -13,7 +13,9 @@ import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_OrderLine;
+import org.compiere.model.I_C_ProjectLine;
 import org.compiere.model.I_M_Production;
+import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MSysConfig;
@@ -84,12 +86,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     public MProduction(I_C_OrderLine line) {
         super(0);
-        setADClientID(line.getClientId());
+        setClientId(line.getClientId());
         setOrgId(line.getOrgId());
         setMovementDate(line.getDatePromised());
     }
 
-    public MProduction(MProjectLine line) {
+    public MProduction(I_C_ProjectLine line) {
         super(0);
         MProject project = new MProject(line.getProjectId());
         MWarehouse wh = new MWarehouse(project.getWarehouseId());
@@ -97,7 +99,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         int M_Locator_ID;
 
         M_Locator_ID = wh.getDefaultLocator().getLocatorId();
-        setADClientID(line.getClientId());
+        setClientId(line.getClientId());
         setOrgId(line.getOrgId());
         setProductId(line.getProductId());
         setProductionQty(line.getPlannedQty());
@@ -726,8 +728,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         for (int i = 0; i < sLines.length; i++) {
             //	We need to copy MA
             if (sLines[i].getAttributeSetInstanceId() == 0) {
-                MProductionLineMA[] mas = MProductionLineMA.get(sLines[i].getId());
-                for (MProductionLineMA mProductionLineMA : mas) {
+                I_M_ProductionLineMA[] mas = MProductionLineMA.get(sLines[i].getId());
+                for (I_M_ProductionLineMA mProductionLineMA : mas) {
                     MProductionLineMA ma =
                             new MProductionLineMA(
                                     tLines[i],

@@ -5,7 +5,9 @@ import org.compiere.accounting.MAccount;
 import org.compiere.model.I_C_ProjectIssue;
 import org.compiere.model.I_C_ProjectLine;
 import org.compiere.model.I_C_ProjectPhase;
+import org.compiere.model.I_M_PriceList;
 import org.compiere.orm.MTree_Base;
+import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.product.MPriceList;
 import org.idempiere.common.util.Env;
@@ -34,16 +36,11 @@ public class MProject extends X_C_Project {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx          context
      * @param C_Project_ID id
-     * @param trxName      transaction
      */
     public MProject(int C_Project_ID) {
         super(C_Project_ID);
         if (C_Project_ID == 0) {
-            //	setProjectId(0);
-            //	setValue (null);
-            //	setCurrencyId (0);
             setCommittedAmt(Env.ZERO);
             setCommittedQty(Env.ZERO);
             setInvoicedAmt(Env.ZERO);
@@ -52,7 +49,6 @@ public class MProject extends X_C_Project {
             setPlannedMarginAmt(Env.ZERO);
             setPlannedQty(Env.ZERO);
             setProjectBalanceAmt(Env.ZERO);
-            //	setProjectCategory(PROJECTCATEGORY_General);
             setProjInvoiceRule(PROJINVOICERULE_None);
             setProjectLineLevel(PROJECTLINELEVEL_Project);
             setIsCommitCeiling(false);
@@ -65,9 +61,6 @@ public class MProject extends X_C_Project {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MProject(Row row) {
         super(row);
@@ -106,14 +99,13 @@ public class MProject extends X_C_Project {
      * @return info
      */
     public String toString() {
-        String sb = "MProject[" +
+        return "MProject[" +
                 getId() +
                 "-" +
                 getSearchKey() +
                 ",ProjectCategory=" +
                 getProjectCategory() +
                 "]";
-        return sb;
     } //	toString
 
     /**
@@ -145,16 +137,16 @@ public class MProject extends X_C_Project {
      *
      * @return Array of lines
      */
-    public MProjectLine[] getLines() {
+    public I_C_ProjectLine[] getLines() {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "C_Project_ID=?";
-        List<MProjectLine> list =
-                new Query(I_C_ProjectLine.Table_Name, whereClause)
+        List<I_C_ProjectLine> list =
+                new Query<I_C_ProjectLine>(I_C_ProjectLine.Table_Name, whereClause)
                         .setParameters(getProjectId())
                         .setOrderBy("Line")
                         .list();
         //
-        MProjectLine[] retValue = new MProjectLine[list.size()];
+        I_C_ProjectLine[] retValue = new I_C_ProjectLine[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getLines
@@ -165,15 +157,15 @@ public class MProject extends X_C_Project {
      *
      * @return Array of lines from a Phase
      */
-    public MProjectLine[] getPhaseLines(int phase) {
+    public I_C_ProjectLine[] getPhaseLines(int phase) {
         final String whereClause = "C_Project_ID=? and C_ProjectPhase_ID=?";
-        List<MProjectLine> list =
-                new Query(I_C_ProjectLine.Table_Name, whereClause)
+        List<I_C_ProjectLine> list =
+                new Query<I_C_ProjectLine>(I_C_ProjectLine.Table_Name, whereClause)
                         .setParameters(getProjectId(), phase)
                         .setOrderBy("Line")
                         .list();
         //
-        MProjectLine[] retValue = new MProjectLine[list.size()];
+        I_C_ProjectLine[] retValue = new I_C_ProjectLine[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getPhaseLines
@@ -238,14 +230,14 @@ public class MProject extends X_C_Project {
     public int copyLinesFrom(MProject project) {
         if (isProcessed() || project == null) return 0;
         int count = 0;
-        MProjectLine[] fromLines = project.getLines();
-        for (int i = 0; i < fromLines.length; i++) {
+        I_C_ProjectLine[] fromLines = project.getLines();
+        for (I_C_ProjectLine fromLine : fromLines) {
             // BF 3067850 - monhate
-            if ((fromLines[i].getProjectPhaseId() != 0) || (fromLines[i].getProjectTaskId() != 0))
+            if ((fromLine.getProjectPhaseId() != 0) || (fromLine.getProjectTaskId() != 0))
                 continue;
 
             MProjectLine line = new MProjectLine(0);
-            copyValues(fromLines[i], line, getClientId(), getOrgId());
+            copyValues((PO)fromLine, line, getClientId(), getOrgId());
             line.setProjectId(getProjectId());
             line.setInvoicedAmt(Env.ZERO);
             line.setInvoicedQty(Env.ZERO);
@@ -359,7 +351,7 @@ public class MProject extends X_C_Project {
 
         //	Set Currency
         if (isValueChanged("M_PriceList_Version_ID") && getPriceListVersionId() != 0) {
-            MPriceList pl = MPriceList.get(getPriceListId());
+            I_M_PriceList pl = MPriceList.get(getPriceListId());
             if (pl != null && pl.getId() != 0) setCurrencyId(pl.getCurrencyId());
         }
 

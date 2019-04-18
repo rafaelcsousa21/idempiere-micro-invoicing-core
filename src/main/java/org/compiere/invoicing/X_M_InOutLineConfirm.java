@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
+public abstract class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
 
     /**
      *
@@ -25,11 +25,6 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      */
     public X_M_InOutLineConfirm(int M_InOutLineConfirm_ID) {
         super(M_InOutLineConfirm_ID);
-        /**
-         * if (M_InOutLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setInOutConfirmId (0);
-         * setInOutLineConfirm_ID (0); setInOutLineId (0); setProcessed (false); setTargetQty
-         * (Env.ZERO); }
-         */
     }
 
     /**
@@ -49,8 +44,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_InOutLineConfirm[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_InOutLineConfirm[" + getId() + "]";
     }
 
     /**
@@ -60,7 +54,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      */
     public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValue(COLUMNNAME_C_InvoiceLine_ID, null);
-        else setValue(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        else setValue(COLUMNNAME_C_InvoiceLine_ID, C_InvoiceLine_ID);
     }
 
     /**
@@ -128,7 +122,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      */
     public void setInOutConfirmId(int M_InOutConfirm_ID) {
         if (M_InOutConfirm_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, Integer.valueOf(M_InOutConfirm_ID));
+        else setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, M_InOutConfirm_ID);
     }
 
     /**
@@ -149,7 +143,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      */
     public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
     }
 
     /**
@@ -159,7 +153,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      */
     public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
-        else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+        else setValue(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
     }
 
     /**
@@ -168,7 +162,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**

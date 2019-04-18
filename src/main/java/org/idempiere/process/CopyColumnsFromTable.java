@@ -1,8 +1,11 @@
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_AD_Column;
+import org.compiere.model.I_AD_Element;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.M_Element;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
@@ -65,24 +68,24 @@ public class CopyColumnsFromTable extends SvrProcess {
                             + p_target_AD_Table_ID);
 
         MTable targetTable = new MTable(p_target_AD_Table_ID);
-        MColumn[] targetColumns = targetTable.getColumns(true);
+        I_AD_Column[] targetColumns = targetTable.getColumns(true);
         if (targetColumns.length > 0)
             throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyColumns"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
-        MColumn[] sourceColumns = sourceTable.getColumns(true);
+        I_AD_Column[] sourceColumns = sourceTable.getColumns(true);
 
-        for (int i = 0; i < sourceColumns.length; i++) {
+        for (I_AD_Column sourceColumn : sourceColumns) {
             MColumn colTarget = new MColumn(targetTable);
-            PO.copyValues(sourceColumns[i], colTarget);
+            PO.copyValues((PO)sourceColumn, colTarget);
             colTarget.setColumnTableId(targetTable.getTableTableId());
             colTarget.setEntityType(targetTable.getEntityType());
             // special case the key -> sourceTable_ID
-            if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_ID")) {
+            if (sourceColumn.getColumnName().equals(sourceTable.getDbTableName() + "_ID")) {
                 String targetColumnName = targetTable.getDbTableName() + "_ID";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                M_Element element = M_Element.get(targetColumnName);
+                I_AD_Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(targetColumnName, targetTable.getEntityType());
@@ -99,11 +102,11 @@ public class CopyColumnsFromTable extends SvrProcess {
                 colTarget.setHelp(targetTable.getHelp());
             }
             // special case the UUID column -> sourceTable_UU
-            if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_UU")) {
+            if (sourceColumn.getColumnName().equals(sourceTable.getDbTableName() + "_UU")) {
                 String targetColumnName = targetTable.getDbTableName() + "_UU";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                M_Element element = M_Element.get(targetColumnName);
+                I_AD_Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(targetColumnName, targetTable.getEntityType());
@@ -119,7 +122,7 @@ public class CopyColumnsFromTable extends SvrProcess {
                 colTarget.setDescription(targetTable.getDescription());
                 colTarget.setHelp(targetTable.getHelp());
             }
-            colTarget.setIsActive(sourceColumns[i].isActive());
+            colTarget.setIsActive(sourceColumn.isActive());
             colTarget.saveEx();
             // TODO: Copy translations
             m_count++;

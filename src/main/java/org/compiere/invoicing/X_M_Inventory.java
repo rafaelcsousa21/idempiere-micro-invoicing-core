@@ -2,7 +2,7 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_Inventory;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Inventory extends PO implements I_M_Inventory {
+public abstract class X_M_Inventory extends PO implements I_M_Inventory {
 
     /**
      * Complete = CO
@@ -143,7 +143,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
 
     public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
-                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 

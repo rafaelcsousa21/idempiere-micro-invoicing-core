@@ -6,6 +6,7 @@ import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_M_AttributeSet;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MInOut;
@@ -236,7 +237,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
      */
     public BigDecimal getBase(String CostDistribution) {
         if (MLandedCost.LANDEDCOSTDISTRIBUTION_Costs.equals(CostDistribution)) {
-            MInvoiceLine m_il = MInvoiceLine.getOfInOutLine(this);
+            I_C_InvoiceLine m_il = MInvoiceLine.getOfInOutLine(this);
             if (m_il == null) {
                 m_il = MInvoiceLine.getOfInOutLineFromMatchInv(this);
                 if (m_il == null) {

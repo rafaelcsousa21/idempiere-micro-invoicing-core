@@ -6,6 +6,7 @@ import org.compiere.crm.MBPGroupKt;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.X_C_BP_Group;
 import org.compiere.model.I_R_Request;
+import org.compiere.model.I_R_RequestType;
 import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
@@ -30,7 +31,7 @@ public class MRequest extends X_R_Request {
     /**
      * Request Type
      */
-    private MRequestType m_requestType = null;
+    private I_R_RequestType m_requestType = null;
     /**
      * BPartner
      */
@@ -39,23 +40,17 @@ public class MRequest extends X_R_Request {
     /**
      * ************************************************************************ Constructor
      *
-     * @param ctx          context
      * @param R_Request_ID request or 0 for new
-     * @param trxName      transaction
      */
     public MRequest(int R_Request_ID) {
         super(R_Request_ID);
         if (R_Request_ID == 0) {
             setDueType(X_R_Request.DUETYPE_Due);
-            //  setSalesRepresentativeId (0);
-            //	setDocumentNo (null);
             setConfidentialType(X_R_Request.CONFIDENTIALTYPE_PublicInformation); // A
             setConfidentialTypeEntry(X_R_Request.CONFIDENTIALTYPEENTRY_PublicInformation); // A
             setProcessed(false);
             setRequestAmt(Env.ZERO);
             setPriorityUser(X_R_Request.PRIORITY_Low);
-            //  setRequestTypeId (0);
-            //  setSummary (null);
             setIsEscalated(false);
             setIsSelfService(false);
             setIsInvoiced(false);
@@ -64,24 +59,20 @@ public class MRequest extends X_R_Request {
 
     /**
      * SelfService Constructor
-     *
-     * @param ctx              context
-     * @param SalesRep_ID      SalesRep
+     *  @param SalesRep_ID      SalesRep
      * @param R_RequestType_ID request type
      * @param Summary          summary
      * @param isSelfService    self service
-     * @param trxName          transaction
      */
     public MRequest(
 
             int SalesRep_ID,
             int R_RequestType_ID,
             String Summary,
-            boolean isSelfService,
-            String trxName) {
+            boolean isSelfService) {
         this(0);
-        setValue("SalesRep_ID", new Integer(SalesRep_ID)); // 	could be 0
-        setValue("R_RequestType_ID", new Integer(R_RequestType_ID));
+        setValue("SalesRep_ID", SalesRep_ID); // 	could be 0
+        setValue("R_RequestType_ID", R_RequestType_ID);
         setSummary(Summary);
         setIsSelfService(isSelfService);
         getRequestType();
@@ -97,9 +88,6 @@ public class MRequest extends X_R_Request {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MRequest(Row row) {
         super(row);
@@ -148,15 +136,15 @@ public class MRequest extends X_R_Request {
      * @param confidentialType maximum confidential type - null = all
      * @return updates
      */
-    public MRequestUpdate[] getUpdates(String confidentialType) {
+    public I_R_RequestUpdate[] getUpdates(String confidentialType) {
         final String whereClause = MRequestUpdate.COLUMNNAME_R_Request_ID + "=?";
-        List<MRequestUpdate> listUpdates =
-                new Query(I_R_RequestUpdate.Table_Name, whereClause)
+        List<I_R_RequestUpdate> listUpdates =
+                new Query<I_R_RequestUpdate>(I_R_RequestUpdate.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy("Created DESC")
                         .list();
-        ArrayList<MRequestUpdate> list = new ArrayList<MRequestUpdate>();
-        for (MRequestUpdate ru : listUpdates) {
+        ArrayList<I_R_RequestUpdate> list = new ArrayList<>();
+        for (I_R_RequestUpdate ru : listUpdates) {
             if (confidentialType != null) {
                 //	Private only if private
                 if (ru.getConfidentialTypeEntry()
@@ -177,7 +165,7 @@ public class MRequest extends X_R_Request {
             list.add(ru);
         }
         //
-        MRequestUpdate[] retValue = new MRequestUpdate[list.size()];
+        I_R_RequestUpdate[] retValue = new I_R_RequestUpdate[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getUpdates
@@ -187,7 +175,7 @@ public class MRequest extends X_R_Request {
      *
      * @return Request Type
      */
-    public MRequestType getRequestType() {
+    public I_R_RequestType getRequestType() {
         if (m_requestType == null) {
             int R_RequestType_ID = getRequestTypeId();
             if (R_RequestType_ID == 0) {
@@ -270,9 +258,7 @@ public class MRequest extends X_R_Request {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MRequest[");
-        sb.append(getId()).append("-").append(getDocumentNo()).append("]");
-        return sb.toString();
+        return "MRequest[" + getId() + "-" + getDocumentNo() + "]";
     } //	toString
 
     /**
@@ -337,51 +323,6 @@ public class MRequest extends X_R_Request {
     } //	beforeSave
 
     /**
-     * Check the ability to send email.
-     *
-     * @return AD_Message or null if no error
-     */
-  /*
-   * TODO red1 - Never Used Locally - to check later
-   	private String checkEMail()
-  	{
-  		//  Mail Host
-  		MClient client = MClientKt.getClient(Env.getCtx());
-  		if (client == null
-  			|| client.getSMTPHost() == null
-  			|| client.getSMTPHost().length() == 0)
-  			return "RequestActionEMailNoSMTP";
-
-  		//  Mail To
-  		MUser to = new MUser (getUserId(), null);
-  		if (to == null
-  			|| to.getEMail() == null
-  			|| to.getEMail().length() == 0)
-  			return "RequestActionEMailNoTo";
-
-  		//  Mail From real user
-  		MUser from = MUserKt.getUser(Env.getUserId(Env.getCtx()));
-  		if (from == null
-  			|| from.getEMail() == null
-  			|| from.getEMail().length() == 0)
-  			return "RequestActionEMailNoFrom";
-
-  		//  Check that UI user is Request User
-  //		int realSalesRep_ID = Env.getContextAsInt ("#AD_User_ID");
-  //		if (realSalesRep_ID != getSalesRepresentativeId())
-  //			setSalesRepresentativeId(realSalesRep_ID);
-
-  		//  RequestActionEMailInfo - EMail from {0} to {1}
-  //		Object[] args = new Object[] {emailFrom, emailTo};
-  //		String msg = MsgKt.getMsg( "RequestActionEMailInfo", args);
-  //		setLastResult(msg);
-  		//
-
-  		return null;
-  	}   //  checkEMail
-  */
-
-    /**
      * Set SalesRep_ID
      *
      * @param SalesRep_ID id
@@ -432,35 +373,5 @@ public class MRequest extends X_R_Request {
 
         return success;
     } //	afterSave
-
-    /** Send transfer Message */
-  /*TODO - red1 Never used locally  - check later
-   * 	private void sendTransferMessage ()
-  	{
-  		//	Sender
-  		int AD_User_ID = Env.getContextAsInt(p_ctx, "#AD_User_ID");
-  		if (AD_User_ID == 0)
-  			AD_User_ID = getUpdatedBy();
-  		//	Old
-  		Object oo = getValueOld("SalesRep_ID");
-  		int oldSalesRep_ID = 0;
-  		if (oo instanceof Integer)
-  			oldSalesRep_ID = ((Integer)oo).intValue();
-
-  		//  RequestActionTransfer - Request {0} was transfered by {1} from {2} to {3}
-  		Object[] args = new Object[] {getDocumentNo(),
-  			MUserKt.getUserNameOfUser(AD_User_ID),
-  			MUserKt.getUserNameOfUser(oldSalesRep_ID),
-  			MUserKt.getUserNameOfUser(getSalesRepresentativeId())
-  			};
-  		String subject = MsgKt.getMsg( "RequestActionTransfer", args);
-  		String message = subject + "\n" + getSummary();
-  		MClient client = MClientKt.getClient(Env.getCtx());
-  		MUser from = MUserKt.getUser (AD_User_ID);
-  		MUser to = MUserKt.getUser (getSalesRepresentativeId());
-  		//
-  		client.sendEMail(from, to, subject, message, createPDF());
-  	}	//	afterSaveTransfer
-  */
 
 } //	MRequest

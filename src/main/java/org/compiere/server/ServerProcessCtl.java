@@ -1,9 +1,10 @@
 package org.compiere.server;
 
 import org.compiere.model.IProcessInfo;
+import org.compiere.model.I_AD_Column;
 import org.compiere.model.Server;
-import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.compiere.process.DocAction;
 import org.compiere.process.MPInstance;
@@ -109,8 +110,8 @@ public class ServerProcessCtl implements Runnable {
      */
     public static ProcessInfo runDocumentActionWorkflow(PO po, String docAction) {
         int AD_Table_ID = po.getTableId();
-        MTable table = MTable.get(AD_Table_ID);
-        MColumn column = table.getColumn("DocAction");
+        MTable table = MBaseTableKt.getTable(AD_Table_ID);
+        I_AD_Column column = table.getColumn("DocAction");
         if (column == null) return null;
         if (!docAction.equals(po.getValue(column.getColumnName()))) {
             po.set_ValueOfColumn(column.getColumnName(), docAction);
@@ -206,10 +207,6 @@ public class ServerProcessCtl implements Runnable {
                     MsgKt.getMsg("ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);
             log.log(Level.SEVERE, "run", e);
             return;
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         //  No PL/SQL Procedure
@@ -255,7 +252,6 @@ public class ServerProcessCtl implements Runnable {
             m_pi.setReportingProcess(true);
             m_pi.setClassName(ProcessUtil.JASPER_STARTER_CLASS);
             startProcess();
-            return;
         }
 
         //	log.fine(Log.l3_Util, "ProcessCtl.run - done");
@@ -279,19 +275,17 @@ public class ServerProcessCtl implements Runnable {
             try {
                 Class<?> processClass = Class.forName(m_pi.getClassName());
                 if (ClientProcess.class.isAssignableFrom(processClass)) clientOnly = true;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 
         if (m_IsServerProcess && !clientOnly) {
             Server server = getServer();
             try {
-                if (server != null) {
-                    //	See ServerBean
-                    m_pi = server.process(m_pi);
-                    if (log.isLoggable(Level.FINEST)) log.finest("server => " + m_pi);
-                    started = true;
-                }
+                //	See ServerBean
+                m_pi = server.process(m_pi);
+                if (log.isLoggable(Level.FINEST)) log.finest("server => " + m_pi);
+                started = true;
             } catch (UndeclaredThrowableException ex) {
                 Throwable cause = ex.getCause();
                 if (cause != null) {

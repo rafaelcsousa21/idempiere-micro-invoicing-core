@@ -2,7 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_ProjectLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
+public abstract class X_C_ProjectLine extends PO implements I_C_ProjectLine {
 
     /**
      *
@@ -26,13 +26,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public X_C_ProjectLine(int C_ProjectLine_ID) {
         super(C_ProjectLine_ID);
-        /**
-         * if (C_ProjectLine_ID == 0) { setProjectId (0); setProjectLineId (0); setInvoicedAmt
-         * (Env.ZERO); setInvoicedQty (Env.ZERO); // 0 setIsPrinted (true); // Y setLine (0);
-         * // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_ProjectLine WHERE
-         * C_Project_ID=@C_Project_ID@ setPlannedAmt (Env.ZERO); setPlannedMarginAmt (Env.ZERO);
-         * setPlannedPrice (Env.ZERO); setPlannedQty (Env.ZERO); // 1 setProcessed (false); // N }
-         */
     }
 
     /**
@@ -52,8 +45,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_ProjectLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_ProjectLine[" + getId() + "]";
     }
 
     /**
@@ -72,7 +64,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setOrderId(int C_Order_ID) {
         if (C_Order_ID < 1) setValueNoCheck(COLUMNNAME_C_Order_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+        else setValueNoCheck(COLUMNNAME_C_Order_ID, C_Order_ID);
     }
 
     /**
@@ -93,12 +85,12 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setOrderPOId(int C_OrderPO_ID) {
         if (C_OrderPO_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderPO_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_OrderPO_ID, Integer.valueOf(C_OrderPO_ID));
+        else setValueNoCheck(COLUMNNAME_C_OrderPO_ID, C_OrderPO_ID);
     }
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(org.compiere.model.I_C_Project.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 
@@ -173,7 +165,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setProjectPhaseId(int C_ProjectPhase_ID) {
         if (C_ProjectPhase_ID < 1) setValue(COLUMNNAME_C_ProjectPhase_ID, null);
-        else setValue(COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
+        else setValue(COLUMNNAME_C_ProjectPhase_ID, C_ProjectPhase_ID);
     }
 
     /**
@@ -194,7 +186,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setProjectTaskId(int C_ProjectTask_ID) {
         if (C_ProjectTask_ID < 1) setValue(COLUMNNAME_C_ProjectTask_ID, null);
-        else setValue(COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
+        else setValue(COLUMNNAME_C_ProjectTask_ID, C_ProjectTask_ID);
     }
 
     /**
@@ -250,7 +242,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      * @param IsPrinted Indicates if this document / line is printed
      */
     public void setIsPrinted(boolean IsPrinted) {
-        setValue(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
+        setValue(COLUMNNAME_IsPrinted, IsPrinted);
     }
 
     /**
@@ -270,7 +262,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Line);
     }
 
     /**
@@ -302,7 +294,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
-        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -323,7 +315,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      */
     public void setProductionId(int M_Production_ID) {
         if (M_Production_ID < 1) setValueNoCheck(COLUMNNAME_M_Production_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
+        else setValueNoCheck(COLUMNNAME_M_Production_ID, M_Production_ID);
     }
 
     /**
@@ -390,7 +382,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     @Override

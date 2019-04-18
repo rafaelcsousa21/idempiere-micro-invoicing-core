@@ -26,8 +26,8 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     /**
      * Cache
      */
-    private static CCache<Integer, MPPProductBOM> s_cache =
-            new CCache<Integer, MPPProductBOM>(I_PP_Product_BOM.Table_Name, 40, 5);
+    private static CCache<Integer, I_PP_Product_BOM> s_cache =
+            new CCache<>(I_PP_Product_BOM.Table_Name, 40, 5);
     /**
      * BOM Lines
      */
@@ -44,13 +44,12 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     /**
      * Get Product BOM by ID (cached)
      *
-     * @param ctx
      * @param PP_Product_BOM_ID
      * @return product bom
      */
-    public static MPPProductBOM get(int PP_Product_BOM_ID) {
+    public static I_PP_Product_BOM get(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID <= 0) return null;
-        MPPProductBOM bom = s_cache.get(PP_Product_BOM_ID);
+        I_PP_Product_BOM bom = s_cache.get(PP_Product_BOM_ID);
         if (bom != null) return bom;
         bom = new MPPProductBOM(PP_Product_BOM_ID);
         if (bom.getId() == PP_Product_BOM_ID) {
@@ -65,12 +64,11 @@ public class MPPProductBOM extends X_PP_Product_BOM {
      * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value)
      *
      * @param product
-     * @param trxName
      * @return product BOM
      */
-    public static MPPProductBOM getDefault(MProduct product) {
-        MPPProductBOM bom =
-                new Query(
+    public static I_PP_Product_BOM getDefault(MProduct product) {
+        I_PP_Product_BOM bom =
+                new Query<I_PP_Product_BOM>(
                         I_PP_Product_BOM.Table_Name,
                         "M_Product_ID=? AND Value=?"
                 )
@@ -140,7 +138,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
 
     private void updateProduct() {
         int count =
-                new Query(
+                new Query<I_PP_Product_BOM>(
                         I_PP_Product_BOM.Table_Name,
                         I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
                 )

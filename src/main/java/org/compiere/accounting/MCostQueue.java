@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_M_CostElement;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -27,17 +28,11 @@ public class MCostQueue extends X_M_CostQueue {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx     context
      * @param ignored multi-key
      */
     public MCostQueue(int ignored) {
         super(ignored);
         if (ignored == 0) {
-            //	setAccountingSchemaId (0);
-            //	setAttributeSetInstanceId (0);
-            //	setCostElementId (0);
-            //	setCostTypeId (0);
-            //	setProductId (0);
             setCurrentCostPrice(Env.ZERO);
             setCurrentQty(Env.ZERO);
         } else throw new IllegalArgumentException("Multi-Key");
@@ -46,7 +41,6 @@ public class MCostQueue extends X_M_CostQueue {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MCostQueue(Row row) {
         super(row);
@@ -111,7 +105,7 @@ public class MCostQueue extends X_M_CostQueue {
      * @return cost queue or null
      */
     public static MCostQueue[] getQueue(
-            MProduct product, int M_ASI_ID, I_C_AcctSchema as, int Org_ID, MCostElement ce) {
+            MProduct product, int M_ASI_ID, I_C_AcctSchema as, int Org_ID, I_M_CostElement ce) {
         return MBaseCostQueueKt.getCostQueueRecordsInLifoFifoOrder(product, M_ASI_ID, as, Org_ID, ce);
     } //	getQueue
 
@@ -132,7 +126,7 @@ public class MCostQueue extends X_M_CostQueue {
             int M_ASI_ID,
             MAcctSchema as,
             int Org_ID,
-            MCostElement ce,
+            I_M_CostElement ce,
             BigDecimal Qty,
             String trxName) {
         if (Qty.signum() == 0) return Env.ZERO;
@@ -207,7 +201,7 @@ public class MCostQueue extends X_M_CostQueue {
             int M_ASI_ID,
             I_C_AcctSchema as,
             int Org_ID,
-            MCostElement ce,
+            I_M_CostElement ce,
             BigDecimal Qty) {
         if (Qty.signum() == 0) return Env.ZERO;
         MCostQueue[] costQ = getQueue(product, M_ASI_ID, as, Org_ID, ce);

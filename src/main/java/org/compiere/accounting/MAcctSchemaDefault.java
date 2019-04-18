@@ -26,9 +26,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
     /**
      * Load Constructor
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID parent
-     * @param trxName         transaction
      */
     public MAcctSchemaDefault(int C_AcctSchema_ID) {
         super(C_AcctSchema_ID);
@@ -37,9 +35,6 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MAcctSchemaDefault(Row row) {
         super(row);
@@ -48,49 +43,16 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
     /**
      * Get Accounting Schema Default Info
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID id
      * @return defaults
      */
-    public static MAcctSchemaDefault get(int C_AcctSchema_ID) {
+    public static I_C_AcctSchema_Default get(int C_AcctSchema_ID) {
         final String whereClause = "C_AcctSchema_ID=?";
-        return new Query(I_C_AcctSchema_Default.Table_Name, whereClause)
+        return new Query<I_C_AcctSchema_Default>(I_C_AcctSchema_Default.Table_Name, whereClause)
                 .setParameters(C_AcctSchema_ID)
                 .firstOnly();
     } //	get
 
-    /**
-     * Get Realized Gain Acct for currency
-     *
-     * @param C_Currency_ID currency
-     * @return gain acct
-     */
-    //    IDEMPIERE-362 Hide things that don't work on iDempiere
-
-    //	public int getRealizedGain_Acct (int C_Currency_ID)
-    //	{
-    //		MCurrencyAcct acct = MCurrencyAcct.get (this, C_Currency_ID);
-    //		if (acct != null)
-    //			return acct.getRealizedGainAccount();
-    //		return super.getRealizedGainAccount();
-    //	}	//	getRealizedGain_Acct
-
-    /**
-     * Get Realized Loss Acct for currency
-     *
-     * @param C_Currency_ID currency
-     * @return loss acct
-     */
-
-    //  IDEMPIERE-362 Hide things that don't work on iDempiere
-
-    //	public int getRealizedLossAccount (int C_Currency_ID)
-    //	{
-    //		MCurrencyAcct acct = MCurrencyAcct.get (this, C_Currency_ID);
-    //		if (acct != null)
-    //			return acct.getRealizedLossAccount();
-    //		return super.getRealizedLossAccount();
-    //	}	//	getRealizedLossAccount
 
     /**
      * Get Acct Info list
@@ -98,7 +60,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @return list
      */
     public ArrayList<KeyNamePair> getAcctInfo() {
-        ArrayList<KeyNamePair> list = new ArrayList<KeyNamePair>();
+        ArrayList<KeyNamePair> list = new ArrayList<>();
         for (int i = 0; i < get_ColumnCount(); i++) {
             String columnName = get_ColumnName(i);
             if (columnName.endsWith("Acct")) {

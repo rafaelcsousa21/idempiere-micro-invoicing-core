@@ -19,15 +19,13 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
     /**
      * Static cache
      */
-    private static CCache<String, MProductCategoryAcct> s_cache =
-            new CCache<String, MProductCategoryAcct>(I_M_Product_Category_Acct.Table_Name, 40, 5);
+    private static CCache<String, I_M_Product_Category_Acct> s_cache =
+            new CCache<>(I_M_Product_Category_Acct.Table_Name, 40, 5);
 
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx     context
      * @param ignored ignored
-     * @param trxName
      */
     public MProductCategoryAcct(int ignored) {
         super(ignored);
@@ -35,11 +33,8 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
     } //	MProductCategoryAcct
 
     /**
-     * Load Cosntructor
+     * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
     public MProductCategoryAcct(Row row) {
         super(row);
@@ -48,20 +43,19 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
     /**
      * Get Category Acct
      *
-     * @param ctx                   context
      * @param M_Product_Category_ID category
      * @param C_AcctSchema_ID       acct schema
      * @return category acct
      */
-    public static MProductCategoryAcct get(
+    public static I_M_Product_Category_Acct get(
             int M_Product_Category_ID, int C_AcctSchema_ID) {
         String key = M_Product_Category_ID + "#" + C_AcctSchema_ID;
-        MProductCategoryAcct acct = s_cache.get(key);
+        I_M_Product_Category_Acct acct = s_cache.get(key);
         if (acct != null) return acct;
 
         final String whereClause = "M_Product_Category_ID=? AND C_AcctSchema_ID=?";
         acct =
-                new Query(I_M_Product_Category_Acct.Table_Name, whereClause)
+                new Query<I_M_Product_Category_Acct>(I_M_Product_Category_Acct.Table_Name, whereClause)
                         .setParameters(M_Product_Category_ID, C_AcctSchema_ID)
                         .firstOnly();
         if (acct != null) {
@@ -98,17 +92,15 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MProductCategoryAcct[");
-        sb.append(getId())
-                .append(",M_Product_Category_ID=")
-                .append(getProductCategoryId())
-                .append(",C_AcctSchema_ID=")
-                .append(getAccountingSchemaId())
-                .append(",CostingLevel=")
-                .append(getCostingLevel())
-                .append(",CostingMethod=")
-                .append(getCostingMethod())
-                .append("]");
-        return sb.toString();
+        return "MProductCategoryAcct[" + getId() +
+                ",M_Product_Category_ID=" +
+                getProductCategoryId() +
+                ",C_AcctSchema_ID=" +
+                getAccountingSchemaId() +
+                ",CostingLevel=" +
+                getCostingLevel() +
+                ",CostingMethod=" +
+                getCostingMethod() +
+                "]";
     } //	toString
 } //	MProductCategoryAcct

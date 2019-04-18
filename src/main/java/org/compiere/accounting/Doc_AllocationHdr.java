@@ -7,6 +7,7 @@ import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_AcctSchema_Element;
+import org.compiere.model.I_C_ValidCombination;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.jetbrains.annotations.NotNull;
@@ -76,10 +77,9 @@ public class Doc_AllocationHdr extends Doc {
      * @return DocLine Array
      */
     private DocLine[] loadLines(MAllocationHdr alloc) {
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
+        ArrayList<DocLine> list = new ArrayList<>();
         MAllocationLine[] lines = alloc.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MAllocationLine line = lines[i];
+        for (MAllocationLine line : lines) {
             DocLine_Allocation docLine = new DocLine_Allocation(line, this);
             //
             if (log.isLoggable(Level.FINE)) log.fine(docLine.toString());
@@ -99,8 +99,7 @@ public class Doc_AllocationHdr extends Doc {
      * @return positive amount, if total invoice is bigger than lines
      */
     public BigDecimal getBalance() {
-        BigDecimal retValue = Env.ZERO;
-        return retValue;
+        return Env.ZERO;
     } //  getBalance
 
     /**
@@ -146,7 +145,7 @@ public class Doc_AllocationHdr extends Doc {
      * @return Fact
      */
     public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
-        m_facts = new ArrayList<IFact>();
+        m_facts = new ArrayList<>();
 
         //  create Fact Header
         Fact fact = new Fact(this, as, Fact.POST_Actual);
@@ -157,8 +156,8 @@ public class Doc_AllocationHdr extends Doc {
                         Fact.POST_Actual); // dummy fact (not posted) to calculate Realized Gain & Loss
         boolean isInterOrg = isInterOrg(as);
 
-        for (int i = 0; i < p_lines.length; i++) {
-            DocLine_Allocation line = (DocLine_Allocation) p_lines[i];
+        for (DocLine p_line : p_lines) {
+            DocLine_Allocation line = (DocLine_Allocation) p_line;
             setBusinessPartnerId(line.getBusinessPartnerId());
 
             //  CashBankTransfer - all references null and Discount/WriteOff = 0
@@ -178,8 +177,8 @@ public class Doc_AllocationHdr extends Doc {
             @SuppressWarnings("unused")
             BigDecimal allocationAccountedForRGL = Env.ZERO; // for realized gain & loss purposes
 
-            FactLine fl = null;
-            FactLine flForRGL = null;
+            FactLine fl;
+            FactLine flForRGL;
             MAccount bpAcct = null; // 	Liability/Receivables
             //
             MPayment payment = null;
@@ -196,12 +195,11 @@ public class Doc_AllocationHdr extends Doc {
                 if (line.getInvoiceId() == 0
                         && line.getPaymentId() == 0
                         && line.getChargeId() != 0) {
-                    fl =
-                            fact.createLine(
-                                    line,
-                                    line.getChargeAccount(as),
-                                    getCurrencyId(),
-                                    line.getAmtSource());
+                    fact.createLine(
+                            line,
+                            line.getChargeAccount(as),
+                            getCurrencyId(),
+                            line.getAmtSource());
                 }
                 //	Payment Only
                 else if (line.getInvoiceId() == 0 && line.getPaymentId() != 0) {
@@ -300,7 +298,7 @@ public class Doc_AllocationHdr extends Doc {
                             fact.createLine(
                                     line, bpAcct, getCurrencyId(), null, allocationSource); // 	payment currency
                     if (fl != null) allocationAccounted = fl.getAcctBalance().negate();
-                    if (fl != null && invoice != null) fl.setOrgId(invoice.getOrgId());
+                    if (fl != null) fl.setOrgId(invoice.getOrgId());
 
                     // for Realized Gain & Loss
                     flForRGL =
@@ -310,11 +308,10 @@ public class Doc_AllocationHdr extends Doc {
                                     getCurrencyId(),
                                     null,
                                     allocationSourceForRGL); //	payment currency
-                    if (flForRGL != null) allocationAccountedForRGL = flForRGL.getAcctBalance().negate();
+                    if (flForRGL != null) flForRGL.getAcctBalance().negate();
                 } else //	Cash Based
                 {
                     allocationAccounted = createCashBasedAcct(as, fact, invoice, allocationSource);
-                    allocationAccountedForRGL = allocationAccounted;
                 }
             }
             //	Purchase Invoice
@@ -354,7 +351,7 @@ public class Doc_AllocationHdr extends Doc {
                             fact.createLine(
                                     line, bpAcct, getCurrencyId(), allocationSource, null); // 	payment currency
                     if (fl != null) allocationAccounted = fl.getAcctBalance();
-                    if (fl != null && invoice != null) fl.setOrgId(invoice.getOrgId());
+                    if (fl != null) fl.setOrgId(invoice.getOrgId());
 
                     // for Realized Gain & Loss
                     flForRGL =
@@ -364,11 +361,10 @@ public class Doc_AllocationHdr extends Doc {
                                     getCurrencyId(),
                                     allocationSourceForRGL,
                                     null); //	payment currency
-                    if (flForRGL != null) allocationAccountedForRGL = flForRGL.getAcctBalance();
+                    if (flForRGL != null) flForRGL.getAcctBalance();
                 } else //	Cash Based
                 {
                     allocationAccounted = createCashBasedAcct(as, fact, invoice, allocationSource);
-                    allocationAccountedForRGL = allocationAccounted;
                 }
 
                 //	Discount		CR
@@ -507,28 +503,28 @@ public class Doc_AllocationHdr extends Doc {
 
         int startorg = p_lines[0].getOrgId();
         // validate if the allocation involves more than one org
-        for (int i = 0; i < p_lines.length; i++) {
-            DocLine_Allocation line = (DocLine_Allocation) p_lines[i];
+        for (DocLine p_line : p_lines) {
+            DocLine_Allocation line = (DocLine_Allocation) p_line;
             int orgpayment = startorg;
-            MPayment payment = null;
+            MPayment payment;
             if (line.getPaymentId() != 0) {
                 payment = new MPayment(line.getPaymentId());
                 orgpayment = payment.getOrgId();
             }
             int orginvoice = startorg;
-            MInvoice invoice = null;
+            MInvoice invoice;
             if (line.getInvoiceId() != 0) {
                 invoice = new MInvoice(line.getInvoiceId());
                 orginvoice = invoice.getOrgId();
             }
             int orgcashline = startorg;
-            MCashLine cashline = null;
+            MCashLine cashline;
             if (line.getCashLineId() != 0) {
                 cashline = new MCashLine(line.getCashLineId());
                 orgcashline = cashline.getOrgId();
             }
             int orgorder = startorg;
-            MOrder order = null;
+            MOrder order;
             if (line.getOrderId() != 0) {
                 order = new MOrder(line.getOrderId());
                 orgorder = order.getOrgId();
@@ -593,7 +589,7 @@ public class Doc_AllocationHdr extends Doc {
      */
     private BigDecimal createCashBasedAcct(
             I_C_AcctSchema as, Fact fact, MInvoice invoice, BigDecimal allocationSource) {
-        BigDecimal allocationAccounted = Env.ZERO;
+        BigDecimal allocationAccounted;
         //	Multiplier
         double percent = invoice.getGrandTotal().doubleValue() / allocationSource.doubleValue();
         if (percent > 0.99 && percent < 1.01) percent = 1.0;
@@ -616,13 +612,13 @@ public class Doc_AllocationHdr extends Doc {
         //	Cash Based Commitment Release
         if (as.isCreatePOCommitment() && !invoice.isSOTrx()) {
             MInvoiceLine[] lines = invoice.getLines();
-            for (int i = 0; i < lines.length; i++) {
+            for (MInvoiceLine line : lines) {
                 Fact factC =
                         Doc_Order.getCommitmentRelease(
                                 as,
                                 this,
-                                lines[i].getQtyInvoiced(),
-                                lines[i].getInvoiceLineId(),
+                                line.getQtyInvoiced(),
+                                line.getInvoiceLineId(),
                                 BigDecimal.valueOf(percent));
                 if (factC == null) return null;
                 m_facts.add(factC);
@@ -649,7 +645,7 @@ public class Doc_AllocationHdr extends Doc {
                 "SELECT p.C_BankAccount_ID, d.DocBaseType, p.IsReceipt, p.IsPrepayment "
                         + "FROM C_Payment p INNER JOIN C_DocType d ON (p.C_DocType_ID=d.C_DocType_ID) "
                         + "WHERE C_Payment_ID=?";
-        PreparedStatement pstmt = null;
+        PreparedStatement pstmt;
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
@@ -668,12 +664,7 @@ public class Doc_AllocationHdr extends Doc {
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
-
         //
         if (getBankAccountId() <= 0) {
             log.log(Level.SEVERE, "NONE for C_Payment_ID=" + C_Payment_ID);
@@ -737,8 +728,8 @@ public class Doc_AllocationHdr extends Doc {
                         .append(" AND C_AcctSchema_ID=?")
                         .append(" AND PostingType='A'");
         // AND C_Currency_ID=102
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql.toString());
             pstmt.setInt(1, invoice.getInvoiceId());
@@ -750,10 +741,6 @@ public class Doc_AllocationHdr extends Doc {
             }
         } catch (Exception e) {
             log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         // 	Requires that Invoice is Posted
         if (invoiceSource == null || invoiceAccounted == null)
@@ -799,7 +786,7 @@ public class Doc_AllocationHdr extends Doc {
             allocationSource = allocationSourceNew;
         }
 
-        BigDecimal acctDifference = null; // 	gain is negative
+        BigDecimal acctDifference; // 	gain is negative
         //	Full Payment in currency
         if (allocationSource.compareTo(invoiceSource) == 0) {
             acctDifference = invoiceAccounted.subtract(allocationAccounted); // 	gain is negative
@@ -903,7 +890,7 @@ class Doc_AllocationTax implements DocAllocationTax {
     private MAccount m_WriteOffAccount;
     private BigDecimal m_WriteOffAmt;
     private boolean m_IsSOTrx;
-    private ArrayList<MFactAcct> m_facts = new ArrayList<MFactAcct>();
+    private ArrayList<MFactAcct> m_facts = new ArrayList<>();
     private int m_totalIndex = 0;
 
     /**
@@ -979,7 +966,7 @@ class Doc_AllocationTax implements DocAllocationTax {
             if (log.isLoggable(Level.INFO)) log.info(i + ": " + factAcct);
 
             //	Create Tax Account
-            MAccount taxAcct = factAcct.getMAccount();
+            I_C_ValidCombination taxAcct = factAcct.getMAccount();
             if (taxAcct == null || taxAcct.getId() == 0) {
                 log.severe("Tax Account not found/created");
                 return false;

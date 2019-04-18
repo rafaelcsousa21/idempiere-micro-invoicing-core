@@ -1,10 +1,15 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_BPartner;
+import org.compiere.model.I_C_Currency;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_C_Invoice;
-import org.compiere.orm.MTable;
+import org.compiere.model.I_C_Order;
+import org.compiere.model.I_M_PriceList;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
+import software.hsharp.core.orm.MBaseTableKt;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -91,19 +96,6 @@ public class X_C_Invoice extends PO {
      */
     public X_C_Invoice(int C_Invoice_ID) {
         super(C_Invoice_ID);
-        /**
-         * if (C_Invoice_ID == 0) { setBusinessPartnerId (0); setBusinessPartnerLocationId (0);
-         * setCurrencyId (0); // @C_Currency_ID@ setDocumentTypeId (0); // 0 setTargetDocumentTypeId (0);
-         * setInvoiceId (0); setPaymentTermId (0); setDateAcct (new Timestamp(
-         * System.currentTimeMillis() )); // @#Date@ setDateInvoiced (new Timestamp(
-         * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // CO setDocStatus (null); //
-         * DR setDocumentNo (null); setGrandTotal (Env.ZERO); setIsApproved (false); // @IsApproved@
-         * setIsDiscountPrinted (false); setIsInDispute (false); // N setIsPaid (false);
-         * setIsPayScheduleValid (false); setIsPrinted (false); setIsSelfService (false); setIsSOTrx
-         * (false); // @IsSOTrx@ setIsTaxIncluded (false); setIsTransferred (false); setPriceListId
-         * (0); setPaymentRule (null); // P setPosted (false); // N setProcessed (false); setSendEMail
-         * (false); setTotalLines (Env.ZERO); }
-         */
     }
 
     /**
@@ -123,8 +115,7 @@ public class X_C_Invoice extends PO {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_Invoice[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_Invoice[" + getId() + "]";
     }
 
     /**
@@ -145,7 +136,7 @@ public class X_C_Invoice extends PO {
      */
     public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
         if (AD_OrgTrx_ID < 1) setValue(I_C_Invoice.COLUMNNAME_AD_OrgTrx_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_AD_OrgTrx_ID, AD_OrgTrx_ID);
     }
 
     /**
@@ -166,7 +157,7 @@ public class X_C_Invoice extends PO {
      */
     public void setUserId(int AD_User_ID) {
         if (AD_User_ID < 1) setValue(I_C_Invoice.COLUMNNAME_AD_User_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_AD_User_ID, AD_User_ID);
     }
 
     /**
@@ -187,12 +178,12 @@ public class X_C_Invoice extends PO {
      */
     public void setBusinessActivityId(int C_Activity_ID) {
         if (C_Activity_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_Activity_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_Activity_ID, C_Activity_ID);
     }
 
-    public org.compiere.model.I_C_BPartner getBPartner() throws RuntimeException {
-        return (org.compiere.model.I_C_BPartner)
-                MTable.get(org.compiere.model.I_C_BPartner.Table_Name)
+    public I_C_BPartner getBPartner() throws RuntimeException {
+        return (I_C_BPartner)
+                MBaseTableKt.getTable(I_C_BPartner.Table_Name)
                         .getPO(getBusinessPartnerId());
     }
 
@@ -214,7 +205,7 @@ public class X_C_Invoice extends PO {
      */
     public void setBusinessPartnerId(int C_BPartner_ID) {
         if (C_BPartner_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_BPartner_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_BPartner_ID, C_BPartner_ID);
     }
 
     /**
@@ -237,7 +228,7 @@ public class X_C_Invoice extends PO {
         if (C_BPartner_Location_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_BPartner_Location_ID, null);
         else
             setValue(
-                    I_C_Invoice.COLUMNNAME_C_BPartner_Location_ID, Integer.valueOf(C_BPartner_Location_ID));
+                    I_C_Invoice.COLUMNNAME_C_BPartner_Location_ID, C_BPartner_Location_ID);
     }
 
     /**
@@ -258,7 +249,7 @@ public class X_C_Invoice extends PO {
      */
     public void setCampaignId(int C_Campaign_ID) {
         if (C_Campaign_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_Campaign_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_Campaign_ID, C_Campaign_ID);
     }
 
     /**
@@ -279,7 +270,7 @@ public class X_C_Invoice extends PO {
      */
     public void setCashLineId(int C_CashLine_ID) {
         if (C_CashLine_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID, C_CashLine_ID);
     }
 
     /**
@@ -300,7 +291,7 @@ public class X_C_Invoice extends PO {
      */
     public void setCashPlanLineId(int C_CashPlanLine_ID) {
         if (C_CashPlanLine_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID, Integer.valueOf(C_CashPlanLine_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID, C_CashPlanLine_ID);
     }
 
     /**
@@ -333,12 +324,12 @@ public class X_C_Invoice extends PO {
     public void setConversionTypeId(int C_ConversionType_ID) {
         if (C_ConversionType_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_ConversionType_ID, null);
         else
-            setValue(I_C_Invoice.COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
+            setValue(I_C_Invoice.COLUMNNAME_C_ConversionType_ID, C_ConversionType_ID);
     }
 
-    public org.compiere.model.I_C_Currency getCurrency() throws RuntimeException {
-        return (org.compiere.model.I_C_Currency)
-                MTable.get(org.compiere.model.I_C_Currency.Table_Name)
+    public I_C_Currency getCurrency() throws RuntimeException {
+        return (I_C_Currency)
+                MBaseTableKt.getTable(I_C_Currency.Table_Name)
                         .getPO(getCurrencyId());
     }
 
@@ -360,7 +351,7 @@ public class X_C_Invoice extends PO {
      */
     public void setCurrencyId(int C_Currency_ID) {
         if (C_Currency_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_Currency_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_Currency_ID, C_Currency_ID);
     }
 
     /**
@@ -381,12 +372,12 @@ public class X_C_Invoice extends PO {
      */
     public void setDocumentTypeId(int C_DocType_ID) {
         if (C_DocType_ID < 0) setValueNoCheck(I_C_Invoice.COLUMNNAME_C_DocType_ID, null);
-        else setValueNoCheck(I_C_Invoice.COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+        else setValueNoCheck(I_C_Invoice.COLUMNNAME_C_DocType_ID, C_DocType_ID);
     }
 
-    public org.compiere.model.I_C_DocType getDocTypeTarget() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MTable.get(org.compiere.model.I_C_DocType.Table_Name)
+    public I_C_DocType getDocTypeTarget() throws RuntimeException {
+        return (I_C_DocType)
+                MBaseTableKt.getTable(I_C_DocType.Table_Name)
                         .getPO(getTargetDocumentTypeId());
     }
 
@@ -442,9 +433,9 @@ public class X_C_Invoice extends PO {
         return ii;
     }
 
-    public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
-        return (org.compiere.model.I_C_Order)
-                MTable.get(org.compiere.model.I_C_Order.Table_Name)
+    public I_C_Order getOrder() throws RuntimeException {
+        return (I_C_Order)
+                MBaseTableKt.getTable(I_C_Order.Table_Name)
                         .getPO(getOrderId());
     }
 
@@ -487,7 +478,7 @@ public class X_C_Invoice extends PO {
      */
     public void setPaymentId(int C_Payment_ID) {
         if (C_Payment_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_Payment_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_Payment_ID, C_Payment_ID);
     }
 
     /**
@@ -508,7 +499,7 @@ public class X_C_Invoice extends PO {
      */
     public void setPaymentTermId(int C_PaymentTerm_ID) {
         if (C_PaymentTerm_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_PaymentTerm_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_PaymentTerm_ID, Integer.valueOf(C_PaymentTerm_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_PaymentTerm_ID, C_PaymentTerm_ID);
     }
 
     /**
@@ -529,7 +520,7 @@ public class X_C_Invoice extends PO {
      */
     public void setProjectId(int C_Project_ID) {
         if (C_Project_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_Project_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_C_Project_ID, C_Project_ID);
     }
 
     /**
@@ -695,7 +686,7 @@ public class X_C_Invoice extends PO {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsApproved, IsApproved);
     }
 
     /**
@@ -706,7 +697,7 @@ public class X_C_Invoice extends PO {
     public boolean isApproved() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_IsApproved);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -718,7 +709,7 @@ public class X_C_Invoice extends PO {
      * @param IsDiscountPrinted Print Discount on Invoice and Order
      */
     public void setIsDiscountPrinted(boolean IsDiscountPrinted) {
-        setValue(I_C_Invoice.COLUMNNAME_IsDiscountPrinted, Boolean.valueOf(IsDiscountPrinted));
+        setValue(I_C_Invoice.COLUMNNAME_IsDiscountPrinted, IsDiscountPrinted);
     }
 
     /**
@@ -727,7 +718,7 @@ public class X_C_Invoice extends PO {
      * @param IsInDispute Document is in dispute
      */
     public void setIsInDispute(boolean IsInDispute) {
-        setValue(I_C_Invoice.COLUMNNAME_IsInDispute, Boolean.valueOf(IsInDispute));
+        setValue(I_C_Invoice.COLUMNNAME_IsInDispute, IsInDispute);
     }
 
     /**
@@ -736,7 +727,7 @@ public class X_C_Invoice extends PO {
      * @param IsPaid The document is paid
      */
     public void setIsPaid(boolean IsPaid) {
-        setValue(I_C_Invoice.COLUMNNAME_IsPaid, Boolean.valueOf(IsPaid));
+        setValue(I_C_Invoice.COLUMNNAME_IsPaid, IsPaid);
     }
 
     /**
@@ -747,7 +738,7 @@ public class X_C_Invoice extends PO {
     public boolean isPaid() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_IsPaid);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -760,7 +751,7 @@ public class X_C_Invoice extends PO {
      */
     public void setIsPayScheduleValid(boolean IsPayScheduleValid) {
         setValueNoCheck(
-                I_C_Invoice.COLUMNNAME_IsPayScheduleValid, Boolean.valueOf(IsPayScheduleValid));
+                I_C_Invoice.COLUMNNAME_IsPayScheduleValid, IsPayScheduleValid);
     }
 
     /**
@@ -771,7 +762,7 @@ public class X_C_Invoice extends PO {
     public boolean isPayScheduleValid() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_IsPayScheduleValid);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -783,7 +774,7 @@ public class X_C_Invoice extends PO {
      * @param IsPrinted Indicates if this document / line is printed
      */
     public void setIsPrinted(boolean IsPrinted) {
-        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
+        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsPrinted, IsPrinted);
     }
 
     /**
@@ -792,7 +783,7 @@ public class X_C_Invoice extends PO {
      * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
      */
     public void setIsSelfService(boolean IsSelfService) {
-        setValue(I_C_Invoice.COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
+        setValue(I_C_Invoice.COLUMNNAME_IsSelfService, IsSelfService);
     }
 
     /**
@@ -801,7 +792,7 @@ public class X_C_Invoice extends PO {
      * @param IsSOTrx This is a Sales Transaction
      */
     public void setIsSOTrx(boolean IsSOTrx) {
-        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+        setValueNoCheck(I_C_Invoice.COLUMNNAME_IsSOTrx, IsSOTrx);
     }
 
     /**
@@ -812,7 +803,7 @@ public class X_C_Invoice extends PO {
     public boolean isSOTrx() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_IsSOTrx);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -824,7 +815,7 @@ public class X_C_Invoice extends PO {
      * @param IsTaxIncluded Tax is included in the price
      */
     public void setIsTaxIncluded(boolean IsTaxIncluded) {
-        setValue(I_C_Invoice.COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
+        setValue(I_C_Invoice.COLUMNNAME_IsTaxIncluded, IsTaxIncluded);
     }
 
     /**
@@ -835,7 +826,7 @@ public class X_C_Invoice extends PO {
     public boolean isTaxIncluded() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_IsTaxIncluded);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -850,9 +841,9 @@ public class X_C_Invoice extends PO {
         setValueNoCheck(I_C_Invoice.COLUMNNAME_IsTransferred, IsTransferred);
     }
 
-    public org.compiere.model.I_M_PriceList getPriceList() throws RuntimeException {
-        return (org.compiere.model.I_M_PriceList)
-                MTable.get(org.compiere.model.I_M_PriceList.Table_Name)
+    public I_M_PriceList getPriceList() throws RuntimeException {
+        return (I_M_PriceList)
+                MBaseTableKt.getTable(I_M_PriceList.Table_Name)
                         .getPO(getPriceListId());
     }
 
@@ -944,7 +935,7 @@ public class X_C_Invoice extends PO {
     public boolean isPosted() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_Posted);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -956,7 +947,7 @@ public class X_C_Invoice extends PO {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        setValue(I_C_Invoice.COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(I_C_Invoice.COLUMNNAME_Posted, Posted);
     }
 
     /**
@@ -967,7 +958,7 @@ public class X_C_Invoice extends PO {
     public boolean isProcessed() {
         Object oo = getValue(I_C_Invoice.COLUMNNAME_Processed);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -979,7 +970,7 @@ public class X_C_Invoice extends PO {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValueNoCheck(I_C_Invoice.COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValueNoCheck(I_C_Invoice.COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -988,7 +979,7 @@ public class X_C_Invoice extends PO {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        setValue(I_C_Invoice.COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(I_C_Invoice.COLUMNNAME_Processing, Processing);
     }
 
     /**
@@ -1009,7 +1000,7 @@ public class X_C_Invoice extends PO {
      */
     public void setRef_InvoiceId(int Ref_Invoice_ID) {
         if (Ref_Invoice_ID < 1) setValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID, Integer.valueOf(Ref_Invoice_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID, Ref_Invoice_ID);
     }
 
     /**
@@ -1019,7 +1010,7 @@ public class X_C_Invoice extends PO {
      */
     public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(I_C_Invoice.COLUMNNAME_Reversal_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_Reversal_ID, Reversal_ID);
     }
 
     /**
@@ -1040,7 +1031,7 @@ public class X_C_Invoice extends PO {
      */
     public void setSalesRepresentativeId(int SalesRep_ID) {
         if (SalesRep_ID < 1) setValue(I_C_Invoice.COLUMNNAME_SalesRep_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_SalesRep_ID, SalesRep_ID);
     }
 
     /**
@@ -1049,7 +1040,7 @@ public class X_C_Invoice extends PO {
      * @param SendEMail Enable sending Document EMail
      */
     public void setSendEMail(boolean SendEMail) {
-        setValue(I_C_Invoice.COLUMNNAME_SendEMail, Boolean.valueOf(SendEMail));
+        setValue(I_C_Invoice.COLUMNNAME_SendEMail, SendEMail);
     }
 
     /**
@@ -1090,7 +1081,7 @@ public class X_C_Invoice extends PO {
      */
     public void setUser1Id(int User1_ID) {
         if (User1_ID < 1) setValue(I_C_Invoice.COLUMNNAME_User1_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_User1_ID, User1_ID);
     }
 
     /**
@@ -1111,7 +1102,7 @@ public class X_C_Invoice extends PO {
      */
     public void setUser2Id(int User2_ID) {
         if (User2_ID < 1) setValue(I_C_Invoice.COLUMNNAME_User2_ID, null);
-        else setValue(I_C_Invoice.COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
+        else setValue(I_C_Invoice.COLUMNNAME_User2_ID, User2_ID);
     }
 
     @Override

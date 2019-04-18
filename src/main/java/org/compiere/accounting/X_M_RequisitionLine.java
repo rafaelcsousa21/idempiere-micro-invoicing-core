@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_RequisitionLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -214,7 +214,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 

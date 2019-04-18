@@ -1,6 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -72,9 +73,9 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
         if (!dt.isCreateCounter()) return -1;
         String cDocBaseType = getCounterDocBaseType(dt.getDocBaseType());
         if (cDocBaseType == null) return 0;
-        MDocType[] counters = MDocTypeKt.getDocumentTypeOfDocBaseType(cDocBaseType);
+        I_C_DocType[] counters = MDocTypeKt.getDocumentTypeOfDocBaseType(cDocBaseType);
         for (int i = 0; i < counters.length; i++) {
-            MDocType counter = counters[i];
+            I_C_DocType counter = counters[i];
             if (counter.isDefaultCounterDoc()) {
                 Counter_C_DocType_ID = counter.getDocTypeId();
                 break;

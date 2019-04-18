@@ -7,6 +7,8 @@ import org.compiere.crm.MClientInfo;
 import org.compiere.crm.MClientInfoKt;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
@@ -46,11 +48,11 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * GL Info
      */
-    private MAcctSchemaGL m_gl = null;
+    private I_C_AcctSchema_GL m_gl = null;
     /**
      * Default Info
      */
-    private MAcctSchemaDefault m_default = null;
+    private I_C_AcctSchema_Default m_default = null;
     private MAccount m_SuspenseError_Acct = null;
     private MAccount m_CurrencyBalancing_Acct = null;
     private MAccount m_DueTo_Acct = null;
@@ -75,14 +77,11 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID id
      */
     public MAcctSchema(int C_AcctSchema_ID) {
         super(C_AcctSchema_ID);
         if (C_AcctSchema_ID == 0) {
-            //	setCurrencyId (0);
-            //	setName (null);
             setAutoPeriodControl(true);
             setPeriodOpenFuture(2);
             setPeriodOpenHistory(2);
@@ -106,7 +105,6 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MAcctSchema(Row row) {
         super(row);
@@ -137,7 +135,6 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Get AccountSchema of Client
      *
-     * @param ctx             context
      * @param C_AcctSchema_ID schema id
      * @return Accounting schema
      */
@@ -154,7 +151,6 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Get AccountSchema of Client
      *
-     * @param ctx          context
      * @param AD_Client_ID client or 0 for all
      * @return Array of AcctSchema of Client
      */
@@ -230,7 +226,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @return GL info
      */
-    public MAcctSchemaGL getAcctSchemaGL() {
+    public I_C_AcctSchema_GL getAcctSchemaGL() {
         if (m_gl == null) m_gl = MAcctSchemaGL.get(getAccountingSchemaId());
         if (m_gl == null)
             throw new IllegalStateException(
@@ -243,7 +239,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @return defaults
      */
-    public MAcctSchemaDefault getAcctSchemaDefault() {
+    public I_C_AcctSchema_Default getAcctSchemaDefault() {
         if (m_default == null) m_default = MAcctSchemaDefault.get(getAccountingSchemaId());
         if (m_default == null)
             throw new IllegalStateException(
@@ -257,9 +253,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @return String rep
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("AcctSchema[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "AcctSchema[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**

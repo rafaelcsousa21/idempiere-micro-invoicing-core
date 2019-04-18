@@ -10,6 +10,7 @@ import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
+import org.compiere.model.I_M_InOutLineMA;
 import org.compiere.model.I_M_RMALine;
 import org.compiere.tax.MTax;
 import org.idempiere.common.util.Env;
@@ -77,8 +78,8 @@ public class Doc_InOut extends Doc {
      */
     private DocLine[] loadLines(MInOut inout) {
         ArrayList<DocLine> list = new ArrayList<>();
-        MInOutLine[] lines = inout.getLines(false);
-        for (MInOutLine line : lines) {
+        I_M_InOutLine[] lines = inout.getLines(false);
+        for (I_M_InOutLine line : lines) {
             if (line.isDescription()
                     || line.getProductId() == 0
                     || line.getMovementQty().signum() == 0) {
@@ -156,10 +157,10 @@ public class Doc_InOut extends Doc {
                     if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                         if (line.getAttributeSetInstanceId() == 0) {
                             MInOutLine ioLine = (MInOutLine) line.getPO();
-                            MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
+                            I_M_InOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                             if (mas != null && mas.length > 0) {
                                 costs = BigDecimal.ZERO;
-                                for (MInOutLineMA ma : mas) {
+                                for (I_M_InOutLineMA ma : mas) {
                                     BigDecimal QtyMA = ma.getMovementQty();
                                     ProductCost pc = line.getProductCost();
                                     pc.setQty(QtyMA);
@@ -264,9 +265,9 @@ public class Doc_InOut extends Doc {
                 if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                     if (line.getAttributeSetInstanceId() == 0) {
                         MInOutLine ioLine = (MInOutLine) line.getPO();
-                        MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
+                        I_M_InOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                         if (mas != null && mas.length > 0) {
-                            for (MInOutLineMA ma : mas) {
+                            for (I_M_InOutLineMA ma : mas) {
                                 if (!MCostDetail.createShipment(
                                         as,
                                         line.getOrgId(),
@@ -344,10 +345,10 @@ public class Doc_InOut extends Doc {
                     if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                         if (line.getAttributeSetInstanceId() == 0) {
                             MInOutLine ioLine = (MInOutLine) line.getPO();
-                            MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
+                            I_M_InOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                             costs = BigDecimal.ZERO;
                             if (mas != null && mas.length > 0) {
-                                for (MInOutLineMA ma : mas) {
+                                for (I_M_InOutLineMA ma : mas) {
                                     BigDecimal QtyMA = ma.getMovementQty();
                                     ProductCost pc = line.getProductCost();
                                     pc.setQty(QtyMA);
@@ -412,9 +413,9 @@ public class Doc_InOut extends Doc {
                 if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                     if (line.getAttributeSetInstanceId() == 0) {
                         MInOutLine ioLine = (MInOutLine) line.getPO();
-                        MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
+                        I_M_InOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                         if (mas != null && mas.length > 0) {
-                            for (MInOutLineMA ma : mas) {
+                            for (I_M_InOutLineMA ma : mas) {
                                 if (!MCostDetail.createShipment(
                                         as,
                                         line.getOrgId(),
@@ -719,10 +720,10 @@ public class Doc_InOut extends Doc {
                     } else {
                         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
                             if (p_line.getAttributeSetInstanceId() == 0) {
-                                MInOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
+                                I_M_InOutLineMA[] mas = MInOutLineMA.get(ioLine.getId());
                                 costs = BigDecimal.ZERO;
                                 if (mas != null && mas.length > 0) {
-                                    for (MInOutLineMA ma : mas) {
+                                    for (I_M_InOutLineMA ma : mas) {
                                         BigDecimal QtyMA = ma.getMovementQty();
                                         ProductCost pc = p_line.getProductCost();
                                         pc.setQty(QtyMA);
@@ -837,9 +838,9 @@ public class Doc_InOut extends Doc {
         MProduct product = line.getProduct();
         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
             if (line.getAttributeSetInstanceId() == 0) {
-                MInOutLineMA[] mas = MInOutLineMA.get(line.getId());
+                I_M_InOutLineMA[] mas = MInOutLineMA.get(line.getId());
                 if (mas != null && mas.length > 0) {
-                    for (MInOutLineMA ma : mas) {
+                    for (I_M_InOutLineMA ma : mas) {
                         if (!MCostDetail.createShipment(
                                 as,
                                 line.getOrgId(),

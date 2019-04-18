@@ -102,7 +102,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      */
     public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
         this(0);
-        setADClientID(project.getClientId());
+        setClientId(project.getClientId());
         setOrgId(project.getOrgId());
         setCampaignId(project.getCampaignId());
         setSalesRepresentativeId(project.getSalesRepresentativeId());

@@ -3,7 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
 
@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
+public abstract class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     /**
      *
@@ -107,7 +107,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
-                MTable.get(org.compiere.model.I_C_UOM.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_UOM.Table_Name)
                         .getPO(getUOMId());
     }
 
@@ -188,7 +188,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(I_M_AttributeSetInstance.Table_Name)
+                MBaseTableKt.getTable(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getAttributeSetInstanceId());
     }
 
@@ -216,7 +216,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_M_ChangeNotice getChangeNotice() throws RuntimeException {
         return (org.compiere.model.I_M_ChangeNotice)
-                MTable.get(org.compiere.model.I_M_ChangeNotice.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_ChangeNotice.Table_Name)
                         .getPO(getChangeNoticeId());
     }
 
@@ -243,7 +243,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -333,7 +333,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
     public boolean isProcessing() {
         Object oo = getValue(COLUMNNAME_Processing);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -345,7 +345,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Processing);
     }
 
     /**

@@ -3,6 +3,7 @@ package org.compiere.accounting;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_ValidCombination;
+import org.compiere.model.I_M_CostDetail;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -79,7 +80,7 @@ public class DocLine {
     /**
      * Account used only for GL Journal
      */
-    private MAccount m_account = null;
+    private I_C_ValidCombination m_account = null;
     /**
      * Accounting Date
      */
@@ -386,7 +387,7 @@ public class DocLine {
      *
      * @return account
      */
-    public MAccount getAccount() {
+    public I_C_ValidCombination getAccount() {
         return m_account;
     } //  getAccount
 
@@ -395,7 +396,7 @@ public class DocLine {
      *
      * @param acct account
      */
-    public void setAccount(MAccount acct) {
+    public void setAccount(I_C_ValidCombination acct) {
         m_account = acct;
     } //  setAccount
 
@@ -626,7 +627,7 @@ public class DocLine {
             I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
         if (whereClause != null
                 && !as.getCostingMethod().equals(MAcctSchema.COSTINGMETHOD_StandardCosting)) {
-            MCostDetail cd =
+            I_M_CostDetail cd =
                     MCostDetail.get(
 
                             whereClause,

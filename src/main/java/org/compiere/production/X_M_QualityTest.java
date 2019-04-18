@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
+public abstract class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
 
     /**
      *

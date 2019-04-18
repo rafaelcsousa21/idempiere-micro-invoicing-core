@@ -1,7 +1,7 @@
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.util.Env;
@@ -68,7 +68,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
         return (org.compiere.model.I_AD_Workflow)
-                MTable.get(org.compiere.model.I_AD_Workflow.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_AD_Workflow.Table_Name)
                         .getPO(getWorkflowId());
     }
 
@@ -96,7 +96,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     public org.eevolution.model.I_DD_NetworkDistribution getNetworkDistribution()
             throws RuntimeException {
         return (org.eevolution.model.I_DD_NetworkDistribution)
-                MTable.get(org.eevolution.model.I_DD_NetworkDistribution.Table_Name)
+                MBaseTableKt.getTable(org.eevolution.model.I_DD_NetworkDistribution.Table_Name)
                         .getPO(getNetworkDistributionId());
     }
 
@@ -259,7 +259,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -286,7 +286,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.compiere.model.I_M_Warehouse getWarehouse() throws RuntimeException {
         return (org.compiere.model.I_M_Warehouse)
-                MTable.get(org.compiere.model.I_M_Warehouse.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Warehouse.Table_Name)
                         .getPO(getWarehouseId());
     }
 
@@ -432,7 +432,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.compiere.model.I_AD_User getPlanner() throws RuntimeException {
         return (org.compiere.model.I_AD_User)
-                MTable.get(org.compiere.model.I_AD_User.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
                         .getPO(getPlannerId());
     }
 
@@ -459,7 +459,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.eevolution.model.I_PP_Product_BOM getProductBOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
-                MTable.get(org.eevolution.model.I_PP_Product_BOM.Table_Name)
+                MBaseTableKt.getTable(org.eevolution.model.I_PP_Product_BOM.Table_Name)
                         .getPO(getProductBOMId());
     }
 
@@ -548,7 +548,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
 
     public org.compiere.model.I_S_Resource getResource() throws RuntimeException {
         return (org.compiere.model.I_S_Resource)
-                MTable.get(org.compiere.model.I_S_Resource.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_S_Resource.Table_Name)
                         .getPO(getResourceID());
     }
 

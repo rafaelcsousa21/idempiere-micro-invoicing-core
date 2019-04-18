@@ -2,7 +2,7 @@ package org.idempiere.process;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.util.Env;
@@ -73,7 +73,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_Activity getActivity() throws RuntimeException {
         return (org.compiere.model.I_C_Activity)
-                MTable.get(org.compiere.model.I_C_Activity.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Activity.Table_Name)
                         .getPO(getBusinessActivityId());
     }
 
@@ -100,7 +100,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_Campaign getCampaign() throws RuntimeException {
         return (org.compiere.model.I_C_Campaign)
-                MTable.get(org.compiere.model.I_C_Campaign.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Campaign.Table_Name)
                         .getPO(getCampaignId());
     }
 
@@ -127,7 +127,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_Charge getCharge() throws RuntimeException {
         return (org.compiere.model.I_C_Charge)
-                MTable.get(org.compiere.model.I_C_Charge.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Charge.Table_Name)
                         .getPO(getChargeId());
     }
 
@@ -174,7 +174,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(org.compiere.model.I_C_Project.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 
@@ -201,7 +201,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
-                MTable.get(org.compiere.model.I_C_UOM.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_UOM.Table_Name)
                         .getPO(getUOMId());
     }
 
@@ -282,7 +282,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.eevolution.model.I_DD_Order getDistributionOrder() throws RuntimeException {
         return (org.eevolution.model.I_DD_Order)
-                MTable.get(org.eevolution.model.I_DD_Order.Table_Name)
+                MBaseTableKt.getTable(org.eevolution.model.I_DD_Order.Table_Name)
                         .getPO(getDistributionOrderId());
     }
 
@@ -472,7 +472,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(I_M_AttributeSetInstance.Table_Name)
+                MBaseTableKt.getTable(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getAttributeSetInstanceId());
     }
 
@@ -500,7 +500,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public I_M_AttributeSetInstance getMAttributeSetInstanceTo() throws RuntimeException {
         return (I_M_AttributeSetInstance)
-                MTable.get(I_M_AttributeSetInstance.Table_Name)
+                MBaseTableKt.getTable(I_M_AttributeSetInstance.Table_Name)
                         .getPO(getMAttributeSetInstanceToId());
     }
 
@@ -529,7 +529,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_M_Locator getLocator() throws RuntimeException {
         return (org.compiere.model.I_M_Locator)
-                MTable.get(org.compiere.model.I_M_Locator.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Locator.Table_Name)
                         .getPO(getLocatorId());
     }
 
@@ -556,7 +556,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_M_Locator getLocatorTo() throws RuntimeException {
         return (org.compiere.model.I_M_Locator)
-                MTable.get(org.compiere.model.I_M_Locator.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Locator.Table_Name)
                         .getPO(getLocatorToId());
     }
 
@@ -583,7 +583,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -610,7 +610,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_M_Shipper getShipper() throws RuntimeException {
         return (org.compiere.model.I_M_Shipper)
-                MTable.get(org.compiere.model.I_M_Shipper.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Shipper.Table_Name)
                         .getPO(getShipperId());
     }
 
@@ -820,7 +820,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
-                MTable.get(org.compiere.model.I_C_ElementValue.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
                         .getPO(getUser1Id());
     }
 
@@ -847,7 +847,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
-                MTable.get(org.compiere.model.I_C_ElementValue.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
                         .getPO(getUser2Id());
     }
 

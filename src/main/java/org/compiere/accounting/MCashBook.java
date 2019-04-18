@@ -6,8 +6,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.util.Iterator;
-
 /**
  * Cash Book Model
  *
@@ -23,8 +21,8 @@ public class MCashBook extends X_C_CashBook {
     /**
      * Cache
      */
-    private static CCache<Integer, MCashBook> s_cache =
-            new CCache<Integer, MCashBook>(I_C_CashBook.Table_Name, 20);
+    private static CCache<Integer, I_C_CashBook> s_cache =
+            new CCache<>(I_C_CashBook.Table_Name, 20);
     /**
      * Static Logger
      */
@@ -34,7 +32,6 @@ public class MCashBook extends X_C_CashBook {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx           context
      * @param C_CashBook_ID id
      */
     public MCashBook(int C_CashBook_ID) {
@@ -44,7 +41,6 @@ public class MCashBook extends X_C_CashBook {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MCashBook(Row row) {
         super(row);
@@ -53,13 +49,12 @@ public class MCashBook extends X_C_CashBook {
     /**
      * Gets MCashBook from Cache under transaction scope
      *
-     * @param ctx           context
      * @param C_CashBook_ID id of cashbook to load
      * @return Cashbook
      */
-    public static MCashBook get(int C_CashBook_ID) {
+    public static I_C_CashBook get(int C_CashBook_ID) {
         Integer key = C_CashBook_ID;
-        MCashBook retValue = s_cache.get(key);
+        I_C_CashBook retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCashBook(C_CashBook_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -69,16 +64,13 @@ public class MCashBook extends X_C_CashBook {
     /**
      * Get CashBook for Org and Currency
      *
-     * @param ctx           context
      * @param AD_Org_ID     org
      * @param C_Currency_ID currency
      * @return cash book or null
      */
-    public static MCashBook get(int AD_Org_ID, int C_Currency_ID) {
+    public static I_C_CashBook get(int AD_Org_ID, int C_Currency_ID) {
         //	Try from cache
-        Iterator<MCashBook> it = s_cache.values().iterator();
-        while (it.hasNext()) {
-            MCashBook cb = it.next();
+        for (I_C_CashBook cb : s_cache.values()) {
             if (cb.getOrgId() == AD_Org_ID && cb.getCurrencyId() == C_Currency_ID) return cb;
         }
 
@@ -88,13 +80,13 @@ public class MCashBook extends X_C_CashBook {
                         + "=? AND "
                         + I_C_CashBook.COLUMNNAME_C_Currency_ID
                         + "=?";
-        MCashBook retValue =
-                new Query(I_C_CashBook.Table_Name, whereClause)
+        I_C_CashBook retValue =
+                new Query<I_C_CashBook>(I_C_CashBook.Table_Name, whereClause)
                         .setParameters(AD_Org_ID, C_Currency_ID)
                         .setOrderBy("IsDefault DESC")
                         .first();
         if (retValue != null) {
-            Integer key = new Integer(retValue.getCashBookId());
+            Integer key = retValue.getCashBookId();
             s_cache.put(key, retValue);
         }
         return retValue;

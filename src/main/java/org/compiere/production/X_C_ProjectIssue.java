@@ -3,7 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.I_C_ProjectIssue;
 import org.compiere.model.I_M_Locator;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -60,7 +60,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
 
     public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
-                MTable.get(org.compiere.model.I_C_Project.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
     }
 
@@ -168,7 +168,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
 
     public I_M_Locator getLocator() throws RuntimeException {
         return (I_M_Locator)
-                MTable.get(I_M_Locator.Table_Name).getPO(getLocatorId());
+                MBaseTableKt.getTable(I_M_Locator.Table_Name).getPO(getLocatorId());
     }
 
     /**

@@ -4,7 +4,7 @@ import kotliquery.Row;
 import org.compiere.model.I_PA_MeasureCalc;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MRoleKt;
-import org.compiere.orm.MTable;
+import org.compiere.orm.MTableKt;
 import org.idempiere.common.util.CCache;
 
 import java.sql.Timestamp;
@@ -254,7 +254,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @return Table Name
      */
     public String getDbTableName() {
-        return MTable.getDbTableName(getRowTableId());
+        return MTableKt.getDbTableName(getRowTableId());
     } //	getTavleName
 
     /**

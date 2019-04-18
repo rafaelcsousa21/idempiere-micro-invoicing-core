@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.ClientWithAccounting;
+import org.compiere.model.I_M_Product;
 import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MProduct;
 import org.compiere.product.MProductCategory;
@@ -141,7 +142,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                     if (defaultLocator == 0) defaultLocator = getLocatorId();
 
                     if (!bomproduct.isStocked()) {
-                        MProductionLine BOMLine = null;
+                        MProductionLine BOMLine;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
                         BOMLine.setProductId(BOMProduct_ID);
@@ -153,7 +154,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                         lineno = lineno + 10;
                         count++;
                     } else if (BOMMovementQty.signum() == 0) {
-                        MProductionLine BOMLine = null;
+                        MProductionLine BOMLine;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
                         BOMLine.setProductId(BOMProduct_ID);
@@ -167,8 +168,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
                     } else {
 
                         // BOM stock info
-                        MStorageOnHand[] storages = null;
-                        MProduct usedProduct = MProduct.get(BOMProduct_ID);
+                        MStorageOnHand[] storages;
+                        I_M_Product usedProduct = MProduct.get(BOMProduct_ID);
                         defaultLocator = usedProduct.getLocatorId();
                         if (defaultLocator == 0) defaultLocator = getLocatorId();
                         if (usedProduct == null || usedProduct.getId() == 0) return 0;

@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_PaySelectionCheck;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -151,7 +151,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
 
     public org.compiere.model.I_C_PaySelection getPaySelection() throws RuntimeException {
         return (org.compiere.model.I_C_PaySelection)
-                MTable.get(org.compiere.model.I_C_PaySelection.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_C_PaySelection.Table_Name)
                         .getPO(getPaySelectionId());
     }
 

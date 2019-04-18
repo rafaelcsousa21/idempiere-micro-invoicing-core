@@ -210,7 +210,7 @@ public class MElementValue extends X_C_ElementValue {
         return success;
     } //	afterDelete
 
-    public void setADClientID(int a) {
-        super.setADClientID(a);
+    public void setClientId(int a) {
+        super.setClientId(a);
     }
 } //	MElementValue

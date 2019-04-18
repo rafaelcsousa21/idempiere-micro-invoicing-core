@@ -1,7 +1,9 @@
 package org.compiere.query;
 
-import org.compiere.orm.MColumn;
-import org.compiere.orm.MTable;
+import org.compiere.model.I_AD_Column;
+import org.compiere.model.I_AD_Table;
+import org.compiere.orm.MTableKt;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.common.util.ValueNamePair;
@@ -124,7 +126,7 @@ public class MQuery implements Serializable {
      * @param AD_Table_ID Table_ID
      */
     public MQuery(int AD_Table_ID) { // 	Use Client Context as r/o
-        m_TableName = MTable.getDbTableName(AD_Table_ID);
+        m_TableName = MTableKt.getDbTableName(AD_Table_ID);
     } //	MQuery
 
     /**
@@ -410,9 +412,9 @@ class Restriction implements Serializable {
         // verify if is a virtual column, do not prefix tableName if this is a virtualColumn
         boolean virtualColumn = false;
         if (tableName != null && tableName.length() > 0) {
-            MTable table = MTable.get(tableName);
+            I_AD_Table table = MBaseTableKt.getTable(tableName);
             if (table != null) {
-                for (MColumn col : table.getColumns(false)) {
+                for (I_AD_Column col : table.getColumns(false)) {
                     String colSQL = col.getColumnSQL();
                     if (colSQL != null && colSQL.contains("@"))
                         colSQL = Env.parseContext(-1, colSQL, false, true);
@@ -504,8 +506,6 @@ class Restriction implements Serializable {
      */
     public String getInfoDisplayAll() {
         if (InfoDisplay_to == null) return InfoDisplay;
-        StringBuilder sb = new StringBuilder(InfoDisplay);
-        sb.append(" - ").append(InfoDisplay_to);
-        return sb.toString();
+        return InfoDisplay + " - " + InfoDisplay_to;
     } //	getInfoDisplay
 } //	Restriction

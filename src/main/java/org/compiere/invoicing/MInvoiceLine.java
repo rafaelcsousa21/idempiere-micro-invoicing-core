@@ -4,8 +4,11 @@ import kotliquery.Row;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_InvoiceTax;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOutLine;
+import org.compiere.model.I_M_PriceList;
+import org.compiere.model.I_M_Product;
 import org.compiere.order.MCharge;
 import org.compiere.order.MOrderLine;
 import org.compiere.order.MRMALine;
@@ -71,7 +74,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     private int m_C_BPartner_Location_ID = 0;
     private boolean m_IsSOTrx = true;
     private boolean m_priceSet = false;
-    private MProduct m_product = null;
+    private I_M_Product m_product = null;
     /**
      * Charge
      */
@@ -139,15 +142,15 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @param sLine shipment line
      * @return (first) invoice line
      */
-    public static MInvoiceLine getOfInOutLine(org.compiere.order.MInOutLine sLine) {
+    public static I_C_InvoiceLine getOfInOutLine(I_M_InOutLine sLine) {
         if (sLine == null) return null;
         final String whereClause = I_M_InOutLine.COLUMNNAME_M_InOutLine_ID + "=?";
-        List<MInvoiceLine> list =
-                new Query(I_C_InvoiceLine.Table_Name, whereClause)
+        List<I_C_InvoiceLine> list =
+                new Query<I_C_InvoiceLine>(I_C_InvoiceLine.Table_Name, whereClause)
                         .setParameters(sLine.getInOutLineId())
                         .list();
 
-        MInvoiceLine retValue = null;
+        I_C_InvoiceLine retValue = null;
         if (list.size() > 0) {
             retValue = list.get(0);
             if (list.size() > 1) s_log.warning("More than one C_InvoiceLine of " + sLine);
@@ -550,7 +553,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @param QtyInvoiced
      */
     public void setQtyInvoiced(BigDecimal QtyInvoiced) {
-        MProduct product = getProduct();
+        I_M_Product product = getProduct();
         if (QtyInvoiced != null && product != null) {
             int precision = product.getUOMPrecision();
             QtyInvoiced = QtyInvoiced.setScale(precision, BigDecimal.ROUND_HALF_UP);
@@ -575,7 +578,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @return product or null
      */
-    public MProduct getProduct() {
+    public I_M_Product getProduct() {
         if (m_product == null && getProductId() != 0)
             m_product = MProduct.get(getProductId());
         return m_product;
@@ -586,7 +589,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @param product product
      */
-    public void setProduct(MProduct product) {
+    public void setProduct(I_M_Product product) {
         m_product = product;
         if (m_product != null) {
             setProductId(m_product.getProductId());
@@ -714,7 +717,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                             "SELECT M_PriceList_ID FROM C_Invoice WHERE C_Invoice_ID=?",
                             getInvoiceId());
         }
-        MPriceList pl = MPriceList.get(m_M_PriceList_ID);
+        I_M_PriceList pl = MPriceList.get(m_M_PriceList_ID);
         return pl.isTaxIncluded();
     } //	isTaxIncluded
 
@@ -809,7 +812,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @author teo_sarca [ 1583825 ]
      */
     public boolean updateInvoiceTax(boolean oldTax) {
-        MInvoiceTax tax = MInvoiceTax.get(this, getPrecision(), oldTax);
+        I_C_InvoiceTax tax = MInvoiceTax.get(this, getPrecision(), oldTax);
         if (tax != null) {
             if (!tax.calculateTaxFromLines()) return false;
 
@@ -903,19 +906,18 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             MLandedCost lc = lcs[0];
             if (lc.getInOutId() != 0 && lc.getInOutLineId() == 0) {
                 //	Create List
-                ArrayList<MInOutLine> list = new ArrayList<>();
+                ArrayList<I_M_InOutLine> list = new ArrayList<>();
                 MInOut ship = new MInOut(lc.getInOutId());
-                MInOutLine[] lines = ship.getLines();
-                for (int i = 0; i < lines.length; i++) {
-                    if (lines[i].isDescription() || lines[i].getProductId() == 0) continue;
-                    if (lc.getProductId() == 0 || lc.getProductId() == lines[i].getProductId())
-                        list.add(lines[i]);
+                I_M_InOutLine[] lines = ship.getLines();
+                for (I_M_InOutLine line : lines) {
+                    if (line.isDescription() || line.getProductId() == 0) continue;
+                    if (lc.getProductId() == 0 || lc.getProductId() == line.getProductId())
+                        list.add(line);
                 }
                 if (list.size() == 0) return "No Matching Lines (with Product) in Shipment";
                 //	Calculate total & base
                 BigDecimal total = Env.ZERO;
-                for (int i = 0; i < list.size(); i++) {
-                    MInOutLine iol = list.get(i);
+                for (I_M_InOutLine iol : list) {
                     total = total.add(iol.getBase(lc.getLandedCostDistribution()));
                 }
                 if (total.signum() == 0) {
@@ -925,8 +927,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                     return msgreturn.toString();
                 }
                 //	Create Allocations
-                for (int i = 0; i < list.size(); i++) {
-                    MInOutLine iol = list.get(i);
+                for (I_M_InOutLine iol : list) {
                     MLandedCostAllocation lca = new MLandedCostAllocation(this, lc.getCostElementId());
                     lca.setProductId(iol.getProductId());
                     lca.setInOutLineId(iol.getInOutLineId());
@@ -1009,13 +1010,13 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 return "Multiple Landed Cost Rules cannot different Cost Elements";
         }
         //	Create List
-        ArrayList<org.compiere.order.MInOutLine> list = new ArrayList<org.compiere.order.MInOutLine>();
+        ArrayList<I_M_InOutLine> list = new ArrayList<>();
         for (MLandedCost lc : lcs) {
             if (lc.getInOutId() != 0 && lc.getInOutLineId() == 0) // 	entire receipt
             {
-                org.compiere.order.MInOut ship = new MInOut(lc.getInOutId());
-                org.compiere.order.MInOutLine[] lines = ship.getLines();
-                for (org.compiere.order.MInOutLine line : lines) {
+                MInOut ship = new MInOut(lc.getInOutId());
+                I_M_InOutLine[] lines = ship.getLines();
+                for (I_M_InOutLine line : lines) {
                     if (line.isDescription() // 	decription or no product
                             || line.getProductId() == 0) continue;
                     if (lc.getProductId() == 0 // 	no restriction or product match
@@ -1031,7 +1032,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (list.size() == 0) return "No Matching Lines (with Product)";
         //	Calculate total & base
         BigDecimal total = Env.ZERO;
-        for (org.compiere.order.MInOutLine mInOutLine : list) {
+        for (I_M_InOutLine mInOutLine : list) {
             MInOutLine iol = (MInOutLine) mInOutLine;
             total = total.add(iol.getBase(LandedCostDistribution));
         }
@@ -1040,7 +1041,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             return msgreturn.toString();
         }
         //	Create Allocations
-        for (org.compiere.order.MInOutLine mInOutLine : list) {
+        for (I_M_InOutLine mInOutLine : list) {
             MInOutLine iol = (MInOutLine) mInOutLine;
             MLandedCostAllocation lca = new MLandedCostAllocation(this, lcs[0].getCostElementId());
             lca.setProductId(iol.getProductId());

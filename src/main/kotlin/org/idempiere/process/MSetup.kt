@@ -22,7 +22,6 @@ import org.compiere.orm.MOrg
 import org.compiere.orm.MRole
 import org.compiere.orm.MRoleOrgAccess
 import org.compiere.orm.MSequence
-import org.compiere.orm.MTable
 import org.compiere.orm.PO
 import org.compiere.orm.checkClientSequences
 import org.compiere.orm.getOrganizationInfo
@@ -47,6 +46,7 @@ import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair
+import software.hsharp.core.orm.getTable
 import software.hsharp.core.util.Environment
 import software.hsharp.core.util.convertString
 import software.hsharp.core.util.executeUpdateEx
@@ -306,7 +306,7 @@ class MSetup
         clientAdminUser.description = name
         clientAdminUser.name = name
         clientAdminUser.searchKey = name
-        clientAdminUser.setADClientID(AD_Client_ID)
+        clientAdminUser.setClientId(AD_Client_ID)
         clientAdminUser.setOrgId(0)
         clientAdminUser.eMail = adminEmail
 
@@ -337,7 +337,7 @@ class MSetup
         clientUser.description = name
         clientUser.name = name
         clientUser.searchKey = name
-        clientUser.setADClientID(AD_Client_ID)
+        clientUser.setClientId(AD_Client_ID)
         clientUser.setOrgId(0)
         clientUser.eMail = userEmail
 
@@ -901,12 +901,12 @@ class MSetup
 
     @Throws(Exception::class)
     private fun createAccountingRecord(tableName: String) {
-        val table = MTable.get(tableName)
+        val table = getTable(tableName)
         val acct : PO = table.getPO(-1) ?: throw AdempiereSystemError("Unable to create new entry for $tableName") // Note this should create a new Acct; ugly hack, because we return null for 0
 
         val cols = table.getColumns(false)
         for (c in cols) {
-            if (!c.isActive)
+            if (!c.isActive())
                 continue
             val columnName = c.columnName
             if (c.isStandardColumn) {
@@ -918,7 +918,7 @@ class MSetup
                 if (log.isLoggable(Level.INFO)) log.info("YesNo: " + c.columnName)
             }
         }
-        acct.setADClientID(m_client.clientId)
+        acct.setClientId(m_client.clientId)
         acct.setValue(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
         //
         if (!acct.save()) {

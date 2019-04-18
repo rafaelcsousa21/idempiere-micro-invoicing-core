@@ -4,8 +4,10 @@ import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.ClientInfoWithAccounting;
 import org.compiere.model.ClientWithAccounting;
+import org.compiere.model.I_AD_Org;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_CostElement;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
@@ -55,16 +57,11 @@ public class MCost extends X_M_Cost {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx     context
      * @param ignored multi-key
      */
     public MCost(int ignored) {
         super(ignored);
         if (ignored == 0) {
-            //	setAccountingSchemaId (0);
-            //	setCostElementId (0);
-            //	setCostTypeId (0);
-            //	setProductId (0);
             setAttributeSetInstanceId(0);
             //
             setCurrentCostPrice(Env.ZERO);
@@ -78,7 +75,6 @@ public class MCost extends X_M_Cost {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MCost(Row row) {
         super(row);
@@ -159,7 +155,6 @@ public class MCost extends X_M_Cost {
                 as.getCostTypeId(),
                 costingMethod,
                 qty,
-                C_OrderLine_ID,
                 zeroCostsOK);
     } //	getCurrentCost
 
@@ -168,12 +163,11 @@ public class MCost extends X_M_Cost {
      *
      * @param product        product
      * @param M_ASI_ID       costing level asi
+     * @param as             AcctSchema
      * @param Org_ID         costing level org
      * @param M_CostType_ID  cost type
-     * @param as             AcctSchema
      * @param costingMethod  method
      * @param qty            quantity
-     * @param C_OrderLine_ID optional order line
      * @param zeroCostsOK    zero/no costs are OK
      * @return cost price or null
      */
@@ -185,7 +179,6 @@ public class MCost extends X_M_Cost {
             int M_CostType_ID,
             String costingMethod,
             BigDecimal qty,
-            int C_OrderLine_ID,
             boolean zeroCostsOK) {
         String costElementType;
         BigDecimal percent;
@@ -279,7 +272,7 @@ public class MCost extends X_M_Cost {
         }
         if (MCostElement.COSTINGMETHOD_Fifo.equals(costingMethod)
                 || MCostElement.COSTINGMETHOD_Lifo.equals(costingMethod)) {
-            MCostElement ce = MCostElement.getMaterialCostElement(as, costingMethod);
+            I_M_CostElement ce = MCostElement.getMaterialCostElement(as, costingMethod);
             materialCost = MCostQueue.getCosts(product, M_ASI_ID, as, Org_ID, ce, qty);
         }
 
@@ -358,9 +351,9 @@ public class MCost extends X_M_Cost {
 
         //	Look for Standard Costs first
         if (!MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
-            MCostElement ce =
+            I_M_CostElement ce =
                     MCostElement.getMaterialCostElement(as, MCostElement.COSTINGMETHOD_StandardCosting);
-            MCost cost =
+            I_M_Cost cost =
                     get(product, M_ASI_ID, as, Org_ID, ce.getCostElementId());
             if (cost != null && cost.getCurrentCostPrice().signum() > 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", Standard - " + cost);
@@ -641,9 +634,9 @@ public class MCost extends X_M_Cost {
         s_log.config(product.getName());
 
         //	Cost Elements
-        MCostElement[] ces = MCostElement.getCostingMethods(product);
-        MCostElement ce = null;
-        for (MCostElement element : ces) {
+        I_M_CostElement[] ces = MCostElement.getCostingMethods(product);
+        I_M_CostElement ce = null;
+        for (I_M_CostElement element : ces) {
             if (X_M_CostElement.COSTINGMETHOD_StandardCosting.equals(element.getCostingMethod())) {
                 ce = element;
                 break;
@@ -657,7 +650,7 @@ public class MCost extends X_M_Cost {
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
-        MOrg[] orgs = null;
+        I_AD_Org[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
         for (MAcctSchema as : mass) {
@@ -683,7 +676,7 @@ public class MCost extends X_M_Cost {
                 } else {
                     if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
 
-                    for (MOrg o : orgs) {
+                    for (I_AD_Org o : orgs) {
                         if (o.isSummary()) continue;
                         if (as.getOrganizationOnlyId() == o.getOrgId() || as.getOrganizationOnlyId() == 0) {
                             createCostingRecord(
@@ -704,7 +697,7 @@ public class MCost extends X_M_Cost {
             MProduct product,
             MAcctSchema as,
             int M_ASI_ID,
-            MCostElement ce,
+            I_M_CostElement ce,
             boolean found) {
         int parentId = root.getNodeId();
         if (!found) found = (parentId == as.getOrganizationOnlyId());
@@ -725,7 +718,7 @@ public class MCost extends X_M_Cost {
 
     private static void createCostingRecord(
             MProduct product, int M_ASI_ID, MAcctSchema as, int AD_Org_ID, int M_CostElement_ID) {
-        MCost cost =
+        I_M_Cost cost =
                 MCost.get(product, M_ASI_ID, as, AD_Org_ID, M_CostElement_ID);
         if (cost.isNew()) {
             if (cost.save()) {
@@ -745,28 +738,28 @@ public class MCost extends X_M_Cost {
     protected static void delete(MProduct product) {
         s_log.config(product.getName());
         //	Cost Elements
-        List<MCostElement> ces = MCostElement.getCostElementsWithCostingMethods(product);
+        List<I_M_CostElement> ces = MCostElement.getCostElementsWithCostingMethods(product);
 
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
-        MOrg[] orgs = null;
+        I_AD_Org[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
         for (MAcctSchema as : mass) {
             String cl = product.getCostingLevel(as);
             //	Create Std Costing
             if (MAcctSchema.COSTINGLEVEL_Client.equals(cl)) {
-                for (MCostElement ce : ces) {
-                    MCost cost =
+                for (I_M_CostElement ce : ces) {
+                    I_M_Cost cost =
                             MCost.get(product, M_ASI_ID, as, 0, ce.getCostElementId());
                     if (cost != null) cost.deleteEx(true);
                 }
             } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
                 if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
-                for (MOrg o : orgs) {
-                    for (MCostElement ce : ces) {
-                        MCost cost =
+                for (I_AD_Org o : orgs) {
+                    for (I_M_CostElement ce : ces) {
+                        I_M_Cost cost =
                                 MCost.get(
                                         product,
                                         M_ASI_ID,
@@ -794,13 +787,13 @@ public class MCost extends X_M_Cost {
      * @param M_CostElement_ID          element
      * @return cost price or null
      */
-    public static MCost get(
+    public static I_M_Cost get(
             MProduct product,
             int M_AttributeSetInstance_ID,
             I_C_AcctSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
-        MCost cost;
+        I_M_Cost cost;
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause =
                 "AD_Client_ID=? AND AD_Org_ID=?"
@@ -809,7 +802,7 @@ public class MCost extends X_M_Cost {
                         + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
                         + " AND M_CostElement_ID=?";
         cost =
-                new Query(I_M_Cost.Table_Name, whereClause)
+                new Query<I_M_Cost>(I_M_Cost.Table_Name, whereClause)
                         .setParameters(
                                 product.getClientId(),
                                 AD_Org_ID,
@@ -838,7 +831,7 @@ public class MCost extends X_M_Cost {
      * @param M_AttributeSetInstance_ID asi
      * @return cost or null
      */
-    public static MCost get(
+    public static I_M_Cost get(
             int AD_Client_ID,
             int AD_Org_ID,
             int M_Product_ID,
@@ -873,7 +866,7 @@ public class MCost extends X_M_Cost {
                         M_CostElement_ID,
                         M_AttributeSetInstance_ID
                 };
-        return new Query(I_M_Cost.Table_Name, whereClause)
+        return new Query<I_M_Cost>(I_M_Cost.Table_Name, whereClause)
                 .setOnlyActiveRecords(true)
                 .setParameters(params)
                 .firstOnly();

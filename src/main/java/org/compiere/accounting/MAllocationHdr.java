@@ -11,9 +11,10 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_Query;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
@@ -158,16 +159,16 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * @param C_Cash_ID Cash ID
      * @return allocations of payment
      */
-    public static MAllocationHdr[] getOfCash(int C_Cash_ID) {
+    public static I_C_AllocationHdr[] getOfCash(int C_Cash_ID) {
         final String whereClause =
                 "IsActive='Y'"
                         + " AND EXISTS (SELECT 1 FROM C_CashLine cl, C_AllocationLine al "
                         + "where cl.C_Cash_ID=? and al.C_CashLine_ID=cl.C_CashLine_ID "
                         + "and C_AllocationHdr.C_AllocationHdr_ID=al.C_AllocationHdr_ID)";
-        Query query = MTable.get(I_C_AllocationHdr.Table_ID).createQuery(whereClause);
+        I_Query<I_C_AllocationHdr> query = MBaseTableKt.getTable(I_C_AllocationHdr.Table_ID).createQuery(whereClause);
         query.setParameters(C_Cash_ID);
-        List<MAllocationHdr> list = query.list();
-        MAllocationHdr[] retValue = new MAllocationHdr[list.size()];
+        List<I_C_AllocationHdr> list = query.list();
+        I_C_AllocationHdr[] retValue = new I_C_AllocationHdr[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getOfCash

@@ -3,7 +3,7 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_ProductionLine;
-import org.compiere.orm.MTable;
+import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -175,7 +175,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
-                MTable.get(org.compiere.model.I_M_Product.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Product.Table_Name)
                         .getPO(getProductId());
     }
 
@@ -202,7 +202,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_Production getProduction() throws RuntimeException {
         return (org.compiere.model.I_M_Production)
-                MTable.get(org.compiere.model.I_M_Production.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_Production.Table_Name)
                         .getPO(getProductionId());
     }
 
@@ -255,7 +255,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
 
     public org.compiere.model.I_M_ProductionPlan getProductionPlan() throws RuntimeException {
         return (org.compiere.model.I_M_ProductionPlan)
-                MTable.get(org.compiere.model.I_M_ProductionPlan.Table_Name)
+                MBaseTableKt.getTable(org.compiere.model.I_M_ProductionPlan.Table_Name)
                         .getPO(getProductionPlanId());
     }
 

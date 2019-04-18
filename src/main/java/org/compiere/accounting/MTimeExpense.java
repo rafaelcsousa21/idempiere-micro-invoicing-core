@@ -6,6 +6,8 @@ import org.compiere.crm.MUserKt;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_AD_User;
+import org.compiere.model.I_M_PriceList;
 import org.compiere.orm.MDocType;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
@@ -442,7 +444,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     public int getDocumentUserId() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
         if (getBusinessPartnerId() != 0) {
-            MUser[] users = MUserKt.getBusinessPartnerUsers(getBusinessPartnerId());
+            I_AD_User[] users = MUserKt.getBusinessPartnerUsers(getBusinessPartnerId());
             if (users.length > 0) {
                 m_AD_User_ID = users[0].getUserId();
                 return m_AD_User_ID;
@@ -457,7 +459,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      * @return C_Currency_ID
      */
     public int getCurrencyId() {
-        MPriceList pl = MPriceList.get(getPriceListId());
+        I_M_PriceList pl = MPriceList.get(getPriceListId());
         return pl.getCurrencyId();
     } //	getCurrencyId
 

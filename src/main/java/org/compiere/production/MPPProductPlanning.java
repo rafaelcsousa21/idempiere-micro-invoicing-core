@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.orm.MOrgInfoKt;
 import org.compiere.orm.Query;
 import org.compiere.product.MResource;
+import org.eevolution.model.I_PP_Product_BOM;
 import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
@@ -34,7 +35,6 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     /**
      * ************************************************************************ Default Constructor
      *
-     * @param ctx                    context
      * @param pp_product_planning_id id
      * @return MPPProductPlanning Data Product Planning
      */
@@ -45,7 +45,6 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     /**
      * Load Constructor
      *
-     * @param ctx context
      * @return MPPProductPlanning Data Product Planning
      */
     public MPPProductPlanning(Row row) {
@@ -55,12 +54,11 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     /**
      * Get Data Product Planning to Organization
      *
-     * @param ctx          Context
      * @param ad_org_id    Organization ID
      * @param m_product_id Product ID
      * @return MPPProductPlanning
      */
-    public static MPPProductPlanning get(
+    public static I_PP_Product_Planning get(
             int ad_client_id, int ad_org_id, int m_product_id) {
         int M_Warehouse_ID = MOrgInfoKt.getOrganizationInfo(ad_org_id).getWarehouseId();
         if (M_Warehouse_ID <= 0) {
@@ -76,11 +74,9 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     /**
      * Get Data Product Planning
      *
-     * @param ctx Context
-     *            *
      * @return MPPProductPlanning
      */
-    public static MPPProductPlanning get(
+    public static I_PP_Product_Planning get(
 
             int ad_client_id,
             int ad_org_id,
@@ -116,7 +112,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
                         + I_PP_Product_Planning.COLUMNNAME_S_Resource_ID
                         + "=?";
 
-        return new Query(MPPProductPlanning.Table_Name, whereClause)
+        return new Query<I_PP_Product_Planning>(MPPProductPlanning.Table_Name, whereClause)
                 .setParameters(ad_client_id, ad_org_id, m_product_id, m_warehouse_id, s_resource_id)
                 .setOnlyActiveRecords(true)
                 .firstOnly();
@@ -144,10 +140,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
                         + " AND "
                         + MResource.COLUMNNAME_M_Warehouse_ID
                         + "=?";
-        int plant_id =
-                getSQLValueEx(
-                        sql, true, MResource.MANUFACTURINGRESOURCETYPE_Plant, M_Warehouse_ID);
-        return plant_id;
+        return getSQLValueEx(
+                sql, true, MResource.MANUFACTURINGRESOURCETYPE_Plant, M_Warehouse_ID);
     }
 
     @Override
@@ -181,7 +175,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     }
 
     @Override
-    public MPPProductBOM getProductBOM() {
+    public I_PP_Product_BOM getProductBOM() {
         return MPPProductBOM.get(getProductBOMId());
     }
 

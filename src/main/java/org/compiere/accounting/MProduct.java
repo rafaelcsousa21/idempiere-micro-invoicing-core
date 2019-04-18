@@ -2,8 +2,11 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostDetail;
+import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product;
+import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.model.I_M_StorageOnHand;
 import org.compiere.model.I_M_Transaction;
 import org.compiere.orm.Query;
@@ -108,7 +111,7 @@ public class MProduct extends org.compiere.product.MProduct {
     protected boolean hasInventoryOrCost() {
         // check if it has transactions
         boolean hasTrx =
-                new Query(
+                new Query<I_M_Transaction>(
                         I_M_Transaction.Table_Name,
                         I_M_Transaction.COLUMNNAME_M_Product_ID + "=?"
                 )
@@ -120,7 +123,7 @@ public class MProduct extends org.compiere.product.MProduct {
         }
 
         // check if it has cost
-        return new Query(
+        return new Query<I_M_CostDetail>(
                 I_M_CostDetail.Table_Name,
                 I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?"
         )
@@ -187,29 +190,6 @@ public class MProduct extends org.compiere.product.MProduct {
         //	delete costing
         MCost.delete(this);
 
-        // [ 1674225 ] Delete Product: Costing deletion error
-    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getClientId(), null);
-    for(int i=0; i<mass.length; i++)
-    {
-    	// Get Cost Elements
-    	MCostElement[] ces = MCostElement.getMaterialWithCostingMethods(this);
-    	MCostElement ce = null;
-    	for(int j=0; j<ces.length; j++)
-    	{
-    		if(MCostElement.COSTINGMETHOD_StandardCosting.equals(ces[i].getCostingMethod()))
-    		{
-    			ce = ces[i];
-    			break;
-    		}
-    	}
-
-    	if(ce == null)
-    		continue;
-
-    	MCost mcost = MCost.get(this, 0, mass[i], 0, ce.getCostElementId());
-    	mcost.delete(true, null);
-    }*/
-
         //
         return true;
     } //	beforeDelete
@@ -256,7 +236,7 @@ public class MProduct extends org.compiere.product.MProduct {
      */
     public String getCostingLevel(I_C_AcctSchema as) {
         String costingLevel = null;
-        MProductCategoryAcct pca =
+        I_M_Product_Category_Acct pca =
                 MProductCategoryAcct.get(getProductCategoryId(), as.getId());
         if (pca != null) {
             costingLevel = pca.getCostingLevel();
@@ -274,7 +254,7 @@ public class MProduct extends org.compiere.product.MProduct {
      */
     public String getCostingMethod(I_C_AcctSchema as) {
         String costingMethod = null;
-        MProductCategoryAcct pca =
+        I_M_Product_Category_Acct pca =
                 MProductCategoryAcct.get(getProductCategoryId(), as.getId());
         if (pca != null) {
             costingMethod = pca.getCostingMethod();
@@ -285,8 +265,7 @@ public class MProduct extends org.compiere.product.MProduct {
         return costingMethod;
     }
 
-    public MCost getCostingRecord(I_C_AcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
-
+    public I_M_Cost getCostingRecord(I_C_AcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
         String costingLevel = getCostingLevel(as);
         if (MAcctSchema.COSTINGLEVEL_Client.equals(costingLevel)) {
             AD_Org_ID = 0;
@@ -296,11 +275,11 @@ public class MProduct extends org.compiere.product.MProduct {
             AD_Org_ID = 0;
             if (M_ASI_ID == 0) return null;
         }
-        MCostElement ce = MCostElement.getMaterialCostElement(costingMethod, AD_Org_ID);
+        I_M_CostElement ce = MCostElement.getMaterialCostElement(costingMethod, AD_Org_ID);
         if (ce == null) {
             return null;
         }
-        MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getCostElementId());
+        I_M_Cost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getCostElementId());
         return cost.isNew() ? null : cost;
     }
 

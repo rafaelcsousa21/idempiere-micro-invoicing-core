@@ -14,10 +14,14 @@ import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_DocType;
 import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.I_M_InOutConfirm;
 import org.compiere.model.I_M_InOutLine;
+import org.compiere.model.I_M_InOutLineMA;
+import org.compiere.model.I_M_Product;
 import org.compiere.order.MOrder;
 import org.compiere.order.MRMALine;
 import org.compiere.orm.MDocType;
@@ -51,7 +55,7 @@ import java.util.logging.Level;
 import static software.hsharp.core.orm.POKt.I_ZERO;
 
 public class MInOut extends org.compiere.order.MInOut implements DocAction, IPODoc {
-    protected MInOutLine[] m_lines = null;
+    protected I_M_InOutLine[] m_lines = null;
     /**
      * Process Message
      */
@@ -207,17 +211,17 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param requery refresh from db
      * @return lines
      */
-    public MInOutLine[] getLines(boolean requery) {
+    public I_M_InOutLine[] getLines(boolean requery) {
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        List<MInOutLine> list =
-                new Query(I_M_InOutLine.Table_Name, "M_InOut_ID=?")
+        List<I_M_InOutLine> list =
+                new Query<I_M_InOutLine>(I_M_InOutLine.Table_Name, "M_InOut_ID=?")
                         .setParameters(getInOutId())
                         .setOrderBy(MInOutLine.COLUMNNAME_Line)
                         .list();
         //
-        m_lines = new MInOutLine[list.size()];
+        m_lines = new I_M_InOutLine[list.size()];
         list.toArray(m_lines);
         return m_lines;
     } //	getMInOutLines
@@ -227,7 +231,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return lines
      */
-    public MInOutLine[] getLines() {
+    public I_M_InOutLine[] getLines() {
         return getLines(false);
     } //	getLines
 
@@ -332,7 +336,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         }
 
         //	Lines
-        MInOutLine[] lines = getLines(true);
+        I_M_InOutLine[] lines = getLines(true);
         if (lines == null || lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -341,8 +345,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         BigDecimal Weight = Env.ZERO;
 
         //	Mandatory Attributes
-        for (MInOutLine line : lines) {
-            MProduct product = line.getProduct();
+        for (I_M_InOutLine line : lines) {
+            I_M_Product product = line.getProduct();
             if (product != null) {
                 Volume = Volume.add(product.getVolume().multiply(line.getMovementQty()));
                 Weight = Weight.add(product.getWeight().multiply(line.getMovementQty()));
@@ -466,9 +470,9 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         StringBuilder errors = new StringBuilder();
         //	For all lines
-        MInOutLine[] lines = getLines(false);
-        for (MInOutLine sLine : lines) {
-            MProduct product = sLine.getProduct();
+        I_M_InOutLine[] lines = getLines(false);
+        for (I_M_InOutLine sLine : lines) {
+            I_M_Product product = sLine.getProduct();
 
             try {
                 //	Qty & Type
@@ -543,9 +547,9 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                     BigDecimal orderedQtyToUpdate = sLine.getMovementQty().subtract(overReceipt);
                     //
                     if (sLine.getAttributeSetInstanceId() == 0) {
-                        MInOutLineMA[] mas =
+                        I_M_InOutLineMA[] mas =
                                 MInOutLineMA.get(sLine.getInOutLineId());
-                        for (MInOutLineMA ma : mas) {
+                        for (I_M_InOutLineMA ma : mas) {
                             BigDecimal QtyMA = ma.getMovementQty();
                             if (MovementType.charAt(1) == '-') // 	C- Customer Shipment - V- Vendor Return
                                 QtyMA = QtyMA.negate();
@@ -761,7 +765,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 if (!isSOTrx() && sLine.getProductId() != 0 && !isReversal()) {
                     BigDecimal matchQty = sLine.getMovementQty();
                     //	Invoice - Receipt Match (requires Product)
-                    MInvoiceLine iLine = MInvoiceLine.getOfInOutLine(sLine);
+                    I_C_InvoiceLine iLine = MInvoiceLine.getOfInOutLine(sLine);
                     if (iLine != null && iLine.getProductId() != 0) {
                         if (matchQty.compareTo(iLine.getQtyInvoiced()) > 0) matchQty = iLine.getQtyInvoiced();
 
@@ -902,8 +906,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             if (m_processMsg != null) return false;
 
             //	Set lines to 0
-            MInOutLine[] lines = getLines(false);
-            for (MInOutLine line : lines) {
+            I_M_InOutLine[] lines = getLines(false);
+            for (I_M_InOutLine line : lines) {
                 BigDecimal old = line.getMovementQty();
                 if (old.signum() != 0) {
                     line.setQty(Env.ZERO);
@@ -1023,10 +1027,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         reversal.setReversal(true);
 
         //	Reverse Line Qty
-        MInOutLine[] sLines = getLines(false);
-        MInOutLine[] rLines = reversal.getLines(false);
+        I_M_InOutLine[] sLines = getLines(false);
+        I_M_InOutLine[] rLines = reversal.getLines(false);
         for (int i = 0; i < rLines.length; i++) {
-            MInOutLine rLine = rLines[i];
+            I_M_InOutLine rLine = rLines[i];
             rLine.setQtyEntered(rLine.getQtyEntered().negate());
             rLine.setMovementQty(rLine.getMovementQty().negate());
             rLine.setQtyOverReceipt(rLine.getQtyOverReceipt().negate());
@@ -1039,9 +1043,9 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             }
             //	We need to copy MA
             if (rLine.getAttributeSetInstanceId() == 0) {
-                MInOutLineMA[] mas =
+                I_M_InOutLineMA[] mas =
                         MInOutLineMA.get(sLines[i].getInOutLineId());
-                for (MInOutLineMA ma1 : mas) {
+                for (I_M_InOutLineMA ma1 : mas) {
                     MInOutLineMA ma =
                             new MInOutLineMA(
                                     rLine,
@@ -1258,7 +1262,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     /**
      * Check Material Policy Sets line ASI
      */
-    protected void checkMaterialPolicy(MInOutLine line, BigDecimal qty) {
+    protected void checkMaterialPolicy(I_M_InOutLine line, BigDecimal qty) {
 
         int no = MInOutLineMA.deleteInOutLineMA(line.getInOutLineId());
         if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Delete old #" + no);
@@ -1271,7 +1275,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         boolean needSave = false;
 
-        MProduct product = line.getProduct();
+        I_M_Product product = line.getProduct();
 
         //	Need to have Location
         if (product != null && line.getLocatorId() == 0) {
@@ -1291,7 +1295,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
                 // Allocate remaining qty.
                 if (qtyToReceive.compareTo(Env.ZERO) > 0) {
-                    MInOutLineMA ma =
+                    I_M_InOutLineMA ma =
                             MInOutLineMA.addOrCreate(line, 0, qtyToReceive, getMovementDate(), true);
                     ma.saveEx();
                 }
@@ -1313,7 +1317,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                 lineMAQty = qtyToReturn;
                             }
 
-                            MInOutLineMA ma =
+                            I_M_InOutLineMA ma =
                                     MInOutLineMA.addOrCreate(
                                             line,
                                             sMA.getAttributeSetInstanceId(),
@@ -1329,7 +1333,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                 }
                 if (qtyToReturn.compareTo(Env.ZERO) > 0) {
                     // Use movement data for  Material policy if no linkage found to Shipment.
-                    MInOutLineMA ma = MInOutLineMA.addOrCreate(line, 0, qtyToReturn, getMovementDate(), true);
+                    I_M_InOutLineMA ma = MInOutLineMA.addOrCreate(line, 0, qtyToReturn, getMovementDate(), true);
                     ma.saveEx();
                 }
             }
@@ -1380,7 +1384,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
                 if (qtyToDeliver.signum() != 0) {
                     // Over Delivery
-                    MInOutLineMA ma =
+                    I_M_InOutLineMA ma =
                             MInOutLineMA.addOrCreate(
                                     line, line.getAttributeSetInstanceId(), qtyToDeliver, getMovementDate(), true);
                     ma.saveEx();
@@ -1463,8 +1467,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         boolean inTrx = MovementType.charAt(1) == '+'; // 	V+ Vendor Receipt
 
         //	Update copied lines
-        MInOutLine[] counterLines = counter.getLines(true);
-        for (MInOutLine counterLine : counterLines) {
+        I_M_InOutLine[] counterLines = counter.getLines(true);
+        for (I_M_InOutLine counterLine : counterLines) {
             counterLine.setClientOrg(counter);
             counterLine.setWarehouseId(counter.getWarehouseId());
             counterLine.setLocatorId(0);
@@ -1505,10 +1509,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Document Type
         int C_DocTypeTarget_ID = 0;
-        MDocType[] shipmentTypes =
+        I_C_DocType[] shipmentTypes =
                 MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialDelivery);
 
-        for (MDocType shipmentType : shipmentTypes) {
+        for (I_C_DocType shipmentType : shipmentTypes) {
             if (shipmentType.isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentType.isDefault()))
                 C_DocTypeTarget_ID = shipmentType.getDocTypeId();
         }
@@ -1544,8 +1548,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         dropShipment.saveEx();
 
         //		Update line order references to linked sales order lines
-        MInOutLine[] lines = dropShipment.getLines(true);
-        for (MInOutLine dropLine : lines) {
+        I_M_InOutLine[] lines = dropShipment.getLines(true);
+        for (I_M_InOutLine dropLine : lines) {
             MOrderLine ol = new MOrderLine(dropLine.getOrderLineId());
             if (ol.getOrderLineId() != 0) {
                 dropLine.setOrderLineId(ol.getLink_OrderLineId());
@@ -1567,7 +1571,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     }
 
     protected BigDecimal autoBalanceNegative(
-            org.compiere.order.MInOutLine line, MProduct product, BigDecimal qtyToReceive) {
+            I_M_InOutLine line, I_M_Product product, BigDecimal qtyToReceive) {
         MStorageOnHand[] storages =
                 MStorageOnHand.getWarehouseNegative(
 
