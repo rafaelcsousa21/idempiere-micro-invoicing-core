@@ -1,7 +1,7 @@
 package org.compiere.server;
 
 import org.compiere.model.IProcessInfo;
-import org.compiere.model.I_AD_Column;
+import org.compiere.model.Column;
 import org.compiere.model.Server;
 import org.compiere.orm.MTable;
 import software.hsharp.core.orm.MBaseTableKt;
@@ -111,7 +111,7 @@ public class ServerProcessCtl implements Runnable {
     public static ProcessInfo runDocumentActionWorkflow(PO po, String docAction) {
         int AD_Table_ID = po.getTableId();
         MTable table = MBaseTableKt.getTable(AD_Table_ID);
-        I_AD_Column column = table.getColumn("DocAction");
+        Column column = table.getColumn("DocAction");
         if (column == null) return null;
         if (!docAction.equals(po.getValue(column.getColumnName()))) {
             po.set_ValueOfColumn(column.getColumnName(), docAction);

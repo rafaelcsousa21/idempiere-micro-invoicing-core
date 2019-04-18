@@ -5,7 +5,7 @@ import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_InOutLineMA;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import org.compiere.order.MInOutLine;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.Query;
@@ -106,7 +106,7 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      * @return allocations
      */
     public static I_M_InOutLineMA[] get(int M_InOutLine_ID) {
-        I_Query<I_M_InOutLineMA> query =
+        TypedQuery<I_M_InOutLineMA> query =
                 MBaseTableKt.getTable(MInOutLineMA.Table_Name)
                         .createQuery(I_M_InOutLineMA.COLUMNNAME_M_InOutLine_ID + "=?");
         query.setParameters(M_InOutLine_ID);

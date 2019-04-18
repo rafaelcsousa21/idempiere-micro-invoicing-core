@@ -10,7 +10,7 @@ import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MDocType;
@@ -486,9 +486,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * @param inventory
      */
     private void setInventoryDocType(MInventory inventory) {
-        I_C_DocType[] doctypes =
+        DocumentType[] doctypes =
                 MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialPhysicalInventory);
-        for (I_C_DocType doctype : doctypes) {
+        for (DocumentType doctype : doctypes) {
             if (MDocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
                 inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;

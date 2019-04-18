@@ -3,9 +3,8 @@ package org.compiere.production;
 import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_ProductionLineMA;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import software.hsharp.core.orm.MBaseTableKt;
-import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
@@ -63,7 +62,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
         }
         where = where + "AND DateMaterialPolicy = trunc(cast(? as date))";
 
-        I_Query<I_M_ProductionLineMA> query = MBaseTableKt.getTable(I_M_ProductionLineMA.Table_Name)
+        TypedQuery<I_M_ProductionLineMA> query = MBaseTableKt.getTable(I_M_ProductionLineMA.Table_Name)
                 .createQuery(where);
 
         I_M_ProductionLineMA lineMA = query
@@ -82,7 +81,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
      */
     public static I_M_ProductionLineMA[] get(int M_ProductionLine_ID) {
 
-        I_Query<I_M_ProductionLineMA> query =
+        TypedQuery<I_M_ProductionLineMA> query =
                 MBaseTableKt.getTable(I_M_ProductionLineMA.Table_Name)
                         .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?");
         query.setParameters(M_ProductionLine_ID);

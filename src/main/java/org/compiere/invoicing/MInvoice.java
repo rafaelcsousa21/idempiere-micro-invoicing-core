@@ -20,11 +20,11 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.HasName;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_AD_User;
+import org.compiere.model.User;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_C_BankAccount;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceBatch;
 import org.compiere.model.I_C_InvoiceBatchLine;
@@ -49,7 +49,6 @@ import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
-import org.compiere.product.MPriceListVersion;
 import org.compiere.product.MProductBOM;
 import org.compiere.production.MProject;
 import org.compiere.tax.IInvoiceTaxProvider;
@@ -479,7 +478,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                     new BPartnerNoAddressException(bp).getLocalizedMessage()); // TODO: throw exception?
 
         //	Set Contact
-        List<I_AD_User> contacts = bp.getContacts();
+        List<User> contacts = bp.getContacts();
         if (contacts != null && contacts.size() == 1) setUserId(contacts.get(0).getUserId());
     } //	setBPartner
 
@@ -1516,13 +1515,13 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (isSOTrx()) docBaseType = MDocType.DOCBASETYPE_ARReceipt;
             else docBaseType = MDocType.DOCBASETYPE_APPayment;
 
-            I_C_DocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(docBaseType);
+            DocumentType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(docBaseType);
             if (doctypes.length == 0) {
                 m_processMsg = "No document type ";
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
             }
-            I_C_DocType doctype = null;
-            for (I_C_DocType doc : doctypes) {
+            DocumentType doctype = null;
+            for (DocumentType doc : doctypes) {
                 if (doc.getOrgId() == this.getOrgId()) {
                     doctype = doc;
                     break;

@@ -5,7 +5,7 @@ import org.compiere.accounting.MWarehouse;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_InOutLineConfirm;
 import org.compiere.order.X_M_InOutConfirm;
@@ -429,9 +429,9 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      * @param inventory
      */
     private void setInventoryDocType(MInventory inventory) {
-        I_C_DocType[] doctypes =
+        DocumentType[] doctypes =
                 MDocTypeKt.getDocumentTypeOfDocBaseType(DOCBASETYPE_MaterialPhysicalInventory);
-        for (I_C_DocType doctype : doctypes) {
+        for (DocumentType doctype : doctypes) {
             if (DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
                 inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;

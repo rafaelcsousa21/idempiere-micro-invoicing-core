@@ -1,7 +1,7 @@
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_AD_Role_Included;
+import org.compiere.model.RoleIncluded;
 import org.compiere.orm.MRoleKt;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -62,7 +62,7 @@ public class CopyRole extends SvrProcess {
                         "AD_Task_Access",
                         "AD_Document_Action_Access",
                         "AD_InfoWindow_Access",
-                        I_AD_Role_Included.Table_Name
+                        RoleIncluded.Table_Name
                 };
         String[] keycolumns =
                 new String[]{
@@ -73,7 +73,7 @@ public class CopyRole extends SvrProcess {
                         "AD_Task_ID",
                         "C_DocType_ID, AD_Ref_List_ID",
                         "AD_InfoWindow_ID",
-                        I_AD_Role_Included.COLUMNNAME_Included_Role_ID
+                        RoleIncluded.COLUMNNAME_Included_Role_ID
                 };
 
         int action = 0;
@@ -93,8 +93,8 @@ public class CopyRole extends SvrProcess {
             final boolean column_IsReadWrite =
                     !table.equals("AD_Document_Action_Access")
                             && !table.equals("AD_InfoWindow_Access")
-                            && !table.equals(I_AD_Role_Included.Table_Name);
-            final boolean column_SeqNo = table.equals(I_AD_Role_Included.Table_Name);
+                            && !table.equals(RoleIncluded.Table_Name);
+            final boolean column_SeqNo = table.equals(RoleIncluded.Table_Name);
 
             sql =
                     new StringBuilder("INSERT INTO ")

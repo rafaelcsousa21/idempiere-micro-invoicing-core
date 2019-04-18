@@ -8,7 +8,7 @@ import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_AD_User;
+import org.compiere.model.User;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_M_Product;
@@ -183,7 +183,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	Set Contact
-        List<I_AD_User> contacts = bp.getContacts();
+        List<User> contacts = bp.getContacts();
         if (contacts != null && contacts.size() == 1) setUserId(contacts.get(0).getUserId());
     } //	setBPartner
 

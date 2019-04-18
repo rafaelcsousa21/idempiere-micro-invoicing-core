@@ -1,7 +1,6 @@
 package org.compiere.production
 
 import kotliquery.Row
-import org.idempiere.icommon.model.IPO
 
 class MQualityTestResult : X_M_QualityTestResult {
 

@@ -1,7 +1,7 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MTree;
-import org.compiere.model.I_AD_Table;
+import org.compiere.model.Table;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.MTree_Base;
 import org.compiere.orm.MTree_Node;
@@ -159,7 +159,7 @@ public class TreeMaintenance extends SvrProcess {
             if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
             if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
             //
-            I_AD_Table table = MBaseTableKt.getTable(sourceTableName);
+            Table table = MBaseTableKt.getTable(sourceTableName);
             try {
                 pstmt = prepareStatement(sql.toString());
                 rs = pstmt.executeQuery();

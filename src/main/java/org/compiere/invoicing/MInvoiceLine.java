@@ -28,7 +28,7 @@ import org.compiere.util.MsgKt;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.icommon.model.IPO;
+import org.idempiere.icommon.model.PersistentObject;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -1173,7 +1173,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         this.m_parent = null;
     }
 
-    public void setClientOrg(IPO po) {
+    public void setClientOrg(PersistentObject po) {
         super.setClientOrg(po);
     }
 

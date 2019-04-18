@@ -1,7 +1,7 @@
 package org.compiere.validation;
 
-import org.compiere.model.I_AD_Client;
-import org.idempiere.icommon.model.IPO;
+import org.compiere.model.Client;
+import org.idempiere.icommon.model.PersistentObject;
 
 /**
  * Model Validator
@@ -139,7 +139,7 @@ public interface ModelValidator {
      * @param engine validation engine
      * @param client client
      */
-    void initialize(ModelValidationEngine engine, I_AD_Client client);
+    void initialize(ModelValidationEngine engine, Client client);
 
     /**
      * Get Client to be monitored
@@ -167,7 +167,7 @@ public interface ModelValidator {
      * @return error message or null
      * @throws Exception if the recipient wishes the change to be not accept.
      */
-    String modelChange(IPO po, int type) throws Exception;
+    String modelChange(PersistentObject po, int type) throws Exception;
 
     /**
      * Validate Document. Called as first step of DocAction.prepareIt or at the end of
@@ -178,5 +178,5 @@ public interface ModelValidator {
      * @param timing see TIMING_ constants
      * @return error message or null - if not null, the document will be marked as Invalid.
      */
-    String docValidate(IPO po, int timing);
+    String docValidate(PersistentObject po, int timing);
 } //	ModelValidator

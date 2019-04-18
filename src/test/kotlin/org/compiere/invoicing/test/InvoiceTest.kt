@@ -10,7 +10,7 @@ import org.compiere.invoicing.MInOutLine
 import org.compiere.invoicing.MInvoice
 import org.compiere.order.X_M_InOut
 import org.compiere.orm.DefaultModelFactory
-import org.compiere.orm.IModelFactory
+import org.compiere.orm.ModelFactory
 import org.compiere.orm.MDocType
 import org.compiere.process.DocAction
 import org.compiere.process.ProcessInfo
@@ -276,7 +276,7 @@ class InvoiceTest : BaseComponentTest() {
         assertEquals(product_id, line.productId)
         assertEquals(QTY.toBigDecimal(), line.qtyInvoiced)
 
-        val modelFactory: IModelFactory = DefaultModelFactory()
+        val modelFactory: ModelFactory = DefaultModelFactory()
         val result: MInvoice = modelFactory.getPO(I_C_Invoice.Table_Name, invoice.id)
         println(result)
         assertNotNull(result)

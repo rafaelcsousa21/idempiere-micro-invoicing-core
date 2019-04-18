@@ -18,7 +18,7 @@ import org.compiere.accounting.MAccount;
 import org.compiere.accounting.MElementValue;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_C_ElementValue;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_PriceList_Version;
 import org.compiere.model.I_M_Product;
@@ -30,7 +30,6 @@ import org.compiere.product.MProductPrice;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -145,16 +144,16 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         }
 
         // Read all accounttypes that fit the given criteria.
-        List<I_C_ElementValue> result =
-                new Query<I_C_ElementValue>(
-                        I_C_ElementValue.Table_Name,
+        List<AccountingElementValue> result =
+                new Query<AccountingElementValue>(
+                        AccountingElementValue.Table_Name,
                         "AccountType=? and isSummary='N' and Value>=? and Value<=? and AD_Client_ID=?"
                 )
                         .setParameters(
                                 MElementValue.ACCOUNTTYPE_Expense, m_startElement, m_endElement, m_clientId)
                         .list();
 
-        I_C_ElementValue elem;
+        AccountingElementValue elem;
         MProductPrice priceRec;
         I_M_Product_Acct productAcct;
         String expenseItemValue;
@@ -162,7 +161,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         int addCount = 0;
         int skipCount = 0;
 
-        for (I_C_ElementValue i_c_elementValue : result) {
+        for (AccountingElementValue i_c_elementValue : result) {
             elem = i_c_elementValue;
             expenseItemValue = m_productValuePrefix + elem.getSearchKey() + m_productValueSuffix;
             // See if a product with this key already exists

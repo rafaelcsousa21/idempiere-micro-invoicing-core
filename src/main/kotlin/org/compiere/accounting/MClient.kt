@@ -3,8 +3,8 @@ package org.compiere.accounting
 import kotliquery.Row
 import org.compiere.model.ClientInfoWithAccounting
 import org.compiere.model.ClientWithAccounting
-import org.compiere.model.I_AD_Client
-import org.compiere.model.I_AD_User
+import org.compiere.model.Client
+import org.compiere.model.User
 import org.compiere.model.I_C_AcctSchema
 import org.compiere.orm.MSysConfig
 import org.compiere.orm.Query
@@ -21,7 +21,7 @@ import software.hsharp.core.util.Environment
 import java.io.File
 import java.util.Locale
 
-private fun loadAllClients() = Query<ClientWithAccounting>(I_AD_Client.Table_Name, null).list()
+private fun loadAllClients() = Query<ClientWithAccounting>(Client.Table_Name, null).list()
 
 private val clientFactory = factory(loadAllClients()) { MClient(it) }
 
@@ -225,8 +225,8 @@ class MClient : MBaseClient, ClientWithAccounting {
     } // 	getSMTPHost
 
     fun sendEMail(
-        from: I_AD_User,
-        to: I_AD_User,
+        from: User,
+        to: User,
         subject: String,
         message: String,
         attachment: File,
@@ -236,8 +236,8 @@ class MClient : MBaseClient, ClientWithAccounting {
     }
 
     fun sendEMail(
-        from: I_AD_User,
-        to: I_AD_User,
+        from: User,
+        to: User,
         subject: String,
         message: String,
         attachment: File
@@ -246,8 +246,8 @@ class MClient : MBaseClient, ClientWithAccounting {
     }
 
     fun sendEMailAttachments(
-        from: I_AD_User,
-        user: I_AD_User,
+        from: User,
+        user: User,
         schedulerName: String,
         mailContent: String,
         fileList: List<File>
@@ -259,7 +259,7 @@ class MClient : MBaseClient, ClientWithAccounting {
         // IDEMPIERE-722
         private val MAIL_SEND_CREDENTIALS_USER = "U"
         private val MAIL_SEND_CREDENTIALS_SYSTEM = "S"
-        protected var s_cache = CCache<Int, I_AD_Client>(I_AD_Client.Table_Name, 3, 120, true)
+        protected var s_cache = CCache<Int, Client>(Client.Table_Name, 3, 120, true)
         /**
          * Static Logger
          */
@@ -270,7 +270,7 @@ class MClient : MBaseClient, ClientWithAccounting {
          *
          * @return clients
          */
-        val all: Array<I_AD_Client>
+        val all: Array<Client>
             get() = getAll("") // 	getAll
 
         /**
@@ -279,8 +279,8 @@ class MClient : MBaseClient, ClientWithAccounting {
          * @param orderBy by clause
          * @return clients
          */
-        fun getAll(orderBy: String): Array<I_AD_Client> {
-            val list = Query<I_AD_Client>(I_AD_Client.Table_Name, null).setOrderBy(orderBy).list()
+        fun getAll(orderBy: String): Array<Client> {
+            val list = Query<Client>(Client.Table_Name, null).setOrderBy(orderBy).list()
             for (client in list) {
                 s_cache[client.clientId] = client
             }

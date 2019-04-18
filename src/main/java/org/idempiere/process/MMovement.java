@@ -9,7 +9,7 @@ import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.model.I_M_MovementLine;
 import org.compiere.model.I_M_MovementLineMA;
@@ -163,7 +163,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (getDocumentTypeId() == 0) {
-            I_C_DocType[] types = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
+            DocumentType[] types = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialMovement);
             if (types.length > 0) // 	get first
                 setDocumentTypeId(types[0].getDocTypeId());
             else {

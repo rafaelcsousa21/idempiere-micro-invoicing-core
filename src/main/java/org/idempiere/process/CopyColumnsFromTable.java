@@ -1,11 +1,10 @@
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_AD_Column;
-import org.compiere.model.I_AD_Element;
+import org.compiere.model.Column;
+import org.compiere.model.Element;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
-import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.M_Element;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
@@ -68,14 +67,14 @@ public class CopyColumnsFromTable extends SvrProcess {
                             + p_target_AD_Table_ID);
 
         MTable targetTable = new MTable(p_target_AD_Table_ID);
-        I_AD_Column[] targetColumns = targetTable.getColumns(true);
+        Column[] targetColumns = targetTable.getColumns(true);
         if (targetColumns.length > 0)
             throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyColumns"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
-        I_AD_Column[] sourceColumns = sourceTable.getColumns(true);
+        Column[] sourceColumns = sourceTable.getColumns(true);
 
-        for (I_AD_Column sourceColumn : sourceColumns) {
+        for (Column sourceColumn : sourceColumns) {
             MColumn colTarget = new MColumn(targetTable);
             PO.copyValues((PO)sourceColumn, colTarget);
             colTarget.setColumnTableId(targetTable.getTableTableId());
@@ -85,7 +84,7 @@ public class CopyColumnsFromTable extends SvrProcess {
                 String targetColumnName = targetTable.getDbTableName() + "_ID";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                I_AD_Element element = M_Element.get(targetColumnName);
+                Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(targetColumnName, targetTable.getEntityType());
@@ -106,7 +105,7 @@ public class CopyColumnsFromTable extends SvrProcess {
                 String targetColumnName = targetTable.getDbTableName() + "_UU";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
-                I_AD_Element element = M_Element.get(targetColumnName);
+                Element element = M_Element.get(targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(targetColumnName, targetTable.getEntityType());

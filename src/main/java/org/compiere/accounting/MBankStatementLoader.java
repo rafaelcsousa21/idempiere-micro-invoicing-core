@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.bo.X_C_Currency;
 import org.compiere.model.I_C_Currency;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import org.compiere.orm.MTable;
 import software.hsharp.core.orm.MBaseTableKt;
 
@@ -139,7 +139,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
         }
         // Initialize lookup lists
         MTable table;
-        I_Query<I_C_Currency> query;
+        TypedQuery<I_C_Currency> query;
 
         table = MBaseTableKt.getTable(X_C_Currency.Table_ID);
         query = table.createQuery("IsActive='Y'");

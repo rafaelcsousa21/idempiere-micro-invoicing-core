@@ -1,7 +1,7 @@
 package org.idempiere.process;
 
-import org.compiere.model.I_AD_Client;
-import org.compiere.model.I_AD_Column;
+import org.compiere.model.Client;
+import org.compiere.model.Column;
 import org.compiere.orm.MClientKt;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
@@ -38,7 +38,7 @@ public class TranslationDocSync extends SvrProcess {
      * @throws Exception
      */
     protected String doIt() throws Exception {
-        I_AD_Client client = MClientKt.getClient();
+        Client client = MClientKt.getClient();
         String baselang = Language.getBaseAD_Language();
         if (client.isMultiLingualDocument() && client.getADLanguage().equals(baselang)) {
             throw new AdempiereUserError("@clientId@: @IsMultiLingualDocument@");
@@ -63,10 +63,10 @@ public class TranslationDocSync extends SvrProcess {
      *
      * @param table table
      */
-    private void processTable(MTable table, I_AD_Client client) {
+    private void processTable(MTable table, Client client) {
         StringBuilder columnNames = new StringBuilder();
-        I_AD_Column[] columns = table.getColumns(false);
-        for (I_AD_Column column : columns) {
+        Column[] columns = table.getColumns(false);
+        for (Column column : columns) {
             if ((!column.getColumnName().equals(PO.getUUIDColumnName(table.getDbTableName())))
                     && (column.getReferenceId() == DisplayType.String
                     || column.getReferenceId() == DisplayType.Text)) {

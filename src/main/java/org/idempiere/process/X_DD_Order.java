@@ -1,6 +1,9 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingElementValue;
+import org.compiere.model.DocumentType;
+import org.compiere.model.User;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_DD_Order;
@@ -125,9 +128,9 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
-    public org.compiere.model.I_AD_User getUser() throws RuntimeException {
-        return (org.compiere.model.I_AD_User)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
+    public User getUser() throws RuntimeException {
+        return (User)
+                MBaseTableKt.getTable(User.Table_Name)
                         .getPO(getUserId());
     }
 
@@ -287,9 +290,9 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_Charge_ID, C_Charge_ID);
     }
 
-    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
+    public DocumentType getDocumentType() throws RuntimeException {
+        return (DocumentType)
+                MBaseTableKt.getTable(DocumentType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 
@@ -1181,9 +1184,9 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_Ref_Order_ID, Integer.valueOf(Ref_Order_ID));
     }
 
-    public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
-        return (org.compiere.model.I_AD_User)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
+    public User getSalesRep() throws RuntimeException {
+        return (User)
+                MBaseTableKt.getTable(User.Table_Name)
                         .getPO(getSalesRepresentativeId());
     }
 
@@ -1267,9 +1270,9 @@ public class X_DD_Order extends PO implements I_DD_Order {
         setValue(COLUMNNAME_TrackingNo, TrackingNo);
     }
 
-    public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser1() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser1Id());
     }
 
@@ -1294,9 +1297,9 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
-    public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser2() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser2Id());
     }
 

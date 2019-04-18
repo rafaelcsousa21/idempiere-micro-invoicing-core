@@ -12,8 +12,8 @@ import org.compiere.invoicing.MInventory
 import org.compiere.invoicing.MInventoryLine
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
-import org.compiere.model.I_AD_Client
-import org.compiere.model.I_AD_Org
+import org.compiere.model.Client
+import org.compiere.model.ClientOrganization
 import org.compiere.model.I_C_BankAccount
 import org.compiere.model.I_C_Charge
 import org.compiere.model.I_C_PaymentTerm
@@ -23,8 +23,7 @@ import org.compiere.model.I_M_Product
 import org.compiere.model.I_M_Warehouse
 import org.compiere.order.MPaySchedule
 import org.compiere.orm.DefaultModelFactory
-import org.compiere.orm.IModelFactory
-import org.compiere.orm.MClient
+import org.compiere.orm.ModelFactory
 import org.compiere.orm.Query
 import org.compiere.orm.getClientDocumentTypes
 import org.compiere.orm.getClientOrganizations
@@ -37,7 +36,7 @@ import org.compiere.tax.MTax
 import org.compiere.tax.MTaxCategory
 import org.idempiere.common.util.AdempiereSystemError
 import org.idempiere.common.util.EnvironmentServiceImpl
-import org.idempiere.icommon.model.IPO
+import org.idempiere.icommon.model.PersistentObject
 import org.junit.Before
 import org.slf4j.impl.SimpleLogger
 import software.hsharp.core.modules.BaseModuleImpl
@@ -82,7 +81,7 @@ abstract class BaseComponentTest {
     private var _tax: I_C_Tax? = null
     protected val tax: I_C_Tax get() = _tax ?: throw AdempiereSystemError("tax is null")
 
-    protected val org: I_AD_Org
+    protected val org: ClientOrganization
         get() = getOrg(1000000)
     protected val warehouse: I_M_Warehouse
         get() = MWarehouse(1000000)
@@ -98,7 +97,7 @@ abstract class BaseComponentTest {
         Environment.run(baseModule) {
             environmentService.login(NEW_AD_CLIENT_ID, 0, 0)
             DB.run {
-                val query = Query<I_AD_Client>("AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
+                val query = Query<Client>("AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
                 val result = query.list()
                 if (result.isEmpty()) {
                     environmentService.login(0, 0, 0)
@@ -150,8 +149,8 @@ abstract class BaseComponentTest {
         paySchedule.save()
     }
 
-    fun <T : IPO> getById(id: Int, tableName: String): T {
-        val modelFactory: IModelFactory = DefaultModelFactory()
+    fun <T : PersistentObject> getById(id: Int, tableName: String): T {
+        val modelFactory: ModelFactory = DefaultModelFactory()
         val result: T = modelFactory.getPO(tableName, id)
         println(result)
         assertNotNull(result)
@@ -160,7 +159,7 @@ abstract class BaseComponentTest {
     }
 
     protected fun getProductById(product_id: Int): I_M_Product {
-        val modelFactory: IModelFactory = DefaultModelFactory()
+        val modelFactory: ModelFactory = DefaultModelFactory()
         val product: I_M_Product = modelFactory.getPO(I_M_Product.Table_Name, product_id)
         println(product)
         assertNotNull(product)

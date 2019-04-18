@@ -1,6 +1,7 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_M_AttributeSetInstance;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -818,9 +819,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         setValue(COLUMNNAME_TargetQty, TargetQty);
     }
 
-    public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser1() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser1Id());
     }
 
@@ -845,9 +846,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
-    public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser2() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser2Id());
     }
 

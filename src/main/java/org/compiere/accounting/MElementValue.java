@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.HasName;
-import org.compiere.model.I_C_ElementValue;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_Fact_Acct;
 import org.compiere.orm.MTree_Base;
@@ -147,7 +147,7 @@ public class MElementValue extends X_C_ElementValue {
         if (getOrgId() != 0) setOrgId(0);
         //
         // Transform to summary level account
-        if (!newRecord && isSummary() && isValueChanged(I_C_ElementValue.COLUMNNAME_IsSummary)) {
+        if (!newRecord && isSummary() && isValueChanged(AccountingElementValue.COLUMNNAME_IsSummary)) {
             //
             // Check if we have accounting facts
             boolean match =
@@ -177,7 +177,7 @@ public class MElementValue extends X_C_ElementValue {
     @Override
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return success;
-        if (newRecord || isValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
+        if (newRecord || isValueChanged(AccountingElementValue.COLUMNNAME_Value)) {
             // afalcone [Bugs #1837219]
             int ad_Tree_ID = (new MElement(getElementId())).getTreeId();
             String treeType = (new MTree(ad_Tree_ID)).getTreeType();
@@ -189,7 +189,7 @@ public class MElementValue extends X_C_ElementValue {
 
         //	Value/Name change
         if (!newRecord
-                && (isValueChanged(I_C_ElementValue.COLUMNNAME_Value)
+                && (isValueChanged(AccountingElementValue.COLUMNNAME_Value)
                 || isValueChanged(HasName.COLUMNNAME_Name))) {
             MAccount.updateValueDescription(
                     "Account_ID=" + getElementValueId());

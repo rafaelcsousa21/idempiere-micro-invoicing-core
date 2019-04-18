@@ -11,7 +11,7 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_Invoice;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import software.hsharp.core.orm.MBaseTableKt;
@@ -165,7 +165,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                         + " AND EXISTS (SELECT 1 FROM C_CashLine cl, C_AllocationLine al "
                         + "where cl.C_Cash_ID=? and al.C_CashLine_ID=cl.C_CashLine_ID "
                         + "and C_AllocationHdr.C_AllocationHdr_ID=al.C_AllocationHdr_ID)";
-        I_Query<I_C_AllocationHdr> query = MBaseTableKt.getTable(I_C_AllocationHdr.Table_ID).createQuery(whereClause);
+        TypedQuery<I_C_AllocationHdr> query = MBaseTableKt.getTable(I_C_AllocationHdr.Table_ID).createQuery(whereClause);
         query.setParameters(C_Cash_ID);
         List<I_C_AllocationHdr> list = query.list();
         I_C_AllocationHdr[] retValue = new I_C_AllocationHdr[list.size()];

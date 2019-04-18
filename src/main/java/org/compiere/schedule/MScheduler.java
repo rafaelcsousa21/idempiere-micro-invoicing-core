@@ -3,7 +3,7 @@ package org.compiere.schedule;
 import kotliquery.Row;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
-import org.compiere.model.I_AD_Column;
+import org.compiere.model.Column;
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.model.I_AD_Scheduler_Para;
 import org.compiere.orm.MColumn;
@@ -13,7 +13,7 @@ import org.compiere.orm.MUserRoles;
 import org.compiere.orm.Query;
 import org.compiere.util.DisplayType;
 import org.compiere.util.MsgKt;
-import org.idempiere.icommon.model.IPO;
+import org.idempiere.icommon.model.PersistentObject;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -169,7 +169,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         if (getDBTableId() > 0) {
             // Validate the table has any button referencing the process
             int colid =
-                    new Query<I_AD_Column>(
+                    new Query<Column>(
                             MColumn.Table_Name,
                             "AD_Table_ID=? AND AD_Reference_ID=? AND AD_Process_ID=?"
                     )
@@ -192,7 +192,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
             }
             // Validate the record must exists on the same client of the scheduler
             MTable table = MBaseTableKt.getTable(getDBTableId());
-            IPO po = table.getPO(getRecordId());
+            PersistentObject po = table.getPO(getRecordId());
             if (po == null || po.getId() <= 0 || po.getClientId() != getClientId()) {
                 log.saveError("Error", MsgKt.getMsg("NoRecordID"));
                 return false;

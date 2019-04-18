@@ -6,7 +6,6 @@ import org.compiere.accounting.MMatchInv;
 import org.compiere.accounting.MMatchPO;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.accounting.MPeriod;
-import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MStorageReservation;
 import org.compiere.accounting.NegativeInventoryDisallowedException;
@@ -14,7 +13,7 @@ import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_Order;
@@ -1509,10 +1508,10 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Document Type
         int C_DocTypeTarget_ID = 0;
-        I_C_DocType[] shipmentTypes =
+        DocumentType[] shipmentTypes =
                 MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_MaterialDelivery);
 
-        for (I_C_DocType shipmentType : shipmentTypes) {
+        for (DocumentType shipmentType : shipmentTypes) {
             if (shipmentType.isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentType.isDefault()))
                 C_DocTypeTarget_ID = shipmentType.getDocTypeId();
         }

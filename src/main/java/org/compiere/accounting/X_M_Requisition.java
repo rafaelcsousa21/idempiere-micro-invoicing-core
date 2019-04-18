@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_Requisition;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -86,9 +87,9 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
         else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
-    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
+    public DocumentType getDocumentType() throws RuntimeException {
+        return (DocumentType)
+                MBaseTableKt.getTable(DocumentType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 

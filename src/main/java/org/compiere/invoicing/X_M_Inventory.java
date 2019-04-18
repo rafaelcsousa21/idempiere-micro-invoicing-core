@@ -1,6 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_Inventory;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -141,9 +142,9 @@ public abstract class X_M_Inventory extends PO implements I_M_Inventory {
         return ii;
     }
 
-    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
+    public DocumentType getDocumentType() throws RuntimeException {
+        return (DocumentType)
+                MBaseTableKt.getTable(DocumentType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 

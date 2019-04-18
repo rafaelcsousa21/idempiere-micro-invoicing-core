@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import org.compiere.model.IFact;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_AcctSchema_Element;
-import org.compiere.model.I_C_ElementValue;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_Fact_Acct;
 import org.idempiere.common.util.CLogger;
@@ -561,7 +561,7 @@ public final class Fact implements IFact {
                 log.warning("No Account for " + line);
                 return false;
             }
-            I_C_ElementValue ev = account.getAccount();
+            AccountingElementValue ev = account.getAccount();
             if (ev == null) {
                 log.warning("No Element Value for " + account + ": " + line);
                 m_doc.p_Error = account.toString();

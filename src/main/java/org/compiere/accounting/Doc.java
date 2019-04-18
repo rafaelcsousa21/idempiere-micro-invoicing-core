@@ -677,7 +677,7 @@ public abstract class Doc implements IDoc {
         p_Status = STATUS_NotPosted;
 
         //  Create Fact per AcctSchema
-        m_fact = new ArrayList<IFact>();
+        m_fact = new ArrayList<>();
 
         getPO().setDoc(this);
         try {
@@ -774,14 +774,13 @@ public abstract class Doc implements IDoc {
      * @return number of records
      */
     protected int deleteAcct() {
-        StringBuilder sql =
-                new StringBuilder("DELETE Fact_Acct WHERE AD_Table_ID=")
-                        .append(getTableId())
-                        .append(" AND Record_ID=")
-                        .append(p_po.getId())
-                        .append(" AND C_AcctSchema_ID=")
-                        .append(m_as.getAccountingSchemaId());
-        int no = executeUpdate(sql.toString());
+        String sql = "DELETE Fact_Acct WHERE AD_Table_ID=" +
+                getTableId() +
+                " AND Record_ID=" +
+                p_po.getId() +
+                " AND C_AcctSchema_ID=" +
+                m_as.getAccountingSchemaId();
+        int no = executeUpdate(sql);
         if (no != 0) if (log.isLoggable(Level.INFO)) log.info("deleted=" + no);
         return no;
     } //	deleteAcct
@@ -889,13 +888,12 @@ public abstract class Doc implements IDoc {
      */
     private void unlock() {
         // 	outside trx if on server
-        StringBuilder sql = new StringBuilder("UPDATE ");
-        sql.append(getTableName())
-                .append(" SET Processing='N' WHERE ")
-                .append(getTableName())
-                .append("_ID=")
-                .append(p_po.getId());
-        executeUpdate(sql.toString());
+        String sql = "UPDATE " + getTableName() +
+                " SET Processing='N' WHERE " +
+                getTableName() +
+                "_ID=" +
+                p_po.getId();
+        executeUpdate(sql);
     } //  unlock
 
     /**
@@ -1025,15 +1023,15 @@ public abstract class Doc implements IDoc {
         }
         // Journal from a different acct schema
         if (this instanceof Doc_GLJournal) {
-            int glj_as = ((Integer) p_po.getValue("C_AcctSchema_ID")).intValue();
+            int glj_as = (Integer) p_po.getValue("C_AcctSchema_ID");
             if (acctSchema.getAccountingSchemaId() != glj_as) return true;
         }
         //  Get All Currencies
         HashSet<Integer> set = new HashSet<Integer>();
-        set.add(new Integer(getCurrencyId()));
+        set.add(getCurrencyId());
         for (int i = 0; p_lines != null && i < p_lines.length; i++) {
             int C_Currency_ID = p_lines[i].getCurrencyId();
-            if (C_Currency_ID != NO_CURRENCY) set.add(new Integer(C_Currency_ID));
+            if (C_Currency_ID != NO_CURRENCY) set.add(C_Currency_ID);
         }
 
         //  just one and the same
@@ -1046,7 +1044,7 @@ public abstract class Doc implements IDoc {
         boolean convertible = true;
         Iterator<Integer> it = set.iterator();
         while (it.hasNext() && convertible) {
-            int C_Currency_ID = it.next().intValue();
+            int C_Currency_ID = it.next();
             if (C_Currency_ID != acctSchema.getCurrencyId()) {
                 BigDecimal amt =
                         MConversionRate.getRate(
@@ -1090,7 +1088,7 @@ public abstract class Doc implements IDoc {
         int index = p_po.getColumnIndex("C_Period_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) m_period = MPeriod.get(ii.intValue());
+            if (ii != null) m_period = MPeriod.get(ii);
         }
         if (m_period == null)
             m_period = MPeriod.get(getDateAcct(), getOrgId());
@@ -1187,147 +1185,168 @@ public abstract class Doc implements IDoc {
         int para_1 = 0; //  first parameter (second is always AcctSchema)
         String sql = null;
 
-        /** Account Type - Invoice */
-        if (AcctType == ACCTTYPE_Charge) // 	see getChargeAccount in DocLine
-        {
-            int cmp = getAmount(AMTTYPE_Charge).compareTo(Env.ZERO);
-            if (cmp == 0) return 0;
-            else
-                sql = "SELECT CH_Expense_Acct FROM C_Charge_Acct WHERE C_Charge_ID=? AND C_AcctSchema_ID=?";
+        /* Account Type - Invoice */
+        switch (AcctType) {
+            case ACCTTYPE_Charge:
+// 	see getChargeAccount in DocLine
 
-            para_1 = getChargeId();
-        } else if (AcctType == ACCTTYPE_V_Liability) {
-            sql =
-                    "SELECT V_Liability_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_V_Liability_Services) {
-            sql =
-                    "SELECT V_Liability_Services_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_C_Receivable) {
-            sql =
-                    "SELECT C_Receivable_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_C_Receivable_Services) {
-            sql =
-                    "SELECT C_Receivable_Services_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_V_Prepayment) {
-            sql =
-                    "SELECT V_Prepayment_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_C_Prepayment) {
-            sql =
-                    "SELECT C_Prepayment_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        }
+                int cmp = getAmount(AMTTYPE_Charge).compareTo(Env.ZERO);
+                if (cmp == 0) return 0;
+                else
+                    sql = "SELECT CH_Expense_Acct FROM C_Charge_Acct WHERE C_Charge_ID=? AND C_AcctSchema_ID=?";
 
-        /** Account Type - Payment */
-        else if (AcctType == ACCTTYPE_UnallocatedCash) {
-            sql =
-                    "SELECT B_UnallocatedCash_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        } else if (AcctType == ACCTTYPE_BankInTransit) {
-            sql =
-                    "SELECT B_InTransit_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        } else if (AcctType == ACCTTYPE_PaymentSelect) {
-            sql =
-                    "SELECT B_PaymentSelect_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        }
+                para_1 = getChargeId();
+                break;
+            case ACCTTYPE_V_Liability:
+                sql =
+                        "SELECT V_Liability_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_V_Liability_Services:
+                sql =
+                        "SELECT V_Liability_Services_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_C_Receivable:
+                sql =
+                        "SELECT C_Receivable_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_C_Receivable_Services:
+                sql =
+                        "SELECT C_Receivable_Services_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_V_Prepayment:
+                sql =
+                        "SELECT V_Prepayment_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_C_Prepayment:
+                sql =
+                        "SELECT C_Prepayment_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
 
-        /** Account Type - Allocation */
-        else if (AcctType == ACCTTYPE_DiscountExp) {
-            sql =
-                    "SELECT a.PayDiscount_Exp_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
-                            + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_DiscountRev) {
-            sql =
-                    "SELECT PayDiscount_Rev_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
-                            + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        } else if (AcctType == ACCTTYPE_WriteOff) {
-            sql =
-                    "SELECT WriteOff_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
-                            + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        }
+            /* Account Type - Payment */
+            case ACCTTYPE_UnallocatedCash:
+                sql =
+                        "SELECT B_UnallocatedCash_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
+            case ACCTTYPE_BankInTransit:
+                sql =
+                        "SELECT B_InTransit_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
+            case ACCTTYPE_PaymentSelect:
+                sql =
+                        "SELECT B_PaymentSelect_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
 
-        /** Account Type - Bank Statement */
-        else if (AcctType == ACCTTYPE_BankAsset) {
-            sql =
-                    "SELECT B_Asset_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        } else if (AcctType == ACCTTYPE_InterestRev) {
-            sql =
-                    "SELECT B_InterestRev_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        } else if (AcctType == ACCTTYPE_InterestExp) {
-            sql =
-                    "SELECT B_InterestExp_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getBankAccountId();
-        }
+            /* Account Type - Allocation */
+            case ACCTTYPE_DiscountExp:
+                sql =
+                        "SELECT a.PayDiscount_Exp_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
+                                + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_DiscountRev:
+                sql =
+                        "SELECT PayDiscount_Rev_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
+                                + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
+            case ACCTTYPE_WriteOff:
+                sql =
+                        "SELECT WriteOff_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
+                                + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
 
-        /** Account Type - Cash */
-        else if (AcctType == ACCTTYPE_CashAsset) {
-            sql = "SELECT CB_Asset_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getCashBookId();
-        } else if (AcctType == ACCTTYPE_CashTransfer) {
-            sql =
-                    "SELECT CB_CashTransfer_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getCashBookId();
-        } else if (AcctType == ACCTTYPE_CashExpense) {
-            sql =
-                    "SELECT CB_Expense_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getCashBookId();
-        } else if (AcctType == ACCTTYPE_CashReceipt) {
-            sql =
-                    "SELECT CB_Receipt_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getCashBookId();
-        } else if (AcctType == ACCTTYPE_CashDifference) {
-            sql =
-                    "SELECT CB_Differences_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getCashBookId();
-        }
+            /* Account Type - Bank Statement */
+            case ACCTTYPE_BankAsset:
+                sql =
+                        "SELECT B_Asset_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
+            case ACCTTYPE_InterestRev:
+                sql =
+                        "SELECT B_InterestRev_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
+            case ACCTTYPE_InterestExp:
+                sql =
+                        "SELECT B_InterestExp_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getBankAccountId();
+                break;
 
-        /** Inventory Accounts */
-        else if (AcctType == ACCTTYPE_InvDifferences) {
-            sql =
-                    "SELECT W_Differences_Acct FROM M_Warehouse_Acct WHERE M_Warehouse_ID=? AND C_AcctSchema_ID=?";
-            //  "SELECT W_Inventory_Acct, W_Revaluation_Acct, W_InvActualAdjust_Acct FROM M_Warehouse_Acct
-            // WHERE M_Warehouse_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getWarehouseId();
-        } else if (AcctType == ACCTTYPE_NotInvoicedReceipts) {
-            sql =
-                    "SELECT NotInvoicedReceipts_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
-                            + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getBusinessPartnerId();
-        }
+            /* Account Type - Cash */
+            case ACCTTYPE_CashAsset:
+                sql = "SELECT CB_Asset_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getCashBookId();
+                break;
+            case ACCTTYPE_CashTransfer:
+                sql =
+                        "SELECT CB_CashTransfer_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getCashBookId();
+                break;
+            case ACCTTYPE_CashExpense:
+                sql =
+                        "SELECT CB_Expense_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getCashBookId();
+                break;
+            case ACCTTYPE_CashReceipt:
+                sql =
+                        "SELECT CB_Receipt_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getCashBookId();
+                break;
+            case ACCTTYPE_CashDifference:
+                sql =
+                        "SELECT CB_Differences_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getCashBookId();
+                break;
 
-        /** Project Accounts */
-        else if (AcctType == ACCTTYPE_ProjectAsset) {
-            sql = "SELECT PJ_Asset_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getProjectId();
-        } else if (AcctType == ACCTTYPE_ProjectWIP) {
-            sql = "SELECT PJ_WIP_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getProjectId();
-        }
+            /* Inventory Accounts */
+            case ACCTTYPE_InvDifferences:
+                sql =
+                        "SELECT W_Differences_Acct FROM M_Warehouse_Acct WHERE M_Warehouse_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getWarehouseId();
+                break;
+            case ACCTTYPE_NotInvoicedReceipts:
+                sql =
+                        "SELECT NotInvoicedReceipts_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
+                                + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
+                para_1 = getBusinessPartnerId();
+                break;
 
-        /** GL Accounts */
-        else if (AcctType == ACCTTYPE_PPVOffset) {
-            sql = "SELECT PPVOffset_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
-            para_1 = -1;
-        } else if (AcctType == ACCTTYPE_CommitmentOffset) {
-            sql = "SELECT CommitmentOffset_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
-            para_1 = -1;
-        } else if (AcctType == ACCTTYPE_CommitmentOffsetSales) {
-            sql = "SELECT CommitmentOffsetSales_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
-            para_1 = -1;
-        } else {
-            log.severe("Not found AcctType=" + AcctType);
-            return 0;
+            /* Project Accounts */
+            case ACCTTYPE_ProjectAsset:
+                sql = "SELECT PJ_Asset_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getProjectId();
+                break;
+            case ACCTTYPE_ProjectWIP:
+                sql = "SELECT PJ_WIP_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
+                para_1 = getProjectId();
+                break;
+
+            /* GL Accounts */
+            case ACCTTYPE_PPVOffset:
+                sql = "SELECT PPVOffset_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
+                para_1 = -1;
+                break;
+            case ACCTTYPE_CommitmentOffset:
+                sql = "SELECT CommitmentOffset_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
+                para_1 = -1;
+                break;
+            case ACCTTYPE_CommitmentOffsetSales:
+                sql = "SELECT CommitmentOffsetSales_Acct FROM C_AcctSchema_GL WHERE C_AcctSchema_ID=?";
+                para_1 = -1;
+                break;
+            default:
+                log.severe("Not found AcctType=" + AcctType);
+                return 0;
         }
         //  Do we have sql & Parameter
         if (sql == null || para_1 == 0) {
@@ -1376,8 +1395,7 @@ public abstract class Doc implements IDoc {
         int C_ValidCombination_ID = getValidCombinationId(AcctType, as);
         if (C_ValidCombination_ID == 0) return null;
         //	Return Account
-        MAccount acct = MAccount.get(C_ValidCombination_ID);
-        return acct;
+        return MAccount.get(C_ValidCombination_ID);
     } //	getAccount
 
     /**
@@ -1445,7 +1463,7 @@ public abstract class Doc implements IDoc {
             int index = p_po.getColumnIndex("C_Currency_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_Currency_ID = ii.intValue();
+                if (ii != null) m_C_Currency_ID = ii;
             }
             if (m_C_Currency_ID == -1) m_C_Currency_ID = NO_CURRENCY;
         }
@@ -1588,7 +1606,7 @@ public abstract class Doc implements IDoc {
         int index = p_po.getColumnIndex("Posted");
         if (index != -1) {
             Object posted = p_po.getValue(index);
-            if (posted instanceof Boolean) return ((Boolean) posted).booleanValue();
+            if (posted instanceof Boolean) return (Boolean) posted;
             if (posted instanceof String) return "Y".equals(posted);
         }
         throw new IllegalStateException("No Posted");
@@ -1604,7 +1622,7 @@ public abstract class Doc implements IDoc {
         if (index == -1) index = p_po.getColumnIndex("IsReceipt");
         if (index != -1) {
             Object posted = p_po.getValue(index);
-            if (posted instanceof Boolean) return ((Boolean) posted).booleanValue();
+            if (posted instanceof Boolean) return (Boolean) posted;
             if (posted instanceof String) return "Y".equals(posted);
         }
         return false;
@@ -1620,61 +1638,76 @@ public abstract class Doc implements IDoc {
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             //	DocType does not exist - get DocTypeTarget
-            if (ii != null && ii.intValue() == 0) {
+            if (ii != null && ii == 0) {
                 index = p_po.getColumnIndex("C_DocTypeTarget_ID");
                 if (index != -1) ii = (Integer) p_po.getValue(index);
             }
             if (ii != null) return ii;
         } else {
-            if (p_po.getTableName().equals(I_M_MatchPO.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_MatMatchPO);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_M_MatchInv.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_MatMatchInv);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_C_AllocationHdr.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_Allocation);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_C_BankStatement.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_BankStatement);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_C_Cash.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_CashJournal);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_C_ProjectIssue.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_ProjectIssue);
-                if (docTypeId > 0) return docTypeId;
-            } else if (p_po.getTableName().equals(I_M_Production.Table_Name)) {
-                int docTypeId =
-                        getSQLValue(
-                                DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                                p_po.getClientId(),
-                                Doc.DOCTYPE_MatProduction);
-                if (docTypeId > 0) return docTypeId;
+            switch (p_po.getTableName()) {
+                case I_M_MatchPO.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_MatMatchPO);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_M_MatchInv.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_MatMatchInv);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_C_AllocationHdr.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_Allocation);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_C_BankStatement.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_BankStatement);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_C_Cash.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_CashJournal);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_C_ProjectIssue.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_ProjectIssue);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
+                case I_M_Production.Table_Name: {
+                    int docTypeId =
+                            getSQLValue(
+                                    DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
+                                    p_po.getClientId(),
+                                    Doc.DOCTYPE_MatProduction);
+                    if (docTypeId > 0) return docTypeId;
+                    break;
+                }
             }
         }
         return 0;
@@ -1718,7 +1751,7 @@ public abstract class Doc implements IDoc {
             int index = p_po.getColumnIndex("C_BankAccount_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_BankAccount_ID = ii.intValue();
+                if (ii != null) m_C_BankAccount_ID = ii;
             }
             if (m_C_BankAccount_ID == -1) m_C_BankAccount_ID = 0;
         }
@@ -1744,7 +1777,7 @@ public abstract class Doc implements IDoc {
             int index = p_po.getColumnIndex("C_CashBook_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_CashBook_ID = ii.intValue();
+                if (ii != null) m_C_CashBook_ID = ii;
             }
             if (m_C_CashBook_ID == -1) m_C_CashBook_ID = 0;
         }
@@ -1784,7 +1817,7 @@ public abstract class Doc implements IDoc {
             int index = p_po.getColumnIndex("C_BPartner_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_BPartner_ID = ii.intValue();
+                if (ii != null) m_C_BPartner_ID = ii;
             }
             if (m_C_BPartner_ID == -1) m_C_BPartner_ID = 0;
         }
@@ -1880,7 +1913,7 @@ public abstract class Doc implements IDoc {
             int index = p_po.getColumnIndex("C_SalesRegion_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_BP_C_SalesRegion_ID = ii.intValue();
+                if (ii != null) m_BP_C_SalesRegion_ID = ii;
             }
             if (m_BP_C_SalesRegion_ID == -1) m_BP_C_SalesRegion_ID = 0;
         }
@@ -2012,7 +2045,7 @@ public abstract class Doc implements IDoc {
         return 0;
     } //	getValue
 
-    /** ********************************************************************** */
+    /* ********************************************************************** */
     //  To be overwritten by Subclasses
 
     /**

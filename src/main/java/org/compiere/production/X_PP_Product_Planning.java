@@ -1,6 +1,7 @@
 package org.compiere.production;
 
 import kotliquery.Row;
+import org.compiere.model.User;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_Planning;
@@ -430,9 +431,9 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         setValue(COLUMNNAME_Order_Qty, Order_Qty);
     }
 
-    public org.compiere.model.I_AD_User getPlanner() throws RuntimeException {
-        return (org.compiere.model.I_AD_User)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
+    public User getPlanner() throws RuntimeException {
+        return (User)
+                MBaseTableKt.getTable(User.Table_Name)
                         .getPO(getPlannerId());
     }
 

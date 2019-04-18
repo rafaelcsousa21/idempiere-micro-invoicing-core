@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.I_C_PaymentAllocate;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
@@ -59,7 +59,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      */
     public static I_C_PaymentAllocate[] get(MPayment parent) {
         final String whereClause = "C_Payment_ID=?";
-        I_Query<I_C_PaymentAllocate> query =
+        TypedQuery<I_C_PaymentAllocate> query =
                 MBaseTableKt.getTable(I_C_PaymentAllocate.Table_ID)
                         .createQuery(whereClause);
         query.setParameters(parent.getPaymentId()).setOnlyActiveRecords(true);

@@ -7,7 +7,7 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_AD_ModelValidator;
 import org.compiere.model.I_AD_Rule;
 import org.compiere.model.I_C_AcctSchema;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import org.compiere.orm.MTable;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -15,7 +15,7 @@ import org.compiere.process.ImportProcess;
 import org.compiere.process.ImportValidator;
 import org.compiere.rule.MRule;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.icommon.model.IPO;
+import org.idempiere.icommon.model.PersistentObject;
 
 import javax.script.ScriptEngine;
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class ModelValidationEngine {
         // Load global validators
 
         MTable table = MBaseTableKt.getTable(X_AD_ModelValidator.Table_ID);
-        I_Query<I_AD_ModelValidator> query = table.createQuery("IsActive='Y'");
+        TypedQuery<I_AD_ModelValidator> query = table.createQuery("IsActive='Y'");
         query.setOrderBy("SeqNo");
         try {
             List<I_AD_ModelValidator> entityTypes = query.list();
@@ -334,7 +334,7 @@ public class ModelValidationEngine {
     } //	fireFactsValidate
 
     private String fireFactsValidate(
-            I_C_AcctSchema schema, List<IFact> facts, IPO po, ArrayList<FactsValidator> list) {
+            I_C_AcctSchema schema, List<IFact> facts, PersistentObject po, ArrayList<FactsValidator> list) {
         for (FactsValidator factsValidator : list) {
             FactsValidator validator;
             try {

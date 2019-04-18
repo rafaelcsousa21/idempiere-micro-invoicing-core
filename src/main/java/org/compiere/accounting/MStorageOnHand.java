@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_StorageOnHand;
-import org.compiere.model.I_Query;
+import org.compiere.model.TypedQuery;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
@@ -165,7 +165,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
             boolean forUpdate,
             int timeout) {
         String sqlWhere = "M_Product_ID=? AND M_Locator_ID=? AND QtyOnHand <> 0";
-        I_Query<I_M_StorageOnHand> query =
+        TypedQuery<I_M_StorageOnHand> query =
                 new Query<I_M_StorageOnHand>(MStorageOnHand.Table_Name, sqlWhere)
                         .setParameters(M_Product_ID, M_Locator_ID);
         MProduct product = new MProduct(M_Product_ID);

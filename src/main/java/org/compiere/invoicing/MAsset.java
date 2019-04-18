@@ -19,7 +19,7 @@ import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.X_A_Asset;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
-import org.idempiere.icommon.model.IPO;
+import org.idempiere.icommon.model.PersistentObject;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -272,11 +272,11 @@ public class MAsset extends org.compiere.product.MAsset {
                 assetwk.saveEx();
 
                 // Change Log
-                MAssetChange.createAndSave("CRT", new IPO[]{this, assetwk, assetacct});
+                MAssetChange.createAndSave("CRT", new PersistentObject[]{this, assetwk, assetacct});
             }
 
         } else {
-            MAssetChange.createAndSave("UPD", new IPO[]{this});
+            MAssetChange.createAndSave("UPD", new PersistentObject[]{this});
         }
 
         //

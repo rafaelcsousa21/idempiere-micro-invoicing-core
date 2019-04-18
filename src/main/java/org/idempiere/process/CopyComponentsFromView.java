@@ -1,8 +1,8 @@
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_AD_ViewColumn;
-import org.compiere.model.I_AD_ViewComponent;
+import org.compiere.model.ViewColumn;
+import org.compiere.model.ViewComponent;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MViewColumn;
 import org.compiere.orm.MViewComponent;
@@ -68,12 +68,12 @@ public class CopyComponentsFromView extends SvrProcess {
                             + p_target_AD_Table_ID);
 
         MTable targetTable = new MTable(p_target_AD_Table_ID);
-        I_AD_ViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
+        ViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
         if (targetViewComponents.length > 0)
             throw new AdempiereSystemError(MsgKt.getMsg("ErrorCopyView"));
 
         MTable sourceTable = new MTable(p_source_AD_Table_ID);
-        I_AD_ViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
+        ViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
 
         for (int i = 0; i < sourceViewComponents.length; i++) {
             MViewComponent viewComponentTarget = new MViewComponent(targetTable);
@@ -96,11 +96,11 @@ public class CopyComponentsFromView extends SvrProcess {
     /**
      * Copy view columns from one component to another
      */
-    public void copyViewColumns(I_AD_ViewComponent sourceComponent, I_AD_ViewComponent targetComponent) {
+    public void copyViewColumns(ViewComponent sourceComponent, ViewComponent targetComponent) {
 
-        I_AD_ViewColumn[] sourceColumns = sourceComponent.getColumns(true);
+        ViewColumn[] sourceColumns = sourceComponent.getColumns(true);
 
-        for (I_AD_ViewColumn sourceColumn : sourceColumns) {
+        for (ViewColumn sourceColumn : sourceColumns) {
             MViewColumn columnTarget = new MViewColumn(targetComponent);
             PO.copyValues((PO)sourceColumn, columnTarget);
             columnTarget.setViewComponentId(targetComponent.getViewComponentId());

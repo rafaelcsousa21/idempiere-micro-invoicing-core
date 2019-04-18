@@ -1,7 +1,7 @@
 package org.compiere.query;
 
-import org.compiere.model.I_AD_Column;
-import org.compiere.model.I_AD_Table;
+import org.compiere.model.Column;
+import org.compiere.model.Table;
 import org.compiere.orm.MTableKt;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.idempiere.common.util.Env;
@@ -412,9 +412,9 @@ class Restriction implements Serializable {
         // verify if is a virtual column, do not prefix tableName if this is a virtualColumn
         boolean virtualColumn = false;
         if (tableName != null && tableName.length() > 0) {
-            I_AD_Table table = MBaseTableKt.getTable(tableName);
+            Table table = MBaseTableKt.getTable(tableName);
             if (table != null) {
-                for (I_AD_Column col : table.getColumns(false)) {
+                for (Column col : table.getColumns(false)) {
                     String colSQL = col.getColumnSQL();
                     if (colSQL != null && colSQL.contains("@"))
                         colSQL = Env.parseContext(-1, colSQL, false, true);

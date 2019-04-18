@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_Element;
+import org.compiere.model.AccountingElement;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Element extends BasePOName implements I_C_Element {
+public class X_C_Element extends BasePOName implements AccountingElement {
 
     /**
      * Account = A

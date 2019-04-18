@@ -9,7 +9,7 @@ import org.compiere.util.MsgKt;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.icommon.model.IPO;
+import org.idempiere.icommon.model.PersistentObject;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -74,7 +74,7 @@ public class MCostElement extends X_M_CostElement {
      * @param CostingMethod method
      * @return cost element
      */
-    public static I_M_CostElement getMaterialCostElement(IPO po, String CostingMethod) {
+    public static I_M_CostElement getMaterialCostElement(PersistentObject po, String CostingMethod) {
         if (CostingMethod == null || CostingMethod.length() == 0) {
             s_log.severe("No CostingMethod");
             return null;
@@ -160,7 +160,7 @@ public class MCostElement extends X_M_CostElement {
      * @param po parent
      * @return cost element array
      */
-    public static List<I_M_CostElement> getCostElementsWithCostingMethods(IPO po) {
+    public static List<I_M_CostElement> getCostElementsWithCostingMethods(PersistentObject po) {
         final String whereClause = "AD_Client_ID=? AND CostingMethod IS NOT NULL";
         return new Query<I_M_CostElement>(MCostElement.Table_Name, whereClause)
                 .setParameters(po.getClientId())
@@ -174,7 +174,7 @@ public class MCostElement extends X_M_CostElement {
      * @param po parent
      * @return cost element array
      */
-    public static I_M_CostElement[] getCostingMethods(IPO po) {
+    public static I_M_CostElement[] getCostingMethods(PersistentObject po) {
         final String whereClause = "AD_Client_ID=? AND CostElementType=? AND CostingMethod IS NOT NULL";
         List<I_M_CostElement> list =
                 new Query<I_M_CostElement>(I_M_CostElement.Table_Name, whereClause)

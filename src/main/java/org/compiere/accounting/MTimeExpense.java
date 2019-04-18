@@ -1,12 +1,11 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.crm.MUser;
 import org.compiere.crm.MUserKt;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_AD_User;
+import org.compiere.model.User;
 import org.compiere.model.I_M_PriceList;
 import org.compiere.orm.MDocType;
 import org.compiere.process.CompleteActionResult;
@@ -444,7 +443,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     public int getDocumentUserId() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
         if (getBusinessPartnerId() != 0) {
-            I_AD_User[] users = MUserKt.getBusinessPartnerUsers(getBusinessPartnerId());
+            User[] users = MUserKt.getBusinessPartnerUsers(getBusinessPartnerId());
             if (users.length > 0) {
                 m_AD_User_ID = users[0].getUserId();
                 return m_AD_User_ID;

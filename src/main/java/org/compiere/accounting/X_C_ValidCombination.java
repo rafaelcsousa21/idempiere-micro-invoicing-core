@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -50,9 +51,9 @@ public class X_C_ValidCombination extends PO {
         return sb.toString();
     }
 
-    public org.compiere.model.I_C_ElementValue getAccount() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getAccount() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getAccountId());
     }
 

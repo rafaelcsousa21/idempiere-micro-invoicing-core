@@ -14,7 +14,7 @@ import org.compiere.invoicing.MPaymentTerm;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_BankAccount;
-import org.compiere.model.I_C_DocType;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLine;
@@ -947,10 +947,10 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                         .first();
         if (ba == null) return "@NoAccountOrgCurrency@";
 
-        I_C_DocType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
+        DocumentType[] doctypes = MDocTypeKt.getDocumentTypeOfDocBaseType(MDocType.DOCBASETYPE_ARReceipt);
         if (doctypes.length == 0) return "No document type for AR Receipt";
-        I_C_DocType doctype = null;
-        for (I_C_DocType doc : doctypes) {
+        DocumentType doctype = null;
+        for (DocumentType doc : doctypes) {
             if (doc.getOrgId() == this.getOrgId()) {
                 doctype = doc;
                 break;
@@ -1474,9 +1474,9 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         //	Replace Prepay with POS to revert all doc
         if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(DocSubTypeSO)) {
-            I_C_DocType newDT = null;
-            I_C_DocType[] dts = MDocTypeKt.getGetClientDocumentTypes();
-            for (I_C_DocType type : dts) {
+            DocumentType newDT = null;
+            DocumentType[] dts = MDocTypeKt.getGetClientDocumentTypes();
+            for (DocumentType type : dts) {
                 if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(type.getDocSubTypeSO())) {
                     if (type.isDefault() || newDT == null) newDT = type;
                 }

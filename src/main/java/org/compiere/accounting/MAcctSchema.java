@@ -5,7 +5,7 @@ import org.compiere.bo.MCurrency;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.crm.MClientInfo;
 import org.compiere.crm.MClientInfoKt;
-import org.compiere.model.I_AD_ClientInfo;
+import org.compiere.model.ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.model.I_C_AcctSchema_GL;
@@ -38,7 +38,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * Cache of Client AcctSchema Arrays *
      */
     private static CCache<Integer, MAcctSchema[]> s_schema =
-            new CCache<Integer, MAcctSchema[]>(I_AD_ClientInfo.Table_Name, 3, 120, true); //  3 clients
+            new CCache<Integer, MAcctSchema[]>(ClientInfo.Table_Name, 3, 120, true); //  3 clients
     /**
      * Cache of AcctSchemas *
      */

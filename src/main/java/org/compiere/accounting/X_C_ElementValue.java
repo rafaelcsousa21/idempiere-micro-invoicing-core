@@ -1,7 +1,8 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_ElementValue;
+import org.compiere.model.AccountingElement;
+import org.compiere.model.AccountingElementValue;
 import org.compiere.orm.BasePONameValue;
 import software.hsharp.core.orm.MBaseTableKt;
 
@@ -11,7 +12,7 @@ import software.hsharp.core.orm.MBaseTableKt;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValue {
+public class X_C_ElementValue extends BasePONameValue implements AccountingElementValue {
 
     /**
      * Natural = N
@@ -94,9 +95,9 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
         setValue(COLUMNNAME_AccountType, AccountType);
     }
 
-    public org.compiere.model.I_C_Element getElement() throws RuntimeException {
-        return (org.compiere.model.I_C_Element)
-                MBaseTableKt.getTable(org.compiere.model.I_C_Element.Table_Name)
+    public AccountingElement getElement() throws RuntimeException {
+        return (AccountingElement)
+                MBaseTableKt.getTable(AccountingElement.Table_Name)
                         .getPO(getElementId());
     }
 
@@ -297,6 +298,6 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
 
     @Override
     public int getTableId() {
-        return I_C_ElementValue.Table_ID;
+        return AccountingElementValue.Table_ID;
     }
 }

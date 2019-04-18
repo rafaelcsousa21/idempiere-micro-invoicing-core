@@ -4,7 +4,7 @@ import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.ClientInfoWithAccounting;
 import org.compiere.model.ClientWithAccounting;
-import org.compiere.model.I_AD_Org;
+import org.compiere.model.ClientOrganization;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostElement;
@@ -650,7 +650,7 @@ public class MCost extends X_M_Cost {
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
-        I_AD_Org[] orgs = null;
+        ClientOrganization[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
         for (MAcctSchema as : mass) {
@@ -676,7 +676,7 @@ public class MCost extends X_M_Cost {
                 } else {
                     if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
 
-                    for (I_AD_Org o : orgs) {
+                    for (ClientOrganization o : orgs) {
                         if (o.isSummary()) continue;
                         if (as.getOrganizationOnlyId() == o.getOrgId() || as.getOrganizationOnlyId() == 0) {
                             createCostingRecord(
@@ -743,7 +743,7 @@ public class MCost extends X_M_Cost {
         MAcctSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
-        I_AD_Org[] orgs = null;
+        ClientOrganization[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
         for (MAcctSchema as : mass) {
@@ -757,7 +757,7 @@ public class MCost extends X_M_Cost {
                 }
             } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
                 if (orgs == null) orgs = MOrgKt.getClientOrganizations(product);
-                for (I_AD_Org o : orgs) {
+                for (ClientOrganization o : orgs) {
                     for (I_M_CostElement ce : ces) {
                         I_M_Cost cost =
                                 MCost.get(

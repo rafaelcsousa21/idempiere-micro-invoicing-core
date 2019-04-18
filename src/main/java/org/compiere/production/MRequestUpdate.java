@@ -1,7 +1,7 @@
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_Column;
+import org.compiere.model.Column;
 import org.compiere.model.I_R_RequestUpdate;
 import software.hsharp.core.orm.MBaseTableKt;
 
@@ -46,7 +46,7 @@ public class MRequestUpdate extends X_R_RequestUpdate {
         setClientOrg(parent);
         setRequestId(parent.getRequestId());
         //
-        for (final I_AD_Column col : MBaseTableKt.getTable(I_R_RequestUpdate.Table_ID).getColumns(false)) {
+        for (final Column col : MBaseTableKt.getTable(I_R_RequestUpdate.Table_ID).getColumns(false)) {
             if (col.isStandardColumn()
                     || col.isKey()
                     || col.isParent()

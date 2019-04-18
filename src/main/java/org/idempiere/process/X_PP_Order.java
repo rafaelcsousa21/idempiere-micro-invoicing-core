@@ -1,7 +1,10 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingElementValue;
+import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_AttributeSetInstance;
+import org.compiere.model.User;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Order;
@@ -173,9 +176,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         else setValue(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
-    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
+    public DocumentType getDocumentType() throws RuntimeException {
+        return (DocumentType)
+                MBaseTableKt.getTable(DocumentType.Table_Name)
                         .getPO(getDocumentTypeId());
     }
 
@@ -200,9 +203,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         else setValue(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
-    public org.compiere.model.I_C_DocType getDocTypeTarget() throws RuntimeException {
-        return (org.compiere.model.I_C_DocType)
-                MBaseTableKt.getTable(org.compiere.model.I_C_DocType.Table_Name)
+    public DocumentType getDocTypeTarget() throws RuntimeException {
+        return (DocumentType)
+                MBaseTableKt.getTable(DocumentType.Table_Name)
                         .getPO(getTargetDocumentTypeId());
     }
 
@@ -839,9 +842,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         setValue(COLUMNNAME_OrderType, OrderType);
     }
 
-    public org.compiere.model.I_AD_User getPlanner() throws RuntimeException {
-        return (org.compiere.model.I_AD_User)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_User.Table_Name)
+    public User getPlanner() throws RuntimeException {
+        return (User)
+                MBaseTableKt.getTable(User.Table_Name)
                         .getPO(getPlannerId());
     }
 
@@ -1264,9 +1267,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         else setValueNoCheck(COLUMNNAME_S_Resource_ID, Integer.valueOf(S_Resource_ID));
     }
 
-    public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser1() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser1Id());
     }
 
@@ -1291,9 +1294,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
-    public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-        return (org.compiere.model.I_C_ElementValue)
-                MBaseTableKt.getTable(org.compiere.model.I_C_ElementValue.Table_Name)
+    public AccountingElementValue getUser2() throws RuntimeException {
+        return (AccountingElementValue)
+                MBaseTableKt.getTable(AccountingElementValue.Table_Name)
                         .getPO(getUser2Id());
     }
 
