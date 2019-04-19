@@ -1,13 +1,14 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.model.I_M_StorageOnHand;
+import org.compiere.model.I_M_StorageReservation;
 import org.compiere.model.I_M_Transaction;
 import org.compiere.orm.Query;
 import org.compiere.product.MAttributeSet;
@@ -90,7 +91,7 @@ public class MProduct extends org.compiere.product.MProduct {
         for (I_M_StorageOnHand ohs : MStorageOnHand.getOfProduct(getId())) {
             qtyOnHand = qtyOnHand.add(ohs.getQtyOnHand());
         }
-        for (MStorageReservation rs :
+        for (I_M_StorageReservation rs :
                 MStorageReservation.getOfProduct(getId())) {
             if (rs.isSOTrx()) qtyReserved = qtyReserved.add(rs.getQty());
             else qtyOrdered = qtyOrdered.add(rs.getQty());
@@ -204,8 +205,8 @@ public class MProduct extends org.compiere.product.MProduct {
     public boolean isASIMandatory(boolean isSOTrx) {
         //
         //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas
-        MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getClientId());
-        for (MAcctSchema as : mass) {
+        AccountingSchema[] mass = MAcctSchema.getClientAcctSchema(getClientId());
+        for (AccountingSchema as : mass) {
             String cl = getCostingLevel(as);
             if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(cl)) {
                 return true;
@@ -234,7 +235,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param as accounting schema
      * @return product costing level
      */
-    public String getCostingLevel(I_C_AcctSchema as) {
+    public String getCostingLevel(AccountingSchema as) {
         String costingLevel = null;
         I_M_Product_Category_Acct pca =
                 MProductCategoryAcct.get(getProductCategoryId(), as.getId());
@@ -252,7 +253,7 @@ public class MProduct extends org.compiere.product.MProduct {
      *
      * @return product costing method
      */
-    public String getCostingMethod(I_C_AcctSchema as) {
+    public String getCostingMethod(AccountingSchema as) {
         String costingMethod = null;
         I_M_Product_Category_Acct pca =
                 MProductCategoryAcct.get(getProductCategoryId(), as.getId());
@@ -265,7 +266,7 @@ public class MProduct extends org.compiere.product.MProduct {
         return costingMethod;
     }
 
-    public I_M_Cost getCostingRecord(I_C_AcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
+    public I_M_Cost getCostingRecord(AccountingSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
         String costingLevel = getCostingLevel(as);
         if (MAcctSchema.COSTINGLEVEL_Client.equals(costingLevel)) {
             AD_Org_ID = 0;

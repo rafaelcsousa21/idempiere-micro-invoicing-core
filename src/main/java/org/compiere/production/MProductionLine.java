@@ -148,8 +148,8 @@ public class MProductionLine extends X_M_ProductionLine {
                             getLocatorId(),
                             getProductId(),
                             asi.getId(),
-                            dateMPolicy,
-                            null);
+                            dateMPolicy
+                    );
             storage.addQtyOnHand(getMovementQty());
             if (log.isLoggable(Level.FINE))
                 log.log(Level.FINE, "Created finished goods line " + getLine());
@@ -160,7 +160,7 @@ public class MProductionLine extends X_M_ProductionLine {
         // create transactions and update stock used in production
         I_M_StorageOnHand[] storages =
                 MStorageOnHand.getAll(
-                        getProductId(), getLocatorId(), null, false, 0);
+                        getProductId(), getLocatorId(), false, 0);
 
         I_M_ProductionLineMA lineMA = null;
         MTransaction matTrx = null;
@@ -296,7 +296,6 @@ public class MProductionLine extends X_M_ProductionLine {
                                 getProductId(),
                                 asi.getId(),
                                 date,
-                                null,
                                 true);
 
                 BigDecimal lineQty = qtyToMove;

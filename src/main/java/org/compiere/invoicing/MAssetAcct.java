@@ -1,8 +1,8 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset_Acct;
-import org.compiere.model.I_A_Asset_Group_Acct;
+import org.compiere.model.AssetAccounting;
+import org.compiere.model.AssetGroupAccounting;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.orm.SetGetUtil;
@@ -27,8 +27,8 @@ public class MAssetAcct extends X_A_Asset_Acct {
     /**
      * Static Cache: A_Asset_Acct_ID -> MAssetAcct
      */
-    private static CCache<Integer, I_A_Asset_Acct> s_cache =
-            new CCache<>(I_A_Asset_Acct.Table_Name, 5);
+    private static CCache<Integer, AssetAccounting> s_cache =
+            new CCache<>(AssetAccounting.Table_Name, 5);
 
     /**
      * DO NOT USE DIRECTLY
@@ -50,7 +50,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
      * @param asset        asset
      * @param assetgrpacct asset group accounting
      */
-    public MAssetAcct(MAsset asset, I_A_Asset_Group_Acct assetgrpacct) {
+    public MAssetAcct(MAsset asset, AssetGroupAccounting assetgrpacct) {
         this(0);
 
         SetGetUtil.copyValues(this, (PO)assetgrpacct, null, null);
@@ -75,32 +75,32 @@ public class MAssetAcct extends X_A_Asset_Acct {
      * @param dateAcct    check ValidFrom
      * @return asset accounting for the given asset
      */
-    public static I_A_Asset_Acct forA_AssetId(
+    public static AssetAccounting forA_AssetId(
             int A_Asset_ID, String postingType, Timestamp dateAcct) {
         //
         ArrayList<Object> params = new ArrayList<>();
         StringBuilder whereClause =
                 new StringBuilder(
-                        I_A_Asset_Acct.COLUMNNAME_A_Asset_ID
+                        AssetAccounting.COLUMNNAME_A_Asset_ID
                                 + "=? AND "
-                                + I_A_Asset_Acct.COLUMNNAME_PostingType
+                                + AssetAccounting.COLUMNNAME_PostingType
                                 + "=?");
         params.add(A_Asset_ID);
         params.add(postingType);
         if (dateAcct != null) {
-            whereClause.append(" AND " + I_A_Asset_Acct.COLUMNNAME_ValidFrom).append("<=?");
+            whereClause.append(" AND " + AssetAccounting.COLUMNNAME_ValidFrom).append("<=?");
             params.add(dateAcct);
         }
-        I_A_Asset_Acct acct =
-                new Query<I_A_Asset_Acct>(I_A_Asset_Acct.Table_Name, whereClause.toString())
+        AssetAccounting acct =
+                new Query<AssetAccounting>(AssetAccounting.Table_Name, whereClause.toString())
                         .setParameters(params)
-                        .setOrderBy(I_A_Asset_Acct.COLUMNNAME_ValidFrom + " DESC NULLS LAST")
+                        .setOrderBy(AssetAccounting.COLUMNNAME_ValidFrom + " DESC NULLS LAST")
                         .first();
         addToCache(acct);
         return acct;
     }
 
-    private static void addToCache(I_A_Asset_Acct acct) {
+    private static void addToCache(AssetAccounting acct) {
         if (acct == null || acct.getId() <= 0) {
             return;
         }

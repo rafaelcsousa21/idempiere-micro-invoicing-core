@@ -168,7 +168,6 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                                 MClient.MMPOLICY_FiFo.equals(MMPolicy),
                                 true,
                                 getLocatorId(),
-                                null,
                                 true);
                 BigDecimal qtyToIssue = getMovementQty();
                 for (MStorageOnHand storage : storages) {
@@ -191,8 +190,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                                     getProductId(),
                                     getAttributeSetInstanceId(),
                                     qtyToIssue.negate(),
-                                    dateMPolicy,
-                                    null);
+                                    dateMPolicy
+                            );
                 }
             } else {
                 ok =
@@ -203,8 +202,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                                 getProductId(),
                                 getAttributeSetInstanceId(),
                                 getMovementQty().negate(),
-                                dateMPolicy,
-                                null);
+                                dateMPolicy
+                        );
             }
         } catch (NegativeInventoryDisallowedException e) {
             log.severe(e.getMessage());

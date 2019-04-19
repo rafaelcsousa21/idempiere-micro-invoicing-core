@@ -15,10 +15,9 @@ package org.idempiere.process;
 
 import org.compiere.crm.MLanguage;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_AD_Language;
+import org.compiere.model.Language;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.Language;
 import org.idempiere.common.util.Util;
 
 import java.util.logging.Level;
@@ -55,16 +54,16 @@ public class ChangeBaseLanguage extends SvrProcess {
 
         if (Util.isEmpty(p_Language)) throw new AdempiereUserError("Language required");
 
-        I_AD_Language lang = MLanguage.get(p_Language);
+        Language lang = MLanguage.get(p_Language);
         if (lang.isBaseLanguage()) throw new AdempiereUserError("Same base language");
         if (lang.isSystemLanguage())
             throw new AdempiereUserError("Base language cannot be a system language");
 
-        if (Language.getBaseAD_Language().equals(p_Language))
+        if (org.idempiere.common.util.Language.getBaseAD_Language().equals(p_Language))
             throw new AdempiereUserError("Same base language");
 
         // Disable the base flag on the actual
-        I_AD_Language baselang = MLanguage.get(Language.getBaseAD_Language());
+        Language baselang = MLanguage.get(org.idempiere.common.util.Language.getBaseAD_Language());
         baselang.setIsBaseLanguage(false);
         baselang.saveEx();
 
@@ -72,7 +71,7 @@ public class ChangeBaseLanguage extends SvrProcess {
         lang.setIsBaseLanguage(true);
         lang.saveEx();
 
-        Language.setBaseLanguage(p_Language);
+        org.idempiere.common.util.Language.setBaseLanguage(p_Language);
 
         return "@OK@";
     } //	doIt

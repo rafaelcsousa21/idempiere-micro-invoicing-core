@@ -44,8 +44,8 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     /**
      * Product Conversion Map
      */
-    private static final CCache<Integer, MUOMConversion[]> s_conversionProduct =
-            new CCache<Integer, MUOMConversion[]>(
+    private static final CCache<Integer, I_C_UOM_Conversion[]> s_conversionProduct =
+            new CCache<>(
                     I_C_UOM_Conversion.Table_Name, I_C_UOM_Conversion.Table_Name + "_Of_Product", 20);
 
     /**
@@ -128,8 +128,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         //
         Point p = new Point(C_UOM_ID, C_UOM_To_ID);
         //	get conversion
-        BigDecimal retValue = getRate(p);
-        return retValue;
+        return getRate(p);
     } //	convert
 
     /**
@@ -140,7 +139,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      * @return conversion multiplier or null
      */
     private static BigDecimal getRate(Point p) {
-        BigDecimal retValue = null;
+        BigDecimal retValue;
         retValue = getRate(p.x, p.y);
         if (retValue != null) return retValue;
         //	try to derive
@@ -269,8 +268,8 @@ public class MUOMConversion extends X_C_UOM_Conversion {
                         + "WHERE c.IsActive='Y' AND c.C_UOM_ID=? AND c.C_UOM_TO_ID=? " //	#1/2
                         + " AND c.M_Product_ID IS NULL"
                         + " ORDER BY c.clientId DESC, c.orgId DESC";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, C_UOM_From_ID);
@@ -282,10 +281,6 @@ public class MUOMConversion extends X_C_UOM_Conversion {
             }
         } catch (SQLException e) {
             throw new DBException(e, sql);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
         if (retValue == null) {
             if (s_log.isLoggable(Level.INFO))
@@ -340,20 +335,18 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      */
     public static BigDecimal getProductRateTo(int M_Product_ID, int C_UOM_To_ID) {
         if (M_Product_ID == 0) return null;
-        MUOMConversion[] rates = getProductConversions(M_Product_ID);
+        I_C_UOM_Conversion[] rates = getProductConversions(M_Product_ID);
 
-        for (int i = 0; i < rates.length; i++) {
-            MUOMConversion rate = rates[i];
+        for (I_C_UOM_Conversion rate : rates) {
             if (rate.getTargetUOMId() == C_UOM_To_ID) return rate.getMultiplyRate();
         }
 
-        List<MUOMConversion> conversions =
-                new Query(I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?")
+        List<I_C_UOM_Conversion> conversions =
+                new Query<I_C_UOM_Conversion>(I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?")
                         .setParameters(MProduct.get(M_Product_ID).getUOMId(), C_UOM_To_ID)
                         .setOnlyActiveRecords(true)
                         .list();
-        for (int i = 0; i < conversions.size(); i++) {
-            MUOMConversion rate = conversions.get(i);
+        for (I_C_UOM_Conversion rate : conversions) {
             if (rate.getTargetUOMId() == C_UOM_To_ID) return rate.getMultiplyRate();
         }
         return null;
@@ -365,13 +358,13 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      * @param M_Product_ID product
      * @return array of conversions
      */
-    public static MUOMConversion[] getProductConversions(int M_Product_ID) {
+    public static I_C_UOM_Conversion[] getProductConversions(int M_Product_ID) {
         if (M_Product_ID == 0) return new MUOMConversion[0];
-        Integer key = new Integer(M_Product_ID);
-        MUOMConversion[] result = s_conversionProduct.get(key);
+        Integer key = M_Product_ID;
+        I_C_UOM_Conversion[] result = s_conversionProduct.get(key);
         if (result != null) return result;
 
-        ArrayList<MUOMConversion> list = new ArrayList<MUOMConversion>();
+        ArrayList<I_C_UOM_Conversion> list = new ArrayList<>();
         //	Add default conversion
         MUOMConversion defRate = new MUOMConversion(MProduct.get(M_Product_ID));
         list.add(defRate);
@@ -380,15 +373,15 @@ public class MUOMConversion extends X_C_UOM_Conversion {
                 "M_Product_ID=?"
                         + " AND EXISTS (SELECT 1 FROM M_Product p "
                         + "WHERE C_UOM_Conversion.M_Product_ID=p.M_Product_ID AND C_UOM_Conversion.C_UOM_ID=p.C_UOM_ID)";
-        List<MUOMConversion> conversions =
-                new Query(I_C_UOM_Conversion.Table_Name, whereClause)
+        List<I_C_UOM_Conversion> conversions =
+                new Query<I_C_UOM_Conversion>(I_C_UOM_Conversion.Table_Name, whereClause)
                         .setParameters(M_Product_ID)
                         .setOnlyActiveRecords(true)
                         .list();
         list.addAll(conversions);
 
         //	Convert & save
-        result = new MUOMConversion[list.size()];
+        result = new I_C_UOM_Conversion[list.size()];
         list.toArray(result);
         s_conversionProduct.put(key, result);
         if (s_log.isLoggable(Level.FINE))
@@ -445,19 +438,17 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MUOMConversion[");
-        sb.append(getId())
-                .append("-C_UOM_ID=")
-                .append(getUOMId())
-                .append(",C_UOM_To_ID=")
-                .append(getTargetUOMId())
-                .append(",M_Product_ID=")
-                .append(getProductId())
-                .append("-Multiply=")
-                .append(getMultiplyRate())
-                .append("/Divide=")
-                .append(getDivideRate())
-                .append("]");
-        return sb.toString();
+        return "MUOMConversion[" + getId() +
+                "-C_UOM_ID=" +
+                getUOMId() +
+                ",C_UOM_To_ID=" +
+                getTargetUOMId() +
+                ",M_Product_ID=" +
+                getProductId() +
+                "-Multiply=" +
+                getMultiplyRate() +
+                "/Divide=" +
+                getDivideRate() +
+                "]";
     } //	toString
 } //	UOMConversion

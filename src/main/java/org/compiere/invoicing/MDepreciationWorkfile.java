@@ -2,10 +2,10 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.apache.commons.collections.keyvalue.MultiKey;
-import org.compiere.model.I_A_Asset_Acct;
-import org.compiere.model.I_A_Asset_Group_Acct;
-import org.compiere.model.I_A_Depreciation_Exp;
-import org.compiere.model.I_A_Depreciation_Workfile;
+import org.compiere.model.AssetAccounting;
+import org.compiere.model.AssetGroupAccounting;
+import org.compiere.model.DepreciationExpense;
+import org.compiere.model.DepreciationWorkfile;
 import org.compiere.model.SetGetModel;
 import org.compiere.model.UseLife;
 import org.compiere.orm.PO;
@@ -36,10 +36,10 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      * Static cache: Asset/PostingType -> Workfile
      */
-    private static CCache<MultiKey, I_A_Depreciation_Workfile> s_cacheAsset =
+    private static CCache<MultiKey, DepreciationWorkfile> s_cacheAsset =
             new CCache<>(
-                    I_A_Depreciation_Workfile.Table_Name,
-                    I_A_Depreciation_Workfile.Table_Name + "_Asset",
+                    DepreciationWorkfile.Table_Name,
+                    DepreciationWorkfile.Table_Name + "_Asset",
                     10);
     /**
      * Asset (parent)
@@ -79,7 +79,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      *
      */
-    public MDepreciationWorkfile(MAsset asset, String postingType, I_A_Asset_Group_Acct assetgrpacct) {
+    public MDepreciationWorkfile(MAsset asset, String postingType, AssetGroupAccounting assetgrpacct) {
         this(0);
         setAssetId(asset.getAssetId());
         setOrgId(asset.getOrgId()); // @win added
@@ -118,11 +118,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         dump();
     }
 
-    public static Collection<MDepreciationWorkfile> forA_AssetId(
+    public static Collection<DepreciationWorkfile> forA_AssetId(
             int asset_id) {
-        return new Query(
-                I_A_Depreciation_Workfile.Table_Name,
-                I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_ID + "=?"
+        return new Query<DepreciationWorkfile>(
+                DepreciationWorkfile.Table_Name,
+                DepreciationWorkfile.COLUMNNAME_A_Asset_ID + "=?"
         )
                 .setParameters(asset_id)
                 .list();
@@ -135,23 +135,23 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @param postingType
      * @return workfile
      */
-    public static I_A_Depreciation_Workfile get(
+    public static DepreciationWorkfile get(
             int A_Asset_ID, String postingType) {
         if (A_Asset_ID <= 0 || postingType == null) {
             return null;
         }
 
         final MultiKey key = new MultiKey(A_Asset_ID, postingType);
-        I_A_Depreciation_Workfile wk = s_cacheAsset.get(key);
+        DepreciationWorkfile wk = s_cacheAsset.get(key);
         if (wk != null) return wk;
         final String whereClause =
-            I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_ID
+            DepreciationWorkfile.COLUMNNAME_A_Asset_ID
                         + "=?"
                         + " AND "
-                        + I_A_Depreciation_Workfile.COLUMNNAME_PostingType
+                        + DepreciationWorkfile.COLUMNNAME_PostingType
                         + "=? ";
         wk =
-                new Query<I_A_Depreciation_Workfile>(I_A_Depreciation_Workfile.Table_Name, whereClause)
+                new Query<DepreciationWorkfile>(DepreciationWorkfile.Table_Name, whereClause)
                         .setParameters(A_Asset_ID, postingType)
                         .firstOnly();
 
@@ -171,26 +171,26 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         // Own contribution:
         BigDecimal valCofinantare =
                 SetGetUtil.get_AttrValueAsBigDecimal(
-                        m, I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare);
+                        m, DepreciationWorkfile.COLUMNNAME_A_Valoare_Cofinantare);
         // Asset Value:
         BigDecimal assetCost =
-                SetGetUtil.get_AttrValueAsBigDecimal(m, I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost);
+                SetGetUtil.get_AttrValueAsBigDecimal(m, DepreciationWorkfile.COLUMNNAME_A_Asset_Cost);
         // Third value:
         BigDecimal valTert =
                 SetGetUtil.get_AttrValueAsBigDecimal(
-                        m, I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert);
+                        m, DepreciationWorkfile.COLUMNNAME_A_Valoare_Tert);
 
         // Calculate values
         if (valCofinantare.signum() == 0 && valTert.signum() == 0) {
             // Values ​​have never been set, so put everything on their own financing
             valCofinantare = assetCost;
             valTert = Env.ZERO;
-        } else if (I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost.equals(changedColumnName)) {
+        } else if (DepreciationWorkfile.COLUMNNAME_A_Asset_Cost.equals(changedColumnName)) {
             valCofinantare = assetCost.subtract(valTert);
-        } else if (I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare.equals(
+        } else if (DepreciationWorkfile.COLUMNNAME_A_Valoare_Cofinantare.equals(
                 changedColumnName)) {
             valTert = assetCost.subtract(valCofinantare);
-        } else if (I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert.equals(changedColumnName)) {
+        } else if (DepreciationWorkfile.COLUMNNAME_A_Valoare_Tert.equals(changedColumnName)) {
             valCofinantare = assetCost.subtract(valTert);
         } else {
             valTert = assetCost.subtract(valCofinantare);
@@ -205,14 +205,14 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         }
         //
         // Set values
-        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Tip_Finantare, tipFinantare);
-        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare, valCofinantare);
-        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert, valTert);
+        m.setAttrValue(DepreciationWorkfile.COLUMNNAME_A_Tip_Finantare, tipFinantare);
+        m.setAttrValue(DepreciationWorkfile.COLUMNNAME_A_Valoare_Cofinantare, valCofinantare);
+        m.setAttrValue(DepreciationWorkfile.COLUMNNAME_A_Valoare_Tert, valTert);
         //
         // If the method is invoked for a persistent object when reset mode of financing
         if (X_A_Depreciation_Workfile.A_TIP_FINANTARE_Proprie.equals(tipFinantare)
                 && SetGetUtil.isPersistent(m)) {
-            m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_FundingMode_ID, null);
+            m.setAttrValue(DepreciationWorkfile.COLUMNNAME_A_FundingMode_ID, null);
         }
     }
 
@@ -287,7 +287,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         }
 
         // Fix DateAcct
-        if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_DateAcct)) {
+        if (isValueChanged(DepreciationWorkfile.COLUMNNAME_DateAcct)) {
             setDateAcct(TimeUtil.getMonthLastDay(getDateAcct()));
         }
 
@@ -301,12 +301,12 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         // Financing
         {
             String mainColumnName = null;
-            if (newRecord || isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost)) {
-                mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost;
-            } else if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare)) {
-                mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare;
-            } else if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert)) {
-                mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert;
+            if (newRecord || isValueChanged(DepreciationWorkfile.COLUMNNAME_A_Asset_Cost)) {
+                mainColumnName = DepreciationWorkfile.COLUMNNAME_A_Asset_Cost;
+            } else if (isValueChanged(DepreciationWorkfile.COLUMNNAME_A_Valoare_Cofinantare)) {
+                mainColumnName = DepreciationWorkfile.COLUMNNAME_A_Valoare_Cofinantare;
+            } else if (isValueChanged(DepreciationWorkfile.COLUMNNAME_A_Valoare_Tert)) {
+                mainColumnName = DepreciationWorkfile.COLUMNNAME_A_Valoare_Tert;
             }
             updateFinantare(this, mainColumnName);
         }
@@ -347,7 +347,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      * @return asset accounting model
      */
-    public I_A_Asset_Acct getAssetAccounting(Timestamp dateAcct) {
+    public AssetAccounting getAssetAccounting(Timestamp dateAcct) {
         return MAssetAcct.forA_AssetId(getAssetId(), getPostingType(), dateAcct);
     }
 
@@ -493,8 +493,8 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                         + MDepreciationExp.COLUMNNAME_Processed
                         + "=? AND IsActive=?";
         //
-        I_A_Depreciation_Exp depexp =
-                new Query<I_A_Depreciation_Exp>(MDepreciationExp.Table_Name, whereClause)
+        DepreciationExpense depexp =
+                new Query<DepreciationExpense>(MDepreciationExp.Table_Name, whereClause)
                         .setParameters(getAssetId(), getPostingType(), true, true)
                         .setOrderBy(
                                 MDepreciationExp.COLUMNNAME_A_Period

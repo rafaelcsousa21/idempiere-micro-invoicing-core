@@ -358,7 +358,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                             I_C_Invoice.COLUMNNAME_DocStatus +
                             " NOT IN (?,?)";
                     boolean InvoiceIsPaid =
-                            new Query(I_C_Invoice.Table_Name, whereClause)
+                            new Query<I_C_Invoice>(I_C_Invoice.Table_Name, whereClause)
                                     .setClientId()
                                     .setParameters(
                                             line.getInvoiceId(),

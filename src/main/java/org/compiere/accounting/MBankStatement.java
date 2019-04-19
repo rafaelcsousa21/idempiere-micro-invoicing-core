@@ -119,18 +119,18 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @param requery requery
      * @return line array
      */
-    public MBankStatementLine[] getLines(boolean requery) {
+    public I_C_BankStatementLine[] getLines(boolean requery) {
         if (m_lines != null && !requery) {
             return m_lines;
         }
         //
         final String whereClause = I_C_BankStatementLine.COLUMNNAME_C_BankStatement_ID + "=?";
-        List<MBankStatementLine> list =
-                new Query(I_C_BankStatementLine.Table_Name, whereClause)
+        List<I_C_BankStatementLine> list =
+                new Query<I_C_BankStatementLine>(I_C_BankStatementLine.Table_Name, whereClause)
                         .setParameters(getBankStatementId())
                         .setOrderBy("Line")
                         .list();
-        MBankStatementLine[] retValue = new MBankStatementLine[list.size()];
+        I_C_BankStatementLine[] retValue = new I_C_BankStatementLine[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getLines
@@ -263,7 +263,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         //	Std Period open?
         MPeriod.testPeriodOpen(
                 getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
-        MBankStatementLine[] lines = getLines(true);
+        I_C_BankStatementLine[] lines = getLines(true);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -272,8 +272,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         BigDecimal total = Env.ZERO;
         Timestamp minDate = getStatementDate();
         Timestamp maxDate = minDate;
-        for (int i = 0; i < lines.length; i++) {
-            MBankStatementLine line = lines[i];
+        for (I_C_BankStatementLine line : lines) {
             if (!line.isActive()) continue;
             total = total.add(line.getStmtAmt());
             if (line.getDateAcct().before(minDate)) minDate = line.getDateAcct();
@@ -341,9 +340,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         if (log.isLoggable(Level.INFO)) log.info("completeIt - " + toString());
 
         //	Set Payment reconciled
-        MBankStatementLine[] lines = getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MBankStatementLine line = lines[i];
+        I_C_BankStatementLine[] lines = getLines(false);
+        for (I_C_BankStatementLine line : lines) {
             if (line.getPaymentId() != 0) {
                 MPayment payment = new MPayment(line.getPaymentId());
                 payment.setIsReconciled(true);
@@ -413,9 +411,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         }
 
         //	Set lines to 0
-        MBankStatementLine[] lines = getLines(true);
-        for (int i = 0; i < lines.length; i++) {
-            MBankStatementLine line = lines[i];
+        I_C_BankStatementLine[] lines = getLines(true);
+        for (I_C_BankStatementLine line : lines) {
             if (line.getStmtAmt().compareTo(Env.ZERO) != 0) {
                 StringBuilder description =
                         new StringBuilder(MsgKt.getMsg("Voided"))

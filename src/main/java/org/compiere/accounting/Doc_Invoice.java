@@ -7,7 +7,9 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MLandedCostAllocation;
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
+import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_OrderLandedCostAllocation;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.tax.MTax;
@@ -145,9 +147,8 @@ public class Doc_Invoice extends Doc {
     private DocLine[] loadLines(MInvoice invoice) {
         ArrayList<DocLine> list = new ArrayList<DocLine>();
         //
-        MInvoiceLine[] lines = invoice.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MInvoiceLine line = lines[i];
+        I_C_InvoiceLine[] lines = invoice.getLines(false);
+        for (I_C_InvoiceLine line : lines) {
             if (line.isDescription()) continue;
             DocLine docLine = new DocLine(line, this);
             //	Qty
@@ -324,7 +325,7 @@ public class Doc_Invoice extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
+    public ArrayList<IFact> createFacts(AccountingSchema as) {
         //
         ArrayList<IFact> facts = new ArrayList<>();
         //  create Fact Header
@@ -745,7 +746,7 @@ public class Doc_Invoice extends Doc {
      * @param multiplier source amount multiplier
      * @return accounted amount
      */
-    public BigDecimal createFactCash(I_C_AcctSchema as, Fact fact, BigDecimal multiplier) {
+    public BigDecimal createFactCash(AccountingSchema as, Fact fact, BigDecimal multiplier) {
         boolean creditMemo =
                 getDocumentType().equals(DOCTYPE_ARCredit) || getDocumentType().equals(DOCTYPE_APCredit);
         boolean payables =
@@ -849,7 +850,7 @@ public class Doc_Invoice extends Doc {
      * @param dr   DR entry (normal api)
      * @return true if landed costs were created
      */
-    protected boolean landedCost(I_C_AcctSchema as, Fact fact, DocLine line, boolean dr) {
+    protected boolean landedCost(AccountingSchema as, Fact fact, DocLine line, boolean dr) {
         int C_InvoiceLine_ID = line.getId();
         MLandedCostAllocation[] lcas =
                 MLandedCostAllocation.getOfInvoiceLine(C_InvoiceLine_ID);
@@ -892,9 +893,9 @@ public class Doc_Invoice extends Doc {
                     if (iol.getOrderLineId() > 0) {
                         oCurrencyId = iol.getOrderLine().getCurrencyId();
                         oDateAcct = iol.getOrderLine().getOrder().getDateAcct();
-                        MOrderLandedCostAllocation[] allocations =
+                        I_C_OrderLandedCostAllocation[] allocations =
                                 MOrderLandedCostAllocation.getOfOrderLine(iol.getOrderLineId());
-                        for (MOrderLandedCostAllocation allocation : allocations) {
+                        for (I_C_OrderLandedCostAllocation allocation : allocations) {
                             if (allocation.getOrderLandedCost().getCostElementId()
                                     != lca.getCostElementId()) continue;
 
@@ -1096,7 +1097,7 @@ public class Doc_Invoice extends Doc {
      *
      * @param as accounting schema
      */
-    protected void updateProductPO(I_C_AcctSchema as) {
+    protected void updateProductPO(AccountingSchema as) {
         MClientInfo ci = MClientInfo.get(as.getClientId());
         if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 

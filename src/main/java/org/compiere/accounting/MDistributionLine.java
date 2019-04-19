@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_ValidCombination;
+import org.compiere.model.I_GL_Distribution;
 import org.compiere.util.MsgKt;
 import org.idempiere.common.util.Env;
 
@@ -23,7 +24,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     /**
      * The Parent
      */
-    private MDistribution m_parent = null;
+    private I_GL_Distribution m_parent = null;
     /**
      * The Amount
      */
@@ -77,7 +78,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      *
      * @return Returns the parent.
      */
-    public MDistribution getParent() {
+    public I_GL_Distribution getParent() {
         if (m_parent == null)
             m_parent = new MDistribution(getGLDistributionId());
         return m_parent;
@@ -88,7 +89,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      *
      * @param parent The parent to set.
      */
-    public void setParent(MDistribution parent) {
+    public void setParent(I_GL_Distribution parent) {
         m_parent = parent;
     } //	setParent
 

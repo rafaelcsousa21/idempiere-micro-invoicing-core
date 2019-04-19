@@ -4,8 +4,8 @@ import kotliquery.Row;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.model.Column;
-import org.compiere.model.I_AD_SchedulerRecipient;
-import org.compiere.model.I_AD_Scheduler_Para;
+import org.compiere.model.SchedulerRecipient;
+import org.compiere.model.SchedulerParameter;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import software.hsharp.core.orm.MBaseTableKt;
@@ -40,7 +40,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
     /**
      * Process Recipients
      */
-    private I_AD_SchedulerRecipient[] m_recipients = null;
+    private SchedulerRecipient[] m_recipients = null;
 
     /**
      * Standard Constructor
@@ -101,8 +101,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
         if (!reload && m_parameter != null) return m_parameter;
         //
         final String whereClause = MSchedulerPara.COLUMNNAME_AD_Scheduler_ID + "=?";
-        List<I_AD_Scheduler_Para> list =
-                new Query<I_AD_Scheduler_Para>(I_AD_Scheduler_Para.Table_Name, whereClause)
+        List<SchedulerParameter> list =
+                new Query<SchedulerParameter>(SchedulerParameter.Table_Name, whereClause)
                         .setParameters(getSchedulerId())
                         .setOnlyActiveRecords(true)
                         .list();
@@ -117,16 +117,16 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @param reload reload
      * @return Recipients
      */
-    public I_AD_SchedulerRecipient[] getRecipients(boolean reload) {
+    public SchedulerRecipient[] getRecipients(boolean reload) {
         if (!reload && m_recipients != null) return m_recipients;
         //
         final String whereClause = MSchedulerRecipient.COLUMNNAME_AD_Scheduler_ID + "=?";
-        List<I_AD_SchedulerRecipient> list =
-                new Query<I_AD_SchedulerRecipient>(I_AD_SchedulerRecipient.Table_Name, whereClause)
+        List<SchedulerRecipient> list =
+                new Query<SchedulerRecipient>(SchedulerRecipient.Table_Name, whereClause)
                         .setParameters(getSchedulerId())
                         .setOnlyActiveRecords(true)
                         .list();
-        m_recipients = new I_AD_SchedulerRecipient[list.size()];
+        m_recipients = new SchedulerRecipient[list.size()];
         list.toArray(m_recipients);
         return m_recipients;
     } //	getRecipients
@@ -138,8 +138,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      */
     public Integer[] getRecipientAD_User_IDs() {
         TreeSet<Integer> list = new TreeSet<Integer>();
-        I_AD_SchedulerRecipient[] recipients = getRecipients(false);
-        for (I_AD_SchedulerRecipient recipient : recipients) {
+        SchedulerRecipient[] recipients = getRecipients(false);
+        for (SchedulerRecipient recipient : recipients) {
             if (!recipient.isActive()) continue;
             if (recipient.getUserId() != 0) {
                 list.add(recipient.getUserId());

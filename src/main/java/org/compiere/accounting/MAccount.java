@@ -3,6 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.crm.MLocation;
 import org.compiere.crm.X_C_BPartner;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
@@ -284,8 +285,8 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
     public static MAccount getDefault(MAcctSchema acctSchema, boolean optionalNull) {
         MAccount vc = new MAccount(acctSchema);
         //  Active Elements
-        MAcctSchemaElement[] elements = acctSchema.getAcctSchemaElements();
-        for (MAcctSchemaElement ase : elements) {
+        AccountSchemaElement[] elements = acctSchema.getAcctSchemaElements();
+        for (AccountSchemaElement ase : elements) {
             String elementType = ase.getElementType();
             int defaultValue = ase.getDefaultValue();
             boolean setValue = ase.isMandatory() || (!ase.isMandatory() && !optionalNull);
@@ -469,13 +470,13 @@ public class MAccount extends X_C_ValidCombination implements I_C_ValidCombinati
         boolean fullyQualified = true;
         //
         MAcctSchema as = new MAcctSchema(getAccountingSchemaId()); // 	In Trx!
-        MAcctSchemaElement[] elements = MAcctSchemaElement.getAcctSchemaElements(as);
+        AccountSchemaElement[] elements = MAcctSchemaElement.getAcctSchemaElements(as);
         for (int i = 0; i < elements.length; i++) {
             if (i > 0) {
                 combi.append(as.getSeparator());
                 descr.append(as.getSeparator());
             }
-            MAcctSchemaElement element = elements[i];
+            AccountSchemaElement element = elements[i];
             String combiStr = "_"; // 	not defined
             String descrStr = "_";
 

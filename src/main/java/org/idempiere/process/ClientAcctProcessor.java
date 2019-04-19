@@ -5,6 +5,7 @@ import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MCost;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -46,7 +47,7 @@ public class ClientAcctProcessor extends SvrProcess {
     /**
      * Accounting Schema
      */
-    private MAcctSchema[] m_ass = null;
+    private AccountingSchema[] m_ass = null;
 
     /**
      * Prepare

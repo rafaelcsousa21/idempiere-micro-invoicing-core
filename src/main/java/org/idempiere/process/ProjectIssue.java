@@ -244,8 +244,8 @@ public class ProjectIssue extends SvrProcess {
                             expense.getWarehouseId(),
                             expenseLine.getProductId(),
                             0, //	no ASI
-                            expenseLine.getQty(),
-                            null);
+                            expenseLine.getQty()
+                    );
             if (M_Locator_ID == 0) // 	Service/Expense - get default (and fallback)
                 M_Locator_ID = expense.getLocatorId();
 

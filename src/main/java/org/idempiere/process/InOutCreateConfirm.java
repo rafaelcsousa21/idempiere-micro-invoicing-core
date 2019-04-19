@@ -3,6 +3,7 @@ package org.idempiere.process;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutConfirm;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_M_InOutConfirm;
 import org.compiere.process.SvrProcess;
 
 import java.util.logging.Level;
@@ -50,7 +51,7 @@ public class InOutCreateConfirm extends SvrProcess {
         if (shipment.getId() == 0)
             throw new IllegalArgumentException("Not found M_InOut_ID=" + p_M_InOut_ID);
         //
-        MInOutConfirm confirm = MInOutConfirm.create(shipment, p_ConfirmType, true);
+        I_M_InOutConfirm confirm = MInOutConfirm.create(shipment, p_ConfirmType, true);
         if (confirm == null)
             throw new Exception("Cannot create Confirmation for " + shipment.getDocumentNo());
         //

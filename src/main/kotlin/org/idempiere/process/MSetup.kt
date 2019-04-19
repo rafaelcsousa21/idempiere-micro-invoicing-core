@@ -16,7 +16,7 @@ import org.compiere.crm.MBPartner
 import org.compiere.crm.MBPartnerLocation
 import org.compiere.crm.MLocation
 import org.compiere.crm.MUser
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import org.compiere.orm.MDocType
 import org.compiere.orm.MOrg
 import org.compiere.orm.MRole
@@ -378,7 +378,7 @@ class MSetup
             log.log(Level.SEVERE, "UserRole OrgUser+Org NOT inserted")
 
         // 	Processors
-        val ap = MAcctProcessor(m_client, aD_User_ID)
+        val ap = AccountingProcessorModel(m_client, aD_User_ID)
         ap.scheduleId = SystemIDs.SCHEDULE_10_MINUTES
         ap.saveEx()
 
@@ -919,7 +919,7 @@ class MSetup
             }
         }
         acct.setClientId(m_client.clientId)
-        acct.setValue(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
+        acct.setValue(AccountingSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
         //
         if (!acct.save()) {
             throw AdempiereUserError(CLogger.retrieveErrorString(table.name + " not created"))
@@ -1320,7 +1320,7 @@ class MSetup
         locwh.postal = postal
         locwh.saveEx()
         val wh = MWarehouse(0)
-        wh.setSearchKey(defaultName)
+        wh.searchKey = defaultName
         wh.name = defaultName
         wh.setLocationId(locwh.locationId)
         if (!wh.save())

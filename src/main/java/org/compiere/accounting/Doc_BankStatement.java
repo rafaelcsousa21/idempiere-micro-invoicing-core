@@ -3,7 +3,8 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
+import org.compiere.model.I_C_BankStatementLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -77,9 +78,8 @@ public class Doc_BankStatement extends Doc {
      */
     protected DocLine[] loadLines(MBankStatement bs) {
         ArrayList<DocLine> list = new ArrayList<DocLine>();
-        MBankStatementLine[] lines = bs.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MBankStatementLine line = lines[i];
+        I_C_BankStatementLine[] lines = bs.getLines(false);
+        for (I_C_BankStatementLine line : lines) {
             if (line.isActive()) {
                 DocLine_Bank docLine = new DocLine_Bank(line, this);
                 list.add(docLine);
@@ -129,7 +129,7 @@ public class Doc_BankStatement extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
+    public ArrayList<IFact> createFacts(AccountingSchema as) {
         //  create Fact Header
         Fact fact = new Fact(this, as, Fact.POST_Actual);
         // boolean isInterOrg = isInterOrg(as);

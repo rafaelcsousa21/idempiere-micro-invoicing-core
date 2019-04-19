@@ -20,6 +20,7 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.HasName;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_M_MatchInv;
 import org.compiere.model.User;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.model.I_C_BPartner_Location;
@@ -105,7 +106,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * Cache
      */
     private static CCache<Integer, MInvoice> s_cache =
-            new CCache<Integer, MInvoice>(I_C_Invoice.Table_Name, 20, 2); // 	2 minutes
+            new CCache<>(I_C_Invoice.Table_Name, 20, 2); // 	2 minutes
     private static volatile boolean recursiveCall = false;
     /* Save array of documents to process AFTER completing this one */
     ArrayList<IPODoc> docsPostProcess = new ArrayList<>();
@@ -116,11 +117,11 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     /**
      * Invoice Lines
      */
-    private MInvoiceLine[] m_lines;
+    private I_C_InvoiceLine[] m_lines;
     /**
      * Invoice Taxes
      */
-    private MInvoiceTax[] m_taxes;
+    private I_C_InvoiceTax[] m_taxes;
     /**
      * Reversal Flag
      */
@@ -274,12 +275,12 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param C_BPartner_ID id
      * @return array
      */
-    public static MInvoice[] getOfBPartner(int C_BPartner_ID) {
-        List<MInvoice> list =
-                new Query(I_C_Invoice.Table_Name, I_C_Invoice.COLUMNNAME_C_BPartner_ID + "=?")
+    public static I_C_Invoice[] getOfBPartner(int C_BPartner_ID) {
+        List<I_C_Invoice> list =
+                new Query<I_C_Invoice>(I_C_Invoice.Table_Name, I_C_Invoice.COLUMNNAME_C_BPartner_ID + "=?")
                         .setParameters(C_BPartner_ID)
                         .list();
-        return list.toArray(new MInvoice[0]);
+        return list.toArray(new I_C_Invoice[0]);
     } //	getOfBPartner
 
     /**
@@ -642,15 +643,15 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param whereClause starting with AND
      * @return lines
      */
-    private MInvoiceLine[] getLines(String whereClause) {
+    private I_C_InvoiceLine[] getLines(String whereClause) {
         String whereClauseFinal = "C_Invoice_ID=? ";
         if (whereClause != null) whereClauseFinal += whereClause;
-        List<MInvoiceLine> list =
-                new Query(I_C_InvoiceLine.Table_Name, whereClauseFinal)
+        List<I_C_InvoiceLine> list =
+                new Query<I_C_InvoiceLine>(I_C_InvoiceLine.Table_Name, whereClauseFinal)
                         .setParameters(getInvoiceId())
                         .setOrderBy("Line, C_InvoiceLine_ID")
                         .list();
-        return list.toArray(new MInvoiceLine[list.size()]);
+        return list.toArray(new I_C_InvoiceLine[list.size()]);
     } //	getLines
 
     /**
@@ -659,7 +660,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param requery
      * @return lines
      */
-    public MInvoiceLine[] getLines(boolean requery) {
+    public I_C_InvoiceLine[] getLines(boolean requery) {
         if (m_lines == null || m_lines.length == 0 || requery) m_lines = getLines(null);
         return m_lines;
     } //	getLines
@@ -669,7 +670,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return lines
      */
-    public MInvoiceLine[] getLines() {
+    public I_C_InvoiceLine[] getLines() {
         return getLines(false);
     } //	getLines
 
@@ -680,9 +681,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      */
     public void renumberLines(int step) {
         int number = step;
-        MInvoiceLine[] lines = getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MInvoiceLine line = lines[i];
+        I_C_InvoiceLine[] lines = getLines(false);
+        for (I_C_InvoiceLine line : lines) {
             line.setLine(number);
             line.saveEx();
             number += step;
@@ -700,14 +700,13 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      */
     public int copyLinesFrom(MInvoice otherInvoice, boolean counter, boolean setOrder) {
         if (isProcessed() || isPosted() || otherInvoice == null) return 0;
-        MInvoiceLine[] fromLines = otherInvoice.getLines(false);
+        I_C_InvoiceLine[] fromLines = otherInvoice.getLines(false);
         int count = 0;
-        for (int i = 0; i < fromLines.length; i++) {
+        for (I_C_InvoiceLine i_c_invoiceLine : fromLines) {
             MInvoiceLine line = new MInvoiceLine(0);
-            MInvoiceLine fromLine = fromLines[i];
             if (counter) //	header
-                PO.copyValues(fromLine, line, getClientId(), getOrgId());
-            else PO.copyValues(fromLine, line, fromLine.getClientId(), fromLine.getOrgId());
+                PO.copyValues((PO)i_c_invoiceLine, line, getClientId(), getOrgId());
+            else PO.copyValues((PO)i_c_invoiceLine, line, i_c_invoiceLine.getClientId(), i_c_invoiceLine.getOrgId());
             line.setInvoiceId(getInvoiceId());
             line.setInvoice(this);
             line.setValueNoCheck("C_InvoiceLine_ID", I_ZERO); // new
@@ -722,16 +721,16 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (getBusinessPartnerId() != otherInvoice.getBusinessPartnerId()) line.setTax(); // 	recalculate
             //
             if (counter) {
-                line.setRef_InvoiceLineId(fromLine.getInvoiceLineId());
-                if (fromLine.getOrderLineId() != 0) {
-                    MOrderLine peer = new MOrderLine(fromLine.getOrderLineId());
+                line.setRef_InvoiceLineId(i_c_invoiceLine.getInvoiceLineId());
+                if (i_c_invoiceLine.getOrderLineId() != 0) {
+                    MOrderLine peer = new MOrderLine(i_c_invoiceLine.getOrderLineId());
                     if (peer.getRef_OrderLineId() != 0) line.setOrderLineId(peer.getRef_OrderLineId());
                 }
                 line.setInOutLineId(0);
-                if (fromLine.getInOutLineId() != 0) {
-                    org.compiere.order.MInOutLine peer =
-                            new org.compiere.order.MInOutLine(
-                                    fromLine.getInOutLineId());
+                if (i_c_invoiceLine.getInOutLineId() != 0) {
+                    MInOutLine peer =
+                            new MInOutLine(
+                                    i_c_invoiceLine.getInOutLineId());
                     if (peer.getReferencedInOutLineId() != 0) line.setInOutLineId(peer.getReferencedInOutLineId());
                 }
             }
@@ -740,13 +739,13 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (line.save()) count++;
             //	Cross Link
             if (counter) {
-                fromLine.setRef_InvoiceLineId(line.getInvoiceLineId());
-                fromLine.saveEx();
+                i_c_invoiceLine.setRef_InvoiceLineId(line.getInvoiceLineId());
+                i_c_invoiceLine.saveEx();
             }
 
             // MZ Goodwill
             // copy the landed cost
-            line.copyLandedCostFrom(fromLine);
+            line.copyLandedCostFrom(i_c_invoiceLine);
             line.allocateLandedCosts();
             // end MZ
         }
@@ -769,7 +768,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @param reversal reversal
      */
-    private void setReversal(boolean reversal) {
+    public void setReversal(boolean reversal) {
         m_reversal = reversal;
     } //	setReversal
 
@@ -779,15 +778,15 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param requery requery
      * @return array of taxes
      */
-    public MInvoiceTax[] getTaxes(boolean requery) {
+    public I_C_InvoiceTax[] getTaxes(boolean requery) {
         if (m_taxes != null && !requery) return m_taxes;
 
         final String whereClause = MInvoiceTax.COLUMNNAME_C_Invoice_ID + "=?";
-        List<MInvoiceTax> list =
-                new Query(I_C_InvoiceTax.Table_Name, whereClause)
+        List<I_C_InvoiceTax> list =
+                new Query<I_C_InvoiceTax>(I_C_InvoiceTax.Table_Name, whereClause)
                         .setParameters(getId())
                         .list();
-        m_taxes = list.toArray(new MInvoiceTax[list.size()]);
+        m_taxes = list.toArray(new I_C_InvoiceTax[0]);
         return m_taxes;
     } //	getTaxes
 
@@ -1011,12 +1010,12 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
         if (getOrderId() != 0) {
             // reset shipment line invoiced flag
-            MInvoiceLine[] lines = getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                if (lines[i].getInOutLineId() > 0) {
-                    org.compiere.order.MInOutLine sLine =
-                            new org.compiere.order.MInOutLine(
-                                    lines[i].getInOutLineId());
+            I_C_InvoiceLine[] lines = getLines(false);
+            for (I_C_InvoiceLine line : lines) {
+                if (line.getInOutLineId() > 0) {
+                    MInOutLine sLine =
+                            new MInOutLine(
+                                    line.getInOutLineId());
                     sLine.setIsInvoiced(false);
                     sLine.saveEx();
                 }
@@ -1249,18 +1248,11 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         MPeriod.testPeriodOpen(getDateAcct(), getTargetDocumentTypeId(), getOrgId());
 
         //	Lines
-        MInvoiceLine[] lines = getLines(true);
+        I_C_InvoiceLine[] lines = getLines(true);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
             return DocAction.Companion.getSTATUS_Invalid();
         }
-        //	No Cash Book // deprecated with IDEMPIERE-170 Complete Cash as Payment functionality
-        //		if (PAYMENTRULE_Cash.equals(getPaymentRule())
-        //			&& MCashBook.get( getOrgId(), getCurrencyId()) == null)
-        //		{
-        //			m_processMsg = "@NoCashBook@";
-        //			return DocAction.STATUS_Invalid;
-        //		}
 
         //	Convert/Check DocType
         if (getDocumentTypeId() != getTargetDocumentTypeId()) setDocumentTypeId(getTargetDocumentTypeId());
@@ -1314,8 +1306,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
         //	Landed Costs
         if (!isSOTrx()) {
-            for (int i = 0; i < lines.length; i++) {
-                MInvoiceLine line = lines[i];
+            for (I_C_InvoiceLine line : lines) {
                 String error = line.allocateLandedCosts();
                 if (error != null && error.length() > 0) {
                     m_processMsg = error;
@@ -1350,9 +1341,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             renumberLines(100);
 
             //	Order Lines with non-stocked BOMs
-            MInvoiceLine[] lines = getLines(where);
-            for (int i = 0; i < lines.length; i++) {
-                MInvoiceLine line = lines[i];
+            I_C_InvoiceLine[] lines = getLines(where);
+            for (I_C_InvoiceLine line : lines) {
                 MProduct product = MProduct.get(line.getProductId());
                 if (log.isLoggable(Level.FINE)) log.fine(product.getName());
                 //	New Lines
@@ -1563,17 +1553,15 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         //	Update Order & Match
         int matchInv = 0;
         int matchPO = 0;
-        MInvoiceLine[] lines = getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MInvoiceLine line = lines[i];
-
+        I_C_InvoiceLine[] lines = getLines(false);
+        for (I_C_InvoiceLine line : lines) {
             //	Matching - Inv-Shipment
             if (!isSOTrx()
                     && line.getInOutLineId() != 0
                     && line.getProductId() != 0
                     && !isReversal()) {
-                org.compiere.order.MInOutLine receiptLine =
-                        new org.compiere.order.MInOutLine(line.getInOutLineId());
+                MInOutLine receiptLine =
+                        new MInOutLine(line.getInOutLineId());
                 BigDecimal matchQty = line.getQtyInvoiced();
 
                 if (receiptLine.getMovementQty().compareTo(matchQty) < 0)
@@ -1617,10 +1605,10 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                             // avg po record
                             addDocsPostProcess(po);
 
-                        MMatchInv[] matchInvoices =
+                        I_M_MatchInv[] matchInvoices =
                                 MMatchInv.getInvoiceLine(line.getInvoiceLineId());
                         if (matchInvoices != null && matchInvoices.length > 0) {
-                            for (MMatchInv matchInvoice : matchInvoices) {
+                            for (I_M_MatchInv matchInvoice : matchInvoices) {
                                 if (!matchInvoice.isPosted()) {
                                     addDocsPostProcess(matchInvoice);
                                 }
@@ -2009,9 +1997,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         counter.saveEx();
 
         //	Update copied lines
-        MInvoiceLine[] counterLines = counter.getLines(true);
-        for (int i = 0; i < counterLines.length; i++) {
-            MInvoiceLine counterLine = counterLines[i];
+        I_C_InvoiceLine[] counterLines = counter.getLines(true);
+        for (I_C_InvoiceLine counterLine : counterLines) {
             counterLine.setClientOrg(counter);
             counterLine.setInvoice(counter); // 	copies header values (BP, etc.)
             counterLine.setPrice();
@@ -2065,25 +2052,23 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (m_processMsg != null) return false;
 
             //	Set lines to 0
-            MInvoiceLine[] lines = getLines(false);
-            for (int i = 0; i < lines.length; i++) {
-                MInvoiceLine line = lines[i];
+            I_C_InvoiceLine[] lines = getLines(false);
+            for (I_C_InvoiceLine line : lines) {
                 BigDecimal old = line.getQtyInvoiced();
                 if (old.compareTo(Env.ZERO) != 0) {
                     line.setQty(Env.ZERO);
                     line.setTaxAmt(Env.ZERO);
                     line.setLineNetAmt(Env.ZERO);
                     line.setLineTotalAmt(Env.ZERO);
-                    StringBuilder msgadd =
-                            new StringBuilder(MsgKt.getMsg("Voided"))
-                                    .append(" (")
-                                    .append(old)
-                                    .append(")");
-                    line.addDescription(msgadd.toString());
+                    String msgadd = MsgKt.getMsg("Voided") +
+                            " (" +
+                            old +
+                            ")";
+                    line.addDescription(msgadd);
                     //	Unlink Shipment
                     if (line.getInOutLineId() != 0) {
-                        org.compiere.order.MInOutLine ioLine =
-                                new org.compiere.order.MInOutLine(
+                        MInOutLine ioLine =
+                                new MInOutLine(
                                         line.getInOutLineId());
                         ioLine.setIsInvoiced(false);
                         ioLine.saveEx();
@@ -2177,29 +2162,29 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         reverseAllocations(accrual, getInvoiceId());
         //	Reverse/Delete Matching
         if (!isSOTrx()) {
-            MMatchInv[] mInv = MMatchInv.getInvoice(getInvoiceId());
-            for (int i = 0; i < mInv.length; i++) {
-                if (mInv[i].getReversalId() > 0) continue;
+            I_M_MatchInv[] mInv = MMatchInv.getInvoice(getInvoiceId());
+            for (I_M_MatchInv i_m_matchInv : mInv) {
+                if (i_m_matchInv.getReversalId() > 0) continue;
 
-                if (!mInv[i].reverse(reversalDate)) {
+                if (!i_m_matchInv.reverse(reversalDate)) {
                     m_processMsg = "Could not Reverse MatchInv";
                     return null;
                 }
-                addDocsPostProcess(new MMatchInv(mInv[i].getReversalId()));
+                addDocsPostProcess(new MMatchInv(i_m_matchInv.getReversalId()));
             }
             MMatchPO[] mPO = MMatchPO.getInvoice(getInvoiceId());
-            for (int i = 0; i < mPO.length; i++) {
-                if (mPO[i].getReversalId() > 0) continue;
+            for (MMatchPO mMatchPO : mPO) {
+                if (mMatchPO.getReversalId() > 0) continue;
 
-                if (mPO[i].getInOutLineId() == 0) {
-                    if (!mPO[i].reverse(reversalDate)) {
+                if (mMatchPO.getInOutLineId() == 0) {
+                    if (!mMatchPO.reverse(reversalDate)) {
                         m_processMsg = "Could not Reverse MatchPO";
                         return null;
                     }
-                    addDocsPostProcess(new MMatchPO(mPO[i].getReversalId()));
+                    addDocsPostProcess(new MMatchPO(mMatchPO.getReversalId()));
                 } else {
-                    mPO[i].setInvoiceLineId(null);
-                    mPO[i].saveEx();
+                    mMatchPO.setInvoiceLineId(null);
+                    mMatchPO.saveEx();
                 }
             }
         }
@@ -2236,12 +2221,12 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         reversal.setReversal(true);
 
         //	Reverse Line Qty
-        MInvoiceLine[] oLines = getLines(false);
-        MInvoiceLine[] rLines = reversal.getLines(true);
+        I_C_InvoiceLine[] oLines = getLines(false);
+        I_C_InvoiceLine[] rLines = reversal.getLines(true);
         for (int i = 0; i < rLines.length; i++) {
-            MInvoiceLine rLine = rLines[i];
+            I_C_InvoiceLine rLine = rLines[i];
             rLine.getParent().setReversal(true);
-            MInvoiceLine oLine = oLines[i];
+            I_C_InvoiceLine oLine = oLines[i];
             rLine.setQtyEntered(oLine.getQtyEntered().negate());
             rLine.setQtyInvoiced(oLine.getQtyInvoiced().negate());
             rLine.setLineNetAmt(oLine.getLineNetAmt().negate());
@@ -2286,11 +2271,10 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         addDescription(msgadd.toString());
 
         //	Clean up Reversed (this)
-        MInvoiceLine[] iLines = getLines(false);
-        for (int i = 0; i < iLines.length; i++) {
-            MInvoiceLine iLine = iLines[i];
+        I_C_InvoiceLine[] iLines = getLines(false);
+        for (I_C_InvoiceLine iLine : iLines) {
             if (iLine.getInOutLineId() != 0) {
-                org.compiere.order.MInOutLine ioLine =
+                MInOutLine ioLine =
                         new MInOutLine(iLine.getInOutLineId());
                 ioLine.setIsInvoiced(false);
                 ioLine.saveEx();
@@ -2504,8 +2488,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      */
     public MTaxProvider[] getTaxProviders() {
         Hashtable<Integer, MTaxProvider> providers = new Hashtable<Integer, MTaxProvider>();
-        MInvoiceLine[] lines = getLines();
-        for (MInvoiceLine line : lines) {
+        I_C_InvoiceLine[] lines = getLines();
+        for (I_C_InvoiceLine line : lines) {
             MTax tax = new MTax(line.getTaxId());
             MTaxProvider provider = providers.get(tax.getTaxProviderId());
             if (provider == null)

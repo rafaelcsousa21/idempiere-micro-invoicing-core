@@ -3,8 +3,10 @@ package org.compiere.invoicing;
 import kotliquery.Row;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
+import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_InvoiceTax;
+import org.compiere.model.I_C_LandedCost;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_PriceList;
@@ -90,7 +92,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     /**
      * Parent
      */
-    private MInvoice m_parent = null;
+    private I_C_Invoice m_parent = null;
 
     /**
      * ************************************************************************ Invoice Line
@@ -188,7 +190,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @param invoice invoice
      */
-    public void setInvoice(MInvoice invoice) {
+    public void setInvoice(I_C_Invoice invoice) {
         m_parent = invoice;
         m_M_PriceList_ID = invoice.getPriceListId();
         m_DateInvoiced = invoice.getDateInvoiced();
@@ -203,7 +205,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @return parent
      */
-    public MInvoice getParent() {
+    public I_C_Invoice getParent() {
         if (m_parent == null) m_parent = new MInvoice(getInvoiceId());
         return m_parent;
     } //	getParent
@@ -1107,7 +1109,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @param whereClause starting with AND
      * @return landedCost
      */
-    public MLandedCost[] getLandedCost(String whereClause) {
+    public I_C_LandedCost[] getLandedCost(String whereClause) {
         return MBaseInvoiceLineKt.getInvoiceLineLandedCost(getInvoiceLineId(), whereClause);
     } //	getLandedCost
 
@@ -1117,14 +1119,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @param otherInvoiceLine invoiceline
      * @return number of lines copied
      */
-    public int copyLandedCostFrom(MInvoiceLine otherInvoiceLine) {
+    public int copyLandedCostFrom(I_C_InvoiceLine otherInvoiceLine) {
         if (otherInvoiceLine == null) return 0;
-        MLandedCost[] fromLandedCosts = otherInvoiceLine.getLandedCost(null);
+        I_C_LandedCost[] fromLandedCosts = otherInvoiceLine.getLandedCost(null);
         int count = 0;
-        for (MLandedCost cost : fromLandedCosts) {
+        for (I_C_LandedCost cost : fromLandedCosts) {
             MLandedCost landedCost = new MLandedCost(0);
             PO.copyValues(
-                    cost,
+                    (PO)cost,
                     landedCost,
                     cost.getClientId(),
                     cost.getOrgId());

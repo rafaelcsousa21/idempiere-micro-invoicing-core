@@ -183,16 +183,16 @@ public class MPayment extends X_C_Payment
      * @param C_BPartner_ID id
      * @return array
      */
-    public static MPayment[] getOfBPartner(int C_BPartner_ID) {
+    public static I_C_Payment[] getOfBPartner(int C_BPartner_ID) {
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "C_BPartner_ID=?";
-        List<MPayment> list =
-                new Query(I_C_Payment.Table_Name, whereClause)
+        List<I_C_Payment> list =
+                new Query<I_C_Payment>(I_C_Payment.Table_Name, whereClause)
                         .setParameters(C_BPartner_ID)
                         .list();
 
         //
-        MPayment[] retValue = new MPayment[list.size()];
+        I_C_Payment[] retValue = new I_C_Payment[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getOfBPartner

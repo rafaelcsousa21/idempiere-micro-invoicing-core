@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
+public abstract class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
 
     /**
      *

@@ -7,7 +7,7 @@ import org.compiere.accounting.MCostElement;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDocLine;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.model.I_M_InventoryLine;
@@ -286,7 +286,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
             int M_ASI_ID = getAttributeSetInstanceId();
             MProduct product = new MProduct(getProductId());
             ClientWithAccounting client = MClientKt.getClientWithAccounting();
-            I_C_AcctSchema as = client.getAcctSchema();
+            AccountingSchema as = client.getAcctSchema();
             String costingLevel = product.getCostingLevel(as);
             if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(costingLevel)) {
                 if (M_ASI_ID == 0) {

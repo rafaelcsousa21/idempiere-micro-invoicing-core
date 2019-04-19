@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import org.compiere.model.IDocLine;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_CostDetail;
 import org.idempiere.common.util.CLogger;
@@ -407,7 +407,7 @@ public class DocLine {
      * @param as       Accounting schema
      * @return Requested Product Account
      */
-    public I_C_ValidCombination getAccount(int AcctType, I_C_AcctSchema as) {
+    public I_C_ValidCombination getAccount(int AcctType, AccountingSchema as) {
         //	Charge Account
         if (getProductId() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
@@ -443,7 +443,7 @@ public class DocLine {
      * @param as     account schema
      * @return Charge Account or null
      */
-    public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as) {
+    public I_C_ValidCombination getChargeAccount(AccountingSchema as) {
         int C_Charge_ID = getChargeId();
         if (C_Charge_ID == 0) return null;
         return MCharge.getAccount(C_Charge_ID, as);
@@ -624,7 +624,7 @@ public class DocLine {
      * @return costs
      */
     public BigDecimal getProductCosts(
-            I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
+            AccountingSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
         if (whereClause != null
                 && !as.getCostingMethod().equals(MAcctSchema.COSTINGMETHOD_StandardCosting)) {
             I_M_CostDetail cd =
@@ -647,7 +647,7 @@ public class DocLine {
      * @param zeroCostsOK zero/no costs are OK
      * @return costs
      */
-    public BigDecimal getProductCosts(I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
+    public BigDecimal getProductCosts(AccountingSchema as, int AD_Org_ID, boolean zeroCostsOK) {
         ProductCost pc = getProductCost();
         int C_OrderLine_ID = getOrderLineId();
         String costingMethod = null;

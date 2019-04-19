@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.orm.MTableKt;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
@@ -17,7 +17,7 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
     private static final CLogger s_log = CLogger.getCLogger(DefaultDocumentFactory.class);
 
     @Override
-    public Doc getDocument(I_C_AcctSchema accountingSchema, int tableId, Row row) {
+    public Doc getDocument(AccountingSchema accountingSchema, int tableId, Row row) {
         Doc doc = null;
 
     /* Classname of the Doc class follows this convention:

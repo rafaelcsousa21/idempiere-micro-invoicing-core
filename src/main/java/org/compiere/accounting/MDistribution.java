@@ -36,12 +36,12 @@ public class MDistribution extends X_GL_Distribution {
     /**
      * Distributions by Account
      */
-    private static CCache<Integer, MDistribution[]> s_accounts =
-            new CCache<Integer, MDistribution[]>(I_GL_Distribution.Table_Name, 100);
+    private static CCache<Integer, I_GL_Distribution[]> s_accounts =
+            new CCache<>(I_GL_Distribution.Table_Name, 100);
     /**
      * The Lines
      */
-    private MDistributionLine[] m_lines = null;
+    private I_GL_DistributionLine[] m_lines = null;
 
     /**
      * ************************************************************************ Standard Constructor
@@ -51,8 +51,6 @@ public class MDistribution extends X_GL_Distribution {
     public MDistribution(int GL_Distribution_ID) {
         super(GL_Distribution_ID);
         if (GL_Distribution_ID == 0) {
-            //	setAccountingSchemaId (0);
-            //	setName (null);
             //
             setAnyAcct(true); // Y
             setAnyActivity(true); // Y
@@ -88,7 +86,7 @@ public class MDistribution extends X_GL_Distribution {
      * @param C_DocType_ID only document type
      * @return array of distributions
      */
-    public static MDistribution[] get(I_C_ValidCombination acct, String PostingType, int C_DocType_ID) {
+    public static I_GL_Distribution[] get(I_C_ValidCombination acct, String PostingType, int C_DocType_ID) {
         return get(
                 acct.getAccountingSchemaId(),
                 PostingType,
@@ -129,7 +127,7 @@ public class MDistribution extends X_GL_Distribution {
      * @param User2_ID         user 2
      * @return array of distributions or null
      */
-    public static MDistribution[] get(
+    public static I_GL_Distribution[] get(
 
             int C_AcctSchema_ID,
             String PostingType,
@@ -147,12 +145,11 @@ public class MDistribution extends X_GL_Distribution {
             int C_LocFrom_ID,
             int User1_ID,
             int User2_ID) {
-        MDistribution[] acctList = getAll();
+        I_GL_Distribution[] acctList = getAll();
         if (acctList == null || acctList.length == 0) return null;
         //
-        ArrayList<MDistribution> list = new ArrayList<MDistribution>();
-        for (int i = 0; i < acctList.length; i++) {
-            MDistribution distribution = acctList[i];
+        ArrayList<I_GL_Distribution> list = new ArrayList<>();
+        for (I_GL_Distribution distribution : acctList) {
             if (!distribution.isActive() || !distribution.isValid()) continue;
             //	Mandatory Acct Schema
             if (distribution.getAccountingSchemaId() != C_AcctSchema_ID) continue;
@@ -184,7 +181,7 @@ public class MDistribution extends X_GL_Distribution {
             list.add(distribution);
         } //	 for all distributions with acct
         //
-        MDistribution[] retValue = new MDistribution[list.size()];
+        I_GL_Distribution[] retValue = new I_GL_Distribution[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	get
@@ -195,9 +192,9 @@ public class MDistribution extends X_GL_Distribution {
      * @param Account_ID id
      * @return array of distributions
      */
-    public static MDistribution[] get(int Account_ID) {
+    public static I_GL_Distribution[] get(int Account_ID) {
         Integer key = Account_ID;
-        MDistribution[] retValue = s_accounts.get(key);
+        I_GL_Distribution[] retValue = s_accounts.get(key);
         if (retValue != null) return retValue;
         String whereClause = "";
         Object[] parameters = new Object[]{};
@@ -205,13 +202,13 @@ public class MDistribution extends X_GL_Distribution {
             whereClause = "Account_ID=?";
             parameters = new Object[]{Account_ID};
         }
-        List<MDistribution> list =
-                new Query(I_GL_Distribution.Table_Name, whereClause)
+        List<I_GL_Distribution> list =
+                new Query<I_GL_Distribution>(I_GL_Distribution.Table_Name, whereClause)
                         .setClientId()
                         .setParameters(parameters)
                         .list();
         //
-        retValue = new MDistribution[list.size()];
+        retValue = new I_GL_Distribution[list.size()];
         list.toArray(retValue);
         s_accounts.put(key, retValue);
         return retValue;
@@ -222,7 +219,7 @@ public class MDistribution extends X_GL_Distribution {
      *
      * @return array of distributions
      */
-    public static MDistribution[] getAll() {
+    public static I_GL_Distribution[] getAll() {
         return get(-1);
     } //	get
 
@@ -232,21 +229,21 @@ public class MDistribution extends X_GL_Distribution {
      * @param reload reload data
      * @return array of lines
      */
-    public MDistributionLine[] getLines(boolean reload) {
+    public I_GL_DistributionLine[] getLines(boolean reload) {
         if (m_lines != null && !reload) {
             return m_lines;
         }
         BigDecimal PercentTotal = Env.ZERO;
         // red1 Query
         final String whereClause = I_GL_DistributionLine.COLUMNNAME_GL_Distribution_ID + "=?";
-        List<MDistributionLine> list =
-                new Query(I_GL_DistributionLine.Table_Name, whereClause)
+        List<I_GL_DistributionLine> list =
+                new Query<I_GL_DistributionLine>(I_GL_DistributionLine.Table_Name, whereClause)
                         .setParameters(getGLDistributionId())
                         .setOrderBy("Line")
                         .list();
         // red1 Query  -end-
         boolean hasNullRemainder = false;
-        for (MDistributionLine dl : list) {
+        for (I_GL_DistributionLine dl : list) {
             if (dl.isActive()) {
                 PercentTotal = PercentTotal.add(dl.getPercent());
                 hasNullRemainder = Env.ZERO.compareTo(dl.getPercent()) == 0;
@@ -260,7 +257,7 @@ public class MDistribution extends X_GL_Distribution {
             saveEx();
         }
         //	return
-        m_lines = new MDistributionLine[list.size()];
+        m_lines = new I_GL_DistributionLine[list.size()];
         list.toArray(m_lines);
         return m_lines;
     } //	getLines
@@ -278,7 +275,7 @@ public class MDistribution extends X_GL_Distribution {
         else {
             //	More then one line with 0
             int lineFound = -1;
-            for (MDistributionLine m_line : m_lines) {
+            for (I_GL_DistributionLine m_line : m_lines) {
                 if (m_line.getPercent().compareTo(Env.ZERO) == 0) {
                     if (lineFound >= 0 && m_line.getPercent().compareTo(Env.ZERO) == 0) {
                         retValue = "@Line@ " + lineFound + " + " + m_line.getLine() + ": == 0";
@@ -312,7 +309,7 @@ public class MDistribution extends X_GL_Distribution {
         int indexBiggest = -1;
         int indexZeroPercent = -1;
         for (int i = 0; i < m_lines.length; i++) {
-            MDistributionLine dl = m_lines[i];
+            I_GL_DistributionLine dl = m_lines[i];
             if (!dl.isActive()) continue;
             dl.setAccount(acct);
             //	Calculate Amount
@@ -332,12 +329,8 @@ public class MDistribution extends X_GL_Distribution {
         BigDecimal difference = Amt.subtract(total);
         if (difference.compareTo(Env.ZERO) != 0) {
             if (indexZeroPercent != -1) {
-                //	log.fine("distribute - Difference=" + difference + " - 0%Line=" +
-                // m_lines[indexZeroPercent]);
                 m_lines[indexZeroPercent].setAmt(difference);
             } else if (indexBiggest != -1) {
-                //	log.fine("distribute - Difference=" + difference + " - MaxLine=" + m_lines[indexBiggest]
-                // + " - " + m_lines[indexBiggest].getAmt());
                 m_lines[indexBiggest].setAmt(m_lines[indexBiggest].getAmt().add(difference));
             } else log.warning("distribute - Remaining Difference=" + difference);
         }
@@ -345,18 +338,14 @@ public class MDistribution extends X_GL_Distribution {
         BigDecimal differenceQty = Qty.subtract(totalQty);
         if (differenceQty.compareTo(Env.ZERO) != 0) {
             if (indexZeroPercent != -1) {
-                //	log.fine("distribute - Difference=" + difference + " - 0%Line=" +
-                // m_lines[indexZeroPercent]);
                 m_lines[indexZeroPercent].setQty(differenceQty);
             } else if (indexBiggest != -1) {
-                //	log.fine("distribute - Difference=" + difference + " - MaxLine=" + m_lines[indexBiggest]
-                // + " - " + m_lines[indexBiggest].getAmt());
                 m_lines[indexBiggest].setQty(m_lines[indexBiggest].getQty().add(differenceQty));
             } else log.warning("distribute - Remaining Qty Difference=" + differenceQty);
         }
         //
         if (CLogMgt.isLevelFinest()) {
-            for (MDistributionLine m_line : m_lines) {
+            for (I_GL_DistributionLine m_line : m_lines) {
                 if (m_line.isActive())
                     if (log.isLoggable(Level.FINE))
                         log.fine("distribute = Amt=" + m_line.getAmt() + " - " + m_line.getAccount());

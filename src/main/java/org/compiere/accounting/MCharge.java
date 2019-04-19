@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
@@ -29,7 +29,7 @@ public class MCharge extends org.compiere.order.MCharge {
      * @param as          account schema
      * @return Charge Account or null
      */
-    public static MAccount getAccount(int C_Charge_ID, I_C_AcctSchema as) {
+    public static MAccount getAccount(int C_Charge_ID, AccountingSchema as) {
         if (C_Charge_ID == 0 || as == null) return null;
 
         String sql =

@@ -3,7 +3,7 @@ package org.compiere.schedule;
 import it.sauronsoftware.cron4j.Predictor;
 import it.sauronsoftware.cron4j.SchedulingPattern;
 import kotliquery.Row;
-import org.compiere.model.I_AD_Schedule;
+import org.compiere.model.Schedule;
 import org.idempiere.common.util.CCache;
 
 import java.net.InetAddress;
@@ -29,7 +29,7 @@ public class MSchedule extends X_AD_Schedule {
      * Cache
      */
     private static CCache<Integer, MSchedule> s_cache =
-            new CCache<Integer, MSchedule>(I_AD_Schedule.Table_Name, 10);
+            new CCache<Integer, MSchedule>(Schedule.Table_Name, 10);
 
     public MSchedule(int AD_Schedule_ID) {
         super(AD_Schedule_ID);

@@ -18,7 +18,6 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
     private static final long serialVersionUID = -3876186097908624583L;
 
     /**
-     * @param ctx
      * @param C_OrderLandedCostAllocation_ID
      */
     public MOrderLandedCostAllocation(
@@ -27,7 +26,6 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
     }
 
     /**
-     * @param ctx
      */
     public MOrderLandedCostAllocation(Row row) {
         super(row);
@@ -38,15 +36,15 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
      *
      * @return lines
      */
-    public static MOrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID) {
-        List<MOrderLandedCostAllocation> list =
-                new Query(
+    public static I_C_OrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID) {
+        List<I_C_OrderLandedCostAllocation> list =
+                new Query<I_C_OrderLandedCostAllocation>(
                         I_C_OrderLandedCostAllocation.Table_Name,
                         I_C_OrderLandedCostAllocation.COLUMNNAME_C_OrderLine_ID + "=?"
                 )
                         .setParameters(C_OrderLine_ID)
                         .list();
-        return list.toArray(new MOrderLandedCostAllocation[list.size()]);
+        return list.toArray(new I_C_OrderLandedCostAllocation[0]);
     } //	getLines
 
     /**

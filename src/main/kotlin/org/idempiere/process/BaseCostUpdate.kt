@@ -11,10 +11,10 @@ import software.hsharp.core.util.queryOf
  * @param `as` accounting schema
  */
 internal fun getProductsToCreateNewStandardCosts(
-    `as`: MAcctSchema,
+    `as`: org.compiere.model.AccountingSchema,
     p_M_Product_Category_ID: Int,
     M_CostElement_ID: Int
-): Array<MProduct> {
+): Array<out MProduct> {
     var sql = ("SELECT * FROM M_Product p " +
             "WHERE NOT EXISTS (SELECT * FROM M_Cost c WHERE c.M_Product_ID=p.M_Product_ID" +
             " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=? AND c.M_CostElement_ID=?" +

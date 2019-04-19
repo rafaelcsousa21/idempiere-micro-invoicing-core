@@ -1,11 +1,10 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MClientKt;
-import org.compiere.accounting.MCost;
 import org.compiere.accounting.MProduct;
 import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.ClientWithAccounting;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.process.SvrProcess;
 
@@ -31,7 +30,7 @@ public class CostAdjustmentLineRefreshCost extends SvrProcess {
         MInventoryLine line = new MInventoryLine(getRecordId());
         MProduct product = line.getProduct();
         ClientWithAccounting client = MClientKt.getClientWithAccounting(line.getClientId());
-        I_C_AcctSchema as = client.getAcctSchema();
+        AccountingSchema as = client.getAcctSchema();
         I_M_Cost cost =
                 product.getCostingRecord(
                         as,

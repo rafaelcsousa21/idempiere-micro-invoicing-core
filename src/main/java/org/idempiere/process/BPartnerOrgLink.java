@@ -5,6 +5,7 @@ import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_M_Locator;
+import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.MOrgKt;
@@ -124,9 +125,9 @@ public class BPartnerOrgLink extends SvrProcess {
         if (newOrg) oInfo.setLocationId(C_Location_ID);
 
         //	Create Warehouse
-        MWarehouse wh = null;
+        I_M_Warehouse wh = null;
         if (!newOrg) {
-            MWarehouse[] whs = MWarehouse.getForOrg(p_AD_Org_ID);
+            I_M_Warehouse[] whs = MWarehouse.getForOrg(p_AD_Org_ID);
             if (whs.length > 0) wh = whs[0]; // 	pick first
         }
         //	New Warehouse

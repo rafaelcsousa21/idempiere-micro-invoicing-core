@@ -47,7 +47,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     } //	MInOutLineConfirm
 
     /**
-     * Parent Construvtor
+     * Parent Constructor
      *
      * @param header parent
      */

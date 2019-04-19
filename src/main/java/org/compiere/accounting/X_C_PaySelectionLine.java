@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
+public abstract class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
 
     /**
      *
@@ -25,14 +25,6 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      */
     public X_C_PaySelectionLine(int C_PaySelectionLine_ID) {
         super(C_PaySelectionLine_ID);
-        /**
-         * if (C_PaySelectionLine_ID == 0) { setInvoiceId (0); setPaySelectionId (0);
-         * setPaySelectionLine_ID (0); setDifferenceAmt (Env.ZERO); setDiscountAmt (Env.ZERO);
-         * setIsManual (false); setIsSOTrx (false); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
-         * DefaultValue FROM C_PaySelectionLine WHERE C_PaySelection_ID=@C_PaySelection_ID@ setOpenAmt
-         * (Env.ZERO); setPayAmt (Env.ZERO); setPaymentRule (null); // S setProcessed (false); // N
-         * setWriteOffAmt (Env.ZERO); // 0 }
-         */
     }
 
     /**
@@ -52,8 +44,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_PaySelectionLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_PaySelectionLine[" + getId() + "]";
     }
 
     /**
@@ -62,7 +53,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Invoice Identifier
      */
     public int getInvoiceId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
+        Integer ii = getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -74,7 +65,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      */
     public void setInvoiceId(int C_Invoice_ID) {
         if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
-        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+        else setValue(COLUMNNAME_C_Invoice_ID, C_Invoice_ID);
     }
 
     /**
@@ -84,7 +75,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      */
     public void setPaySelectionCheckId(int C_PaySelectionCheck_ID) {
         if (C_PaySelectionCheck_ID < 1) setValue(COLUMNNAME_C_PaySelectionCheck_ID, null);
-        else setValue(COLUMNNAME_C_PaySelectionCheck_ID, Integer.valueOf(C_PaySelectionCheck_ID));
+        else setValue(COLUMNNAME_C_PaySelectionCheck_ID, C_PaySelectionCheck_ID);
     }
 
     /**
@@ -93,7 +84,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Payment Selection
      */
     public int getPaySelectionId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
+        Integer ii = getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -105,7 +96,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      */
     public void setPaySelectionId(int C_PaySelection_ID) {
         if (C_PaySelection_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_PaySelection_ID, Integer.valueOf(C_PaySelection_ID));
+        else setValueNoCheck(COLUMNNAME_C_PaySelection_ID, C_PaySelection_ID);
     }
 
     /**
@@ -114,7 +105,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Difference Amount
      */
     public BigDecimal getDifferenceAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DifferenceAmt);
+        BigDecimal bd = getValue(COLUMNNAME_DifferenceAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -134,7 +125,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Calculated amount of discount
      */
     public BigDecimal getDiscountAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DiscountAmt);
+        BigDecimal bd = getValue(COLUMNNAME_DiscountAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -154,7 +145,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @param IsManual This is a manual process
      */
     public void setIsManual(boolean IsManual) {
-        setValue(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
+        setValue(COLUMNNAME_IsManual, IsManual);
     }
 
     /**
@@ -163,7 +154,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @param IsSOTrx This is a Sales Transaction
      */
     public void setIsSOTrx(boolean IsSOTrx) {
-        setValue(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+        setValue(COLUMNNAME_IsSOTrx, IsSOTrx);
     }
 
     /**
@@ -174,7 +165,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     public boolean isSOTrx() {
         Object oo = getValue(COLUMNNAME_IsSOTrx);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -186,7 +177,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Line);
     }
 
     /**
@@ -195,7 +186,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Open item amount
      */
     public BigDecimal getOpenAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OpenAmt);
+        BigDecimal bd = getValue(COLUMNNAME_OpenAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -215,7 +206,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Amount being paid
      */
     public BigDecimal getPayAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PayAmt);
+        BigDecimal bd = getValue(COLUMNNAME_PayAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -256,7 +247,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     public boolean isProcessed() {
         Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -268,7 +259,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -277,7 +268,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      * @return Amount to write-off
      */
     public BigDecimal getWriteOffAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_WriteOffAmt);
+        BigDecimal bd = getValue(COLUMNNAME_WriteOffAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }

@@ -1,7 +1,7 @@
 package org.compiere.validation;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_ModelValidator;
+import org.compiere.model.ModelValidator;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidator {
+public class X_AD_ModelValidator extends BasePOName implements ModelValidator {
 
     /**
      *

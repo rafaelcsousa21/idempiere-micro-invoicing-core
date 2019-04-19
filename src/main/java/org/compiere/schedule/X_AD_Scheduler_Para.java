@@ -1,7 +1,7 @@
 package org.compiere.schedule;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_Scheduler_Para;
+import org.compiere.model.SchedulerParameter;
 import org.compiere.orm.PO;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para {
+public class X_AD_Scheduler_Para extends PO implements SchedulerParameter {
 
     /**
      *
@@ -84,6 +84,6 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para {
 
     @Override
     public int getTableId() {
-        return I_AD_Scheduler_Para.Table_ID;
+        return SchedulerParameter.Table_ID;
     }
 }

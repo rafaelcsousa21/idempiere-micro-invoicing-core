@@ -1,6 +1,6 @@
 package org.compiere.accounting
 
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import org.compiere.model.I_M_CostElement
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
@@ -59,7 +59,7 @@ fun getCreateCostQueueRecord(
 fun getCostQueueRecordsInLifoFifoOrder(
     product: MProduct,
     M_ASI_ID: Int,
-    `as`: I_C_AcctSchema,
+    `as`: AccountingSchema,
     Org_ID: Int,
     ce: I_M_CostElement
 ): Array<MCostQueue> {

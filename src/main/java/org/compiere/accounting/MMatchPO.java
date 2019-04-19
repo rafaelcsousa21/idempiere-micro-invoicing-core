@@ -10,6 +10,7 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_Order;
 import org.compiere.model.I_M_InOutLine;
+import org.compiere.model.I_M_MatchInv;
 import org.compiere.model.I_M_MatchPO;
 import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderLine;
@@ -362,19 +363,19 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         // BF [ 2240484 ] Re MatchingPO, MMatchPO doesn't contains Invoice info
         // If newRecord, set c_invoiceline_id while null
         if (newRecord && getInvoiceLineId() == 0) {
-            MMatchInv[] mpi = MMatchInv.getInOutLine(getInOutLineId());
-            for (int i = 0; i < mpi.length; i++) {
-                if (mpi[i].getInvoiceLineId() != 0
-                        && mpi[i].getAttributeSetInstanceId() == getAttributeSetInstanceId()) {
-                    if (mpi[i].getQty().compareTo(getQty()) == 0) // same quantity
+            I_M_MatchInv[] mpi = MMatchInv.getInOutLine(getInOutLineId());
+            for (I_M_MatchInv i_m_matchInv : mpi) {
+                if (i_m_matchInv.getInvoiceLineId() != 0
+                        && i_m_matchInv.getAttributeSetInstanceId() == getAttributeSetInstanceId()) {
+                    if (i_m_matchInv.getQty().compareTo(getQty()) == 0) // same quantity
                     {
-                        setInvoiceLineId(mpi[i].getInvoiceLineId());
+                        setInvoiceLineId(i_m_matchInv.getInvoiceLineId());
                         break;
                     } else // create MatchPO record for PO-Invoice if different quantity
                     {
                         MInvoiceLine il =
-                                new MInvoiceLine(mpi[i].getInvoiceLineId());
-                        MMatchPO match = new MMatchPO(il, getDateTrx(), mpi[i].getQty());
+                                new MInvoiceLine(i_m_matchInv.getInvoiceLineId());
+                        MMatchPO match = new MMatchPO(il, getDateTrx(), i_m_matchInv.getQty());
                         match.setOrderLineId(getOrderLineId());
                         if (!match.save()) {
                             String msg = "Failed to create match po";

@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Depreciation;
+import org.compiere.model.Depreciation;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
+public class X_A_Depreciation extends BasePOName implements Depreciation {
 
     /**
      *
@@ -55,6 +55,6 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
 
     @Override
     public int getTableId() {
-        return I_A_Depreciation.Table_ID;
+        return Depreciation.Table_ID;
     }
 }

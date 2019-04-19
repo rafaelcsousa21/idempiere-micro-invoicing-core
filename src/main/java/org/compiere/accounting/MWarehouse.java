@@ -99,15 +99,15 @@ public class MWarehouse extends X_M_Warehouse {
      * @param AD_Org_ID id
      * @return warehouse
      */
-    public static MWarehouse[] getForOrg(int AD_Org_ID) {
+    public static I_M_Warehouse[] getForOrg(int AD_Org_ID) {
         final String whereClause = "AD_Org_ID=?";
-        List<MWarehouse> list =
-                new Query(I_M_Warehouse.Table_Name, whereClause)
+        List<I_M_Warehouse> list =
+                new Query<I_M_Warehouse>(I_M_Warehouse.Table_Name, whereClause)
                         .setParameters(AD_Org_ID)
                         .setOnlyActiveRecords(true)
                         .setOrderBy(I_M_Warehouse.COLUMNNAME_M_Warehouse_ID)
                         .list();
-        return list.toArray(new MWarehouse[list.size()]);
+        return list.toArray(new I_M_Warehouse[0]);
     } //	get
 
     /**
@@ -120,13 +120,13 @@ public class MWarehouse extends X_M_Warehouse {
         if (!reload && m_locators != null) return m_locators;
         //
         final String whereClause = "M_Warehouse_ID=?";
-        List<PO> list =
-                new Query(I_M_Locator.Table_Name, whereClause)
+        List<I_M_Locator> list =
+                new Query<I_M_Locator>(I_M_Locator.Table_Name, whereClause)
                         .setParameters(getWarehouseId())
                         .setOnlyActiveRecords(true)
                         .setOrderBy("X,Y,Z")
                         .list();
-        m_locators = list.toArray(new I_M_Locator[list.size()]);
+        m_locators = list.toArray(new I_M_Locator[0]);
         return m_locators;
     } //	getLocators
 

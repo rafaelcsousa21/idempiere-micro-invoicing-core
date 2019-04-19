@@ -2,7 +2,7 @@ package org.compiere.accounting
 
 import kotliquery.Row
 import org.compiere.model.IDoc
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.CLogger
@@ -80,7 +80,7 @@ object DocManager {
      * @param Record_ID record ID to load
      * @return Document or null
      */
-    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
+    fun getDocument(`as`: AccountingSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
         var tableName: String? = null
         val documentsTableId = getDocumentsTableID()
         val documentsTableName = getDocumentsTableName()
@@ -110,7 +110,7 @@ object DocManager {
      * @param rs ResultSet
      * @return Document
      */
-    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
+    fun getDocument(`as`: AccountingSchema, AD_Table_ID: Int, rs: Row): IDoc? {
         val factory = DefaultDocumentFactory()
         val doc = factory.getDocument(`as`, AD_Table_ID, rs)
         if (doc != null)
@@ -129,7 +129,7 @@ object DocManager {
      * @return null if the document was posted or error message
      */
     fun postDocument(
-        ass: Array<MAcctSchema>,
+        ass: Array<AccountingSchema>,
         AD_Table_ID: Int,
         Record_ID: Int,
         force: Boolean,
@@ -172,7 +172,7 @@ object DocManager {
      * @return null if the document was posted or error message
      */
     fun postDocument(
-        ass: Array<MAcctSchema>,
+        ass: Array<AccountingSchema>,
         AD_Table_ID: Int,
         rs: Row,
         force: Boolean,

@@ -10,6 +10,8 @@ import org.compiere.accounting.MRequisitionLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
+import org.compiere.model.I_M_Product_PO;
+import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.order.MCharge;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
@@ -154,10 +156,10 @@ public class RequisitionPOCreate extends SvrProcess {
             if (!MRequisition.DOCSTATUS_Completed.equals(req.getDocStatus())) {
                 throw new AdempiereUserError("@DocStatus@ = " + req.getDocStatus());
             }
-            MRequisitionLine[] lines = req.getLines();
-            for (int i = 0; i < lines.length; i++) {
-                if (lines[i].getOrderLineId() == 0) {
-                    process(lines[i]);
+            I_M_RequisitionLine[] lines = req.getLines();
+            for (I_M_RequisitionLine line : lines) {
+                if (line.getOrderLineId() == 0) {
+                    process(line);
                 }
             }
             closeOrder();
@@ -281,7 +283,7 @@ public class RequisitionPOCreate extends SvrProcess {
      * @param rLine request line
      * @throws Exception
      */
-    private void process(MRequisitionLine rLine) throws Exception {
+    private void process(I_M_RequisitionLine rLine) throws Exception {
         if (rLine.getProductId() == 0 && rLine.getChargeId() == 0) {
             log.warning(
                     "Ignored Line"
@@ -321,7 +323,7 @@ public class RequisitionPOCreate extends SvrProcess {
      * @param C_BPartner_ID b.partner
      * @throws Exception
      */
-    private void newOrder(MRequisitionLine rLine, int C_BPartner_ID) throws Exception {
+    private void newOrder(I_M_RequisitionLine rLine, int C_BPartner_ID) throws Exception {
         if (m_order != null) {
             closeOrder();
         }
@@ -347,12 +349,10 @@ public class RequisitionPOCreate extends SvrProcess {
             m_order.setPriceListId(M_PriceList_ID);
             //	default po document type
             if (!p_ConsolidateDocument) {
-                StringBuilder msgsd =
-                        new StringBuilder()
-                                .append(MsgKt.getElementTranslation("M_Requisition_ID"))
-                                .append(": ")
-                                .append(rLine.getParent().getDocumentNo());
-                m_order.setDescription(msgsd.toString());
+                String msgsd = MsgKt.getElementTranslation("M_Requisition_ID") +
+                        ": " +
+                        rLine.getParent().getDocumentNo();
+                m_order.setDescription(msgsd);
             }
 
             //	Prepare Save
@@ -393,7 +393,7 @@ public class RequisitionPOCreate extends SvrProcess {
      * @param rLine request line
      * @throws Exception
      */
-    private void newLine(MRequisitionLine rLine) throws Exception {
+    private void newLine(I_M_RequisitionLine rLine) throws Exception {
         if (m_orderLine != null) {
             m_orderLine.saveEx();
         }
@@ -412,10 +412,10 @@ public class RequisitionPOCreate extends SvrProcess {
         } else {
             // Find Strategic Vendor for Product
             // TODO: refactor
-            MProductPO[] ppos = MProductPO.getOfProduct(product.getProductId());
-            for (int i = 0; i < ppos.length; i++) {
-                if (ppos[i].isCurrentVendor() && ppos[i].getBusinessPartnerId() != 0) {
-                    C_BPartner_ID = ppos[i].getBusinessPartnerId();
+            I_M_Product_PO[] ppos = MProductPO.getOfProduct(product.getProductId());
+            for (I_M_Product_PO ppo : ppos) {
+                if (ppo.isCurrentVendor() && ppo.getBusinessPartnerId() != 0) {
+                    C_BPartner_ID = ppo.getBusinessPartnerId();
                     break;
                 }
             }

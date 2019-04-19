@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.DefaultAccountsForSchema;
 import org.compiere.orm.PO;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public abstract class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default {
+public abstract class X_C_AcctSchema_Default extends PO implements DefaultAccountsForSchema {
 
     /**
      *
@@ -562,6 +562,6 @@ public abstract class X_C_AcctSchema_Default extends PO implements I_C_AcctSchem
 
     @Override
     public int getTableId() {
-        return I_C_AcctSchema_Default.Table_ID;
+        return DefaultAccountsForSchema.Table_ID;
     }
 }

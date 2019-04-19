@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema_Element;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -101,7 +101,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return 2 - Client
      */
     protected int getAccessLevel() {
-        return I_C_AcctSchema_Element.accessLevel.intValue();
+        return AccountSchemaElement.accessLevel.intValue();
     }
 
     public String toString() {
@@ -114,7 +114,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Column in the table
      */
     public int getTableColumnId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_AD_Column_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_AD_Column_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -125,7 +125,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Rules for accounting
      */
     public int getAccountingSchemaId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -136,8 +136,8 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setAccountingSchemaId(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) setValueNoCheck(I_C_AcctSchema_Element.COLUMNNAME_C_AcctSchema_ID, null);
-        else setValueNoCheck(I_C_AcctSchema_Element.COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
+        if (C_AcctSchema_ID < 1) setValueNoCheck(AccountSchemaElement.COLUMNNAME_C_AcctSchema_ID, null);
+        else setValueNoCheck(AccountSchemaElement.COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**
@@ -146,7 +146,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Business Activity
      */
     public int getBusinessActivityId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -157,7 +157,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Identifies a Business Partner
      */
     public int getBusinessPartnerId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -168,7 +168,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Marketing Campaign
      */
     public int getCampaignId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -179,7 +179,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Accounting Element
      */
     public int getElementId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_Element_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -190,7 +190,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Account Element
      */
     public int getElementValueId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_ElementValue_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -201,7 +201,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Location or Address
      */
     public int getLocationId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_Location_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -212,7 +212,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Financial Project
      */
     public int getProjectId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -223,7 +223,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Sales coverage region
      */
     public int getSalesRegionId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -234,7 +234,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Element Type (account or user defined)
      */
     public String getElementType() {
-        return (String) getValue(I_C_AcctSchema_Element.COLUMNNAME_ElementType);
+        return (String) getValue(AccountSchemaElement.COLUMNNAME_ElementType);
     }
 
     /**
@@ -243,7 +243,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @param IsBalanced Balanced
      */
     public void setIsBalanced(boolean IsBalanced) {
-        setValue(I_C_AcctSchema_Element.COLUMNNAME_IsBalanced, IsBalanced);
+        setValue(AccountSchemaElement.COLUMNNAME_IsBalanced, IsBalanced);
     }
 
     /**
@@ -252,7 +252,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Balanced
      */
     public boolean isBalanced() {
-        Object oo = getValue(I_C_AcctSchema_Element.COLUMNNAME_IsBalanced);
+        Object oo = getValue(AccountSchemaElement.COLUMNNAME_IsBalanced);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -266,7 +266,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @param IsMandatory Data entry is required in this column
      */
     public void setIsMandatory(boolean IsMandatory) {
-        setValue(I_C_AcctSchema_Element.COLUMNNAME_IsMandatory, IsMandatory);
+        setValue(AccountSchemaElement.COLUMNNAME_IsMandatory, IsMandatory);
     }
 
     /**
@@ -275,7 +275,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Data entry is required in this column
      */
     public boolean isMandatory() {
-        Object oo = getValue(I_C_AcctSchema_Element.COLUMNNAME_IsMandatory);
+        Object oo = getValue(AccountSchemaElement.COLUMNNAME_IsMandatory);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -289,7 +289,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Product, Service, Item
      */
     public int getProductId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -300,7 +300,7 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Organizational entity within client
      */
     public int getOrgId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_Org_ID);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -311,13 +311,13 @@ public class X_C_AcctSchema_Element extends BasePOName {
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema_Element.COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(AccountSchemaElement.COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }
 
     @Override
     public int getTableId() {
-        return I_C_AcctSchema_Element.Table_ID;
+        return AccountSchemaElement.Table_ID;
     }
 }

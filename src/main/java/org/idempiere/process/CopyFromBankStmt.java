@@ -4,6 +4,7 @@ import org.compiere.accounting.MBankStatement;
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.MPayment;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_BankStatementLine;
 import org.compiere.process.SvrProcess;
 
 import java.math.BigDecimal;
@@ -58,7 +59,7 @@ public class CopyFromBankStmt extends SvrProcess {
                 || MBankStatement.DOCSTATUS_Closed.equals(from.getDocStatus())))
             throw new IllegalArgumentException("Source must be closed or complete");
 
-        for (MBankStatementLine fromLine : from.getLines(false)) {
+        for (I_C_BankStatementLine fromLine : from.getLines(false)) {
             if (!fromLine.isActive()) continue;
             if (fromLine.getPaymentId() > 0) {
                 // check if payment is used on another statement

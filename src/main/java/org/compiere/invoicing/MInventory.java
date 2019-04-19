@@ -5,7 +5,6 @@ import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MClientInfo;
 import org.compiere.accounting.MClientKt;
-import org.compiere.accounting.MCost;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
@@ -15,7 +14,7 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_AttributeSet;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_Inventory;
@@ -23,6 +22,7 @@ import org.compiere.model.I_M_InventoryLine;
 import org.compiere.model.I_M_InventoryLineMA;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_StorageOnHand;
+import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
 import org.compiere.orm.MSequence;
@@ -116,7 +116,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      *
      * @param wh
      */
-    public MInventory(MWarehouse wh) {
+    public MInventory(I_M_Warehouse wh) {
         this(0);
         setClientOrg(wh);
         setWarehouseId(wh.getWarehouseId());
@@ -138,7 +138,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         .setParameters(getId())
                         .setOrderBy(MInventoryLine.COLUMNNAME_Line)
                         .list();
-        m_lines = list.toArray(new I_M_InventoryLine[list.size()]);
+        m_lines = list.toArray(new I_M_InventoryLine[0]);
         return m_lines;
     } //	getLines
 
@@ -151,8 +151,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         String desc = getDescription();
         if (desc == null) setDescription(description);
         else {
-            StringBuilder msgreturn = new StringBuilder(desc).append(" | ").append(description);
-            setDescription(msgreturn.toString());
+            setDescription(desc + " | " + description);
         }
     } //	addDescription
 
@@ -172,14 +171,12 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MInventory[");
-        sb.append(getId())
-                .append("-")
-                .append(getDocumentNo())
-                .append(",M_Warehouse_ID=")
-                .append(getWarehouseId())
-                .append("]");
-        return sb.toString();
+        return "MInventory[" + getId() +
+                "-" +
+                getDocumentNo() +
+                ",M_Warehouse_ID=" +
+                getWarehouseId() +
+                "]";
     } //	toString
 
     /**
@@ -190,9 +187,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocTypeKt.getDocumentType(getDocumentTypeId());
-        StringBuilder msgreturn =
-                new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
-        return msgreturn.toString();
+        return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
     /**
@@ -403,11 +398,11 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     if (!isReversal()) {
                         BigDecimal currentCost = line.getCurrentCostPrice();
                         ClientWithAccounting client = MClientKt.getClientWithAccounting(getClientId());
-                        I_C_AcctSchema as = client.getAcctSchema();
-                        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getId());
+                        AccountingSchema as = client.getAcctSchema();
+                        AccountingSchema[] ass = MAcctSchema.getClientAcctSchema(client.getId());
 
                         if (as.getCurrencyId() != getCurrencyId()) {
-                            for (MAcctSchema a : ass) {
+                            for (AccountingSchema a : ass) {
                                 if (a.getCurrencyId() == getCurrencyId()) as = a;
                             }
                         }
@@ -454,8 +449,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         MInventoryLineMA[] mas =
                                 MInventoryLineMA.get(line.getInventoryLineId());
 
-                        for (int j = 0; j < mas.length; j++) {
-                            MInventoryLineMA ma = mas[j];
+                        for (MInventoryLineMA ma : mas) {
                             BigDecimal QtyMA = ma.getMovementQty();
                             BigDecimal QtyNew = QtyMA.add(qtyDiff);
                             if (log.isLoggable(Level.FINE))
@@ -468,8 +462,8 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                     line.getProductId(),
                                     ma.getAttributeSetInstanceId(),
                                     QtyMA.negate(),
-                                    ma.getDateMaterialPolicy(),
-                                    null)) {
+                                    ma.getDateMaterialPolicy()
+                            )) {
                                 String lastError = CLogger.retrieveErrorString("");
                                 m_processMsg = "Cannot correct Inventory (MA) - " + lastError;
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -539,8 +533,8 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                 line.getProductId(),
                                 line.getAttributeSetInstanceId(),
                                 qtyDiff,
-                                dateMPolicy,
-                                null)) {
+                                dateMPolicy
+                        )) {
                             String lastError = CLogger.retrieveErrorString("");
                             m_processMsg = "Cannot correct Inventory OnHand (MA) - " + lastError;
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -791,7 +785,6 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                 MClient.MMPOLICY_FiFo.equals(MMPolicy),
                                 true,
                                 line.getLocatorId(),
-                                null,
                                 false);
 
                 BigDecimal qtyToDeliver = qtyDiff.negate();

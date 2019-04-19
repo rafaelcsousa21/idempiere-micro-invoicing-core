@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Depreciation_Exp;
+import org.compiere.model.DepreciationExpense;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
+public abstract class X_A_Depreciation_Exp extends PO implements DepreciationExpense {
 
     /**
      * Depreciation = DEP

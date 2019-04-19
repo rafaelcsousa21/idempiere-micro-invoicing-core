@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_HouseKeeping;
+import org.compiere.model.HouseKeeping;
 import org.compiere.orm.BasePONameValue;
 
 import java.sql.Timestamp;
 
-public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeeping {
+public class X_AD_HouseKeeping extends BasePONameValue implements HouseKeeping {
 
     /**
      *

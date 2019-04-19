@@ -7,7 +7,8 @@ import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MInOutLineMA;
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
+import org.compiere.model.I_C_OrderLandedCostAllocation;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_InOutLineMA;
@@ -137,7 +138,7 @@ public class Doc_InOut extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
+    public ArrayList<IFact> createFacts(AccountingSchema as) {
         //
         ArrayList<IFact> facts = new ArrayList<>();
         //  create Fact Header
@@ -514,9 +515,9 @@ public class Doc_InOut extends Doc {
                     int C_OrderLine_ID = p_line.getOrderLineId();
                     if (C_OrderLine_ID > 0) {
                         orderLine = new MOrderLine(C_OrderLine_ID);
-                        MOrderLandedCostAllocation[] allocations =
+                        I_C_OrderLandedCostAllocation[] allocations =
                                 MOrderLandedCostAllocation.getOfOrderLine(C_OrderLine_ID);
-                        for (MOrderLandedCostAllocation allocation : allocations) {
+                        for (I_C_OrderLandedCostAllocation allocation : allocations) {
                             BigDecimal totalAmt = allocation.getAmt();
                             BigDecimal totalQty = allocation.getQty();
                             BigDecimal amt =
@@ -829,7 +830,7 @@ public class Doc_InOut extends Doc {
         return m_Reversal_ID != 0 && line.getReversalLineId() != 0;
     }
 
-    private String createVendorRMACostDetail(I_C_AcctSchema as, DocLine line, BigDecimal costs) {
+    private String createVendorRMACostDetail(AccountingSchema as, DocLine line, BigDecimal costs) {
         BigDecimal tQty = line.getQty();
         BigDecimal tAmt = costs;
         if (tAmt.signum() != tQty.signum()) {

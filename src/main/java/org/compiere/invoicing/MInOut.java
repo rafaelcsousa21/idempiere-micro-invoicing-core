@@ -20,6 +20,7 @@ import org.compiere.model.I_C_Order;
 import org.compiere.model.I_M_InOutConfirm;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_InOutLineMA;
+import org.compiere.model.I_M_MatchInv;
 import org.compiere.model.I_M_Product;
 import org.compiere.order.MOrder;
 import org.compiere.order.MRMALine;
@@ -63,7 +64,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * Just Prepared Flag
      */
     protected boolean m_justPrepared = false;
-    protected MInOutConfirm[] m_confirms = null;
+    protected I_M_InOutConfirm[] m_confirms = null;
 
     public MInOut(int M_InOut_ID) {
         super(M_InOut_ID);
@@ -410,15 +411,15 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param requery requery
      * @return array of Confirmations
      */
-    public MInOutConfirm[] getConfirmations(boolean requery) {
+    public I_M_InOutConfirm[] getConfirmations(boolean requery) {
         if (m_confirms != null && !requery) {
             return m_confirms;
         }
-        List<MInOutConfirm> list =
-                new Query(I_M_InOutConfirm.Table_Name, "M_InOut_ID=?")
+        List<I_M_InOutConfirm> list =
+                new Query<I_M_InOutConfirm>(I_M_InOutConfirm.Table_Name, "M_InOut_ID=?")
                         .setParameters(getInOutId())
                         .list();
-        m_confirms = new MInOutConfirm[list.size()];
+        m_confirms = new I_M_InOutConfirm[list.size()];
         list.toArray(m_confirms);
         return m_confirms;
     } //	getConfirmations
@@ -447,8 +448,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
 
         //	Outstanding (not processed) Incoming Confirmations ?
-        MInOutConfirm[] confirmations = getConfirmations(true);
-        for (MInOutConfirm confirm : confirmations) {
+        I_M_InOutConfirm[] confirmations = getConfirmations(true);
+        for (I_M_InOutConfirm confirm : confirmations) {
             if (!confirm.isProcessed()) {
                 if (MInOutConfirm.CONFIRMTYPE_CustomerConfirmation.equals(confirm.getConfirmType()))
                     continue;
@@ -561,8 +562,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                     sLine.getProductId(),
                                     ma.getAttributeSetInstanceId(),
                                     QtyMA,
-                                    ma.getDateMaterialPolicy(),
-                                    null)) {
+                                    ma.getDateMaterialPolicy()
+                            )) {
                                 String lastError = CLogger.retrieveErrorString("");
                                 m_processMsg =
                                         "Cannot correct Inventory OnHand (MA) ["
@@ -649,8 +650,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                 sLine.getProductId(),
                                 sLine.getAttributeSetInstanceId(),
                                 Qty,
-                                dateMPolicy,
-                                null)) {
+                                dateMPolicy
+                        )) {
                             String lastError = CLogger.retrieveErrorString("");
                             m_processMsg =
                                     "Cannot correct Inventory OnHand [" + product.getSearchKey() + "] - " + lastError;
@@ -768,7 +769,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                     if (iLine != null && iLine.getProductId() != 0) {
                         if (matchQty.compareTo(iLine.getQtyInvoiced()) > 0) matchQty = iLine.getQtyInvoiced();
 
-                        MMatchInv[] matches =
+                        I_M_MatchInv[] matches =
                                 MMatchInv.get(
 
                                         sLine.getInOutLineId(),
@@ -1094,8 +1095,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     }
 
     protected boolean reverseMatching(Timestamp reversalDate) {
-        MMatchInv[] mInv = MMatchInv.getInOut(getInOutId());
-        for (MMatchInv mMatchInv : mInv) {
+        I_M_MatchInv[] mInv = MMatchInv.getInOut(getInOutId());
+        for (I_M_MatchInv mMatchInv : mInv) {
             if (mMatchInv.getReversalId() > 0) continue;
 
             String description = mMatchInv.getDescription();
@@ -1201,8 +1202,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         if (pick && ship) {
             boolean havePick = false;
             boolean haveShip = false;
-            MInOutConfirm[] confirmations = getConfirmations(false);
-            for (MInOutConfirm confirm : confirmations) {
+            I_M_InOutConfirm[] confirmations = getConfirmations(false);
+            for (I_M_InOutConfirm confirm : confirmations) {
                 if (MInOutConfirm.CONFIRMTYPE_PickQAConfirm.equals(confirm.getConfirmType())) {
                     if (!confirm.isProcessed()) // 	wait intil done
                     {
@@ -1231,7 +1232,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     } //	createConfirmation
 
     protected void voidConfirmations() {
-        for (MInOutConfirm confirm : getConfirmations(true)) {
+        for (I_M_InOutConfirm confirm : getConfirmations(true)) {
             if (!confirm.isProcessed()) {
                 if (!confirm.processIt(MInOutConfirm.DOCACTION_Void))
                     throw new AdempiereException(confirm.getProcessMsg());
@@ -1351,7 +1352,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                 MClient.MMPOLICY_FiFo.equals(MMPolicy),
                                 true,
                                 line.getLocatorId(),
-                                null,
                                 false);
                 BigDecimal qtyToDeliver = qty;
                 for (MStorageOnHand storage : storages) {

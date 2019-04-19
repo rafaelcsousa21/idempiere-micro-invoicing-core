@@ -1,8 +1,8 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset;
-import org.compiere.model.I_A_Depreciation_Workfile;
+import org.compiere.model.Asset;
+import org.compiere.model.DepreciationWorkfile;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
@@ -17,7 +17,7 @@ import java.sql.Timestamp;
  * @version Release 5.1 - $Id$
  */
 public abstract class X_A_Depreciation_Workfile extends PO
-        implements I_A_Depreciation_Workfile {
+        implements DepreciationWorkfile {
 
     /**
      * Cofinantare = C
@@ -127,9 +127,9 @@ public abstract class X_A_Depreciation_Workfile extends PO
         setValue(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
     }
 
-    public I_A_Asset getAAsset() throws RuntimeException {
-        return (I_A_Asset)
-                MBaseTableKt.getTable(I_A_Asset.Table_Name)
+    public Asset getAAsset() throws RuntimeException {
+        return (Asset)
+                MBaseTableKt.getTable(Asset.Table_Name)
                         .getPO(getAssetId());
     }
 
@@ -418,6 +418,6 @@ public abstract class X_A_Depreciation_Workfile extends PO
 
     @Override
     public int getTableId() {
-        return I_A_Depreciation_Workfile.Table_ID;
+        return DepreciationWorkfile.Table_ID;
     }
 }

@@ -8,7 +8,7 @@ import org.compiere.accounting.MJournal;
 import org.compiere.accounting.MJournalLine;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.DefaultAccountsForSchema;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_T_InvoiceGL;
 import org.compiere.orm.MDocType;
@@ -265,7 +265,7 @@ public class InvoiceNGL extends SvrProcess {
 
         //
         MAcctSchema as = MAcctSchema.get(p_C_AcctSchema_ID);
-        I_C_AcctSchema_Default asDefaultAccts = MAcctSchemaDefault.get(p_C_AcctSchema_ID);
+        DefaultAccountsForSchema asDefaultAccts = MAcctSchemaDefault.get(p_C_AcctSchema_ID);
         MGLCategory cat = MGLCategory.getDefaultSystem();
         if (cat == null) {
             MDocType docType = MDocTypeKt.getDocumentType(p_C_DocTypeReval_ID);
@@ -380,7 +380,7 @@ public class InvoiceNGL extends SvrProcess {
      * @param lineNo         base line no
      */
     private void createBalancing(
-            I_C_AcctSchema_Default asDefaultAccts,
+            DefaultAccountsForSchema asDefaultAccts,
             MJournal journal,
             BigDecimal gainTotal,
             BigDecimal lossTotal,

@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_GL_Journal;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -113,9 +114,9 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
         return sb.toString();
     }
 
-    public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
-        return (org.compiere.model.I_C_AcctSchema)
-                MBaseTableKt.getTable(org.compiere.model.I_C_AcctSchema.Table_Name)
+    public AccountingSchema getAccountingSchema() throws RuntimeException {
+        return (AccountingSchema)
+                MBaseTableKt.getTable(AccountingSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 

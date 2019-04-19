@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset_Group_Acct;
+import org.compiere.model.AssetGroupAccounting;
 import org.compiere.orm.PO;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Asset_Group_Acct extends PO implements I_A_Asset_Group_Acct {
+public class X_A_Asset_Group_Acct extends PO implements AssetGroupAccounting {
 
     /**
      *

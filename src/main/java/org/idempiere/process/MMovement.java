@@ -410,8 +410,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                     line.getProductId(),
                                     ma.getAttributeSetInstanceId(),
                                     ma.getMovementQty().negate(),
-                                    ma.getDateMaterialPolicy(),
-                                    null)) {
+                                    ma.getDateMaterialPolicy()
+                            )) {
                                 String lastError = CLogger.retrieveErrorString("");
                                 m_processMsg = "Cannot correct Inventory OnHand (MA) - " + lastError;
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -432,8 +432,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                     line.getProductId(),
                                     M_AttributeSetInstanceTo_ID,
                                     ma.getMovementQty(),
-                                    ma.getDateMaterialPolicy(),
-                                    null)) {
+                                    ma.getDateMaterialPolicy()
+                            )) {
                                 String lastError = CLogger.retrieveErrorString("");
                                 m_processMsg = "Cannot correct Inventory OnHand (MA) - " + lastError;
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -528,8 +528,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                 line.getProductId(),
                                 line.getAttributeSetInstanceId(),
                                 line.getMovementQty().negate(),
-                                effDateMPolicy,
-                                null)) {
+                                effDateMPolicy
+                        )) {
                             String lastError = CLogger.retrieveErrorString("");
                             m_processMsg = "Cannot correct Inventory OnHand (MA) - " + lastError;
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -547,8 +547,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                 line.getProductId(),
                                 line.getMAttributeSetInstanceToId(),
                                 line.getMovementQty(),
-                                effDateMPolicy,
-                                null)) {
+                                effDateMPolicy
+                        )) {
                             String lastError = CLogger.retrieveErrorString("");
                             m_processMsg = "Cannot correct Inventory OnHand (MA) - " + lastError;
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());

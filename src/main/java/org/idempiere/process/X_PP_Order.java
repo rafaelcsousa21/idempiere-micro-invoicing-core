@@ -5,6 +5,7 @@ import org.compiere.model.AccountingElementValue;
 import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.User;
+import org.compiere.model.Workflow;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Order;
@@ -75,9 +76,9 @@ public class X_PP_Order extends PO implements I_PP_Order {
         else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
-    public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
-        return (org.compiere.model.I_AD_Workflow)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_Workflow.Table_Name)
+    public Workflow getWorkflow() throws RuntimeException {
+        return (Workflow)
+                MBaseTableKt.getTable(Workflow.Table_Name)
                         .getPO(getWorkflowId());
     }
 

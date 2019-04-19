@@ -47,7 +47,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
     /**
      * Lines
      */
-    private MRequisitionLine[] m_lines = null;
+    private I_M_RequisitionLine[] m_lines = null;
     /**
      * Process Message
      */
@@ -89,21 +89,21 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      *
      * @return array of lines
      */
-    public MRequisitionLine[] getLines() {
+    public I_M_RequisitionLine[] getLines() {
         if (m_lines != null) {
             return m_lines;
         }
 
         // red1 - FR: [ 2214883 ] Remove SQL code and Replace for Query
         final String whereClause = I_M_RequisitionLine.COLUMNNAME_M_Requisition_ID + "=?";
-        List<MRequisitionLine> list =
-                new Query(I_M_RequisitionLine.Table_Name, whereClause)
+        List<I_M_RequisitionLine> list =
+                new Query<I_M_RequisitionLine>(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(getId())
                         .setOrderBy(I_M_RequisitionLine.COLUMNNAME_Line)
                         .list();
         //  red1 - end -
 
-        m_lines = new MRequisitionLine[list.size()];
+        m_lines = new I_M_RequisitionLine[list.size()];
         list.toArray(m_lines);
         return m_lines;
     } //	getLines
@@ -158,7 +158,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
 
     @Override
     protected boolean beforeDelete() {
-        for (MRequisitionLine line : getLines()) {
+        for (I_M_RequisitionLine line : getLines()) {
             line.deleteEx(true);
         }
         return true;
@@ -208,7 +208,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MRequisitionLine[] lines = getLines();
+        I_M_RequisitionLine[] lines = getLines();
 
         //	Invalid
         if (getUserId() == 0 || getPriceListId() == 0 || getWarehouseId() == 0) {
@@ -226,8 +226,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         //	Add up Amounts
         int precision = MPriceList.getStandardPrecision(getPriceListId());
         BigDecimal totalLines = Env.ZERO;
-        for (int i = 0; i < lines.length; i++) {
-            MRequisitionLine line = lines[i];
+        for (I_M_RequisitionLine line : lines) {
             BigDecimal lineNet = line.getQty().multiply(line.getPriceActual());
             lineNet = lineNet.setScale(precision, BigDecimal.ROUND_HALF_UP);
             if (lineNet.compareTo(line.getLineNetAmt()) != 0) {
@@ -361,10 +360,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         if (m_processMsg != null) return false;
 
         //	Close Not delivered Qty
-        MRequisitionLine[] lines = getLines();
+        I_M_RequisitionLine[] lines = getLines();
         BigDecimal totalLines = Env.ZERO;
-        for (int i = 0; i < lines.length; i++) {
-            MRequisitionLine line = lines[i];
+        for (I_M_RequisitionLine line : lines) {
             BigDecimal finalQty = line.getQty();
             if (line.getOrderLineId() == 0) finalQty = Env.ZERO;
             else {

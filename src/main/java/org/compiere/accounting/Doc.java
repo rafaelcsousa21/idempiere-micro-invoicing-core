@@ -6,7 +6,7 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IFact;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_BankStatement;
 import org.compiere.model.I_C_Cash;
@@ -373,7 +373,7 @@ public abstract class Doc implements IDoc {
     /**
      * Accounting Schema
      */
-    private I_C_AcctSchema m_as = null;
+    private AccountingSchema m_as = null;
     /**
      * Document Type
      */
@@ -472,7 +472,7 @@ public abstract class Doc implements IDoc {
      * @param defaultDocumentType default document type or null
      */
     public Doc(
-            I_C_AcctSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
+            AccountingSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
         p_Status = STATUS_Error;
         m_as = as;
 
@@ -511,7 +511,7 @@ public abstract class Doc implements IDoc {
      * @param Record_ID   record ID to load
      * @return Document or null
      */
-    public static IDoc get(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
+    public static IDoc get(AccountingSchema as, int AD_Table_ID, int Record_ID) {
         return DocManager.INSTANCE.getDocument(as, AD_Table_ID, Record_ID);
     } //	get
 
@@ -524,7 +524,7 @@ public abstract class Doc implements IDoc {
      * @return Document
      * @throws AdempiereUserError
      */
-    public static IDoc get(I_C_AcctSchema as, int AD_Table_ID, Row rs) {
+    public static IDoc get(AccountingSchema as, int AD_Table_ID, Row rs) {
         return DocManager.INSTANCE.getDocument(as, AD_Table_ID, rs);
     } //  get
 
@@ -538,7 +538,7 @@ public abstract class Doc implements IDoc {
      * @return null if the document was posted or error message
      */
     public static String postImmediate(
-            MAcctSchema[] ass, int AD_Table_ID, int Record_ID, boolean force) {
+            AccountingSchema[] ass, int AD_Table_ID, int Record_ID, boolean force) {
         return DocManager.INSTANCE.postDocument(ass, AD_Table_ID, Record_ID, force, true);
     } //  post
 
@@ -1015,7 +1015,7 @@ public abstract class Doc implements IDoc {
      * @param acctSchema accounting schema
      * @return true, if convertible to accounting currency
      */
-    public boolean isConvertible(I_C_AcctSchema acctSchema) {
+    public boolean isConvertible(AccountingSchema acctSchema) {
         //  No Currency in document
         if (getCurrencyId() == NO_CURRENCY) {
             if (log.isLoggable(Level.FINE)) log.fine("(none) - " + toString());
@@ -1181,7 +1181,7 @@ public abstract class Doc implements IDoc {
      * @param as       accounting schema
      * @return C_ValidCombination_ID
      */
-    public int getValidCombinationId(int AcctType, I_C_AcctSchema as) {
+    public int getValidCombinationId(int AcctType, AccountingSchema as) {
         int para_1 = 0; //  first parameter (second is always AcctSchema)
         String sql = null;
 
@@ -1391,7 +1391,7 @@ public abstract class Doc implements IDoc {
      * @param as       accounting schema
      * @return Account
      */
-    public final MAccount getAccount(int AcctType, I_C_AcctSchema as) {
+    public final MAccount getAccount(int AcctType, AccountingSchema as) {
         int C_ValidCombination_ID = getValidCombinationId(AcctType, as);
         if (C_ValidCombination_ID == 0) return null;
         //	Return Account
@@ -2068,7 +2068,7 @@ public abstract class Doc implements IDoc {
      * @param as accounting schema
      * @return Facts
      */
-    public abstract ArrayList<IFact> createFacts(I_C_AcctSchema as);
+    public abstract ArrayList<IFact> createFacts(AccountingSchema as);
 
     /**
      * Return document whether need to defer posting or not

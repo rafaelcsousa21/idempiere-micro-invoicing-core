@@ -1,7 +1,7 @@
 package org.compiere.schedule;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_Schedule;
+import org.compiere.model.Schedule;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.BasePOName;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
+public class X_AD_Schedule extends BasePOName implements Schedule {
 
     /**
      * Minute = M
@@ -57,7 +57,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return 4 - System
      */
     protected int getAccessLevel() {
-        return I_AD_Schedule.accessLevel.intValue();
+        return Schedule.accessLevel.intValue();
     }
 
     public String toString() {
@@ -71,7 +71,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Cron pattern to define when the process should be invoked.
      */
     public String getCronPattern() {
-        return (String) getValue(I_AD_Schedule.COLUMNNAME_CronPattern);
+        return (String) getValue(Schedule.COLUMNNAME_CronPattern);
     }
 
     /**
@@ -80,7 +80,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @param CronPattern Cron pattern to define when the process should be invoked.
      */
     public void setCronPattern(String CronPattern) {
-        setValue(I_AD_Schedule.COLUMNNAME_CronPattern, CronPattern);
+        setValue(Schedule.COLUMNNAME_CronPattern, CronPattern);
     }
 
     /**
@@ -89,7 +89,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Frequency of events
      */
     public int getFrequency() {
-        Integer ii = (Integer) getValue(I_AD_Schedule.COLUMNNAME_Frequency);
+        Integer ii = (Integer) getValue(Schedule.COLUMNNAME_Frequency);
         if (ii == null) return 0;
         return ii;
     }
@@ -100,7 +100,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @param Frequency Frequency of events
      */
     public void setFrequency(int Frequency) {
-        setValue(I_AD_Schedule.COLUMNNAME_Frequency, Integer.valueOf(Frequency));
+        setValue(Schedule.COLUMNNAME_Frequency, Integer.valueOf(Frequency));
     }
 
     /**
@@ -109,7 +109,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Frequency of event
      */
     public String getFrequencyType() {
-        return (String) getValue(I_AD_Schedule.COLUMNNAME_FrequencyType);
+        return (String) getValue(Schedule.COLUMNNAME_FrequencyType);
     }
 
     /**
@@ -119,7 +119,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      */
     public void setFrequencyType(String FrequencyType) {
 
-        setValue(I_AD_Schedule.COLUMNNAME_FrequencyType, FrequencyType);
+        setValue(Schedule.COLUMNNAME_FrequencyType, FrequencyType);
     }
 
     /**
@@ -128,7 +128,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Do not include processing time for the DateNextRun calculation
      */
     public boolean isIgnoreProcessingTime() {
-        Object oo = getValue(I_AD_Schedule.COLUMNNAME_IsIgnoreProcessingTime);
+        Object oo = getValue(Schedule.COLUMNNAME_IsIgnoreProcessingTime);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -142,7 +142,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Run only on IP
      */
     public String getRunOnlyOnIP() {
-        return (String) getValue(I_AD_Schedule.COLUMNNAME_RunOnlyOnIP);
+        return (String) getValue(Schedule.COLUMNNAME_RunOnlyOnIP);
     }
 
     /**
@@ -151,11 +151,11 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @return Type of schedule
      */
     public String getScheduleType() {
-        return (String) getValue(I_AD_Schedule.COLUMNNAME_ScheduleType);
+        return (String) getValue(Schedule.COLUMNNAME_ScheduleType);
     }
 
     @Override
     public int getTableId() {
-        return I_AD_Schedule.Table_ID;
+        return Schedule.Table_ID;
     }
 }

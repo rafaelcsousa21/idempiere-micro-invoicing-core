@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_C_BankStatementLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -27,7 +28,7 @@ public class DocLine_Bank extends DocLine {
      * @param line statement line
      * @param doc  header
      */
-    public DocLine_Bank(MBankStatementLine line, Doc_BankStatement doc) {
+    public DocLine_Bank(I_C_BankStatementLine line, Doc_BankStatement doc) {
         super(line, doc);
         m_C_Payment_ID = line.getPaymentId();
         //

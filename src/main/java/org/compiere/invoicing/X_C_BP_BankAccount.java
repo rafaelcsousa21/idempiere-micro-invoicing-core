@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
+public abstract class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
 
     /**
      * Both = B

@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Payment extends PO implements I_C_Payment {
+public abstract class X_C_Payment extends PO implements I_C_Payment {
 
     /**
      * Amex = A

@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.invoicing.MInvoiceLine;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_InvoiceLine;
@@ -96,16 +97,16 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param C_InvoiceLine_ID invoice
      * @return array of matches
      */
-    public static MMatchInv[] get(
+    public static I_M_MatchInv[] get(
             int M_InOutLine_ID, int C_InvoiceLine_ID) {
         if (M_InOutLine_ID <= 0 || C_InvoiceLine_ID <= 0) return new MMatchInv[]{};
         //
         final String whereClause = "M_InOutLine_ID=? AND C_InvoiceLine_ID=?";
-        List<MMatchInv> list =
-                new Query(I_M_MatchInv.Table_Name, whereClause)
+        List<I_M_MatchInv> list =
+                new Query<I_M_MatchInv>(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOutLine_ID, C_InvoiceLine_ID)
                         .list();
-        return list.toArray(new MMatchInv[list.size()]);
+        return list.toArray(new I_M_MatchInv[0]);
     } //	get
 
     /**
@@ -114,15 +115,15 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param C_InvoiceLine_ID invoice
      * @return array of matches
      */
-    public static MMatchInv[] getInvoiceLine(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID <= 0) return new MMatchInv[]{};
+    public static I_M_MatchInv[] getInvoiceLine(int C_InvoiceLine_ID) {
+        if (C_InvoiceLine_ID <= 0) return new I_M_MatchInv[]{};
         //
         String whereClause = "C_InvoiceLine_ID=?";
-        List<MMatchInv> list =
-                new Query(I_M_MatchInv.Table_Name, whereClause)
+        List<I_M_MatchInv> list =
+                new Query<I_M_MatchInv>(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(C_InvoiceLine_ID)
                         .list();
-        return list.toArray(new MMatchInv[list.size()]);
+        return list.toArray(new I_M_MatchInv[0]);
     } //	getInvoiceLine
 
     /**
@@ -131,17 +132,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param M_InOut_ID shipment
      * @return array of matches
      */
-    public static MMatchInv[] getInOut(int M_InOut_ID) {
+    public static I_M_MatchInv[] getInOut(int M_InOut_ID) {
         if (M_InOut_ID <= 0) return new MMatchInv[]{};
         //
         final String whereClause =
                 "EXISTS (SELECT 1 FROM M_InOutLine l"
                         + " WHERE M_MatchInv.M_InOutLine_ID=l.M_InOutLine_ID AND l.M_InOut_ID=?)";
-        List<MMatchInv> list =
-                new Query(I_M_MatchInv.Table_Name, whereClause)
+        List<I_M_MatchInv> list =
+                new Query<I_M_MatchInv>(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOut_ID)
                         .list();
-        return list.toArray(new MMatchInv[list.size()]);
+        return list.toArray(new I_M_MatchInv[0]);
     } //	getInOut
 
     /**
@@ -150,17 +151,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param C_Invoice_ID invoice
      * @return array of matches
      */
-    public static MMatchInv[] getInvoice(int C_Invoice_ID) {
+    public static I_M_MatchInv[] getInvoice(int C_Invoice_ID) {
         if (C_Invoice_ID == 0) return new MMatchInv[]{};
         //
         final String whereClause =
                 " EXISTS (SELECT 1 FROM C_InvoiceLine il"
                         + " WHERE M_MatchInv.C_InvoiceLine_ID=il.C_InvoiceLine_ID AND il.C_Invoice_ID=?)";
-        List<MMatchInv> list =
-                new Query(I_M_MatchInv.Table_Name, whereClause)
+        List<I_M_MatchInv> list =
+                new Query<I_M_MatchInv>(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(C_Invoice_ID)
                         .list();
-        return list.toArray(new MMatchInv[list.size()]);
+        return list.toArray(new I_M_MatchInv[0]);
     } //	getInvoice
 
     /**
@@ -169,17 +170,17 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @param M_InOutLine_ID shipment
      * @return array of matches
      */
-    public static MMatchInv[] getInOutLine(int M_InOutLine_ID) {
+    public static I_M_MatchInv[] getInOutLine(int M_InOutLine_ID) {
         if (M_InOutLine_ID <= 0) {
-            return new MMatchInv[]{};
+            return new I_M_MatchInv[]{};
         }
         //
         final String whereClause = MMatchInv.COLUMNNAME_M_InOutLine_ID + "=?";
-        List<MMatchInv> list =
-                new Query(I_M_MatchInv.Table_Name, whereClause)
+        List<I_M_MatchInv> list =
+                new Query<I_M_MatchInv>(I_M_MatchInv.Table_Name, whereClause)
                         .setParameters(M_InOutLine_ID)
                         .list();
-        return list.toArray(new MMatchInv[list.size()]);
+        return list.toArray(new I_M_MatchInv[0]);
     } //	getInOutLine
 
     /**
@@ -306,10 +307,8 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     // AZ Goodwill
     private String deleteMatchInvCostDetail() {
         // Get Account Schemas to delete MCostDetail
-        MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
-        for (int asn = 0; asn < acctschemas.length; asn++) {
-            MAcctSchema as = acctschemas[asn];
-
+        AccountingSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
+        for (AccountingSchema as : acctschemas) {
             I_M_CostDetail cd =
                     MCostDetail.get(
                             "M_MatchInv_ID=?",

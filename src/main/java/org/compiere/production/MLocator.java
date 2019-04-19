@@ -1,7 +1,6 @@
 package org.compiere.production;
 
 import kotliquery.Row;
-import org.compiere.accounting.MWarehouse;
 import org.compiere.accounting.X_M_Locator;
 import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Warehouse;
@@ -49,11 +48,10 @@ public class MLocator extends X_M_Locator {
 
     /**
      * New Locator Constructor with XYZ=000
-     *
-     * @param warehouse parent
+     *  @param warehouse parent
      * @param Value     value
      */
-    public MLocator(MWarehouse warehouse, String Value) {
+    public MLocator(I_M_Warehouse warehouse, String Value) {
         this(0);
         setClientOrg(warehouse);
         setWarehouseId(warehouse.getWarehouseId()); // 	Parent

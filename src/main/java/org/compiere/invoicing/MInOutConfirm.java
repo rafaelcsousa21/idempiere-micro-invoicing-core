@@ -6,6 +6,7 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.DocumentType;
+import org.compiere.model.I_M_InOutConfirm;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_InOutLineConfirm;
 import org.compiere.order.X_M_InOutConfirm;
@@ -77,10 +78,10 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      * @param checkExisting if false, new confirmation is created
      * @return Confirmation
      */
-    public static MInOutConfirm create(MInOut ship, String confirmType, boolean checkExisting) {
+    public static I_M_InOutConfirm create(MInOut ship, String confirmType, boolean checkExisting) {
         if (checkExisting) {
-            MInOutConfirm[] confirmations = ship.getConfirmations(false);
-            for (MInOutConfirm confirm : confirmations) {
+            I_M_InOutConfirm[] confirmations = ship.getConfirmations(false);
+            for (I_M_InOutConfirm confirm : confirmations) {
                 if (confirm.getConfirmType().equals(confirmType)) {
                     if (s_log.isLoggable(Level.INFO)) s_log.info("create - existing: " + confirm);
                     return confirm;
@@ -327,7 +328,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             throw new AdempiereException(split.getProcessMsg());
         //	split.createConfirmation();
         split.saveEx();
-        MInOutConfirm[] splitConfirms = split.getConfirmations(true);
+        I_M_InOutConfirm[] splitConfirms = split.getConfirmations(true);
         if (splitConfirms.length > 0) {
             int index = 0;
             if (splitConfirms[index].isProcessed()) {

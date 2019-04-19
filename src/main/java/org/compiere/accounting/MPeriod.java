@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.DocumentType;
 import org.compiere.model.TypedQuery;
 import org.compiere.orm.MDocType;
@@ -393,7 +393,7 @@ public class MPeriod extends X_C_Period {
             return false;
         }
 
-        I_C_AcctSchema as = MClientKt.getClientWithAccounting(getClientId()).getAcctSchema();
+        AccountingSchema as = MClientKt.getClientWithAccounting(getClientId()).getAcctSchema();
         if (as != null && as.isAutoPeriodControl()) {
             Timestamp today =
                     TimeUtil.trunc(new Timestamp(System.currentTimeMillis()), TimeUtil.TRUNC_DAY);

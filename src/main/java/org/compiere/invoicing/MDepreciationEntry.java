@@ -4,10 +4,11 @@ import kotliquery.Row;
 import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MPeriod;
 import org.compiere.docengine.DocumentEngine;
+import org.compiere.model.DepreciationExpense;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_A_Depreciation_Entry;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.DepreciationEntry;
+import org.compiere.model.AccountingSchema;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
@@ -51,7 +52,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     public MDepreciationEntry(int A_Depreciation_Entry_ID) {
         super(A_Depreciation_Entry_ID);
         if (A_Depreciation_Entry_ID == 0) {
-            I_C_AcctSchema acctSchema = MClientKt.getClientWithAccounting().getAcctSchema();
+            AccountingSchema acctSchema = MClientKt.getClientWithAccounting().getAcctSchema();
             setAcctSchemaId(acctSchema.getId());
             setCurrencyId(acctSchema.getCurrencyId());
             setEntryType(X_A_Depreciation_Entry.A_ENTRY_TYPE_Depreciation); // TODO: workaround
@@ -73,7 +74,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         final String sql = "DELETE FROM Fact_Acct WHERE AD_Table_ID=? AND Record_ID=? AND Line_ID=?";
         Object[] params =
                 new Object[]{
-                        I_A_Depreciation_Entry.Table_ID, depexp.getDepreciationEntryId(), depexp.getId()
+                        DepreciationEntry.Table_ID, depexp.getDepreciationEntryId(), depexp.getId()
                 };
         executeUpdateEx(sql, params);
     }
@@ -88,7 +89,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             return false;
         }
         if (!isProcessed()
-                && (newRecord || isValueChanged(I_A_Depreciation_Entry.COLUMNNAME_DateAcct))) {
+                && (newRecord || isValueChanged(DepreciationEntry.COLUMNNAME_DateAcct))) {
             selectLines();
         }
         return true;
@@ -157,7 +158,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     /**
      * Get Lines
      */
-    public List<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
+    public List<DepreciationExpense> getLinesIterator(boolean onlyNotProcessed) {
         final List<Object> params = new ArrayList<>();
         String whereClause = MDepreciationExp.COLUMNNAME_A_Depreciation_Entry_ID + "=?";
         params.add(getId());
@@ -177,7 +178,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
                         + ","
                         + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
-        return new Query(MDepreciationExp.Table_Name, whereClause)
+        return new Query<DepreciationExpense>(DepreciationExpense.Table_Name, whereClause)
                 .setOrderBy(orderBy)
                 .setParameters(params)
                 .list();
@@ -251,9 +252,9 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         final MPeriod period = MPeriod.get(getPeriodId());
 
         final ArrayList<Exception> errors = new ArrayList<>();
-        final List<MDepreciationExp> it = getLinesIterator(true);
+        final List<DepreciationExpense> it = getLinesIterator(true);
         //
-        for (MDepreciationExp depexp : it) {
+        for (DepreciationExpense depexp : it) {
             try {
                 // Check if is in Period
                 if (!period.isInPeriod(depexp.getDateAcct())) {
@@ -360,7 +361,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      * @return The Currency for this record
      */
     public int getCurrencyId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
+        Integer ii = getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }

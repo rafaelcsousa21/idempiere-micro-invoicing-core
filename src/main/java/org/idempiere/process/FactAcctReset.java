@@ -14,7 +14,7 @@ import org.compiere.accounting.MRequisition;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Production;
 import org.compiere.order.MInOut;
 import org.compiere.orm.TimeUtil;
@@ -160,7 +160,7 @@ public class FactAcctReset extends SvrProcess {
     private void delete(String TableName, int AD_Table_ID) {
         Timestamp today = TimeUtil.trunc(new Timestamp(System.currentTimeMillis()), TimeUtil.TRUNC_DAY);
 
-        I_C_AcctSchema as = MClientKt.getClientWithAccounting(getClientId()).getAcctSchema();
+        AccountingSchema as = MClientKt.getClientWithAccounting(getClientId()).getAcctSchema();
         boolean autoPeriod = as != null && as.isAutoPeriodControl();
         if (autoPeriod) {
             Timestamp temp = TimeUtil.addDays(today, -as.getPeriodOpenHistory());

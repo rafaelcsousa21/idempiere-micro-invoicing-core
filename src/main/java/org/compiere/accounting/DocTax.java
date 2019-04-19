@@ -1,6 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -86,7 +86,7 @@ public final class DocTax {
      * @param as       account schema
      * @return Account
      */
-    public MAccount getAccount(int AcctType, I_C_AcctSchema as) {
+    public MAccount getAccount(int AcctType, AccountingSchema as) {
         if (AcctType < ACCTTYPE_TaxDue || AcctType > ACCTTYPE_TaxExpense) return null;
         //
         String sql =

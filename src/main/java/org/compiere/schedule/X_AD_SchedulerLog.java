@@ -1,7 +1,7 @@
 package org.compiere.schedule;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_SchedulerLog;
+import org.compiere.model.SchedulerLog;
 import org.compiere.orm.PO;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.PO;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
+public class X_AD_SchedulerLog extends PO implements SchedulerLog {
 
     /**
      *
@@ -84,6 +84,6 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
 
     @Override
     public int getTableId() {
-        return I_AD_SchedulerLog.Table_ID;
+        return SchedulerLog.Table_ID;
     }
 }

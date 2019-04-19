@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Cost;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
@@ -57,9 +58,9 @@ public abstract class X_M_Cost extends PO implements I_M_Cost {
         return "X_M_Cost[" + getId() + "]";
     }
 
-    public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
-        return (org.compiere.model.I_C_AcctSchema)
-                MBaseTableKt.getTable(org.compiere.model.I_C_AcctSchema.Table_Name)
+    public AccountingSchema getAccountingSchema() throws RuntimeException {
+        return (AccountingSchema)
+                MBaseTableKt.getTable(AccountingSchema.Table_Name)
                         .getPO(getAccountingSchemaId());
     }
 

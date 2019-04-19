@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_GL_JournalLine;
 import org.idempiere.common.util.Env;
@@ -116,7 +116,7 @@ public class Doc_GLJournal extends Doc {
      * @param as acct schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
+    public ArrayList<IFact> createFacts(AccountingSchema as) {
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //	Other Acct Schema
         if (as.getAccountingSchemaId() != m_C_AcctSchema_ID) return facts;

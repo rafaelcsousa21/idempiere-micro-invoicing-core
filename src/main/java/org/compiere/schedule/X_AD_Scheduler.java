@@ -1,7 +1,7 @@
 package org.compiere.schedule;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_Scheduler;
+import org.compiere.model.Scheduler;
 import org.compiere.orm.BasePOName;
 
 import java.sql.Timestamp;
@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
+public class X_AD_Scheduler extends BasePOName implements Scheduler {
 
     /**
      *
@@ -182,6 +182,6 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
 
     @Override
     public int getTableId() {
-        return I_AD_Scheduler.Table_ID;
+        return Scheduler.Table_ID;
     }
 }

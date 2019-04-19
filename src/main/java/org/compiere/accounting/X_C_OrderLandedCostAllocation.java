@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_OrderLandedCostAllocation extends PO
+public abstract class X_C_OrderLandedCostAllocation extends PO
         implements I_C_OrderLandedCostAllocation {
 
     /**
@@ -56,7 +56,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @return Amount
      */
     public BigDecimal getAmt() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amt);
+        BigDecimal bd = getValue(COLUMNNAME_Amt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -85,7 +85,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @return Estimated Landed Cost Allocation
      */
     public int getOrderLandedCostAllocationId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLandedCostAllocation_ID);
+        Integer ii = getValue(COLUMNNAME_C_OrderLandedCostAllocation_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,7 +102,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @return Estimated Landed Cost
      */
     public int getOrderLandedCostId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLandedCost_ID);
+        Integer ii = getValue(COLUMNNAME_C_OrderLandedCost_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -129,7 +129,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @return Sales Order Line
      */
     public int getOrderLineId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLine_ID);
+        Integer ii = getValue(COLUMNNAME_C_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -150,7 +150,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
+        BigDecimal bd = getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

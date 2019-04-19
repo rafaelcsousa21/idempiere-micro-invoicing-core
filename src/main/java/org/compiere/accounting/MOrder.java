@@ -11,6 +11,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.invoicing.MPaymentTerm;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_BankAccount;
@@ -19,6 +20,7 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_C_OrderTax;
+import org.compiere.model.I_C_POSPayment;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_InOutLine;
@@ -924,13 +926,13 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         I_C_Invoice lastInvoice = invoices[0];
         BigDecimal grandTotal = lastInvoice.getGrandTotal();
 
-        List<X_C_POSPayment> pps =
-                new Query(X_C_POSPayment.Table_Name, "C_Order_ID=?")
+        List<I_C_POSPayment> pps =
+                new Query<I_C_POSPayment>(X_C_POSPayment.Table_Name, "C_Order_ID=?")
                         .setParameters(this.getOrderId())
                         .setOnlyActiveRecords(true)
                         .list();
         BigDecimal totalPOSPayments = Env.ZERO;
-        for (X_C_POSPayment pp : pps) {
+        for (I_C_POSPayment pp : pps) {
             totalPOSPayments = totalPOSPayments.add(pp.getPayAmt());
         }
         if (totalPOSPayments.compareTo(grandTotal) != 0)
@@ -960,7 +962,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         // Create a payment for each non-guarantee record
         // associate the payment id and mark the record as processed
-        for (X_C_POSPayment pp : pps) {
+        for (I_C_POSPayment pp : pps) {
             X_C_POSTenderType tt =
                     new X_C_POSTenderType(pp.getPOSTenderTypeId());
             if (tt.isGuarantee()) continue;
@@ -1072,8 +1074,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                             oLine.getWarehouseId(),
                             oLine.getProductId(),
                             oLine.getAttributeSetInstanceId(),
-                            MovementQty,
-                            null);
+                            MovementQty
+                    );
             if (M_Locator_ID == 0) // 	Get default Location
             {
                 MWarehouse wh = MWarehouse.get(oLine.getWarehouseId());
@@ -1516,8 +1518,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     // AZ Goodwill
     protected String deleteMatchPOCostDetail(I_C_OrderLine line) {
         // Get Account Schemas to delete MCostDetail
-        MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
-        for (MAcctSchema as : acctschemas) {
+        AccountingSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getClientId());
+        for (AccountingSchema as : acctschemas) {
             if (as.isSkipOrg(getOrgId())) {
                 continue;
             }

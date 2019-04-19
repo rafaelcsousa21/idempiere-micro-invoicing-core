@@ -1,7 +1,7 @@
 package org.compiere.validation;
 
 import kotliquery.Row;
-import org.compiere.model.I_AD_Table_ScriptValidator;
+import org.compiere.model.TableScriptValidator;
 import org.compiere.orm.PO;
 
 /**
@@ -11,7 +11,7 @@ import org.compiere.orm.PO;
  * @version Release 5.1 - $Id$
  */
 public class X_AD_Table_ScriptValidator extends PO
-        implements I_AD_Table_ScriptValidator {
+        implements TableScriptValidator {
 
     /**
      * Table Before New = TBN
@@ -199,6 +199,6 @@ public class X_AD_Table_ScriptValidator extends PO
 
     @Override
     public int getTableId() {
-        return I_AD_Table_ScriptValidator.Table_ID;
+        return TableScriptValidator.Table_ID;
     }
 }

@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.bo.MCurrencyKt;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_ValidCombination;
@@ -365,7 +366,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
             // Validate all mandatory combinations are set
             MAcctSchema as = (MAcctSchema) getParent().getAccountingSchema();
             String errorFields = "";
-            for (MAcctSchemaElement elem : MAcctSchemaElement.getAcctSchemaElements(as)) {
+            for (AccountSchemaElement elem : MAcctSchemaElement.getAcctSchemaElements(as)) {
                 if (!elem.isMandatory()) continue;
                 String et = elem.getElementType();
                 if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(et) && getAccountId() == 0)

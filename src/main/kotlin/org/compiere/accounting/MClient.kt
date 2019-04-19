@@ -5,7 +5,7 @@ import org.compiere.model.ClientInfoWithAccounting
 import org.compiere.model.ClientWithAccounting
 import org.compiere.model.Client
 import org.compiere.model.User
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import org.compiere.orm.MSysConfig
 import org.compiere.orm.Query
 import org.idempiere.common.util.AdempiereSystemError
@@ -97,7 +97,7 @@ class MClient : MBaseClient, ClientWithAccounting {
      *
      * @return Acct Schema or null
      */
-    override val acctSchema: I_C_AcctSchema
+    override val acctSchema: AccountingSchema
         get() {
             if (m_info == null) m_info = MClientInfo.get(clientId)
             if (m_info != null) {

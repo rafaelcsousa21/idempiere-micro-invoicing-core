@@ -35,7 +35,7 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
      * @param parent  parent
      * @param summary summary
      */
-    public MAcctProcessorLog(MAcctProcessor parent, String summary) {
+    public MAcctProcessorLog(AccountingProcessorModel parent, String summary) {
         this(0);
         setClientOrg(parent);
         setAccountingProcessorId(parent.getAccountingProcessorId());

@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.DefaultAccountsForSchema;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.KeyNamePair;
 
@@ -46,9 +46,9 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @param C_AcctSchema_ID id
      * @return defaults
      */
-    public static I_C_AcctSchema_Default get(int C_AcctSchema_ID) {
+    public static DefaultAccountsForSchema get(int C_AcctSchema_ID) {
         final String whereClause = "C_AcctSchema_ID=?";
-        return new Query<I_C_AcctSchema_Default>(I_C_AcctSchema_Default.Table_Name, whereClause)
+        return new Query<DefaultAccountsForSchema>(DefaultAccountsForSchema.Table_Name, whereClause)
                 .setParameters(C_AcctSchema_ID)
                 .firstOnly();
     } //	get
@@ -64,7 +64,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
         for (int i = 0; i < get_ColumnCount(); i++) {
             String columnName = get_ColumnName(i);
             if (columnName.endsWith("Acct")) {
-                int id = ((Integer) getValue(i));
+                int id = getValue(i);
                 list.add(new KeyNamePair(id, columnName));
             }
         }

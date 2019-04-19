@@ -63,24 +63,23 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
      * @param where          optional addition where clause
      * @return array of receipt lines
      */
-    public static MInOutLine[] getOfOrderLine(
+    public static I_M_InOutLine[] getOfOrderLine(
             int C_OrderLine_ID, String where) {
         String whereClause = "C_OrderLine_ID=?" + (!Util.isEmpty(where, true) ? " AND " + where : "");
-        List<org.compiere.order.MInOutLine> list =
-                new Query(I_M_InOutLine.Table_Name, whereClause)
+        List<I_M_InOutLine> list =
+                new Query<I_M_InOutLine>(I_M_InOutLine.Table_Name, whereClause)
                         .setParameters(C_OrderLine_ID)
                         .list();
-        return list.toArray(new MInOutLine[0]);
+        return list.toArray(new I_M_InOutLine[0]);
     } //	getOfOrderLine
 
     /**
      * Set Invoice Line. Does not set Quantity!
-     *
-     * @param iLine        invoice line
+     *  @param iLine        invoice line
      * @param M_Locator_ID locator
      * @param Qty          qty only fo find suitable locator
      */
-    public void setInvoiceLine(MInvoiceLine iLine, int M_Locator_ID, BigDecimal Qty) {
+    public void setInvoiceLine(I_C_InvoiceLine iLine, int M_Locator_ID, BigDecimal Qty) {
         setOrderLineId(iLine.getOrderLineId());
         setLine(iLine.getLine());
         setUOMId(iLine.getUOMId());
@@ -130,8 +129,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
                         getWarehouseId(),
                         getProductId(),
                         getAttributeSetInstanceId(),
-                        Qty,
-                        null);
+                        Qty
+                );
         //	Get default Location
         if (M_Locator_ID == 0) {
             MWarehouse wh = MWarehouse.get(getWarehouseId());

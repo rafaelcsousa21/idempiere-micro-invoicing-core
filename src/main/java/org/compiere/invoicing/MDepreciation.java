@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Depreciation;
+import org.compiere.model.Depreciation;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogMgt;
@@ -33,14 +33,14 @@ public class MDepreciation extends X_A_Depreciation {
     /**
      * Cache
      */
-    private static CCache<Integer, I_A_Depreciation> s_cache =
-            new CCache<>(I_A_Depreciation.Table_Name, 5);
+    private static CCache<Integer, Depreciation> s_cache =
+            new CCache<>(Depreciation.Table_Name, 5);
     /**
      * Cache for type
      */
-    private static CCache<String, I_A_Depreciation> s_cache_forType =
+    private static CCache<String, Depreciation> s_cache_forType =
             new CCache<>(
-                    I_A_Depreciation.Table_Name, I_A_Depreciation.Table_Name + "_DepreciationType", 5);
+                    Depreciation.Table_Name, Depreciation.Table_Name + "_DepreciationType", 5);
     /**
      * Static logger
      */
@@ -61,7 +61,7 @@ public class MDepreciation extends X_A_Depreciation {
         super(row);
     } //	MDepreciation
 
-    private static void addToCache(I_A_Depreciation depr) {
+    private static void addToCache(Depreciation depr) {
         if (depr == null) {
             return;
         }
@@ -76,8 +76,8 @@ public class MDepreciation extends X_A_Depreciation {
      *
      * @param A_Depreciation_ID depreciation id
      */
-    public static I_A_Depreciation get(int A_Depreciation_ID) {
-        I_A_Depreciation depr = s_cache.get(A_Depreciation_ID);
+    public static Depreciation get(int A_Depreciation_ID) {
+        Depreciation depr = s_cache.get(A_Depreciation_ID);
         if (depr != null) {
             return depr;
         }
@@ -95,18 +95,18 @@ public class MDepreciation extends X_A_Depreciation {
      *
      * @param depreciationType depreciation type (e.g. SL)
      */
-    public static I_A_Depreciation get(String depreciationType) {
+    public static Depreciation get(String depreciationType) {
         int AD_Client_ID = Env.getClientId();
         String key = "" + AD_Client_ID + "_" + depreciationType;
-        I_A_Depreciation depr = s_cache_forType.get(key);
+        Depreciation depr = s_cache_forType.get(key);
         if (depr != null) {
             return depr;
         }
 
         final String whereClause =
-                I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
+                Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
         depr =
-                new Query<I_A_Depreciation>(I_A_Depreciation.Table_Name, whereClause)
+                new Query<Depreciation>(Depreciation.Table_Name, whereClause)
                         .setOrderBy("AD_Client_ID DESC")
                         .setParameters(depreciationType, AD_Client_ID)
                         .firstOnly();
@@ -177,7 +177,7 @@ public class MDepreciation extends X_A_Depreciation {
             retValue = apply_ARH_ZERO(assetwk, assetAcct, A_Current_Period, Accum_Dep);
         } else {
             throw new AssetNotSupportedException(
-                    I_A_Depreciation.COLUMNNAME_DepreciationType, depreciationType);
+                    Depreciation.COLUMNNAME_DepreciationType, depreciationType);
         }
         //
         if (retValue == null) {

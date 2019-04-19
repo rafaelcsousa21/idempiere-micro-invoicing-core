@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset_Type;
+import org.compiere.model.AssetType;
 import org.compiere.orm.BasePONameValue;
 
 /**
@@ -10,7 +10,7 @@ import org.compiere.orm.BasePONameValue;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type {
+public class X_A_Asset_Type extends BasePONameValue implements AssetType {
 
     /**
      *
@@ -47,6 +47,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type {
 
     @Override
     public int getTableId() {
-        return I_A_Asset_Type.Table_ID;
+        return AssetType.Table_ID;
     }
 }

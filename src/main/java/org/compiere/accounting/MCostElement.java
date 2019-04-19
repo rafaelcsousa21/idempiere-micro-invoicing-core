@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.MRefListKt;
@@ -276,8 +277,8 @@ public class MCostElement extends X_M_CostElement {
             return true;
 
         //	Costing Methods on AS level
-        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
-        for (MAcctSchema mAcctSchema : ass) {
+        AccountingSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
+        for (AccountingSchema mAcctSchema : ass) {
             if (mAcctSchema.getCostingMethod().equals(getCostingMethod())) {
                 log.saveError(
                         "CannotDeleteUsed",

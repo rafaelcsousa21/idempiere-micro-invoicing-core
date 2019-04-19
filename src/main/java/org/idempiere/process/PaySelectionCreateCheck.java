@@ -1,25 +1,11 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MPaySelection;
 import org.compiere.accounting.MPaySelectionCheck;
-import org.compiere.accounting.MPaySelectionLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
+import org.compiere.model.I_C_PaySelectionLine;
 import org.compiere.order.X_C_Order;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
@@ -45,7 +31,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
     /**
      * The checks
      */
-    private ArrayList<MPaySelectionCheck> m_list = new ArrayList<MPaySelectionCheck>();
+    private ArrayList<MPaySelectionCheck> m_list = new ArrayList<>();
 
     /**
      * Prepare - e.g., get Parameters.
@@ -78,9 +64,8 @@ public class PaySelectionCreateCheck extends SvrProcess {
             throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
         if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");
         //
-        MPaySelectionLine[] lines = psel.getLines(false);
-        for (int i = 0; i < lines.length; i++) {
-            MPaySelectionLine line = lines[i];
+        I_C_PaySelectionLine[] lines = psel.getLines(false);
+        for (I_C_PaySelectionLine line : lines) {
             if (!line.isActive() || line.isProcessed()) continue;
             createCheck(line);
         }
@@ -88,9 +73,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         psel.setProcessed(true);
         psel.saveEx();
 
-        StringBuilder msgreturn =
-                new StringBuilder("@C_PaySelectionCheck_ID@ - #").append(m_list.size());
-        return msgreturn.toString();
+        return "@C_PaySelectionCheck_ID@ - #" + m_list.size();
     } //	doIt
 
     /**
@@ -99,10 +82,9 @@ public class PaySelectionCreateCheck extends SvrProcess {
      * @param line
      * @throws Exception for invalid bank accounts
      */
-    private void createCheck(MPaySelectionLine line) throws Exception {
+    private void createCheck(I_C_PaySelectionLine line) throws Exception {
         //	Try to find one
-        for (int i = 0; i < m_list.size(); i++) {
-            MPaySelectionCheck check = m_list.get(i);
+        for (MPaySelectionCheck check : m_list) {
             //	Add to existing
             if (check.getBusinessPartnerId() == line.getInvoice().getBusinessPartnerId()) {
                 check.addLine(line);
@@ -122,8 +104,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         if (!check.isValid()) {
             int C_BPartner_ID = check.getBusinessPartnerId();
             I_C_BPartner bp = MBPartner.get(C_BPartner_ID);
-            StringBuilder msg = new StringBuilder("@NotFound@ @C_BP_BankAccount@: ").append(bp.getName());
-            throw new AdempiereUserError(msg.toString());
+            throw new AdempiereUserError("@NotFound@ @C_BP_BankAccount@: " + bp.getName());
         }
         if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
         line.setPaySelectionCheckId(check.getPaySelectionCheckId());

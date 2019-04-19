@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MPayment;
@@ -19,6 +5,8 @@ import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_Payment;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.MsgKt;
@@ -81,12 +69,12 @@ public class BPartnerValidate extends SvrProcess {
             checkBP(bp);
         } else {
             final String whereClause = "C_BP_Group_ID=?";
-            List<MBPartner> it =
-                    new Query(I_C_BPartner.Table_Name, whereClause)
+            List<I_C_BPartner> it =
+                    new Query<I_C_BPartner>(I_C_BPartner.Table_Name, whereClause)
                             .setParameters(p_C_BP_Group_ID)
                             .setOnlyActiveRecords(true)
                             .list();
-            for (MBPartner partner : it) {
+            for (I_C_BPartner partner : it) {
                 checkBP(partner);
             }
         }
@@ -100,7 +88,7 @@ public class BPartnerValidate extends SvrProcess {
      * @param bp bp
      * @throws SQLException
      */
-    private void checkBP(MBPartner bp) throws SQLException {
+    private void checkBP(I_C_BPartner bp) throws SQLException {
         addLog(0, null, null, bp.getName() + ":");
         //	See also VMerge.postMerge
         checkPayments(bp);
@@ -122,12 +110,11 @@ public class BPartnerValidate extends SvrProcess {
      *
      * @param bp business partner
      */
-    private void checkPayments(MBPartner bp) {
+    private void checkPayments(I_C_BPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MPayment[] payments = MPayment.getOfBPartner(bp.getBusinessPartnerId());
-        for (int i = 0; i < payments.length; i++) {
-            MPayment payment = payments[i];
+        I_C_Payment[] payments = MPayment.getOfBPartner(bp.getBusinessPartnerId());
+        for (I_C_Payment payment : payments) {
             if (payment.testAllocation()) {
                 payment.saveEx();
                 changed++;
@@ -146,12 +133,11 @@ public class BPartnerValidate extends SvrProcess {
      *
      * @param bp business partner
      */
-    private void checkInvoices(MBPartner bp) {
+    private void checkInvoices(I_C_BPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MInvoice[] invoices = MInvoice.getOfBPartner(bp.getBusinessPartnerId());
-        for (int i = 0; i < invoices.length; i++) {
-            MInvoice invoice = invoices[i];
+        I_C_Invoice[] invoices = MInvoice.getOfBPartner(bp.getBusinessPartnerId());
+        for (I_C_Invoice invoice : invoices) {
             if (invoice.testAllocation()) {
                 invoice.saveEx();
                 changed++;

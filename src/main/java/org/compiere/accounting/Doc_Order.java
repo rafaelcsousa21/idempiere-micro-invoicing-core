@@ -3,7 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.tax.MTax;
@@ -77,7 +77,7 @@ public class Doc_Order extends Doc {
      * @return Fact
      */
     public static Fact getCommitmentRelease(
-            I_C_AcctSchema as, Doc doc, BigDecimal Qty, int C_InvoiceLine_ID, BigDecimal multiplier) {
+            AccountingSchema as, Doc doc, BigDecimal Qty, int C_InvoiceLine_ID, BigDecimal multiplier) {
         Fact fact = new Fact(doc, as, Fact.POST_Commitment);
         DocLine[] commitments = Doc_Order.getCommitments(doc, Qty, C_InvoiceLine_ID);
 
@@ -131,7 +131,7 @@ public class Doc_Order extends Doc {
      * @return Fact
      */
     protected static Fact getCommitmentSalesRelease(
-            I_C_AcctSchema as, Doc doc, BigDecimal Qty, int M_InOutLine_ID, BigDecimal multiplier) {
+            AccountingSchema as, Doc doc, BigDecimal Qty, int M_InOutLine_ID, BigDecimal multiplier) {
         Fact fact = new Fact(doc, as, Fact.POST_Commitment);
         DocLine[] commitments = Doc_Order.getCommitmentsSales(doc, Qty, M_InOutLine_ID);
 
@@ -355,7 +355,7 @@ public class Doc_Order extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
+    public ArrayList<IFact> createFacts(AccountingSchema as) {
         ArrayList<IFact> facts = new ArrayList<>();
         //  Purchase Order
         if (getDocumentType().equals(DOCTYPE_POrder)) {
@@ -452,7 +452,7 @@ public class Doc_Order extends Doc {
      *
      * @param as accounting schema
      */
-    private void updateProductPO(I_C_AcctSchema as) {
+    private void updateProductPO(AccountingSchema as) {
         MClientInfo ci = MClientInfo.get(as.getClientId());
         if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 

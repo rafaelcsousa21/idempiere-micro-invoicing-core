@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.AccountingSchema;
 import org.compiere.util.MsgKt;
 
 /**
@@ -60,11 +61,11 @@ public class MCostType extends X_M_CostType {
      * @return true if it can be deleted
      */
     protected boolean beforeDelete() {
-        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
-        for (int i = 0; i < ass.length; i++) {
-            if (ass[i].getCostTypeId() == getCostTypeId()) {
+        AccountingSchema[] ass = MAcctSchema.getClientAcctSchema(getClientId());
+        for (AccountingSchema accountingSchema : ass) {
+            if (accountingSchema.getCostTypeId() == getCostTypeId()) {
                 log.saveError(
-                        "CannotDelete", MsgKt.getElementTranslation("C_AcctSchema_ID") + " - " + ass[i].getName());
+                        "CannotDelete", MsgKt.getElementTranslation("C_AcctSchema_ID") + " - " + accountingSchema.getName());
                 return false;
             }
         }

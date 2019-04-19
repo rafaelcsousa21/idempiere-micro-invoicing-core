@@ -44,7 +44,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
      */
     public static I_C_OrderLandedCost[] getOfOrder(int C_Order_ID) {
         List<I_C_OrderLandedCost> list =
-                new Query(I_C_OrderLandedCost.Table_Name, I_C_OrderLandedCost.COLUMNNAME_C_Order_ID + "=?")
+                new Query<I_C_OrderLandedCost>(I_C_OrderLandedCost.Table_Name, I_C_OrderLandedCost.COLUMNNAME_C_Order_ID + "=?")
                         .setParameters(C_Order_ID)
                         .list();
         return list.toArray(new I_C_OrderLandedCost[0]);
@@ -56,22 +56,22 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
      * @param whereClause starting with AND
      * @return lines
      */
-    public MOrderLandedCostAllocation[] getLines(String whereClause) {
+    public I_C_OrderLandedCostAllocation[] getLines(String whereClause) {
         StringBuilder whereClauseFinal =
                 new StringBuilder(I_C_OrderLandedCost.COLUMNNAME_C_OrderLandedCost_ID).append("=?");
         if (!Util.isEmpty(whereClause)) whereClauseFinal.append(" ").append(whereClause);
-        List<MOrderLandedCostAllocation> list =
-                new Query(
+        List<I_C_OrderLandedCostAllocation> list =
+                new Query<I_C_OrderLandedCostAllocation>(
                         I_C_OrderLandedCostAllocation.Table_Name,
                         whereClauseFinal.toString()
                 )
                         .setParameters(getOrderLandedCostId())
                         .list();
-        return list.toArray(new MOrderLandedCostAllocation[0]);
+        return list.toArray(new I_C_OrderLandedCostAllocation[0]);
     } //	getLines
 
     public String distributeLandedCost() {
-        MOrderLandedCostAllocation[] lines = getLines("");
+        I_C_OrderLandedCostAllocation[] lines = getLines("");
         if (lines.length == 0) {
             MOrder order = (MOrder) getOrder();
             I_C_OrderLine[] orderLines = order.getLines().toArray(new I_C_OrderLine[0]);
@@ -110,7 +110,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
         } else if (lines.length > 1) {
             //	Calculate total & base
             BigDecimal total = Env.ZERO;
-            for (MOrderLandedCostAllocation allocation : lines) {
+            for (I_C_OrderLandedCostAllocation allocation : lines) {
                 MOrderLine orderLine = (MOrderLine) allocation.getOrderLine();
                 total = total.add(orderLine.getBase(getLandedCostDistribution()));
             }
@@ -118,7 +118,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                 return "Total of Base values is 0 - " + getLandedCostDistribution();
             }
             //	Create Allocations
-            for (MOrderLandedCostAllocation allocation : lines) {
+            for (I_C_OrderLandedCostAllocation allocation : lines) {
                 MOrderLine orderLine = (MOrderLine) allocation.getOrderLine();
                 BigDecimal base = orderLine.getBase(getLandedCostDistribution());
                 allocation.setBase(base);
@@ -146,10 +146,10 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
      *
      * @param lines
      */
-    private void allocateLandedCostRounding(MOrderLandedCostAllocation[] lines) {
-        MOrderLandedCostAllocation largestAmtAllocation = null;
+    private void allocateLandedCostRounding(I_C_OrderLandedCostAllocation[] lines) {
+        I_C_OrderLandedCostAllocation largestAmtAllocation = null;
         BigDecimal allocationAmt = Env.ZERO;
-        for (MOrderLandedCostAllocation allocation : lines) {
+        for (I_C_OrderLandedCostAllocation allocation : lines) {
             if (largestAmtAllocation == null
                     || allocation.getAmt().compareTo(largestAmtAllocation.getAmt()) > 0)
                 largestAmtAllocation = allocation;

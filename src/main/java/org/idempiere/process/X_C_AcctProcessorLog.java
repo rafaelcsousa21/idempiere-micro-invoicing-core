@@ -1,10 +1,10 @@
 package org.idempiere.process;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctProcessorLog;
+import org.compiere.model.AccountingProcessorLog;
 import org.compiere.orm.PO;
 
-public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
+public class X_C_AcctProcessorLog extends PO implements AccountingProcessorLog {
 
     /**
      *

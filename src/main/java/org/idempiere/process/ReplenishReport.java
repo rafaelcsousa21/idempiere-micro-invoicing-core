@@ -13,6 +13,7 @@ import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MLocatorType;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_M_Warehouse;
 import org.compiere.model.ReplenishInterface;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MDocTypeKt;
@@ -644,8 +645,8 @@ public class ReplenishReport extends SvrProcess {
                 order.setIsSelected(false);
                 order.setIsSOTrx(false);
                 // Warehouse in Transit
-                MWarehouse[] whsInTransit = MWarehouse.getForOrg(whSource.getOrgId());
-                for (MWarehouse whInTransit : whsInTransit) {
+                I_M_Warehouse[] whsInTransit = MWarehouse.getForOrg(whSource.getOrgId());
+                for (I_M_Warehouse whInTransit : whsInTransit) {
                     if (whInTransit.isInTransit()) order.setWarehouseId(whInTransit.getWarehouseId());
                 }
                 if (order.getWarehouseId() == 0)

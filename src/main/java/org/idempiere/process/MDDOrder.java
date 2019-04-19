@@ -565,8 +565,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                                 line.getProductId(),
                                 line.getAttributeSetInstanceId(),
                                 Env.ZERO,
-                                null,
-                                null)) {
+                                null
+                        )) {
                             throw new AdempiereException("!MStorageOnHand1");
                         }
 
@@ -576,8 +576,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                                 line.getProductId(),
                                 line.getMAttributeSetInstanceToId(),
                                 Env.ZERO,
-                                null,
-                                null)) {
+                                null
+                        )) {
                             throw new AdempiereException("!MStorageOnHand2");
                         }
                     } //	stockec

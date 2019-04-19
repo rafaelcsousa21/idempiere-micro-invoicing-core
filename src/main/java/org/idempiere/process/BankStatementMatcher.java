@@ -17,6 +17,7 @@ package org.idempiere.process;
 import org.compiere.accounting.MBankStatement;
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.X_I_BankStatement;
+import org.compiere.model.I_C_BankStatementLine;
 import org.compiere.process.SvrProcess;
 
 import java.util.logging.Level;
@@ -103,7 +104,7 @@ public class BankStatementMatcher extends SvrProcess {
      * @param bsl bank statement line
      * @return Message
      */
-    private String match(MBankStatementLine bsl) {
+    private String match(I_C_BankStatementLine bsl) {
         if (m_matchers == null || bsl == null || bsl.getPaymentId() != 0) return "--";
 
         if (log.isLoggable(Level.FINE)) log.fine("match - " + bsl);
@@ -133,8 +134,8 @@ public class BankStatementMatcher extends SvrProcess {
         if (m_matchers == null || bs == null) return "--";
         if (log.isLoggable(Level.FINE)) log.fine("match - " + bs);
         int count = 0;
-        MBankStatementLine[] lines = bs.getLines(false);
-        for (MBankStatementLine line : lines) {
+        I_C_BankStatementLine[] lines = bs.getLines(false);
+        for (I_C_BankStatementLine line : lines) {
             if (line.getPaymentId() == 0) {
                 match(line);
                 count++;

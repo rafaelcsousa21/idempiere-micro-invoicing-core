@@ -151,7 +151,7 @@ public class MElementValue extends X_C_ElementValue {
             //
             // Check if we have accounting facts
             boolean match =
-                    new Query(
+                    new Query<I_Fact_Acct>(
                             I_Fact_Acct.Table_Name,
                             I_Fact_Acct.COLUMNNAME_Account_ID + "=?"
                     )
@@ -163,11 +163,11 @@ public class MElementValue extends X_C_ElementValue {
             //
             // Check Valid Combinations - teo_sarca FR [ 1883533 ]
             String whereClause = MAccount.COLUMNNAME_Account_ID + "=?";
-            List<MAccount> result =
-                    new Query(I_C_ValidCombination.Table_Name, whereClause)
+            List<I_C_ValidCombination> result =
+                    new Query<I_C_ValidCombination>(I_C_ValidCombination.Table_Name, whereClause)
                             .setParameters(getId())
                             .list();
-            for (MAccount account : result) {
+            for (I_C_ValidCombination account : result) {
                 account.deleteEx(true);
             }
         }

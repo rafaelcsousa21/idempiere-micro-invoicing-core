@@ -29,7 +29,6 @@ fun createCostingForClient(client: ClientWithAccounting) {
                 ass[i],
                 0, null,
                 Env.ONE,
-                0,
                 false
             ) // 	create non-zero costs
         }

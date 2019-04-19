@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset_Group_Acct;
+import org.compiere.model.AssetGroupAccounting;
 import org.compiere.model.UseLife;
 import org.compiere.orm.Query;
 
@@ -40,10 +40,10 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Get Asset Group Accountings for given group
      */
-    public static List<I_A_Asset_Group_Acct> forA_Asset_GroupId(int A_Asset_Group_ID) {
-        return new Query<I_A_Asset_Group_Acct>(
-                I_A_Asset_Group_Acct.Table_Name,
-                I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
+    public static List<AssetGroupAccounting> forA_Asset_GroupId(int A_Asset_Group_ID) {
+        return new Query<AssetGroupAccounting>(
+                AssetGroupAccounting.Table_Name,
+                AssetGroupAccounting.COLUMNNAME_A_Asset_Group_ID + "=?"
         )
                 .setParameters(A_Asset_Group_ID)
                 .list();
@@ -52,14 +52,14 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Get Asset Group Accountings for given group
      */
-    public static I_A_Asset_Group_Acct forA_Asset_GroupId(
+    public static AssetGroupAccounting forA_Asset_GroupId(
             int A_Asset_Group_ID, String postingType) {
         final String whereClause =
-                I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
+                AssetGroupAccounting.COLUMNNAME_A_Asset_Group_ID
                         + "=? AND "
-                        + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
+                        + AssetGroupAccounting.COLUMNNAME_PostingType
                         + "=?";
-        return new Query<I_A_Asset_Group_Acct>(I_A_Asset_Group_Acct.Table_Name, whereClause)
+        return new Query<AssetGroupAccounting>(AssetGroupAccounting.Table_Name, whereClause)
                 .setParameters(A_Asset_Group_ID, postingType)
                 .firstOnly();
     }

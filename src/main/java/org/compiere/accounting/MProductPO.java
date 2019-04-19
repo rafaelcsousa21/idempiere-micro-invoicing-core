@@ -26,17 +26,12 @@ public class MProductPO extends X_M_Product_PO {
     /**
      * Persistency Constructor
      *
-     * @param ctx     context
      * @param ignored ignored
-     * @param trxName transaction
      */
     public MProductPO(int ignored) {
         super(0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
-            //	setProductId (0);	// @M_Product_ID@
-            //	setBusinessPartnerId (0);	// 0
-            //	setVendorProductNo (null);	// @Value@
             setIsCurrentVendor(true); // Y
         }
     } //	MProduct_PO
@@ -44,7 +39,6 @@ public class MProductPO extends X_M_Product_PO {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MProductPO(Row row) {
         super(row);
@@ -53,19 +47,18 @@ public class MProductPO extends X_M_Product_PO {
     /**
      * Get current PO of Product
      *
-     * @param ctx          context
      * @param M_Product_ID product
      * @return PO - current vendor first
      */
-    public static MProductPO[] getOfProduct(int M_Product_ID) {
+    public static I_M_Product_PO[] getOfProduct(int M_Product_ID) {
         final String whereClause = "M_Product_ID=?";
-        List<MProductPO> list =
-                new Query(I_M_Product_PO.Table_Name, whereClause)
+        List<I_M_Product_PO> list =
+                new Query<I_M_Product_PO>(I_M_Product_PO.Table_Name, whereClause)
                         .setParameters(M_Product_ID)
                         .setOnlyActiveRecords(true)
                         .setOrderBy("IsCurrentVendor DESC")
                         .list();
-        return list.toArray(new MProductPO[list.size()]);
+        return list.toArray(new I_M_Product_PO[0]);
     } //	getOfProduct
 
     /**

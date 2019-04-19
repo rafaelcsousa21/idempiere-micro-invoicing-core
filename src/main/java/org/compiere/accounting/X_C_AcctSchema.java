@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.orm.BasePOName;
 
 /**
@@ -109,7 +109,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return 2 - Client
      */
     protected int getAccessLevel() {
-        return I_C_AcctSchema.accessLevel.intValue();
+        return AccountingSchema.accessLevel.intValue();
     }
 
     public String toString() {
@@ -122,7 +122,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Create posting entries only for this organization
      */
     public int getOrganizationOnlyId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_AD_OrgOnly_ID);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_AD_OrgOnly_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -133,8 +133,8 @@ public class X_C_AcctSchema extends BasePOName {
      * @param AD_OrgOnly_ID Create posting entries only for this organization
      */
     public void setOrganizationOnlyId(int AD_OrgOnly_ID) {
-        if (AD_OrgOnly_ID < 1) setValue(I_C_AcctSchema.COLUMNNAME_AD_OrgOnly_ID, null);
-        else setValue(I_C_AcctSchema.COLUMNNAME_AD_OrgOnly_ID, AD_OrgOnly_ID);
+        if (AD_OrgOnly_ID < 1) setValue(AccountingSchema.COLUMNNAME_AD_OrgOnly_ID, null);
+        else setValue(AccountingSchema.COLUMNNAME_AD_OrgOnly_ID, AD_OrgOnly_ID);
     }
 
     /**
@@ -143,7 +143,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return If selected, the periods are automatically opened and closed
      */
     public boolean isAutoPeriodControl() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_AutoPeriodControl);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_AutoPeriodControl);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -157,7 +157,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param AutoPeriodControl If selected, the periods are automatically opened and closed
      */
     public void setAutoPeriodControl(boolean AutoPeriodControl) {
-        setValue(I_C_AcctSchema.COLUMNNAME_AutoPeriodControl, AutoPeriodControl);
+        setValue(AccountingSchema.COLUMNNAME_AutoPeriodControl, AutoPeriodControl);
     }
 
     /**
@@ -166,7 +166,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Rules for accounting
      */
     public int getAccountingSchemaId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -177,7 +177,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return The Currency for this record
      */
     public int getCurrencyId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -188,8 +188,8 @@ public class X_C_AcctSchema extends BasePOName {
      * @param C_Currency_ID The Currency for this record
      */
     public void setCurrencyId(int C_Currency_ID) {
-        if (C_Currency_ID < 1) setValue(I_C_AcctSchema.COLUMNNAME_C_Currency_ID, null);
-        else setValue(I_C_AcctSchema.COLUMNNAME_C_Currency_ID, C_Currency_ID);
+        if (C_Currency_ID < 1) setValue(AccountingSchema.COLUMNNAME_C_Currency_ID, null);
+        else setValue(AccountingSchema.COLUMNNAME_C_Currency_ID, C_Currency_ID);
     }
 
     /**
@@ -198,7 +198,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Create Commitment and/or Reservations for Budget Control
      */
     public String getCommitmentType() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_CommitmentType);
+        return (String) getValue(AccountingSchema.COLUMNNAME_CommitmentType);
     }
 
     /**
@@ -208,7 +208,7 @@ public class X_C_AcctSchema extends BasePOName {
      */
     public void setCommitmentType(String CommitmentType) {
 
-        setValue(I_C_AcctSchema.COLUMNNAME_CommitmentType, CommitmentType);
+        setValue(AccountingSchema.COLUMNNAME_CommitmentType, CommitmentType);
     }
 
     /**
@@ -217,7 +217,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return The lowest level to accumulate Costing Information
      */
     public String getCostingLevel() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_CostingLevel);
+        return (String) getValue(AccountingSchema.COLUMNNAME_CostingLevel);
     }
 
     /**
@@ -227,7 +227,7 @@ public class X_C_AcctSchema extends BasePOName {
      */
     public void setCostingLevel(String CostingLevel) {
 
-        setValue(I_C_AcctSchema.COLUMNNAME_CostingLevel, CostingLevel);
+        setValue(AccountingSchema.COLUMNNAME_CostingLevel, CostingLevel);
     }
 
     /**
@@ -236,7 +236,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Indicates how Costs will be calculated
      */
     public String getCostingMethod() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_CostingMethod);
+        return (String) getValue(AccountingSchema.COLUMNNAME_CostingMethod);
     }
 
     /**
@@ -246,7 +246,7 @@ public class X_C_AcctSchema extends BasePOName {
      */
     public void setCostingMethod(String CostingMethod) {
 
-        setValue(I_C_AcctSchema.COLUMNNAME_CostingMethod, CostingMethod);
+        setValue(AccountingSchema.COLUMNNAME_CostingMethod, CostingMethod);
     }
 
     /**
@@ -255,8 +255,8 @@ public class X_C_AcctSchema extends BasePOName {
      * @param C_Period_ID Period of the Calendar
      */
     public void setPeriodId(int C_Period_ID) {
-        if (C_Period_ID < 1) setValueNoCheck(I_C_AcctSchema.COLUMNNAME_C_Period_ID, null);
-        else setValueNoCheck(I_C_AcctSchema.COLUMNNAME_C_Period_ID, C_Period_ID);
+        if (C_Period_ID < 1) setValueNoCheck(AccountingSchema.COLUMNNAME_C_Period_ID, null);
+        else setValueNoCheck(AccountingSchema.COLUMNNAME_C_Period_ID, C_Period_ID);
     }
 
     /**
@@ -265,7 +265,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Generally Accepted Accounting Principles
      */
     public String getGAAP() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_GAAP);
+        return (String) getValue(AccountingSchema.COLUMNNAME_GAAP);
     }
 
     /**
@@ -275,7 +275,7 @@ public class X_C_AcctSchema extends BasePOName {
      */
     public void setGAAP(String GAAP) {
 
-        setValue(I_C_AcctSchema.COLUMNNAME_GAAP, GAAP);
+        setValue(AccountingSchema.COLUMNNAME_GAAP, GAAP);
     }
 
     /**
@@ -284,7 +284,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param HasAlias Ability to select (partial) account combinations by an Alias
      */
     public void setHasAlias(boolean HasAlias) {
-        setValue(I_C_AcctSchema.COLUMNNAME_HasAlias, HasAlias);
+        setValue(AccountingSchema.COLUMNNAME_HasAlias, HasAlias);
     }
 
     /**
@@ -293,7 +293,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param HasCombination Combination of account elements are checked
      */
     public void setHasCombination(boolean HasCombination) {
-        setValue(I_C_AcctSchema.COLUMNNAME_HasCombination, HasCombination);
+        setValue(AccountingSchema.COLUMNNAME_HasCombination, HasCombination);
     }
 
     /**
@@ -302,7 +302,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsAccrual Indicates if Accrual or Cash Based accounting will be used
      */
     public void setIsAccrual(boolean IsAccrual) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsAccrual, IsAccrual);
+        setValue(AccountingSchema.COLUMNNAME_IsAccrual, IsAccrual);
     }
 
     /**
@@ -311,7 +311,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Indicates if Accrual or Cash Based accounting will be used
      */
     public boolean isAccrual() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsAccrual);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsAccrual);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -325,7 +325,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsAdjustCOGS Adjust Cost of Good Sold
      */
     public void setIsAdjustCOGS(boolean IsAdjustCOGS) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsAdjustCOGS, IsAdjustCOGS);
+        setValue(AccountingSchema.COLUMNNAME_IsAdjustCOGS, IsAdjustCOGS);
     }
 
     /**
@@ -334,7 +334,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Allow to post negative accounting values
      */
     public boolean isAllowNegativePosting() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsAllowNegativePosting);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsAllowNegativePosting);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -348,7 +348,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsDiscountCorrectsTax Correct the tax for payment discount and charges
      */
     public void setIsDiscountCorrectsTax(boolean IsDiscountCorrectsTax) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsDiscountCorrectsTax, IsDiscountCorrectsTax);
+        setValue(AccountingSchema.COLUMNNAME_IsDiscountCorrectsTax, IsDiscountCorrectsTax);
     }
 
     /**
@@ -357,7 +357,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Correct the tax for payment discount and charges
      */
     public boolean isDiscountCorrectsTax() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsDiscountCorrectsTax);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsDiscountCorrectsTax);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -371,7 +371,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsExplicitCostAdjustment Post the cost adjustment explicitly
      */
     public void setIsExplicitCostAdjustment(boolean IsExplicitCostAdjustment) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsExplicitCostAdjustment, IsExplicitCostAdjustment);
+        setValue(AccountingSchema.COLUMNNAME_IsExplicitCostAdjustment, IsExplicitCostAdjustment);
     }
 
     /**
@@ -380,7 +380,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Post the cost adjustment explicitly
      */
     public boolean isExplicitCostAdjustment() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsExplicitCostAdjustment);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsExplicitCostAdjustment);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -395,7 +395,7 @@ public class X_C_AcctSchema extends BasePOName {
      * are the same
      */
     public boolean isPostIfClearingEqual() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsPostIfClearingEqual);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsPostIfClearingEqual);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -409,7 +409,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsPostServices Differentiate between Services and Product Receivable/Payables
      */
     public void setIsPostServices(boolean IsPostServices) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsPostServices, IsPostServices);
+        setValue(AccountingSchema.COLUMNNAME_IsPostServices, IsPostServices);
     }
 
     /**
@@ -418,7 +418,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Differentiate between Services and Product Receivable/Payables
      */
     public boolean isPostServices() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsPostServices);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsPostServices);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -432,7 +432,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param IsTradeDiscountPosted Generate postings for trade discounts
      */
     public void setIsTradeDiscountPosted(boolean IsTradeDiscountPosted) {
-        setValue(I_C_AcctSchema.COLUMNNAME_IsTradeDiscountPosted, IsTradeDiscountPosted);
+        setValue(AccountingSchema.COLUMNNAME_IsTradeDiscountPosted, IsTradeDiscountPosted);
     }
 
     /**
@@ -441,7 +441,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Generate postings for trade discounts
      */
     public boolean isTradeDiscountPosted() {
-        Object oo = getValue(I_C_AcctSchema.COLUMNNAME_IsTradeDiscountPosted);
+        Object oo = getValue(AccountingSchema.COLUMNNAME_IsTradeDiscountPosted);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -455,7 +455,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Type of Cost (e.g. Current, Plan, Future)
      */
     public int getCostTypeId() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_M_CostType_ID);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_M_CostType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -466,8 +466,8 @@ public class X_C_AcctSchema extends BasePOName {
      * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
      */
     public void setCostTypeId(int M_CostType_ID) {
-        if (M_CostType_ID < 1) setValue(I_C_AcctSchema.COLUMNNAME_M_CostType_ID, null);
-        else setValue(I_C_AcctSchema.COLUMNNAME_M_CostType_ID, M_CostType_ID);
+        if (M_CostType_ID < 1) setValue(AccountingSchema.COLUMNNAME_M_CostType_ID, null);
+        else setValue(AccountingSchema.COLUMNNAME_M_CostType_ID, M_CostType_ID);
     }
 
     /**
@@ -476,7 +476,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Number of days to be able to post to a future date (based on system date)
      */
     public int getPeriodOpenFuture() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_Period_OpenFuture);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_Period_OpenFuture);
         if (ii == null) return 0;
         return ii;
     }
@@ -488,7 +488,7 @@ public class X_C_AcctSchema extends BasePOName {
      *                          date)
      */
     public void setPeriodOpenFuture(int Period_OpenFuture) {
-        setValue(I_C_AcctSchema.COLUMNNAME_Period_OpenFuture, Period_OpenFuture);
+        setValue(AccountingSchema.COLUMNNAME_Period_OpenFuture, Period_OpenFuture);
     }
 
     /**
@@ -497,7 +497,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Number of days to be able to post in the past (based on system date)
      */
     public int getPeriodOpenHistory() {
-        Integer ii = (Integer) getValue(I_C_AcctSchema.COLUMNNAME_Period_OpenHistory);
+        Integer ii = (Integer) getValue(AccountingSchema.COLUMNNAME_Period_OpenHistory);
         if (ii == null) return 0;
         return ii;
     }
@@ -508,7 +508,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param Period_OpenHistory Number of days to be able to post in the past (based on system date)
      */
     public void setPeriodOpenHistory(int Period_OpenHistory) {
-        setValue(I_C_AcctSchema.COLUMNNAME_Period_OpenHistory, Period_OpenHistory);
+        setValue(AccountingSchema.COLUMNNAME_Period_OpenHistory, Period_OpenHistory);
     }
 
     /**
@@ -517,7 +517,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Element Separator
      */
     public String getSeparator() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_Separator);
+        return (String) getValue(AccountingSchema.COLUMNNAME_Separator);
     }
 
     /**
@@ -526,7 +526,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @param Separator Element Separator
      */
     public void setSeparator(String Separator) {
-        setValue(I_C_AcctSchema.COLUMNNAME_Separator, Separator);
+        setValue(AccountingSchema.COLUMNNAME_Separator, Separator);
     }
 
     /**
@@ -535,7 +535,7 @@ public class X_C_AcctSchema extends BasePOName {
      * @return Type of Tax Correction
      */
     public String getTaxCorrectionType() {
-        return (String) getValue(I_C_AcctSchema.COLUMNNAME_TaxCorrectionType);
+        return (String) getValue(AccountingSchema.COLUMNNAME_TaxCorrectionType);
     }
 
     /**
@@ -545,11 +545,11 @@ public class X_C_AcctSchema extends BasePOName {
      */
     public void setTaxCorrectionType(String TaxCorrectionType) {
 
-        setValue(I_C_AcctSchema.COLUMNNAME_TaxCorrectionType, TaxCorrectionType);
+        setValue(AccountingSchema.COLUMNNAME_TaxCorrectionType, TaxCorrectionType);
     }
 
     @Override
     public int getTableId() {
-        return I_C_AcctSchema.Table_ID;
+        return AccountingSchema.Table_ID;
     }
 }

@@ -52,7 +52,6 @@ public class MStorageReservation extends X_M_StorageReservation {
     /**
      * Get Storage Info
      *
-     * @param ctx                       context
      * @param M_Warehouse_ID            warehouse
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID instance
@@ -76,20 +75,19 @@ public class MStorageReservation extends X_M_StorageReservation {
     /**
      * Get Storage Info for Product across warehouses
      *
-     * @param ctx          context
      * @param M_Product_ID product
      * @return existing or null
      */
-    public static MStorageReservation[] getOfProduct(
+    public static I_M_StorageReservation[] getOfProduct(
             int M_Product_ID) {
         String sqlWhere = "M_Product_ID=?";
 
-        List<MStorageReservation> list =
-                new Query(I_M_StorageReservation.Table_Name, sqlWhere)
+        List<I_M_StorageReservation> list =
+                new Query<I_M_StorageReservation>(I_M_StorageReservation.Table_Name, sqlWhere)
                         .setParameters(M_Product_ID)
                         .list();
 
-        MStorageReservation[] retValue = new MStorageReservation[list.size()];
+        I_M_StorageReservation[] retValue = new I_M_StorageReservation[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getOfProduct
@@ -152,7 +150,6 @@ public class MStorageReservation extends X_M_StorageReservation {
     }
 
     /**
-     * @param ctx
      * @param M_Warehouse_ID
      * @param M_Product_ID
      * @param M_AttributeSetInstance_ID
@@ -207,7 +204,6 @@ public class MStorageReservation extends X_M_StorageReservation {
     /**
      * Update Storage Info add. Called from MProjectIssue
      *
-     * @param ctx                                context
      * @param M_Warehouse_ID                     warehouse
      * @param M_Product_ID                       product
      * @param M_AttributeSetInstance_ID          AS Instance
@@ -241,7 +237,6 @@ public class MStorageReservation extends X_M_StorageReservation {
     /**
      * Create or Get Storage Info
      *
-     * @param ctx                       context
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID instance
      * @return existing/new or null
@@ -298,19 +293,17 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @return info
      */
     public String toString() {
-        StringBuffer sb =
-                new StringBuffer("MStorageReservation[")
-                        .append("M_Warehouse_ID=")
-                        .append(getWarehouseId())
-                        .append(",M_Product_ID=")
-                        .append(getProductId())
-                        .append(",M_AttributeSetInstance_ID=")
-                        .append(getAttributeSetInstanceId())
-                        .append(",IsSOTrx=")
-                        .append(isSOTrx())
-                        .append(": Qty=")
-                        .append(getQty())
-                        .append("]");
-        return sb.toString();
+        return "MStorageReservation[" +
+                "M_Warehouse_ID=" +
+                getWarehouseId() +
+                ",M_Product_ID=" +
+                getProductId() +
+                ",M_AttributeSetInstance_ID=" +
+                getAttributeSetInstanceId() +
+                ",IsSOTrx=" +
+                isSOTrx() +
+                ": Qty=" +
+                getQty() +
+                "]";
     } //	toString
 }

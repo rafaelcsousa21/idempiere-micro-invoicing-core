@@ -5,9 +5,10 @@ import org.compiere.accounting.MClientKt;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.accounting.MProduct;
 import org.compiere.crm.MBPartner;
-import org.compiere.model.I_A_Asset;
-import org.compiere.model.I_A_Asset_Addition;
-import org.compiere.model.I_A_Asset_Group_Acct;
+import org.compiere.model.Asset;
+import org.compiere.model.AssetAddition;
+import org.compiere.model.AssetGroupAccounting;
+import org.compiere.model.DepreciationWorkfile;
 import org.compiere.model.I_C_Project;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MInOut;
@@ -254,7 +255,7 @@ public class MAsset extends org.compiere.product.MAsset {
             // end @win
 
             // for each asset group acounting create an asset accounting and a workfile too
-            for (I_A_Asset_Group_Acct assetgrpacct :
+            for (AssetGroupAccounting assetgrpacct :
                     MAssetGroupAcct.forA_Asset_GroupId(getAssetGroupId())) {
                 // Asset Accounting
                 MAssetAcct assetacct = new MAssetAcct(this, assetgrpacct);
@@ -281,7 +282,7 @@ public class MAsset extends org.compiere.product.MAsset {
 
         //
         // Update child.IsDepreciated flag
-        if (!newRecord && isValueChanged(I_A_Asset.COLUMNNAME_IsDepreciated)) {
+        if (!newRecord && isValueChanged(Asset.COLUMNNAME_IsDepreciated)) {
             final String sql =
                     "UPDATE "
                             + MDepreciationWorkfile.Table_Name
@@ -303,11 +304,11 @@ public class MAsset extends org.compiere.product.MAsset {
         {
             String sql =
                     "DELETE FROM "
-                            + I_A_Asset_Addition.Table_Name
+                            + AssetAddition.Table_Name
                             + " WHERE "
-                            + I_A_Asset_Addition.COLUMNNAME_Processed
+                            + AssetAddition.COLUMNNAME_Processed
                             + "=? AND "
-                            + I_A_Asset_Addition.COLUMNNAME_A_Asset_ID
+                            + AssetAddition.COLUMNNAME_A_Asset_ID
                             + "=?";
             int no = executeUpdateEx(sql, new Object[]{false, getAssetId()});
             if (log.isLoggable(Level.INFO)) log.info("@A_Asset_Addition@ @Deleted@ #" + no);
@@ -362,9 +363,9 @@ public class MAsset extends org.compiere.product.MAsset {
         if (newStatus.equals(X_A_Asset.A_ASSET_STATUS_Preservation)) {
             setAssetDisposalDate(date);
             // TODO: move to MAsetDisposal
-            Collection<MDepreciationWorkfile> workFiles =
+            Collection<DepreciationWorkfile> workFiles =
                     MDepreciationWorkfile.forA_AssetId(getAssetId());
-            for (MDepreciationWorkfile assetwk : workFiles) {
+            for (DepreciationWorkfile assetwk : workFiles) {
                 assetwk.truncDepreciation();
                 assetwk.saveEx();
             }

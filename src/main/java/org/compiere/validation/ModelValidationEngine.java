@@ -4,9 +4,10 @@ import org.compiere.accounting.MClientKt;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.IFact;
 import org.compiere.model.IPODoc;
-import org.compiere.model.I_AD_ModelValidator;
-import org.compiere.model.I_AD_Rule;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.TableScriptValidator;
+import org.compiere.model.ModelValidator;
+import org.compiere.model.Rule;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.TypedQuery;
 import org.compiere.orm.MTable;
 import software.hsharp.core.orm.MBaseTableKt;
@@ -57,16 +58,16 @@ public class ModelValidationEngine {
     /**
      * Validators
      */
-    private ArrayList<ModelValidator> m_validators = new ArrayList<>();
+    private ArrayList<org.compiere.validation.ModelValidator> m_validators = new ArrayList<>();
     /**
      * Model Change Listeners
      */
-    private Hashtable<String, ArrayList<ModelValidator>> m_modelChangeListeners =
+    private Hashtable<String, ArrayList<org.compiere.validation.ModelValidator>> m_modelChangeListeners =
             new Hashtable<>();
     /**
      * Document Validation Listeners
      */
-    private Hashtable<String, ArrayList<ModelValidator>> m_docValidateListeners =
+    private Hashtable<String, ArrayList<org.compiere.validation.ModelValidator>> m_docValidateListeners =
             new Hashtable<>();
     /**
      * Accounting Facts Validation Listeners
@@ -80,7 +81,7 @@ public class ModelValidationEngine {
             new Hashtable<>();
     //	/** Change Support			*/
     //	private VetoableChangeSupport m_changeSupport = new VetoableChangeSupport(this);
-    private ArrayList<ModelValidator> m_globalValidators = new ArrayList<>();
+    private ArrayList<org.compiere.validation.ModelValidator> m_globalValidators = new ArrayList<>();
 
     /**
      * ************************************************************************ Constructor. Creates
@@ -91,11 +92,11 @@ public class ModelValidationEngine {
         // Load global validators
 
         MTable table = MBaseTableKt.getTable(X_AD_ModelValidator.Table_ID);
-        TypedQuery<I_AD_ModelValidator> query = table.createQuery("IsActive='Y'");
+        TypedQuery<ModelValidator> query = table.createQuery("IsActive='Y'");
         query.setOrderBy("SeqNo");
         try {
-            List<I_AD_ModelValidator> entityTypes = query.list();
-            for (I_AD_ModelValidator entityType : entityTypes) {
+            List<ModelValidator> entityTypes = query.list();
+            for (ModelValidator entityType : entityTypes) {
                 String className = entityType.getModelValidationClass();
                 if (className == null || className.length() == 0) continue;
                 loadValidatorClass(null, className);
@@ -130,7 +131,7 @@ public class ModelValidationEngine {
      * @param validatorId Java class name or equinox extension Id
      * @return ModelValidator instance of null if validatorId not found
      */
-    public static ModelValidator getModelValidator(String validatorId) {
+    public static org.compiere.validation.ModelValidator getModelValidator(String validatorId) {
         return null;
     }
 
@@ -157,7 +158,7 @@ public class ModelValidationEngine {
     private void loadValidatorClass(ClientWithAccounting client, String className) {
         try {
             //
-            ModelValidator validator = null;
+            org.compiere.validation.ModelValidator validator = null;
             validator = getModelValidator(className);
 
             if (validator == null) {
@@ -187,7 +188,7 @@ public class ModelValidationEngine {
      * @param validator
      * @param client
      */
-    private void initialize(ModelValidator validator, ClientWithAccounting client) {
+    private void initialize(org.compiere.validation.ModelValidator validator, ClientWithAccounting client) {
         if (client == null) m_globalValidators.add(validator);
         m_validators.add(validator);
         validator.initialize(this, client);
@@ -203,7 +204,7 @@ public class ModelValidationEngine {
         if (po == null) return null;
 
         String propertyName = po.getTableName() + "*";
-        ArrayList<ModelValidator> list = m_docValidateListeners.get(propertyName);
+        ArrayList<org.compiere.validation.ModelValidator> list = m_docValidateListeners.get(propertyName);
         if (list != null) {
             // ad_entitytype.modelvalidationclasses
             String error = fireDocValidate(po, docTiming, list);
@@ -219,12 +220,12 @@ public class ModelValidationEngine {
         }
 
         // now process the script model validator for this event
-        List<MTableScriptValidator> scriptValidators =
+        List<TableScriptValidator> scriptValidators =
                 MTableScriptValidator.getModelValidatorRules(
-                        po.getTableId(), ModelValidator.documentEventValidators[docTiming]);
+                        po.getTableId(), org.compiere.validation.ModelValidator.documentEventValidators[docTiming]);
         if (scriptValidators != null) {
-            for (MTableScriptValidator scriptValidator : scriptValidators) {
-                I_AD_Rule rule = MRule.get(scriptValidator.getRuleId());
+            for (TableScriptValidator scriptValidator : scriptValidators) {
+                Rule rule = MRule.get(scriptValidator.getRuleId());
                 // currently just JSR 223 supported
                 if (rule != null
                         && rule.isActive()
@@ -239,7 +240,7 @@ public class ModelValidationEngine {
                         engine.put(MRule.ARGUMENTS_PREFIX + "Type", docTiming);
                         engine.put(
                                 MRule.ARGUMENTS_PREFIX + "Event",
-                                ModelValidator.documentEventValidators[docTiming]);
+                                org.compiere.validation.ModelValidator.documentEventValidators[docTiming]);
 
                         Object retval = engine.eval(rule.getScript());
                         error = (retval == null ? "" : retval.toString());
@@ -265,9 +266,9 @@ public class ModelValidationEngine {
         return null;
     } //	fireDocValidate
 
-    private String fireDocValidate(IPODoc po, int docTiming, ArrayList<ModelValidator> list) {
-        for (ModelValidator modelValidator : list) {
-            ModelValidator validator;
+    private String fireDocValidate(IPODoc po, int docTiming, ArrayList<org.compiere.validation.ModelValidator> list) {
+        for (org.compiere.validation.ModelValidator modelValidator : list) {
+            org.compiere.validation.ModelValidator validator;
             try {
                 validator = modelValidator;
                 if (validator.getClientId() == po.getClientId()
@@ -300,7 +301,7 @@ public class ModelValidationEngine {
      * @param po
      * @return error message or null
      */
-    public String fireFactsValidate(I_C_AcctSchema schema, List<IFact> facts, IPODoc po) {
+    public String fireFactsValidate(AccountingSchema schema, List<IFact> facts, IPODoc po) {
         if (schema == null || facts == null || po == null) return null;
 
         String propertyName = po.getTableName() + "*";
@@ -334,13 +335,13 @@ public class ModelValidationEngine {
     } //	fireFactsValidate
 
     private String fireFactsValidate(
-            I_C_AcctSchema schema, List<IFact> facts, PersistentObject po, ArrayList<FactsValidator> list) {
+            AccountingSchema schema, List<IFact> facts, PersistentObject po, ArrayList<FactsValidator> list) {
         for (FactsValidator factsValidator : list) {
             FactsValidator validator;
             try {
                 validator = factsValidator;
                 if (validator.getClientId() == po.getClientId()
-                        || (validator instanceof ModelValidator
+                        || (validator instanceof org.compiere.validation.ModelValidator
                         && m_globalValidators.contains(validator))) {
                     String error = validator.factsValidate(schema, facts, po);
                     if (error != null && error.length() > 0) {

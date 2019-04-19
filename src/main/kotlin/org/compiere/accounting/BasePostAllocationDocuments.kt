@@ -1,6 +1,6 @@
 package org.compiere.accounting
 
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 
@@ -19,7 +19,7 @@ import software.hsharp.core.util.queryOf
  * @return true if created
  */
 fun createTaxCorrection(
-    `as`: I_C_AcctSchema,
+    `as`: AccountingSchema,
     fact: Fact,
     line: DocLine_Allocation,
     tax: DocAllocationTax

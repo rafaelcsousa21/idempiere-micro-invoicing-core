@@ -24,7 +24,7 @@ public class MPaySelection extends X_C_PaySelection {
     /**
      * Lines
      */
-    private MPaySelectionLine[] m_lines = null;
+    private I_C_PaySelectionLine[] m_lines = null;
     /**
      * Currency of Bank Account
      */
@@ -33,16 +33,11 @@ public class MPaySelection extends X_C_PaySelection {
     /**
      * Default Constructor
      *
-     * @param ctx               context
      * @param C_PaySelection_ID id
-     * @param trxName           transaction
      */
     public MPaySelection(int C_PaySelection_ID) {
         super(C_PaySelection_ID);
         if (C_PaySelection_ID == 0) {
-            //	setBankAccountId (0);
-            //	setName (null);	// @#Date@
-            //	setPayDate (new Timestamp(System.currentTimeMillis()));	// @#Date@
             setTotalAmt(Env.ZERO);
             setIsApproved(false);
             setProcessed(false);
@@ -53,9 +48,6 @@ public class MPaySelection extends X_C_PaySelection {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MPaySelection(Row row) {
         super(row);
@@ -67,19 +59,19 @@ public class MPaySelection extends X_C_PaySelection {
      * @param requery requery
      * @return lines
      */
-    public MPaySelectionLine[] getLines(boolean requery) {
+    public I_C_PaySelectionLine[] getLines(boolean requery) {
         if (m_lines != null && !requery) {
             return m_lines;
         }
         // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
         final String whereClause = "C_PaySelection_ID=?";
-        List<MPaySelectionLine> list =
-                new Query(I_C_PaySelectionLine.Table_Name, whereClause)
+        List<I_C_PaySelectionLine> list =
+                new Query<I_C_PaySelectionLine>(I_C_PaySelectionLine.Table_Name, whereClause)
                         .setParameters(getPaySelectionId())
                         .setOrderBy("Line")
                         .list();
         //
-        m_lines = new MPaySelectionLine[list.size()];
+        m_lines = new I_C_PaySelectionLine[list.size()];
         list.toArray(m_lines);
         return m_lines;
     } //	getLines
@@ -103,8 +95,6 @@ public class MPaySelection extends X_C_PaySelection {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MPaySelection[");
-        sb.append(getId()).append(",").append(getName()).append("]");
-        return sb.toString();
+        return "MPaySelection[" + getId() + "," + getName() + "]";
     } //	toString
 } //	MPaySelection

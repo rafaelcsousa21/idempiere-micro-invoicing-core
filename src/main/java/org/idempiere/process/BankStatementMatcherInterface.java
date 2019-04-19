@@ -2,6 +2,7 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.X_I_BankStatement;
+import org.compiere.model.I_C_BankStatementLine;
 
 public interface BankStatementMatcherInterface {
     /**
@@ -10,7 +11,7 @@ public interface BankStatementMatcherInterface {
      * @param bsl bank statement line
      * @return found matches or null
      */
-    BankStatementMatchInfo findMatch(MBankStatementLine bsl);
+    BankStatementMatchInfo findMatch(I_C_BankStatementLine bsl);
 
     /**
      * Match Bank Statement Import Line

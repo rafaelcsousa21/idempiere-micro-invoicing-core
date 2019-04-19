@@ -48,17 +48,13 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     /**
      * Standard Constructor
      *
-     * @param ctx                  context
      * @param M_RequisitionLine_ID id
-     * @param trxName              transaction
      */
     public MRequisitionLine(int M_RequisitionLine_ID) {
         super(M_RequisitionLine_ID);
         if (M_RequisitionLine_ID == 0) {
-            //	setRequisition_ID (0);
             setLine(
                     0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_RequisitionLine WHERE
-            // M_Requisition_ID=@M_Requisition_ID@
             setLineNetAmt(Env.ZERO);
             setPriceActual(Env.ZERO);
             setQty(Env.ONE); // 1
@@ -68,7 +64,6 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     /**
      * Load Constructor
      *
-     * @param ctx context
      */
     public MRequisitionLine(Row row) {
         super(row);
@@ -90,30 +85,27 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     /**
      * Get corresponding Requisition Line for given Order Line
      *
-     * @param ctx
      * @return Requisition Line
      */
-    public static MRequisitionLine[] forC_OrderId(int C_Order_ID) {
+    public static I_M_RequisitionLine[] forC_OrderId(int C_Order_ID) {
         final String whereClause =
                 "EXISTS (SELECT 1 FROM C_OrderLine ol"
                         + " WHERE ol.C_OrderLine_ID=M_RequisitionLine.C_OrderLine_ID"
                         + " AND ol.C_Order_ID=?)";
-        List<MRequisitionLine> list =
-                new Query(I_M_RequisitionLine.Table_Name, whereClause)
+        List<I_M_RequisitionLine> list =
+                new Query<I_M_RequisitionLine>(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(C_Order_ID)
                         .list();
-        return list.toArray(new MRequisitionLine[list.size()]);
+        return list.toArray(new I_M_RequisitionLine[0]);
     }
 
     /**
      * UnLink Requisition Lines for given Order
      *
-     * @param ctx
      * @param C_Order_ID
-     * @param trxName
      */
     public static void unlinkC_OrderId(int C_Order_ID) {
-        for (MRequisitionLine line : MRequisitionLine.forC_OrderId(C_Order_ID)) {
+        for (I_M_RequisitionLine line : MRequisitionLine.forC_OrderId(C_Order_ID)) {
             line.setOrderLineId(0);
             line.saveEx();
         }
@@ -122,30 +114,26 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     /**
      * Get corresponding Requisition Line(s) for given Order Line
      *
-     * @param ctx
      * @param C_OrderLine_ID order line
-     * @param trxName
      * @return array of Requisition Line(s)
      */
-    public static MRequisitionLine[] forC_OrderLineId(
+    public static I_M_RequisitionLine[] forC_OrderLineId(
             int C_OrderLine_ID) {
         final String whereClause = I_M_RequisitionLine.COLUMNNAME_C_OrderLine_ID + "=?";
-        List<MRequisitionLine> list =
-                new Query(I_M_RequisitionLine.Table_Name, whereClause)
+        List<I_M_RequisitionLine> list =
+                new Query<I_M_RequisitionLine>(I_M_RequisitionLine.Table_Name, whereClause)
                         .setParameters(C_OrderLine_ID)
                         .list();
-        return list.toArray(new MRequisitionLine[list.size()]);
+        return list.toArray(new I_M_RequisitionLine[0]);
     }
 
     /**
      * UnLink Requisition Lines for given Order Line
      *
-     * @param ctx
      * @param C_OrderLine_ID
-     * @param trxName
      */
     public static void unlinkC_OrderLineId(int C_OrderLine_ID) {
-        for (MRequisitionLine line : forC_OrderLineId(C_OrderLine_ID)) {
+        for (I_M_RequisitionLine line : forC_OrderLineId(C_OrderLine_ID)) {
             line.setOrderLineId(0);
             line.saveEx();
         }

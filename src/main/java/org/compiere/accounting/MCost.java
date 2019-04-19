@@ -5,9 +5,10 @@ import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.ClientInfoWithAccounting;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.ClientOrganization;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostElement;
+import org.compiere.model.I_M_Product_PO;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.MOrgKt;
 import org.compiere.orm.Query;
@@ -93,7 +94,7 @@ public class MCost extends X_M_Cost {
     public MCost(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
         this(0);
@@ -116,18 +117,16 @@ public class MCost extends X_M_Cost {
      * @param AD_Org_ID                 real org
      * @param costingMethod             AcctSchema.COSTINGMETHOD_*
      * @param qty                       qty
-     * @param C_OrderLine_ID            optional order line
      * @param zeroCostsOK               zero/no costs are OK
      * @return current cost price or null
      */
     public static BigDecimal getCurrentCost(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int AD_Org_ID,
             String costingMethod,
             BigDecimal qty,
-            int C_OrderLine_ID,
             boolean zeroCostsOK) {
         String CostingLevel = product.getCostingLevel(as);
         if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
@@ -174,7 +173,7 @@ public class MCost extends X_M_Cost {
     private static BigDecimal getCurrentCost(
             MProduct product,
             int M_ASI_ID,
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int Org_ID,
             int M_CostType_ID,
             String costingMethod,
@@ -314,7 +313,7 @@ public class MCost extends X_M_Cost {
     public static BigDecimal getSeedCosts(
             MProduct product,
             int M_ASI_ID,
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int Org_ID,
             String costingMethod,
             int C_OrderLine_ID) {
@@ -410,9 +409,9 @@ public class MCost extends X_M_Cost {
         }
 
         //	Still nothing try ProductPO
-        MProductPO[] pos =
+        I_M_Product_PO[] pos =
                 MProductPO.getOfProduct(product.getProductId());
-        for (MProductPO po : pos) {
+        for (I_M_Product_PO po : pos) {
             BigDecimal price = po.getPricePO();
             if (price == null || price.signum() == 0) price = po.getPriceList();
             if (price != null && price.signum() != 0) {
@@ -450,7 +449,7 @@ public class MCost extends X_M_Cost {
         return retValue;
     } //	getSeedCosts
 
-    private static BigDecimal getSeedCostFromPriceList(MProduct product, I_C_AcctSchema as, int orgID) {
+    private static BigDecimal getSeedCostFromPriceList(MProduct product, AccountingSchema as, int orgID) {
         String sql =
                 "SELECT pp.PriceList, pp.PriceStd FROM M_ProductPrice pp"
                         + " INNER JOIN M_PriceList_Version plv ON (pp.M_PriceList_Version_ID = plv.M_PriceList_Version_ID AND plv.ValidFrom <= trunc(sysdate))"
@@ -647,13 +646,13 @@ public class MCost extends X_M_Cost {
             return;
         }
 
-        MAcctSchema[] mass =
+        AccountingSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
         ClientOrganization[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
-        for (MAcctSchema as : mass) {
+        for (AccountingSchema as : mass) {
             String cl = product.getCostingLevel(as);
             //	Create Std Costing
             if (MAcctSchema.COSTINGLEVEL_Client.equals(cl)) {
@@ -695,7 +694,7 @@ public class MCost extends X_M_Cost {
     private static void createForChildOrg(
             MTreeNode root,
             MProduct product,
-            MAcctSchema as,
+            AccountingSchema as,
             int M_ASI_ID,
             I_M_CostElement ce,
             boolean found) {
@@ -717,7 +716,7 @@ public class MCost extends X_M_Cost {
     }
 
     private static void createCostingRecord(
-            MProduct product, int M_ASI_ID, MAcctSchema as, int AD_Org_ID, int M_CostElement_ID) {
+            MProduct product, int M_ASI_ID, AccountingSchema as, int AD_Org_ID, int M_CostElement_ID) {
         I_M_Cost cost =
                 MCost.get(product, M_ASI_ID, as, AD_Org_ID, M_CostElement_ID);
         if (cost.isNew()) {
@@ -740,13 +739,13 @@ public class MCost extends X_M_Cost {
         //	Cost Elements
         List<I_M_CostElement> ces = MCostElement.getCostElementsWithCostingMethods(product);
 
-        MAcctSchema[] mass =
+        AccountingSchema[] mass =
                 MAcctSchema.getClientAcctSchema(
                         product.getClientId());
         ClientOrganization[] orgs = null;
 
         int M_ASI_ID = 0; // 	No Attribute
-        for (MAcctSchema as : mass) {
+        for (AccountingSchema as : mass) {
             String cl = product.getCostingLevel(as);
             //	Create Std Costing
             if (MAcctSchema.COSTINGLEVEL_Client.equals(cl)) {
@@ -790,7 +789,7 @@ public class MCost extends X_M_Cost {
     public static I_M_Cost get(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
         I_M_Cost cost;
@@ -1126,26 +1125,4 @@ public class MCost extends X_M_Cost {
         super.setCurrentQty(CurrentQty);
     }
 
-    /**
-     * ************************************************************************ MCost Qty-Cost Pair
-     */
-    public static class QtyCost {
-        /**
-         * Qty
-         */
-        public BigDecimal Qty = null;
-        /**
-         * Cost
-         */
-        public BigDecimal Cost = null;
-
-        /**
-         * String Representation
-         *
-         * @return info
-         */
-        public String toString() {
-            return "Qty=" + Qty + ",Cost=" + Cost;
-        } //	toString
-    } //	QtyCost
 } //	MCost

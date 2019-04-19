@@ -11,7 +11,7 @@ import org.compiere.invoicing.MInventoryLine;
 import org.compiere.model.ClientWithAccounting;
 import org.compiere.model.HasName;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.DocumentType;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_CostElement;
@@ -78,7 +78,7 @@ public class CostUpdate extends SvrProcess {
     /**
      * Client Accounting SChema
      */
-    private MAcctSchema[] m_ass = null;
+    private AccountingSchema[] m_ass = null;
     /**
      * Map of Cost Elements
      */
@@ -164,7 +164,7 @@ public class CostUpdate extends SvrProcess {
         if (m_ce.getId() == 0) throw new AdempiereUserError("@NotFound@ @M_CostElement_ID@ (StdCost)");
         if (log.isLoggable(Level.CONFIG)) log.config(m_ce.toString());
         m_ass = MAcctSchema.getClientAcctSchema(client.getClientId());
-        for (MAcctSchema m_ass1 : m_ass) createNew(m_ass1);
+        for (AccountingSchema m_ass1 : m_ass) createNew(m_ass1);
 
         //	Update Cost
         int counter = update();
@@ -202,7 +202,7 @@ public class CostUpdate extends SvrProcess {
      *
      * @param as accounting schema
      */
-    private void createNew(MAcctSchema as) {
+    private void createNew(AccountingSchema as) {
         if (!as.getCostingLevel().equals(MAcctSchema.COSTINGLEVEL_Client)) {
             String txt = "Costing Level prevents creating new Costing records for " + as.getName();
             log.warning(txt);
@@ -230,7 +230,7 @@ public class CostUpdate extends SvrProcess {
      * @param as      acct schema
      * @return true if created
      */
-    private boolean createNew(MProduct product, MAcctSchema as) {
+    private boolean createNew(MProduct product, AccountingSchema as) {
         I_M_Cost cost = MCost.get(product, 0, as, 0, m_ce.getCostElementId());
         if (cost.isNew()) return cost.save();
         return false;
@@ -250,13 +250,13 @@ public class CostUpdate extends SvrProcess {
                             + "WHERE c.M_Product_ID=p.M_Product_ID AND p.M_Product_Category_ID=?)";
         List<MInventoryLine> lines = new ArrayList<>();
         ClientWithAccounting client = MClientKt.getClientWithAccounting();
-        I_C_AcctSchema primarySchema = client.getAcctSchema();
+        AccountingSchema primarySchema = client.getAcctSchema();
         MInventory inventoryDoc;
 
         MCost[] items = BaseCostUpdateKt.getCostsToUpdate(sql, m_ce.getCostElementId(), p_M_Product_Category_ID);
 
         for (MCost cost : items) {
-            for (MAcctSchema m_ass1 : m_ass) {
+            for (AccountingSchema m_ass1 : m_ass) {
                 //	Update Costs only for default Cost Type
                 if (m_ass1.getAccountingSchemaId() == cost.getAccountingSchemaId()
                         && m_ass1.getCostTypeId() == cost.getCostTypeId()) {

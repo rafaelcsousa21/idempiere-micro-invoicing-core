@@ -1,11 +1,13 @@
 package org.compiere.accounting;
 
 import org.compiere.model.IFact;
-import org.compiere.model.I_C_AcctSchema;
-import org.compiere.model.I_C_AcctSchema_Element;
+import org.compiere.model.AccountingSchema;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.model.AccountingElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_Fact_Acct;
+import org.compiere.model.I_GL_Distribution;
+import org.compiere.model.I_GL_DistributionLine;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -46,7 +48,7 @@ public final class Fact implements IFact {
     /**
      * Accounting Schema
      */
-    private I_C_AcctSchema m_acctSchema = null;
+    private AccountingSchema m_acctSchema = null;
     /**
      * Posting Type
      */
@@ -63,7 +65,7 @@ public final class Fact implements IFact {
      * @param acctSchema         Account Schema to create accounts
      * @param defaultPostingType the default Posting type (actual,..) for this posting
      */
-    public Fact(Doc document, I_C_AcctSchema acctSchema, String defaultPostingType) {
+    public Fact(Doc document, AccountingSchema acctSchema, String defaultPostingType) {
         m_doc = document;
         m_acctSchema = acctSchema;
         m_postingType = defaultPostingType;
@@ -299,9 +301,9 @@ public final class Fact implements IFact {
         }
         if (list.size() > 1) return true;
 
-        I_C_AcctSchema_Element[] elements = m_acctSchema.getAcctSchemaElements();
+        AccountSchemaElement[] elements = m_acctSchema.getAcctSchemaElements();
         //  check all balancing segments
-        for (I_C_AcctSchema_Element ase : elements) {
+        for (AccountSchemaElement ase : elements) {
             if (ase.isBalanced() && !isSegmentBalanced(ase.getElementType())) return false;
         }
         return true;
@@ -351,9 +353,9 @@ public final class Fact implements IFact {
      * create dueTo/dueFrom line overwriting the segment value
      */
     public void balanceSegments() {
-        I_C_AcctSchema_Element[] elements = m_acctSchema.getAcctSchemaElements();
+        AccountSchemaElement[] elements = m_acctSchema.getAcctSchemaElements();
         //  check all balancing segments
-        for (I_C_AcctSchema_Element ase : elements) {
+        for (AccountSchemaElement ase : elements) {
             if (ase.isBalanced()) balanceSegment(ase.getElementType());
         }
     } //  balanceSegments
@@ -595,7 +597,7 @@ public final class Fact implements IFact {
         //	For all fact lines
         for (int i = 0; i < m_lines.size(); i++) {
             FactLine dLine = m_lines.get(i);
-            MDistribution[] distributions =
+            I_GL_Distribution[] distributions =
                     MDistribution.get(dLine.getAccount(), m_postingType, m_doc.getDocumentTypeId());
             //	No Distribution for this line
             // AZ Goodwill
@@ -630,7 +632,7 @@ public final class Fact implements IFact {
             //	Just the first
             if (distributions.length > 1)
                 log.warning("More then one Distributiion for " + dLine.getAccount());
-            MDistribution distribution = distributions[0];
+            I_GL_Distribution distribution = distributions[0];
 
             // FR 2685367 - GL Distribution delete line instead reverse
             if (distribution.isCreateReversal()) {
@@ -647,9 +649,8 @@ public final class Fact implements IFact {
             //	Prepare
             distribution.distribute(
                     dLine.getAccount(), dLine.getSourceBalance(), dLine.getQty(), dLine.getCurrencyId());
-            MDistributionLine[] lines = distribution.getLines(false);
-            for (int j = 0; j < lines.length; j++) {
-                MDistributionLine dl = lines[j];
+            I_GL_DistributionLine[] lines = distribution.getLines(false);
+            for (I_GL_DistributionLine dl : lines) {
                 if (!dl.isActive() || dl.getAmt().signum() == 0) continue;
                 FactLine factLine =
                         new FactLine(
@@ -694,7 +695,7 @@ public final class Fact implements IFact {
         } //	for all lines
 
         //	Add Lines
-        for (int i = 0; i < newLines.size(); i++) m_lines.add(newLines.get(i));
+        m_lines.addAll(newLines);
 
         return true;
     } //	distribute
@@ -705,12 +706,10 @@ public final class Fact implements IFact {
      * @return String
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("Fact[");
-        sb.append(m_doc.toString());
-        sb.append(",").append(m_acctSchema.toString());
-        sb.append(",PostType=").append(m_postingType);
-        sb.append("]");
-        return sb.toString();
+        return "Fact[" + m_doc.toString() +
+                "," + m_acctSchema.toString() +
+                ",PostType=" + m_postingType +
+                "]";
     } //	toString
 
     /**
@@ -821,15 +820,13 @@ public final class Fact implements IFact {
          * @return info
          */
         public String toString() {
-            StringBuilder sb = new StringBuilder("Balance[");
-            sb.append("DR=")
-                    .append(DR)
-                    .append("-CR=")
-                    .append(CR)
-                    .append(" = ")
-                    .append(getBalance())
-                    .append("]");
-            return sb.toString();
+            return "Balance[" + "DR=" +
+                    DR +
+                    "-CR=" +
+                    CR +
+                    " = " +
+                    getBalance() +
+                    "]";
         } //	toString
     } //	Balance
 } //  Fact

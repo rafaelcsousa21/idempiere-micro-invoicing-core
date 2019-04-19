@@ -1,6 +1,6 @@
 package org.compiere.accounting
 
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 
 /**
  * Callback to Tax Correction
@@ -16,5 +16,5 @@ interface DocAllocationTax {
     /**
      * Create Accounting Entries
      */
-    fun createEntries(mAcctSchema: I_C_AcctSchema, fact: Fact, line: DocLine): Boolean
+    fun createEntries(mAcctSchema: AccountingSchema, fact: Fact, line: DocLine): Boolean
 }

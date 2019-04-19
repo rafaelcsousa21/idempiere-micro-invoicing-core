@@ -5,9 +5,10 @@ import org.compiere.bo.MCurrency;
 import org.compiere.bo.MCurrencyKt;
 import org.compiere.crm.MClientInfo;
 import org.compiere.crm.MClientInfoKt;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.model.ClientInfo;
-import org.compiere.model.I_C_AcctSchema;
-import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.AccountingSchema;
+import org.compiere.model.DefaultAccountsForSchema;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MOrg;
@@ -29,7 +30,7 @@ import java.util.logging.Level;
  * http://sourceforge.net/tracker/index.php?func=detail&aid=2214883&group_id=176962&atid=879335
  * @version $Id: MAcctSchema.java,v 1.4 2006/07/30 00:58:04 jjanke Exp $
  */
-public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
+public class MAcctSchema extends X_C_AcctSchema implements AccountingSchema {
     /**
      *
      */
@@ -37,14 +38,14 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Cache of Client AcctSchema Arrays *
      */
-    private static CCache<Integer, MAcctSchema[]> s_schema =
-            new CCache<Integer, MAcctSchema[]>(ClientInfo.Table_Name, 3, 120, true); //  3 clients
+    private static CCache<Integer, AccountingSchema[]> s_schema =
+            new CCache<>(ClientInfo.Table_Name, 3, 120, true); //  3 clients
     /**
      * Cache of AcctSchemas *
      */
     private static CCache<Integer, MAcctSchema> s_cache =
-            new CCache<Integer, MAcctSchema>(
-                    I_C_AcctSchema.Table_Name, 3, 120, true); //  3 accounting schemas
+            new CCache<>(
+                    AccountingSchema.Table_Name, 3, 120, true); //  3 accounting schemas
     /**
      * GL Info
      */
@@ -52,7 +53,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      * Default Info
      */
-    private I_C_AcctSchema_Default m_default = null;
+    private DefaultAccountsForSchema m_default = null;
     private MAccount m_SuspenseError_Acct = null;
     private MAccount m_CurrencyBalancing_Acct = null;
     private MAccount m_DueTo_Acct = null;
@@ -120,16 +121,14 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         this(0);
         setClientOrg(client);
         setCurrencyId(currency.getKey());
-        StringBuilder msgset =
-                new StringBuilder()
-                        .append(client.getName())
-                        .append(" ")
-                        .append(getGAAP())
-                        .append("/")
-                        .append(get_ColumnCount())
-                        .append(" ")
-                        .append(currency.getName());
-        setName(msgset.toString());
+        String msgset = client.getName() +
+                " " +
+                getGAAP() +
+                "/" +
+                get_ColumnCount() +
+                " " +
+                currency.getName();
+        setName(msgset);
     } //	MAcctSchema
 
     /**
@@ -154,19 +153,19 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @param AD_Client_ID client or 0 for all
      * @return Array of AcctSchema of Client
      */
-    public static synchronized MAcctSchema[] getClientAcctSchema(
+    public static synchronized AccountingSchema[] getClientAcctSchema(
             int AD_Client_ID) {
         //  Check Cache
         Integer key = AD_Client_ID;
         if (s_schema.containsKey(key)) return s_schema.get(key);
 
         //  Create New
-        ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
+        ArrayList<AccountingSchema> list = new ArrayList<>();
         MClientInfo info = MClientInfoKt.getClientInfo(AD_Client_ID);
         MAcctSchema as = MAcctSchema.get(info.getAcctSchema1Id());
         if (as.getId() != 0) list.add(as);
 
-        ArrayList<Object> params = new ArrayList<Object>();
+        ArrayList<Object> params = new ArrayList<>();
         StringBuilder whereClause =
                 new StringBuilder("IsActive=? ")
                         .append(
@@ -179,20 +178,20 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
             params.add(AD_Client_ID);
         }
 
-        List<MAcctSchema> ass =
-                new Query(I_C_AcctSchema.Table_Name, whereClause.toString())
+        List<AccountingSchema> ass =
+                new Query<AccountingSchema>(AccountingSchema.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(MAcctSchema.COLUMNNAME_C_AcctSchema_ID)
                         .list();
 
-        for (MAcctSchema acctschema : ass) {
+        for (AccountingSchema acctschema : ass) {
             if (acctschema.getId() != info.getAcctSchema1Id()) // 	already in list
             {
                 if (acctschema.getId() != 0) list.add(acctschema);
             }
         }
         //  Save
-        MAcctSchema[] retValue = new MAcctSchema[list.size()];
+        AccountingSchema[] retValue = new AccountingSchema[list.size()];
         list.toArray(retValue);
         s_schema.put(key, retValue);
         return retValue;
@@ -203,7 +202,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @return ArrayList of AcctSchemaElement
      */
-    public MAcctSchemaElement[] getAcctSchemaElements() {
+    public AccountSchemaElement[] getAcctSchemaElements() {
         return MAcctSchemaElement.getAcctSchemaElements(this);
     } //  getAcctSchemaElements
 
@@ -213,9 +212,9 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      * @param elementType segment type - AcctSchemaElement.ELEMENTTYPE_
      * @return AcctSchemaElement
      */
-    public MAcctSchemaElement getAcctSchemaElement(String elementType) {
-        /** Element List */
-        for (MAcctSchemaElement ase : getAcctSchemaElements()) {
+    public AccountSchemaElement getAcctSchemaElement(String elementType) {
+        /* Element List */
+        for (AccountSchemaElement ase : getAcctSchemaElements()) {
             if (ase.getElementType().equals(elementType)) return ase;
         }
         return null;
@@ -239,7 +238,7 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
      *
      * @return defaults
      */
-    public I_C_AcctSchema_Default getAcctSchemaDefault() {
+    public DefaultAccountsForSchema getAcctSchemaDefault() {
         if (m_default == null) m_default = MAcctSchemaDefault.get(getAccountingSchemaId());
         if (m_default == null)
             throw new IllegalStateException(

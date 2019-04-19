@@ -2,6 +2,7 @@ package org.compiere.production;
 
 import kotliquery.Row;
 import org.compiere.model.User;
+import org.compiere.model.Workflow;
 import software.hsharp.core.orm.MBaseTableKt;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_Planning;
@@ -67,9 +68,9 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         return "X_PP_Product_Planning[" + getId() + "]";
     }
 
-    public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
-        return (org.compiere.model.I_AD_Workflow)
-                MBaseTableKt.getTable(org.compiere.model.I_AD_Workflow.Table_Name)
+    public Workflow getWorkflow() throws RuntimeException {
+        return (Workflow)
+                MBaseTableKt.getTable(Workflow.Table_Name)
                         .getPO(getWorkflowId());
     }
 

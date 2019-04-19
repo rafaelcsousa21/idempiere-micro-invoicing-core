@@ -1,6 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.AccountingSchema;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -120,7 +120,7 @@ public class ProductCost {
      * @param as       Accounting Schema
      * @return Requested Product Account
      */
-    public MAccount getAccount(int AcctType, I_C_AcctSchema as) {
+    public MAccount getAccount(int AcctType, AccountingSchema as) {
         if (AcctType < ACCTTYPE_P_Revenue || AcctType > ACCTTYPE_P_LandedCostClearing) return null;
 
         //  No Product - get Default from Product Category
@@ -163,7 +163,7 @@ public class ProductCost {
      * @param as       accounting schema
      * @return Requested Product Account
      */
-    public MAccount getAccountDefault(int AcctType, I_C_AcctSchema as) {
+    public MAccount getAccountDefault(int AcctType, AccountingSchema as) {
         if (AcctType < ACCTTYPE_P_Revenue || AcctType > ACCTTYPE_P_LandedCostClearing) return null;
 
         String sql =
@@ -213,7 +213,7 @@ public class ProductCost {
      * @return cost or null, if qty or costs cannot be determined
      */
     public BigDecimal getProductCosts(
-            I_C_AcctSchema as,
+            AccountingSchema as,
             int AD_Org_ID,
             String costingMethod,
             int C_OrderLine_ID,
@@ -237,7 +237,6 @@ public class ProductCost {
                         AD_Org_ID,
                         costingMethod,
                         m_qty,
-                        C_OrderLine_ID,
                         zeroCostsOK);
         if (cost == null) {
             log.fine("No Costs");

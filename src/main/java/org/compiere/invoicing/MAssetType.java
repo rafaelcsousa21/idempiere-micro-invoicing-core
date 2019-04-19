@@ -1,7 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_A_Asset_Type;
+import org.compiere.model.AssetType;
 import org.idempiere.common.util.CCache;
 
 /**
@@ -22,7 +22,7 @@ public class MAssetType extends X_A_Asset_Type {
      * Static Cache: A_Asset_Type.A_Asset_Type_ID-> MAssetType
      */
     private static CCache<Integer, MAssetType> s_cache =
-            new CCache<Integer, MAssetType>(I_A_Asset_Type.Table_Name, 10, 0);
+            new CCache<Integer, MAssetType>(AssetType.Table_Name, 10, 0);
 
     /**
      * Standard Constructor

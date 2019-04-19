@@ -3,6 +3,7 @@ package org.compiere.docengine;
 import org.compiere.accounting.Doc;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClientKt;
+import org.compiere.model.AccountingSchema;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_Order;
@@ -101,7 +102,7 @@ public class DocumentEngine implements DocAction {
 
         String error;
         if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);
-        MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(AD_Client_ID);
+        AccountingSchema[] ass = MAcctSchema.getClientAcctSchema(AD_Client_ID);
         error = Doc.postImmediate(ass, AD_Table_ID, Record_ID, force);
         return error;
     } //	postImmediate

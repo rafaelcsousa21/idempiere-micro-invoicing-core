@@ -50,7 +50,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     private boolean m_justPrepared = false;
 
     /**
-     * ************************************************************************ Standard Construvtore
+     * ************************************************************************ Standard Constructore
      *
      * @param GL_JournalBatch_ID id if 0 - create actual batch
      */

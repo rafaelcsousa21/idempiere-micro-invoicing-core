@@ -7,6 +7,7 @@ import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_ProjectLine;
+import org.compiere.model.I_M_Product_PO;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
@@ -126,9 +127,9 @@ public class ProjectGenPO extends SvrProcess {
         }
 
         //	PO Record
-        MProductPO[] pos =
+        I_M_Product_PO[] pos =
                 MProductPO.getOfProduct(projectLine.getProductId());
-        if (pos == null || pos.length == 0) {
+        if (pos.length == 0) {
             addLog(projectLine.getLine(), null, null, "Product has no PO record");
             return;
         }

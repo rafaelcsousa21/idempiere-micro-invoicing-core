@@ -2,8 +2,8 @@ package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
 import org.compiere.invoicing.MInvoice;
-import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_OrderLine;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.Env;
@@ -77,8 +77,8 @@ public class OrderRePrice extends SvrProcess {
         if (p_C_Invoice_ID != 0) {
             MInvoice invoice = new MInvoice(p_C_Invoice_ID);
             BigDecimal oldPrice = invoice.getGrandTotal();
-            MInvoiceLine[] lines = invoice.getLines(false);
-            for (MInvoiceLine line : lines) {
+            I_C_InvoiceLine[] lines = invoice.getLines(false);
+            for (I_C_InvoiceLine line : lines) {
                 line.setPrice(invoice.getPriceListId());
                 if (line.is_Changed()) {
                     line.setTaxAmt();

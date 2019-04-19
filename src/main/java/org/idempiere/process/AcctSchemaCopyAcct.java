@@ -5,8 +5,9 @@ import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MAcctSchemaDefault;
 import org.compiere.accounting.MAcctSchemaElement;
 import org.compiere.accounting.MAcctSchemaGL;
+import org.compiere.model.AccountSchemaElement;
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.model.I_C_AcctSchema_Default;
+import org.compiere.model.DefaultAccountsForSchema;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.process.SvrProcess;
@@ -32,10 +33,10 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
 
-            if (name.equals("C_AcctSchema_ID")) p_SourceAcctSchema_ID = para[i].getParameterAsInt();
+            if (name.equals("C_AcctSchema_ID")) p_SourceAcctSchema_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_TargetAcctSchema_ID = getRecordId();
@@ -69,16 +70,16 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             throw new AdempiereSystemError("NotFound Target C_AcctSchema_ID=" + p_TargetAcctSchema_ID);
 
         //
-        MAcctSchemaElement[] targetElements = target.getAcctSchemaElements();
+        AccountSchemaElement[] targetElements = target.getAcctSchemaElements();
         if (targetElements.length == 0)
             throw new AdempiereUserError("NotFound Target C_AcctSchema_Element");
 
         //	Accounting Element must be the same
-        MAcctSchemaElement sourceAcctElement =
+        AccountSchemaElement sourceAcctElement =
                 source.getAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_Account);
         if (sourceAcctElement == null)
             throw new AdempiereUserError("NotFound Source AC C_AcctSchema_Element");
-        MAcctSchemaElement targetAcctElement =
+        AccountSchemaElement targetAcctElement =
                 target.getAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_Account);
         if (targetAcctElement == null)
             throw new AdempiereUserError("NotFound Target AC C_AcctSchema_Element");
@@ -119,7 +120,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      * @throws Exception
      */
     private void copyDefault(MAcctSchema targetAS) throws Exception {
-        I_C_AcctSchema_Default source = MAcctSchemaDefault.get(p_SourceAcctSchema_ID);
+        DefaultAccountsForSchema source = MAcctSchemaDefault.get(p_SourceAcctSchema_ID);
         MAcctSchemaDefault target = new MAcctSchemaDefault(0);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         target.setAccountingSchemaId(p_TargetAcctSchema_ID);
@@ -163,8 +164,8 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         int UserElement2_ID = 0;
         //
         //  Active Elements
-        MAcctSchemaElement[] elements = targetAS.getAcctSchemaElements();
-        for (MAcctSchemaElement ase : elements) {
+        AccountSchemaElement[] elements = targetAS.getAcctSchemaElements();
+        for (AccountSchemaElement ase : elements) {
             String elementType = ase.getElementType();
             //
             switch (elementType) {

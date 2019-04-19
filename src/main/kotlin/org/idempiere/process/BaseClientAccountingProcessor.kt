@@ -2,6 +2,7 @@ package org.idempiere.process
 
 import org.compiere.accounting.DocManager
 import org.compiere.accounting.MAcctSchema
+import org.compiere.model.AccountingSchema
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
@@ -11,7 +12,7 @@ fun postDocumentsInPostSession(
     sql: String,
     clientId: Int,
     processedOn: BigDecimal,
-    m_ass: Array<MAcctSchema>,
+    m_ass: Array<AccountingSchema>,
     AD_Table_ID: Int
 ) {
     val parameters =

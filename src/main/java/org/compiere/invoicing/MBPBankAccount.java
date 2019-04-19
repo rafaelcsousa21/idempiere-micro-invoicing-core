@@ -92,15 +92,15 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      * @param C_BPartner_ID bpartner
      * @return
      */
-    public static MBPBankAccount[] getOfBPartner(int C_BPartner_ID) {
+    public static I_C_BP_BankAccount[] getOfBPartner(int C_BPartner_ID) {
         final String whereClause = MBPBankAccount.COLUMNNAME_C_BPartner_ID + "=?";
-        List<MBPBankAccount> list =
-                new Query(I_C_BP_BankAccount.Table_Name, whereClause)
+        List<I_C_BP_BankAccount> list =
+                new Query<I_C_BP_BankAccount>(I_C_BP_BankAccount.Table_Name, whereClause)
                         .setParameters(C_BPartner_ID)
                         .setOnlyActiveRecords(true)
                         .list();
 
-        MBPBankAccount[] retValue = new MBPBankAccount[list.size()];
+        I_C_BP_BankAccount[] retValue = new I_C_BP_BankAccount[list.size()];
         list.toArray(retValue);
         return retValue;
     } //	getOfBPartner

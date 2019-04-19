@@ -2,7 +2,7 @@ package org.compiere.accounting
 
 import org.compiere.model.IDoc
 import org.compiere.model.IDocFactory
-import org.compiere.model.I_C_AcctSchema
+import org.compiere.model.AccountingSchema
 import org.compiere.orm.getDbTableName
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
@@ -11,7 +11,7 @@ import software.hsharp.core.util.queryOf
  * Base functionality to [getDocument] by [recordId].
  */
 abstract class BaseDefaultDocumentFactory : IDocFactory {
-    override fun getDocument(accountingSchema: I_C_AcctSchema?, tableId: Int, recordId: Int): IDoc? {
+    override fun getDocument(accountingSchema: AccountingSchema?, tableId: Int, recordId: Int): IDoc? {
         val tableName = getDbTableName(tableId)
         //
         val sql = StringBuffer("SELECT * FROM ")
